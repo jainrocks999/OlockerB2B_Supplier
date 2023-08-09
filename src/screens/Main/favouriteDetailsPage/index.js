@@ -20,6 +20,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { useSelector } from 'react-redux';
+
 const MyProducts = () => {
   const navigation = useNavigation();
   const [liked, setLiked] = useState([]);
@@ -61,6 +62,7 @@ const MyProducts = () => {
             numColumns={2}
             renderItem={({ item, index }) => (
               <View style={styles.cardview}>
+               
                 <View
                   style={{
                     height: hp('100%'),

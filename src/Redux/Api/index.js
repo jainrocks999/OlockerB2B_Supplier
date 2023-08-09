@@ -38,6 +38,7 @@ export default class Api {
     }
   };
   static fetchDataByGET1 = async (url , data) => {
+    console.log(Constants.MainUrl + url);
     const Token=await AsyncStorage.getItem('loginToken')
     try {
       const response = await axios({
@@ -48,7 +49,8 @@ export default class Api {
           "Olocker": `Bearer ${Token}`,
         },
       });
-      return response.data;
+   
+     return response.data;
     } catch (error) {
       throw error;
     }

@@ -11,7 +11,7 @@ import SelectOption from '../screens/Main/SelectOption';
 import AddCategory from '../screens/Main/Addcategory';
 import Addcollection from '../screens/Main/Addcollection';
 import Addproduct from '../screens/Main/Addproduct';
-import DetailsFav from '../screens/Main/FavrateDetailsPage';
+import DetailsFav from '../screens/Main/favouriteDetailsPage';
 import MyProductDetails from '../screens/Main/MyProductDetails';
 import SubCategory from '../screens/Main/SubCategory';
 import MessageList from '../screens/Main/MessageList';

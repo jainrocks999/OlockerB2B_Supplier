@@ -367,8 +367,8 @@ const HomeScreen = () => {
         source1={require('../../../assets/Fo.png')}
         title={'Supplier Profile '}
         onPress={() => navigation.goBack()}
-        onPress2={() => navigation.navigate('FavDetails')}
         onPress1={() => navigation.navigate('Message')}
+        onPress2={() => navigation.navigate('FavDetails')}
       />
 
       <ScrollView>

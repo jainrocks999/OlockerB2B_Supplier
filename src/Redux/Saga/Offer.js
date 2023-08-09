@@ -12,23 +12,24 @@ function* offerList(action) {
         userid:action.userid
       }
       const response = yield call(Api.fetchDataByGET1,action.url,data);
-   console.log('this is user response',response.status);
-      // if (response.status == 'success') {
-      //   yield put({
-      //     type: 'Template_Detail_Success',
-      //     payload: response.data,
-      //   });
-      //     action.navigation.navigate('OfferTemplate')
-      // } else {
-      //   yield put({
-      //     type: 'Template_Detail_Error',
-      //   });
-      //}
+  // console.log('this is user response',response.status);
+
+      if (response.status == 'success') {
+        yield put({
+          type: 'Template_Detail_Success',
+          payload: response.data,
+        });
+          action.navigation.navigate('OfferTemplate')
+      } else {
+        yield put({
+          type: 'Template_Detail_Error',
+        });
+      }
     } catch (error) {
       console.log(error);
-      // yield put({
-      //   type: 'Template_Detail_Error',
-      // });
+      yield put({
+        type: 'Template_Detail_Error',
+      });
     }
   }
 
