@@ -11,21 +11,6 @@ export default StyleSheet.create({
     // alignItems: 'center',
     marginTop: 22,
     
-  },  card: {
-    backgroundColor: 'white',
-height:hp(73),
-    paddingVertical: 10,
-    margin: 5,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
-
-    elevation: 6,
   },
 
   modalView: {

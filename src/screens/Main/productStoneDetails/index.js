@@ -326,6 +326,7 @@ const Notification = () => {
               />
             </View>
           </View>
+          
         </View>
 
         <TouchableOpacity

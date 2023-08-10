@@ -305,7 +305,11 @@ const HomeScreen = () => {
               <Text style={styles.textc}>{'Catalogue'}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={{alignItems: 'center', width: '45%'}}>
+            <TouchableOpacity 
+            onPress={()=>{
+              navigation.navigate('MyNetwork1')
+            }}
+            style={{alignItems: 'center', width: '45%'}}>
               <Image resizeMode='contain'
                 style={{width: '100%', height: 150}}
                 source={require('../../../assets/Image/partner.png')}
