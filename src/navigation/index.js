@@ -45,6 +45,10 @@ import OfferTemplate from '../screens/Main/OfferTemplate';
 import EditOfferTemp from '../screens/Main/EditOfferTemp';
 import AddOffer from '../screens/Main/AddOffer';
 import OfferList from '../screens/Main/OfferList';
+import ListOfRetailer from '../screens/Main/ListofRetailer';
+import RetailerRequestList from '../screens/Main/RetailerRequestList';
+import InviteRetailerList from '../screens/Main/InviteRetailerList';
+import MyNetworkList from '../screens/Main/MyNetworkList';
 
 const Stack1 = createNativeStackNavigator();
 function HomeScreen1() {
@@ -73,6 +77,10 @@ function HomeScreen1() {
       <Stack1.Screen name="EditOfferTemp" component={EditOfferTemp} />
       <Stack1.Screen name="AddOffer" component={AddOffer} />
       <Stack1.Screen name="OfferList" component={OfferList} />
+      <Stack1.Screen name="ListOfRetailer" component={ListOfRetailer} />
+      <Stack1.Screen name="RetailerRequestList" component={RetailerRequestList} />
+      <Stack1.Screen name="InviteRetailerList" component={InviteRetailerList} />
+      <Stack1.Screen name="MyNetworkList" component={MyNetworkList} />
     </Stack1.Navigator>
   );
 }

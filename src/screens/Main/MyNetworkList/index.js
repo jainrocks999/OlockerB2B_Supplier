@@ -14,9 +14,11 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 
-const Notification = () => {
+const MyNetworkList = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+const navigation = useNavigation()
 
   return (
     <View style={{flex: 1}}>
@@ -71,6 +73,8 @@ const Notification = () => {
               marginHorizontal: 5,
             }}>
             <TouchableOpacity
+               onPress={()=>navigation.navigate('ListOfRetailer')}
+               
               style={{
                 backgroundColor: '#032E63',
                 alignItems: 'center',
@@ -86,6 +90,7 @@ const Notification = () => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
+            onPress={()=>navigation.navigate('MyNetworkList')}
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -109,6 +114,9 @@ const Notification = () => {
               marginHorizontal: 5,
             }}>
             <TouchableOpacity
+          
+               onPress={()=>navigation.navigate('RetailerRequestList')}
+          
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -124,6 +132,8 @@ const Notification = () => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
+     
+                  onPress={()=>navigation.navigate('InviteRetailerList')}
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -188,7 +198,7 @@ const Notification = () => {
     </View>
   );
 };
-export default Notification;
+export default MyNetworkList;
 
 const data = [
   {
