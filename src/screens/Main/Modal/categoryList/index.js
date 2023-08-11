@@ -20,22 +20,20 @@ import {
 } from 'react-native-responsive-screen';
 import {TextInput} from 'react-native';
 
-const Notification = () => {
-  const [showModal, setShowModal] = useState(false);
+const CategoryViewModal = ({visi, close = () => {}, ...props}) => {
+
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1,}}>
       <Modal
         animationType="slide"
-        transparent={true}
-        visible={showModal}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setShowModal(!showModal);
-        }}>
-        <View style={styles.centeredView}>
+       transparent={true}
+  
+         visible={visi}
+       >
+        <View style={[styles.centeredView,{backgroundColor: 'rgba(52, 52, 52, 0.8)',marginTop:0}]}>
           <View style={styles.modalView}>
             <TouchableOpacity
-             onPress={() => setShowModal(!showModal)}
+             onPress={() =>close()}
               style={{
                 height: 40,
                 width: 40,
@@ -55,7 +53,7 @@ const Notification = () => {
                   color: '#000',
                   marginLeft: -10,
                 }}>
-                Category List for Product SKU:{' '}
+                {props.data} List for Product SKU:{' '}
               </Text>
               <Text style={{fontSize: 24, fontWeight: '800', color: '#000'}}>
                 10BAI683
@@ -108,7 +106,7 @@ const Notification = () => {
                 }}>
                 <View style={{}}>
                   <Text style={{fontWeight: '600', fontSize: 18}}>
-                    Collection Name:-
+                  {props.data} Name:-
                   </Text>
                 </View>
                 <View style={{width: '41.5%'}}>
@@ -153,23 +151,8 @@ const Notification = () => {
         </View>
       </Modal>
 
-      <TouchableOpacity
-        onPress={() => {
-          setShowModal(true);
-        }}
-        style={{
-          backgroundColor: 'skyblue',
-          width: '80%',
-          height: 45,
-          alignSelf: 'center',
-          marginTop: '15%',
-          borderRadius: 30,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Text style={{fontSize: 18, fontWeight: '800'}}>Show</Text>
-      </TouchableOpacity>
+     
     </View>
   );
 };
-export default Notification;
+export default CategoryViewModal;

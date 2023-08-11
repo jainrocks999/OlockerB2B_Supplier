@@ -21,7 +21,7 @@ import {
 } from 'react-native-responsive-screen';
 import {TextInput} from 'react-native';
 
-const Notification = () => {
+const MetalViewModal = () => {
   const [showModal, setShowModal] = useState(false);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
@@ -236,7 +236,7 @@ const Notification = () => {
     </View>
   );
 };
-export default Notification;
+export default MetalViewModal;
 const DropData = [
     {label: 'UNDER 25000', value: '1'},
     {label: 'UNDER 25000', value: '2'},

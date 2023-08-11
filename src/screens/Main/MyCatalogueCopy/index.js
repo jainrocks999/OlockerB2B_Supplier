@@ -121,6 +121,7 @@ const MyCatalogueCopy = () => {
             }}>
             <View style={{alignItems: 'center'}}>
               <TouchableOpacity
+              onPress={()=>{ navigation.navigate('ListOfProduct')}}
                 style={{
                   height: 120,
                   width: 120,

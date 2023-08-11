@@ -49,6 +49,9 @@ import ListOfRetailer from '../screens/Main/ListofRetailer';
 import RetailerRequestList from '../screens/Main/RetailerRequestList';
 import InviteRetailerList from '../screens/Main/InviteRetailerList';
 import MyNetworkList from '../screens/Main/MyNetworkList';
+import ListOfProduct from '../screens/Main/ListOfProducts-1';
+import AddSupplierProdcut from '../screens/Main/addSupplierProduct';
+import ChooseSupplierProduct from '../screens/Main/ChooseSupplireAddProduct';
 
 const Stack1 = createNativeStackNavigator();
 function HomeScreen1() {
@@ -81,6 +84,9 @@ function HomeScreen1() {
       <Stack1.Screen name="RetailerRequestList" component={RetailerRequestList} />
       <Stack1.Screen name="InviteRetailerList" component={InviteRetailerList} />
       <Stack1.Screen name="MyNetworkList" component={MyNetworkList} />
+      <Stack1.Screen name="ListOfProduct" component={ListOfProduct} />
+      <Stack1.Screen name="AddSupplierProdcut" component={AddSupplierProdcut} />
+      <Stack1.Screen name="ChooseSupplierProduct" component={ChooseSupplierProduct} />
     </Stack1.Navigator>
   );
 }

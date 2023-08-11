@@ -344,9 +344,9 @@ const HomeScreen = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              // onPress={() =>
-              //   navigation.navigate('OfferTemplate')
-              // }
+              onPress={() =>
+                navigation.navigate('AddSupplierProdcut')
+              }
               style={{alignItems: 'center', width: '45%'}}>
               <View
                 style={{

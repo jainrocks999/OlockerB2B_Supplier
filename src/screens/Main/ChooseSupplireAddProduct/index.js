@@ -19,7 +19,7 @@ import {
 } from 'react-native-responsive-screen';
 import {TextInput} from 'react-native';
 
-const Notification = () => {
+const ChooseSupplierProduct = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
 
@@ -1415,7 +1415,7 @@ const Notification = () => {
     </View>
   );
 };
-export default Notification;
+export default ChooseSupplierProduct;
 
 const DropData = [
   {label: 'UNDER 25000', value: '1'},

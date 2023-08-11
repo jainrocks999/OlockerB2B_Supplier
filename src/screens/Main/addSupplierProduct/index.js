@@ -21,7 +21,7 @@ import {TextInput} from 'react-native';
 import CategoryViewModal from '../Modal/categoryList';
 import { useNavigation } from '@react-navigation/native';
 
-const ListOfProduct = () => {
+const AddSupplierProdcut = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [ViewModal, setViewModal] = useState(false);
   const [value, setValue] = useState(null);
@@ -96,35 +96,12 @@ const navigation = useNavigation()
           </View>
         </View>
 
-        <View style={{marginHorizontal: 10}}>
-          <Text
-            style={{
-              fontSize: 18,
-              marginLeft: 5,
-              fontWeight: '600',
-              color: '#000',
-            }}>
-            Show
-          </Text>
-
-          <Dropdown
-            style={styles.dropdown}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            iconStyle={styles.iconStyle}
-            data={DropData}
-            maxHeight={250}
-            labelField="label"
-            valueField="value"
-            placeholder="Select item"
-            value={value}
-            onChange={item => {
-              setValue(item.value);
-            }}
-            renderItem={renderItem}
-          />
-        </View>
+        
         <TouchableOpacity
+
+        onPress={()=>{
+            
+        }}
           style={{
             backgroundColor: '#032E63',
             alignItems: 'center',
@@ -132,10 +109,10 @@ const navigation = useNavigation()
             marginHorizontal: 10,
             height: 50,
             borderRadius: 20,
-            marginVertical: 20,
+            
           }}>
           <Text style={{color: 'white', fontSize: 18, fontWeight: '600'}}>
-            Excel
+            Add Product
           </Text>
         </TouchableOpacity>
 
@@ -480,18 +457,9 @@ const navigation = useNavigation()
     </View>
   );
 };
-export default ListOfProduct;
+export default AddSupplierProdcut;
 
-const DropData = [
-  {label: 'Item 1', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},
-  {label: 'Item 4', value: '4'},
-  {label: 'Item 5', value: '5'},
-  {label: 'Item 6', value: '6'},
-  {label: 'Item 7', value: '7'},
-  {label: 'Item 8', value: '8'},
-];
+
 
 const Offer = [
   {
