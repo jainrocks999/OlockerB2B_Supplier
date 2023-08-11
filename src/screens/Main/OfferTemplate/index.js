@@ -23,7 +23,7 @@ import CheckBox from '@react-native-community/checkbox';
 import { useDispatch, useSelector } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
 
-const Addproduct = () => {
+const OfferTemplate = () => {
   const navigation = useNavigation();
   const dispatch=useDispatch()
   const [fetching,setFetching]=useState(false)
@@ -228,7 +228,7 @@ const Addproduct = () => {
                 <Text style={{color:'#fff',fontFamily:'Roboto-Medium',marginLeft:10}}>Add Template</Text>
             </TouchableOpacity>
             <TouchableOpacity 
-            onPress={()=>handleAddOffer()}
+            onPress={()=>navigation.navigate('OfferList')}
             style={{
                 borderWidth:1,
                 width:'48%',
@@ -298,7 +298,7 @@ const Addproduct = () => {
     </View>
   );
 };
-export default Addproduct;
+export default OfferTemplate;
 
 const Status = [
   {label: 'Active', value: 'true'},

@@ -23,16 +23,17 @@ import CheckBox from '@react-native-community/checkbox';
 import { useDispatch, useSelector } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
 
-const Addproduct = () => {
+const OfferList = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch()
   const [fetching, setFetching] = useState(false)
   const [template, setTemplate] = useState('')
   const [description, setDescription] = useState('')
   const selector = useSelector(state => state.Offer.OfferListData)
+  const selector2 = useSelector(state => state)
   const isFetching = useSelector(state => state.Offer.isFetching)
-
-  console.log('this is offer list', selector);
+const[temp,setTemp]=useState()
+ 
 
   const addTemp = async (item) => {
     const Token = await AsyncStorage.getItem('loginToken')
@@ -127,6 +128,33 @@ const Addproduct = () => {
     })
   }
 
+  useEffect(()=>{
+    tempdata()
+  },[])
+
+ const tempdata =()=>{
+  const axios = require('axios');
+
+let config = {
+  method: 'get',
+  maxBodyLength: Infinity,
+  url: 'https://olocker.co/api/supplier//getOfferList?start=0&length=9&search=&userid=10',
+  headers: { 
+    'Olocker': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdXBwbGllciBsb2dpbiBKV1QiLCJpYXQiOjE2ODM4MDYwMjMsImV4cCI6MTcxNTM0MjAyMywiZW1haWwiOiJzdXBwbGllclRlc3RAZ21haWwuY29tIiwiaWQiOiIxMyIsInJvbGUiOiJzdXBwbGllciJ9.iHG4lvv1Qb8EgXbECjwik1MittXx3RNEmaa7Q4ZFSjw'
+  }
+};
+
+axios.request(config)
+.then((response) => {
+  setTemp(response.data.data.offerList);
+  console.log(JSON.stringify(response.data.data.offerList));
+})
+.catch((error) => {
+  console.log(error);
+});
+
+ }
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -155,8 +183,89 @@ const Addproduct = () => {
       </View>
       <ScrollView>
         <View style={{ paddingHorizontal: 12, marginTop: 10 }}>
+        <View style={{ marginTop:15,}}>
+        <Text style={{fontSize:15,color:'#23233C',fontFamily:'Roboto-Medium'}}>Offer Template Name</Text>
+        <View style={{
+          width:'100%',
+          borderWidth:1,
+          marginTop:5,
+          height:40,
+          flexDirection:'row',
+          justifyContent:'space-between',
+          alignItems:'center',
+          borderRadius:8,
+          paddingHorizontal:6,
+          flexDirection:'row',
+          justifyContent:'space-between',
+          alignItems:'center'
+        }}>
+         <TextInput
+         placeholder='Offer Template Name'
+         value={template}
+         onChangeText={(val)=>setTemplate(val)}
+         style={{color:'#030303'}}
+         placeholderTextColor={'#999999'}
+         />
+            </View>
+        </View>
+        <View style={{ marginTop:15,}}>
+        <Text style={{fontSize:15,color:'#23233C',fontFamily:'Roboto-Medium'}}>Offer Description</Text>
+        <View style={{
+          width:'100%',
+          borderWidth:1,
+          marginTop:5,
+          height:40,
+          borderRadius:8,
+          paddingHorizontal:6,
+          flexDirection:'row',
+          justifyContent:'space-between',
+          alignItems:'center'
+        }}>
+       <TextInput
+         placeholder='Offer Discription'
+         value={description}
+         onChangeText={(val)=>setDescription(val)}
+         style={{color:'#030303'}}
+         placeholderTextColor={'#999999'}
+         />
+            </View>
+        </View>
+        
+          <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginTop:30}}>
+            <TouchableOpacity 
+            onPress={()=>addTemp()}
+            style={{
+                borderWidth:1,
+                width:'48%',
+                backgroundColor:'#032e63',
+                alignItems:'center',
+                justifyContent:'center',
+                paddingVertical:7,
+                borderRadius:15,
+                flexDirection:'row'
+            }}>
+                <Image style={{height:11,width:11}} source={require('../../../assets/supplierImage/addPlus.png')}/>
+                <Text style={{color:'#fff',fontFamily:'Roboto-Medium',marginLeft:10}}>Add Template</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+            onPress={()=>navigation.navigate('AddOffer')}
+            style={{
+                borderWidth:1,
+                width:'48%',
+                backgroundColor:'#032e63',
+                alignItems:'center',
+                justifyContent:'center',
+                flexDirection:'row',
+                paddingVertical:7,
+                borderRadius:15,
+            }}>
+                <Image style={{height:11,width:11}} source={require('../../../assets/supplierImage/addPlus.png')}/>
+                <Text style={{color:'#fff',fontFamily:'Roboto-Medium',marginLeft:10}}>Add Offer</Text>
+            </TouchableOpacity>
+        </View>
+        <View style={{flex:1,marginTop:15}}>
           <FlatList
-            data={selector?.offerList}
+            data={temp}
             style={{ marginTop: 0 }}
             renderItem={({ item }) => (
               <View style={{
@@ -228,13 +337,14 @@ const Addproduct = () => {
               </View>
             )}
           />
+          </View>
         </View>
         <View style={{ height: 50 }} />
       </ScrollView>
     </View>
   );
 };
-export default Addproduct;
+export default OfferList;
 
 const Status = [
   { label: 'Active', value: 'true' },

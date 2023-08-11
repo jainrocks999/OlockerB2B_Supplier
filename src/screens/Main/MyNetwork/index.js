@@ -381,7 +381,7 @@ const MyCatalogue = () => {
                         marginLeft: 20,
                       }}>{`${state}`}</Text>
                   </TouchableOpacity> */}
-                  <RNPickerSelect
+                  {/* <RNPickerSelect
                     // items={selector}
                     items={selector != undefined ? selector : undefined}
                     onValueChange={value => citySearch(value)}
@@ -418,7 +418,7 @@ const MyCatalogue = () => {
                     value={state}
                     useNativeAndroidPickerStyle={false}
                     placeholder={{label: 'Select State', value: ''}}
-                  />
+                  /> */}
                 </View>
 
                 <View
@@ -462,7 +462,7 @@ const MyCatalogue = () => {
                   
                   </TouchableOpacity> */}
 
-                  <RNPickerSelect
+                  {/* <RNPickerSelect
                     items={data2}
                     // items={data2!=undefined?data2:undefined}
                     onValueChange={value => setCity(value)}
@@ -499,7 +499,7 @@ const MyCatalogue = () => {
                     value={city}
                     useNativeAndroidPickerStyle={false}
                     placeholder={{label: 'Select City', value: ''}}
-                  />
+                  /> */}
                 </View>
               </View>
 
@@ -562,7 +562,7 @@ const MyCatalogue = () => {
                       source={require('../../../assets/F.png')}
                     /> */}
                   {/* </TouchableOpacity> */}
-                  <RNPickerSelect
+                  {/* <RNPickerSelect
                     items={Metal}
                     //     MetalType != undefined ?MetalType.map((item) => ({
                     //    label:item.Value,
@@ -602,7 +602,7 @@ const MyCatalogue = () => {
                     value={metal}
                     useNativeAndroidPickerStyle={false}
                     placeholder={{label: 'Select Metal', value: ''}}
-                  />
+                  /> */}
                   {/* </View> */}
                   {/* {console.log('resssmish',metal)} */}
 
