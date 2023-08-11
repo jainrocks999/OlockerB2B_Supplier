@@ -12,33 +12,23 @@ import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CheckBox from '@react-native-community/checkbox';
 import styles from './styles';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Feather from 'react-native-vector-icons/Feather';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {TextInput} from 'react-native';
 
-const MetalViewModal = () => {
-  const [showModal, setShowModal] = useState(false);
+const MetalViewModal = ({visi, close = () => {}, ...props}) => {
+
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
   return (
     <View style={{flex: 1}}>
       <Modal
-        animationType="slide"
-        transparent={true}
-        visible={showModal}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setShowModal(!showModal);
-        }}>
-        <View style={styles.centeredView}>
+         animationType="slide"
+         transparent={true}
+    
+           visible={visi}
+           >
+        <View style={[styles.centeredView,{backgroundColor: 'rgba(52, 52, 52, 0.8)',marginTop:0}]}>
           <View style={styles.modalView}>
             <TouchableOpacity
-             onPress={() => setShowModal(!showModal)}
+             onPress={() => close()}
               style={{
                 height: 40,
                 width: 40,
@@ -59,7 +49,7 @@ const MetalViewModal = () => {
                   color: '#000',
                   marginLeft: -10,
                 }}>
-              Metal Details
+              {props.data} Details
               </Text> 
               <View style={{flexDirection: 'row',width:'40%'}}>
                   <TouchableOpacity>
@@ -210,29 +200,14 @@ const MetalViewModal = () => {
           </View>
             <View style={{width:'100%'}}>
 <TouchableOpacity style={styles.addbtn}>
-    <Text style={{fontSize:18,color:'white',fontWeight:'800'}}>Add Metal Details</Text>
+    <Text style={{fontSize:18,color:'white',fontWeight:'800'}}>Add {props.data} Details</Text>
 </TouchableOpacity>
             </View>
           </View>
         </View>
       </Modal>
 
-      <TouchableOpacity
-        onPress={() => {
-          setShowModal(true);
-        }}
-        style={{
-          backgroundColor: 'skyblue',
-          width: '80%',
-          height: 45,
-          alignSelf: 'center',
-          marginTop: '15%',
-          borderRadius: 30,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Text style={{fontSize: 18, fontWeight: '800'}}>Show</Text>
-      </TouchableOpacity>
+   
     </View>
   );
 };

@@ -18,11 +18,22 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {TextInput} from 'react-native';
+import MetalViewModal from '../Modal/MetalDetails';
+import { useNavigation } from '@react-navigation/native';
 
 const ChooseSupplierProduct = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
+  const [ViewModal, setViewModal] = useState(false);
 
+  const [modalData,setModalData] = useState('')
+  const navigation = useNavigation()
+  
+  
+    const setModalDetails =(details)=>{
+      setModalData(details)
+      setViewModal(true)
+    }
   const renderItem = item => {
     return (
       <View
@@ -49,6 +60,7 @@ const ChooseSupplierProduct = () => {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView contentContainerStyle={{}}>
+        <MetalViewModal  visi={ViewModal} close={() => setViewModal(false)} data={modalData}/>
         <View style={styles.container}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
@@ -718,6 +730,10 @@ const ChooseSupplierProduct = () => {
             justifyContent: 'space-between',
           }}>
           <TouchableOpacity
+
+          onPress={()=>{
+            setModalDetails('Metal')
+          }}
             style={{
               borderWidth: 2,
               borderColor: '#032e63',
@@ -733,6 +749,11 @@ const ChooseSupplierProduct = () => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
+
+          
+onPress={()=>{
+  setModalDetails('Stone')
+}}
             style={{
               borderWidth: 2,
               backgroundColor: '#032e63',
@@ -757,6 +778,9 @@ const ChooseSupplierProduct = () => {
             justifyContent: 'space-between',
           }}>
           <TouchableOpacity
+          onPress={()=>{
+            setModalDetails('Diamond')
+          }}
             style={{
               borderWidth: 2,
               borderColor: '#032e63',
@@ -772,6 +796,9 @@ const ChooseSupplierProduct = () => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
+          onPress={()=>{
+            setModalDetails('Decorative')
+          }}
             style={{
               borderWidth: 2,
               backgroundColor: '#032e63',

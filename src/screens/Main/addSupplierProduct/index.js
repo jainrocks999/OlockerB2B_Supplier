@@ -27,21 +27,7 @@ const AddSupplierProdcut = () => {
   const [value, setValue] = useState(null);
   const [modalData,setModalData] = useState('')
 const navigation = useNavigation()
-  const renderItem = item => {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.textItem}>{item.label}</Text>
-        {item.value === value && (
-          <AntDesign
-            style={styles.icon}
-            color="black"
-            name="Safety"
-            size={20}
-          />
-        )}
-      </View>
-    );
-  };
+
 
   const setModalDetails =(details)=>{
     setModalData(details)
@@ -100,7 +86,7 @@ const navigation = useNavigation()
         <TouchableOpacity
 
         onPress={()=>{
-            
+            navigation.navigate('ChooseSupplierProduct')
         }}
           style={{
             backgroundColor: '#032E63',
