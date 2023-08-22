@@ -21,6 +21,8 @@ import RetailerRequestList from '../RetailerRequestList';
 import MyNetworkList from '../MyNetworkList';
 import ListOfRetailer from '../ListofRetailer';
 import InviteRetailerList from '../InviteRetailerList';
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function myNetworkBtn({route}) {
 
@@ -32,11 +34,13 @@ export default function myNetworkBtn({route}) {
   const [inviteRetailer, setinviteRetailer] = useState(false);
   const [headText, setHeadText] = useState('');
 
-  const isFocuse = useIsFocused()
-useEffect(() => {
-  
-  checkScreen();
-}, [isFocuse])
+  const isFocuse = useIsFocused();
+
+useEffect(()=>{
+  checkScreen()
+},[])
+ 
+
 
 const checkScreen =()=>{
 
@@ -49,6 +53,7 @@ const checkScreen =()=>{
   }
   else if(data ==='Network'){
     setShowmyNetwork()
+
   }
   else if(data ==='Request'){
     setShowRetailerRequest()

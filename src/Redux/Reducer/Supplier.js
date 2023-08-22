@@ -1,6 +1,7 @@
 initialstate = {
     SupplierDetail:'',
     isFetching:false,
+   
   };
   export default (state = initialstate, action) => {
     switch (action.type) {
@@ -11,6 +12,7 @@ initialstate = {
             return { ...state, isFetching: false, SupplierDetail: action.payload };
           case 'Supplier_Profile_Error':
             return { ...state, isFetching: false };
+
       default:
         return state;
     }

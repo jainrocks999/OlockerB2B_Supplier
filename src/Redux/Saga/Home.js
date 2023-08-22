@@ -55,9 +55,73 @@ function* bannerList(action) {
       });
     }
   }
+   function* SearchRetailerRequest(action) {
+
+
+     try {
+      
+      const data = {
+        userRole:action.role,
+        userId:action.userId,
+        stateId:action.state,
+        cityId:action.city,
+        retailerName:action.Rname,   
+      };
+      const response = yield call(Api.fetchDataByGET1,action.url,data);
+
+       console.log('serach saga= >>>>>>>',response);
+
+          if (response.status == 'success') {
+
+        yield put({
+          type: 'Search_Retailer_Success',
+          payload: response.data.searchpartner,
+        });
+      } else {
+        yield put({
+          type: 'Search_Retailer_Error',
+        });
+      }
+    } catch (error) {
+      yield put({
+        type: 'Search_Retailer_Error',
+      });
+    }
+}
+   function* SearchMynetworkRequest(action) {
+
+
+     try {
+      
+      const data = {
+        userRole:action.role,
+        userId:action.userId, 
+      };
+      const response = yield call(Api.fetchDataByGET1,action.url,data);
+
+
+          if (response.status == 'success') {
+
+        yield put({
+          type: 'Search_MyNetwork_Success',
+          payload: response.data.networkretailer,
+        });
+      } else {
+        yield put({
+          type: 'Search_MyNetwork_Error',
+        });
+      }
+    } catch (error) {
+      yield put({
+        type: 'Search_MyNetwork_Error',
+      });
+    }
+}
 
 export default function* homeSaga() {
     yield takeEvery('Banner_List_Request',bannerList)
     yield takeEvery('Network_List_Request',networkList)
+    yield takeEvery('Search_Retailer_Request',SearchRetailerRequest)
+    yield takeEvery('Search_MyNetwork_Request',SearchMynetworkRequest)
   }
   

@@ -11,8 +11,8 @@ import {Dropdown} from 'react-native-element-dropdown';
 import styles from './styles';
 
 const InviteretailerModal = ({visi, close = () => {}, ...props}) => {
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
+
   return (
     <View style={{flex: 1}}>
       <Modal animationType="slide" transparent={true} visible={visi}>
@@ -24,7 +24,7 @@ const InviteretailerModal = ({visi, close = () => {}, ...props}) => {
             ]}>
             <View style={styles.modalView}>
               <TouchableOpacity
-                onPress={() => close()}
+              onPress={()=>{close()}}
                 style={{
                   height: 35,
                   width: 35,
@@ -170,7 +170,7 @@ const InviteretailerModal = ({visi, close = () => {}, ...props}) => {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                onPress={()=>{close()}}
+                  onPress={()=>{close()}}
                   style={[styles.addbtn, {marginBottom: 50, marginTop: 10}]}>
                   <Text
                     style={{fontSize: 18, color: 'white', fontWeight: '800'}}>

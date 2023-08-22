@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,18 +8,63 @@ import {
   FlatList,
 } from 'react-native';
 import styles from './styles';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import CheckBox from '@react-native-community/checkbox';
 import {Table, TableWrapper, Row} from 'react-native-table-component';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MyNetworkList = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const navigation = useNavigation();
+  const selector = useSelector(state => state.Home.SearchMyNetworkList);
+  const [arr, setArr] = useState([]);
+  const isFocuse = useIsFocused();
+  useEffect(() => {
+    myNetworkList();
+    getDetails()
+  }, [isFocuse]);
+
+
+
+
+
+
+  const getDetails = () => {
+
+    selector?.map(item => {
+      arr.push([item.SrNo, item.CompanyName, item.StateName, item.CityName,
+      item.CategoryType,
+        item.IsShowInRetailerApp,
+      item.Status,
+      'Remove'
+      ]);
+    });
+
+    console.log(arr);
+  };
+
+
+
+
+  const dispatch = useDispatch();
+
+  const myNetworkList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+  
+    dispatch({
+      type: 'Search_MyNetwork_Request',
+      url: '/getNetworkRetailer',
+      userId: user_id,
+      role: '6',
+    });
+  };
+  
+
+
+
+
+
+
   let tableHead = [
     'S.No',
     'Retailer Name',
@@ -57,7 +102,7 @@ const MyNetworkList = () => {
               </Table>
               <ScrollView style={styles.dataWrapper}>
                 <FlatList
-                  data={data}
+                  data={arr}
                   renderItem={({item}) => (
                     <Table
                       borderStyle={{borderWidth:1}}

@@ -31,7 +31,10 @@ function* SupportProfileRequest(action) {
     }
   }
 
+
+
 export default function* supplierSaga() {
     yield takeEvery('Supplier_Profile_Request', SupportProfileRequest)
+  
   }
   

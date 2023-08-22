@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {
   View,
   Text,
@@ -6,41 +6,34 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Platform,
-  FlatList,
-  Dimensions,
+ 
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Dropdown} from 'react-native-element-dropdown';
 import StatusBar from '../../../components/StatusBar';
 import styles from './style';
-import DocumentPicker from 'react-native-document-picker';
-import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../components/Loader';
-import axios from 'axios';
-import {RadioButton} from 'react-native-paper';
-import CheckBox from '@react-native-community/checkbox';
 import {useDispatch, useSelector} from 'react-redux';
-import RNPickerSelect from 'react-native-picker-select';
+import InviteretailerModal from '../Modal/inviteRetailer';
 
-const Addproduct = () => {
+const SearchRetailer = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [fetching, setFetching] = useState(false);
   const [search, setSearch] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
+  const [inviteModal, setInviteModal] = useState(false);
   const isFetching = useSelector(state => state.City.isFetching);
   const stateList1 = useSelector(state => state.State.StateList);
-  const stateList = stateList1?.satates;
-  const cityList1 = useSelector(state => state.City.CityList);
-  const cityList = cityList1?.cities;
 
+  const cityList1 = useSelector(state => state.City.CityList);
+  let cityList = cityList1?.cities;
 
   const manageState = val => {
     setState(val);
-    console.log('thhis ', val);
+    
     dispatch({
       type: 'City_List_Request',
       url: '/getCities',
@@ -48,15 +41,31 @@ const Addproduct = () => {
     });
   };
 
-const reset=()=>{
-  setCity('');
-  setState('')
-  setSearch('')
-}
+  const reset = () => {
+    setCity('');
+    setState('');
+    setSearch('');
+  };
+
+  const getDetails = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+
+    dispatch({
+      type: 'Search_Retailer_Request',
+      url: '/searchRetailer',
+      userId: user_id,
+      role: '6',
+      city: city,
+      state: state,
+      Rname: search,
+    });
+  };
+  
   return (
     <View style={{flex: 1}}>
       <StatusBar />
       {fetching || isFetching ? <Loader /> : null}
+
       <View
         style={{
           backgroundColor: '#032e63',
@@ -145,12 +154,12 @@ const reset=()=>{
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
-                data={stateList}
+                data={stateList1?.satates}
                 inputSearchStyle={{
-                  borderRadius:10,
-                  backgroundColor:'#f0f0f0'
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
                 }}
-                searchPlaceholder='search..'
+                searchPlaceholder="search.."
                 maxHeight={250}
                 search
                 labelField="label"
@@ -158,7 +167,7 @@ const reset=()=>{
                 placeholder="state"
                 value={state}
                 onChange={item => {
-                  manageState(item?.value);
+                  manageState(item.value);
                 }}
               />
             </View>
@@ -175,13 +184,12 @@ const reset=()=>{
 
             <View>
               <Dropdown
-           
                 style={[
                   styles.dropdown,
                   {borderWidth: 1, borderColor: '#979998'},
                 ]}
                 search
-                searchPlaceholder='search..'
+                searchPlaceholder="search.."
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
@@ -195,8 +203,8 @@ const reset=()=>{
                   setCity(item.value);
                 }}
                 inputSearchStyle={{
-                  borderRadius:10,
-                  backgroundColor:'#f0f0f0'
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
                 }}
               />
             </View>
@@ -210,7 +218,7 @@ const reset=()=>{
               marginTop: 30,
             }}>
             <TouchableOpacity
-              // onPress={()=>uploadPhoto()}
+              onPress={()=>{getDetails()}}
               style={{
                 borderWidth: 1,
                 width: '48%',
@@ -225,9 +233,9 @@ const reset=()=>{
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-            onPress={()=>{
-              reset()
-            }}
+              onPress={() => {
+                reset();
+              }}
               style={{
                 borderWidth: 1,
                 backgroundColor: '#032e63',
@@ -235,7 +243,7 @@ const reset=()=>{
                 borderColor: '#032e63',
                 alignItems: 'center',
                 justifyContent: 'center',
-             
+
                 paddingVertical: 7,
                 borderRadius: 15,
               }}>
@@ -247,6 +255,9 @@ const reset=()=>{
 
           <View>
             <TouchableOpacity
+              onPress={() => {
+                setInviteModal(true);
+              }}
               style={{
                 width: '100%',
                 borderWidth: 1,
@@ -271,14 +282,18 @@ const reset=()=>{
               marginTop: 30,
             }}>
             <TouchableOpacity
-               onPress={()=> navigation.navigate('myNetworkBtn',{data:'List'})}
+              onPress={() =>
+                navigation.navigate('myNetworkBtn', {data: 'List'})
+              }
               style={styles.btn}>
               <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
                 List Of Retailer
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-                      onPress={()=>navigation.navigate('myNetworkBtn',{data:'Network'})}
+              onPress={() =>
+                navigation.navigate('myNetworkBtn', {data: 'Network'})
+              }
               style={styles.btn}>
               <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
                 My Network
@@ -293,14 +308,18 @@ const reset=()=>{
               marginTop: 30,
             }}>
             <TouchableOpacity
-             onPress={()=>navigation.navigate('myNetworkBtn',{data:'Request'})}
+              onPress={() =>
+                navigation.navigate('myNetworkBtn', {data: 'Request'})
+              }
               style={styles.btn}>
               <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
                 Retailer Request List
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-                      onPress={()=>navigation.navigate('myNetworkBtn',{data:'invite'})}
+              onPress={() =>
+                navigation.navigate('myNetworkBtn', {data: 'invite'})
+              }
               style={styles.btn}>
               <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
                 Invite Retailers List
@@ -308,21 +327,16 @@ const reset=()=>{
             </TouchableOpacity>
           </View>
         </View>
+        <InviteretailerModal
+          visi={inviteModal}
+          close={() => {
+            setInviteModal(false);
+          }}
+        />
         <View style={{height: 50}} />
       </ScrollView>
     </View>
   );
 };
-export default Addproduct;
+export default SearchRetailer;
 
-const Status = [
-  {label: 'Active', value: 'true'},
-  {label: 'In Active', value: 'false'},
-];
-
-const data = [
-  {name: 'narr'},
-  {name: 'dgsadf'},
-  {name: 'narr'},
-  {name: 'dgsadf'},
-];
