@@ -62,7 +62,14 @@ searchbar:{
   },
   shadowOpacity: 0.57,
   shadowRadius: 15.19,
-},
+},  header: {
+  alignItems:'center',justifyContent:'center',
+  height: 50,
+   backgroundColor: '#032e63'},
+
+text: {textAlign: 'center', fontWeight: '100'},
+dataWrapper: {marginTop: -2},
+row: {height: 40},
   img: {
     height: 18,
     width: 12,

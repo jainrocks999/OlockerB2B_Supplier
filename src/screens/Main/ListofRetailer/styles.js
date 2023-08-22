@@ -1,8 +1,15 @@
 import React from 'react';
 import {Platform, StyleSheet} from 'react-native';
 export default StyleSheet.create({
-  
+ 
+  header: {
+    alignItems:'center',justifyContent:'center',
+    height: 50,
+     backgroundColor: '#032e63'},
 
+  text: {textAlign: 'center', fontWeight: '100'},
+  dataWrapper: {marginTop: -1},
+  row: {height: 40},
 
   img: {
     height: 18,
@@ -23,8 +30,6 @@ export default StyleSheet.create({
     marginLeft: 15,
   },
 
-
-
   container: {
     width: '100%',
     backgroundColor: '#032e63',
@@ -44,36 +49,35 @@ export default StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
   },
-  
 
   row: {
-    backgroundColor:'#032e63',
+    backgroundColor: '#032e63',
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderColor: '#ccc',
     paddingVertical: 10,
-    width:'100%'
+    width: '100%',
   },
   Subrow: {
-   
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 2,
-    borderColor:'#032e63',
+    borderColor: '#032e63',
     borderColor: '#ccc',
     paddingVertical: 10,
   },
   cell: {
-    color:'white',
-    flex: 1,
+    width: '20%',
+    color: 'white',
+
     textAlign: 'center',
-  fontWeight:'600'
+    fontWeight: '600',
   },
   Subcell: {
-    color:'#000',
+    color: '#000',
     flex: 1,
     textAlign: 'center',
-  fontWeight:'700'
+    fontWeight: '700',
   },
 });

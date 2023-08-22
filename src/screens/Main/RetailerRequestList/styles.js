@@ -135,4 +135,12 @@ searchbar:{
     textAlign: 'center',
   fontWeight:'700'
   },
+  header: {
+    alignItems:'center',justifyContent:'center',
+    height: 50,
+     backgroundColor: '#032e63'},
+
+  text: {textAlign: 'center', fontWeight: '100'},
+  dataWrapper: {marginTop: -2},
+  row: {height: 40},
 });

@@ -156,4 +156,14 @@ searchbar:{
     textAlign: 'center',
   fontWeight:'700'
   },
+  btn:{
+    borderWidth: 1,
+    width: '48%',
+    backgroundColor: '#032e63',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    height:45,
+    borderRadius:30,
+  }
 });

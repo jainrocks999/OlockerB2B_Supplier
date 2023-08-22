@@ -17,12 +17,25 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {Table, TableWrapper, Row} from 'react-native-table-component';
 import {TextInput} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
 const RetailerRequestList = () => {
 const navigation = useNavigation()
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
+  let tableHead = [
+    'S.No',
+    'Retailer Name',
+    'State',
+    'City',
+    'Assign Category',
+    'Is products show on Retailer s App',
+    'Status',
+    'Action',
+  ];
+  let widthArr = [80, 120, 120, 120, 120, 200, 120, 120];
 
   const renderItem = item => {
     return (
@@ -42,133 +55,7 @@ const navigation = useNavigation()
   return (
     <View style={{flex: 1}}>
       <ScrollView contentContainerStyle={{}}>
-        <View style={styles.container}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <TouchableOpacity
-              delayPressIn={0}
-              onPress={() => navigation.goBack()}>
-              <Image
-                style={styles.img}
-                source={require('../../../assets/L.png')}
-              />
-            </TouchableOpacity>
-            <Text style={[styles.text, {marginLeft: 15}]}>Retailer Request List</Text>
-          </View>
-          <View style={styles.headertouch}>
-            <TouchableOpacity onPress={() => navigation.navigate('Message')}>
-              <Image
-                style={styles.img1}
-                source={require('../../../assets/Fo.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{marginLeft: 15}}
-              onPress={() => handleWishList()}>
-              <Image
-                style={styles.img2}
-                source={require('../../../assets/Image/dil.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => Logout()}>
-              <Image
-                style={styles.img3}
-                source={require('../../../assets/Image/menu-icon.png')}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View
-          style={{
-            height: hp(20),
-
-            marginTop: 5,
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginVertical: 10,
-              marginHorizontal: 5,
-            }}>
-            <TouchableOpacity
-            onPress={()=>navigation.navigate('ListOfRetailer')}
-           
-              style={{
-                backgroundColor: '#032E63',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderWidth: 2,
-                borderColor: '#032E63',
-                borderRadius: 30,
-                width: wp(42),
-                height: hp(6),
-              }}>
-              <Text style={{fontSize: 16, fontWeight: '700', color: 'white'}}>
-                List Of Retailer
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-            onPress={()=>navigation.navigate('MyNetworkList')}
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderWidth: 2,
-                borderColor: '#032E63',
-                backgroundColor: '#032E63',
-                borderRadius: 30,
-                width: wp(42),
-                height: hp(6),
-              }}>
-              <Text style={{fontSize: 16, fontWeight: '700', color: 'white'}}>
-                My Network
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginVertical: 10,
-              marginHorizontal: 5,
-            }}>
-            <TouchableOpacity
-
-               onPress={()=>navigation.navigate('RetailerRequestList')}
-                 
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderWidth: 2,
-                borderColor: '#032E63',
-                borderRadius: 30,
-                width: wp(42),
-                height: hp(6),
-              }}>
-              <Text style={{fontSize: 16, fontWeight: '700'}}>
-                Retailer Request List
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-            
-                  onPress={()=>navigation.navigate('InviteRetailerList')}
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderWidth: 2,
-                borderColor: '#032E63',
-                backgroundColor: '#032E63',
-                borderRadius: 30,
-                width: wp(42),
-                height: hp(6),
-              }}>
-              <Text style={{fontSize: 16, fontWeight: '700', color: 'white'}}>
-                Invite Retailers List
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
+       
         <View style={styles.searchbar}>
           <TextInput placeholder="Search" style={{fontSize: 18}} />
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -199,35 +86,49 @@ const navigation = useNavigation()
           />
         </View>
 
-        <ScrollView horizontal >
-          <View style={{flex: 1,marginHorizontal:10, width: wp(100)}}>
-            <View style={styles.row}>
-              <Text style={styles.cell}>S.No</Text>
-              <Text style={styles.cell}>Retailer Name</Text>
-              <Text style={styles.cell}>State</Text>
-              <Text style={styles.cell}>City</Text>
-              <Text style={styles.cell}>Assign Category</Text>
-              <Text style={styles.cell}>Is products</Text>
+        <View style={{}}>
+        <Text style={{fontSize:20,fontWeight:'800',color:'#032E63',marginLeft:10,marginVertical:15}}>Retailer Request List</Text>
+          <ScrollView horizontal={true}>
+            <View>
+              <Table>
+                <Row
+                  data={tableHead}
+                  widthArr={widthArr}
+                  style={styles.header}
+                  textStyle={{
+                    fontWeight: '800',
+                    fontSize: 18,
+                    color: '#fff',
+                    marginLeft: 15,
+                  }}
+                />
+              </Table>
+              <ScrollView style={styles.dataWrapper}>
+                <FlatList
+                  data={data}
+                  renderItem={({item}) => (
+                    <Table
+                      borderStyle={{borderWidth:1}}
+                      style={{alignItems: 'center'}}>
+                      <Row
+                        data={item}
+                        widthArr={widthArr}
+                        style={{height:45}}
+                        textStyle={{
+                          fontWeight: '700',
+                          fontSize: 16,
+                          marginLeft: 15,
+                        }}
+                      />
+                    </Table>
+                  )}
+                />
+              </ScrollView>
             </View>
+          </ScrollView>
+        </View>
 
-            {/* Table Rows */}
-            <FlatList
-              data={data}
-              renderItem={({item}) => (
-                <View style={styles.Subrow}>
-                  <Text style={styles.Subcell}>{item.sNo}</Text>
-                  <Text style={styles.Subcell}>{item.RName}</Text>
-                  <Text style={styles.Subcell}>{item.State}</Text>
-                  <Text style={styles.Subcell}>{item.city}</Text>
-                  <Text style={styles.Subcell}>{item.ACategory}</Text>
-                  <Text style={styles.Subcell}>{item.Iproduct}</Text>
-                </View>
-              )}
-            />
-          </View>
-        </ScrollView>
-
-        <View style={{flexDirection:'row',marginBottom:40,marginTop:20, marginHorizontal:10}}>
+        <View style={{flexDirection:'row',marginBottom:0,marginTop:50, marginHorizontal:10}}>
         <TouchableOpacity style={{borderWidth:2,paddingVertical:5,
           borderRadius:15,
           paddingHorizontal:15,
@@ -256,12 +157,10 @@ const navigation = useNavigation()
           </TouchableOpacity>
         </View>
 
-        <View   
-        style={{height:70}}
-        />
+      
       </ScrollView>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{
           position: 'absolute',
           backgroundColor: '#032e63',
@@ -275,54 +174,12 @@ const navigation = useNavigation()
           width: wp(18),
         }}>
         <Ionicons name="chatbubbles-outline" size={45} color={'white'} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
 export default RetailerRequestList;
 
-const data = [
-  {
-    sNo: '01',
-    RName: 'Rohan sahu',
-    State: 'MP',
-    city: 'Indore',
-    ACategory: 'Lorem',
-    Iproduct: 'lorem',
-  },
-  {
-    sNo: '02',
-    RName: 'Rohan sahu',
-    State: 'MP',
-    city: 'Indore',
-    ACategory: 'Lorem',
-    Iproduct: 'lorem',
-  },
-  {
-    sNo: '03',
-    RName: 'Rohan sahu',
-    State: 'MP',
-    city: 'Indore',
-    ACategory: 'Lorem',
-    Iproduct: 'lorem',
-  },
-  {
-    sNo: '03',
-    RName: 'Rohan sahu',
-    State: 'MP',
-    city: 'Indore',
-    ACategory: 'Lorem',
-    Iproduct: 'lorem',
-  },
-  {
-    sNo: '03',
-    RName: 'Rohan sahu',
-    State: 'MP',
-    city: 'Indore',
-    ACategory: 'Lorem',
-    Iproduct: 'lorem',
-  },
-];
 
 const DropData = [
   {label: 'Item 1', value: '1'},
@@ -352,3 +209,50 @@ number:'4'
 number:'5'
   },
 ]
+
+
+const data = [
+  [
+  '01',
+   'Rohan sahu',
+     'MP',
+  'Indore',
+   'Lorem',
+    'lorem',
+    'pending',
+    'pending'
+],
+  [
+  '01',
+   'Rohan sahu',
+     'MP',
+  'Indore',
+   'Lorem',
+    'lorem',
+    'pending',
+    'pending'
+],
+  [
+  '01',
+   'Rohan sahu',
+     'MP',
+  'Indore',
+   'Lorem',
+    'lorem',
+    'pending',
+    'pending'
+],
+  [
+  '01',
+   'Rohan sahu',
+     'MP',
+  'Indore',
+   'Lorem',
+    'lorem',
+    'pending',
+    'pending'
+],
+ 
+
+ 
+];

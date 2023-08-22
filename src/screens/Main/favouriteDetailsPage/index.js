@@ -21,7 +21,7 @@ import {
 } from 'react-native-responsive-screen';
 import { useSelector } from 'react-redux';
 
-const MyProducts = () => {
+const FavouriteList = () => {
   const navigation = useNavigation();
   const [liked, setLiked] = useState([]);
   const win = Dimensions.get('window');
@@ -83,7 +83,7 @@ const MyProducts = () => {
                       }}>
                       <TouchableOpacity
                         onPress={() => {
-                          console.log('liked i ii i ', liked);
+                         
                           if (liked.includes(index)) {
                             let unlike = liked.filter(elem => elem !== index);
                             setLiked(unlike);
@@ -98,6 +98,7 @@ const MyProducts = () => {
                             height: hp('2.4%'),
                             width: wp('5.8%'),
                             marginLeft: 5,
+                            marginVertical:5,
                             marginTop: 2,
                             tintColor: liked.includes(index) ? 'red' : 'grey',
                           }}
@@ -111,6 +112,7 @@ const MyProducts = () => {
                             width: wp('6%'),
                             marginTop: 5,
                             marginLeft: 8,
+                            tintColor:'#3f5799'
                           }}
                           source={require('../../../assets/Image/share1.png')}
                         />
@@ -124,7 +126,8 @@ const MyProducts = () => {
                         marginTop: Platform.OS == 'android' ? -36 : -44,
                         alignSelf: 'flex-end',
                         height: hp('2.4%'),
-                        width: '45%',
+                        width: '40%',
+                        marginRight:10
                       }}>
                       <Text style={styles.cardview2text}>{`$ GM`}</Text>
                     </View>
@@ -170,7 +173,7 @@ const MyProducts = () => {
     </View>
   );
 };
-export default MyProducts;
+export default FavouriteList;
 const data1 = [
   {
     title: 'Milind Jewellers',

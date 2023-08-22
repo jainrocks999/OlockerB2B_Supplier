@@ -36,7 +36,8 @@ const Addproduct = () => {
   const stateList = stateList1?.satates;
   const cityList1 = useSelector(state => state.City.CityList);
   const cityList = cityList1?.cities;
-  const [value, setValue] = useState(null);
+
+
   const manageState = val => {
     setState(val);
     console.log('thhis ', val);
@@ -47,6 +48,11 @@ const Addproduct = () => {
     });
   };
 
+const reset=()=>{
+  setCity('');
+  setState('')
+  setSearch('')
+}
   return (
     <View style={{flex: 1}}>
       <StatusBar />
@@ -140,13 +146,19 @@ const Addproduct = () => {
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
                 data={stateList}
+                inputSearchStyle={{
+                  borderRadius:10,
+                  backgroundColor:'#f0f0f0'
+                }}
+                searchPlaceholder='search..'
                 maxHeight={250}
+                search
                 labelField="label"
                 valueField="value"
-                placeholder="Gross Wt"
-                value={value}
+                placeholder="state"
+                value={state}
                 onChange={item => {
-                  setValue(item.value);
+                  manageState(item?.value);
                 }}
               />
             </View>
@@ -163,10 +175,13 @@ const Addproduct = () => {
 
             <View>
               <Dropdown
+           
                 style={[
                   styles.dropdown,
                   {borderWidth: 1, borderColor: '#979998'},
                 ]}
+                search
+                searchPlaceholder='search..'
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
@@ -174,10 +189,14 @@ const Addproduct = () => {
                 maxHeight={250}
                 labelField="label"
                 valueField="value"
-                placeholder="Gross Wt"
-                value={value}
+                placeholder="City"
+                value={city}
                 onChange={item => {
-                  setValue(item.value);
+                  setCity(item.value);
+                }}
+                inputSearchStyle={{
+                  borderRadius:10,
+                  backgroundColor:'#f0f0f0'
                 }}
               />
             </View>
@@ -206,17 +225,21 @@ const Addproduct = () => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
+            onPress={()=>{
+              reset()
+            }}
               style={{
                 borderWidth: 1,
+                backgroundColor: '#032e63',
                 width: '48%',
                 borderColor: '#032e63',
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: '#fff',
+             
                 paddingVertical: 7,
                 borderRadius: 15,
               }}>
-              <Text style={{color: '#032e63', fontFamily: 'Roboto-Medium'}}>
+              <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
                 Reset
               </Text>
             </TouchableOpacity>
@@ -228,7 +251,7 @@ const Addproduct = () => {
                 width: '100%',
                 borderWidth: 1,
                 backgroundColor: '#032E63',
-                height: 40,
+                height: 45,
                 borderRadius: 20,
                 marginTop: 30,
                 alignItems: 'center',
@@ -248,33 +271,16 @@ const Addproduct = () => {
               marginTop: 30,
             }}>
             <TouchableOpacity
-               onPress={()=> navigation.navigate('ListOfRetailer')}
-              style={{
-                borderWidth: 1,
-                width: '48%',
-                backgroundColor: '#032e63',
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingVertical: 7,
-                borderRadius: 15,
-              }}>
+               onPress={()=> navigation.navigate('myNetworkBtn',{data:'List'})}
+              style={styles.btn}>
               <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
                 List Of Retailer
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-                      onPress={()=>navigation.navigate('MyNetworkList')}
-              style={{
-                borderWidth: 1,
-                width: '48%',
-                borderColor: '#032e63',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: '#fff',
-                paddingVertical: 7,
-                borderRadius: 15,
-              }}>
-              <Text style={{color: '#032e63', fontFamily: 'Roboto-Medium'}}>
+                      onPress={()=>navigation.navigate('myNetworkBtn',{data:'Network'})}
+              style={styles.btn}>
+              <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
                 My Network
               </Text>
             </TouchableOpacity>
@@ -287,32 +293,15 @@ const Addproduct = () => {
               marginTop: 30,
             }}>
             <TouchableOpacity
-             onPress={()=>navigation.navigate('RetailerRequestList')}
-              style={{
-                borderWidth: 1,
-                width: '48%',
-                backgroundColor: '#032e63',
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingVertical: 7,
-                borderRadius: 15,
-              }}>
+             onPress={()=>navigation.navigate('myNetworkBtn',{data:'Request'})}
+              style={styles.btn}>
               <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
                 Retailer Request List
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-                      onPress={()=>navigation.navigate('InviteRetailerList')}
-              style={{
-                borderWidth: 1,
-                width: '48%',
-                backgroundColor: '#032e63',
-                alignItems: 'center',
-                justifyContent: 'center',
-
-                paddingVertical: 7,
-                borderRadius: 15,
-              }}>
+                      onPress={()=>navigation.navigate('myNetworkBtn',{data:'invite'})}
+              style={styles.btn}>
               <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
                 Invite Retailers List
               </Text>

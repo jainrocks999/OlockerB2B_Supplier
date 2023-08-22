@@ -307,7 +307,7 @@ const HomeScreen = () => {
 
             <TouchableOpacity 
             onPress={()=>{
-              navigation.navigate('MyNetwork1')
+              navigation.navigate('SearchRetailer')
             }}
             style={{alignItems: 'center', width: '45%'}}>
               <Image resizeMode='contain'

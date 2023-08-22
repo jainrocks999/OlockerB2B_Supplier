@@ -30,6 +30,7 @@ import {
 } from 'react-native-responsive-screen';
 import {useDispatch, useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
+
 const MyCatalogue = () => {
   const navigation = useNavigation();
   const focus = useIsFocused();

@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
-import React from 'react'
-import CategoryViewModal from '../Modal/categoryList'
-
+import React,{useState} from 'react'
+import InviteretailerModal from '../Modal/inviteRetailer'
 
 export default function index() {
+  const [visiable,setVisiable]=useState(true)
   return (
-    <View style={{flex:1}}>
-    <CategoryViewModal />
+    <View>
+     <InviteretailerModal  visi={true}  />
     </View>
   )
 }
