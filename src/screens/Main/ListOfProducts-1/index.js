@@ -26,22 +26,8 @@ const ListOfProduct = () => {
   const [ViewModal, setViewModal] = useState(false);
   const [value, setValue] = useState(null);
   const [modalData,setModalData] = useState('')
+  const [SearctTxt,setSearctTxt] = useState('')
 const navigation = useNavigation()
-  const renderItem = item => {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.textItem}>{item.label}</Text>
-        {item.value === value && (
-          <AntDesign
-            style={styles.icon}
-            color="black"
-            name="Safety"
-            size={20}
-          />
-        )}
-      </View>
-    );
-  };
 
   const setModalDetails =(details)=>{
     setModalData(details)
@@ -90,8 +76,13 @@ const navigation = useNavigation()
         </View>
 
         <View style={[styles.searchbar, {marginTop: 20}]}>
-          <TextInput placeholder="Search" style={{fontSize: 18}} />
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <TextInput
+          value={SearctTxt}
+          onChangeText={txt=>setSearctTxt(txt)}
+          placeholder="Search" style={{fontSize: 18,width:'90%'}}  />
+          <View style={{alignItems: 'center',
+          
+          justifyContent: 'center'}}>
             <Feather name="search" size={30} />
           </View>
         </View>
@@ -111,17 +102,17 @@ const navigation = useNavigation()
             style={styles.dropdown}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
-            iconStyle={styles.iconStyle}
+           itemTextStyle={styles.itemTxt}
             data={DropData}
             maxHeight={250}
             labelField="label"
             valueField="value"
-            placeholder="Select item"
+            placeholder="Select "
             value={value}
             onChange={item => {
               setValue(item.value);
             }}
-            renderItem={renderItem}
+           
           />
         </View>
         <TouchableOpacity
@@ -483,14 +474,11 @@ const navigation = useNavigation()
 export default ListOfProduct;
 
 const DropData = [
-  {label: 'Item 1', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},
-  {label: 'Item 4', value: '4'},
-  {label: 'Item 5', value: '5'},
-  {label: 'Item 6', value: '6'},
-  {label: 'Item 7', value: '7'},
-  {label: 'Item 8', value: '8'},
+  {label: '10', value: '1'},
+  {label: '25', value: '2'},
+  {label: '50', value: '3'},
+  {label: '100', value: '4'},
+
 ];
 
 const Offer = [

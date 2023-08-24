@@ -134,13 +134,18 @@ const ListOfRetailer = () => {
               </Table>
               <ScrollView style={styles.dataWrapper}>
                 <FlatList
-                  data={arr}
+                  data={selector}
                   renderItem={({item}) => (
                     <Table
                       borderStyle={{borderWidth: 1}}
                       style={{alignItems: 'center'}}>
                       <Row
-                        data={item}
+                        data={[
+                          item.SrNo,
+                          item.CompanyName,
+                          item.state_name,
+                          item.city_name,
+                        ]}
                         widthArr={SubwidthArr}
                         //style={styles.header}
                         textStyle={{

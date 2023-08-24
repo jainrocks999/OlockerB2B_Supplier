@@ -11,7 +11,7 @@ function* bannerList(action) {
     const data = {};
     const response = yield call(Api.fetchDataByGET1, action.url, data);
     console.log('thisi is user response', response);
-    if (response.success == true) {
+    if (response.success) {
       yield put({
         type: 'Banner_List_Success',
         payload: response.data,
@@ -65,12 +65,12 @@ function* SearchRetailerRequest(action) {
 
     console.log('serach saga= >>>>>>>', response);
 
-    if (response.status == 'success') {
+    if (response.status) {
       yield put({
         type: 'Search_Retailer_Success',
         payload: response.data.searchpartner,
       });
-      action.navigation.navigate('myNetworkBtn', {data: 'List'})
+      action.navigation.navigate('myNetworkBtn', {data: 'List'});
     } else {
       yield put({
         type: 'Search_Retailer_Error',
@@ -90,7 +90,7 @@ function* SearchMynetworkRequest(action) {
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
 
-    if (response.status == 'success') {
+    if (response.status) {
       yield put({
         type: 'Search_MyNetwork_Success',
         payload: response.data.networkretailer,
@@ -114,7 +114,7 @@ function* retailerRequestList(action) {
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
 
-    if (response.status == 'success') {
+    if (response.status) {
       yield put({
         type: 'Retailer_RequestList_Success',
         payload: response.data.retailer,
@@ -138,7 +138,7 @@ function* InviteRetailerList(action) {
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
 
-    if (response.status == 'success') {
+    if (response.status) {
       yield put({
         type: 'Invite_RetailerList_Success',
         payload: response.data.inviteRetailer,
@@ -157,11 +157,14 @@ function* InviteRetailerList(action) {
 function* getWishList(action) {
   try {
     const data = {
-      wishlistid: action.userId,
+      userId: action.userId,
+      userType: 'supplier',
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
 
-    if (response.status == 'success') {
+  
+
+    if (response.status) {
       yield put({
         type: 'getWishList_Success',
         payload: response.data,

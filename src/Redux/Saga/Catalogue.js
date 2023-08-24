@@ -36,7 +36,7 @@ function* getCatalogue(action) {
 
   function* getProducts(action) {
 
-    console.log('sdaga cal......');
+console.log(action);
     try {
       const data={
         userid:action.user_id,

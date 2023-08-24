@@ -4,6 +4,10 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import Path from '../../../components/ImagePath';
 import Loader from '../../../components/Loader';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-simple-toast';
@@ -19,6 +23,7 @@ const MyCatalogueCopy = () => {
   const bannerList = useSelector(state => state.Home.BannerList);
   const [myproduct, setMyproduct] = useState(true);
   const [mycollection, setMycollection] = useState(false);
+  const [liked, setLiked] = useState([]);
   //console.log('thhis is selector', selector);
   const handleMyCatalogue = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
@@ -38,6 +43,24 @@ const MyCatalogueCopy = () => {
     setMyproduct(false);
     setMycollection(true);
   };
+
+
+const addWishList =(index)=>{
+  if (liked.includes(index)) {
+    let unlike = liked.filter(elem => elem !== index);
+    setLiked(unlike);
+  } else {
+    setLiked([...liked, index]);
+    // dispatch({
+    //   type: 'Get_Catalogue_Request',
+    //   url: '/addProductitemWishlist',
+    //   user_id: user_id,
+    //   navigation,
+    // });
+   
+  }
+}
+
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       {isFetching1 ? <Loader /> : null}
@@ -174,7 +197,7 @@ const MyCatalogueCopy = () => {
           <View
             style={{alignItems: 'center', paddingVertical: 10, marginTop: 40}}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('SearchRetailer')}
+              onPress={() => navigation.navigate('addMore')}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -264,7 +287,7 @@ const MyCatalogueCopy = () => {
             style={{width: '96%'}}
             numColumns={2}
             // contentContainerStyle={{justifyContent:'center',}}
-            renderItem={({item}) => (
+            renderItem={({item,index}) => (
               <View
                 style={{
                   width: '46%',
@@ -278,6 +301,35 @@ const MyCatalogueCopy = () => {
                   borderRadius: 10,
                   padding: 10,
                 }}>
+                    <View
+                      style={{
+                        padding: 0,
+                        height: hp('5%'),
+                        width: '18%',
+                        borderWidth: 0,
+                        marginTop: 0,
+                      }}>
+                      <TouchableOpacity
+                        onPress={() => {
+                         addWishList(index);
+                        }}
+                        // onPress={() => click(click1)}
+                      >
+                        <Image
+                          style={{
+                            height: hp('2.4%'),
+                            width: wp('5.8%'),
+                            marginLeft: 5,
+                            marginVertical: 5,
+                            marginTop: 2,
+                            tintColor: liked.includes(index) ?  'red':'grey',
+                          }}
+                          source={require('../../../assets/Image/dil.png')}
+                        />
+                      </TouchableOpacity>
+                     
+                    
+                    </View>
                 <Image
                   style={{height: 144, width: '100%', borderRadius: 10}}
                   source={{uri: item.images}}
@@ -310,46 +362,4 @@ const MyCatalogueCopy = () => {
 };
 export default MyCatalogueCopy;
 
-const data = [
-  {Description: 'narr', Title: ''},
-  {Description: 'dgsadf', Title: ''},
-  {Description: 'narr', Title: ''},
-  {Description: 'dgsadf', Title: ''},
-];
 
-const images = [
-  {
-    image:
-      'https://images.unsplash.com/photo-1455620611406-966ca6889d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1130&q=80',
-    desc: 'Red fort in India New Delhi is a magnificient masterpeiece of humans',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1455620611406-966ca6889d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1130&q=80',
-    desc: 'Red fort in India New Delhi is a magnificient masterpeiece of humans',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1455620611406-966ca6889d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1130&q=80',
-    desc: 'Red fort in India New Delhi is a magnificient masterpeiece of humans',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1455620611406-966ca6889d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1130&q=80',
-    desc: 'Red fort in India New Delhi is a magnificient masterpeiece of humans',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1455620611406-966ca6889d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1130&q=80',
-    desc: 'Red fort in India New Delhi is a magnificient masterpeiece of humans',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1455620611406-966ca6889d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1130&q=80',
-    desc: 'Red fort in India New Delhi is a magnificient masterpeiece of humans',
-  },
-  {
-    image: 'https://devappapi.olocker.in/images/rss/no-image.jpg',
-    desc: 'Red fort in India New Delhi is a magnificient masterpeiece of humans',
-  },
-];

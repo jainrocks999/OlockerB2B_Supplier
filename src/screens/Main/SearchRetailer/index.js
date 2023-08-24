@@ -27,6 +27,7 @@ const SearchRetailer = () => {
   const [inviteModal, setInviteModal] = useState(false);
   const isFetching = useSelector(state => state.City.isFetching);
   const stateList1 = useSelector(state => state.State.StateList);
+  const searchBtn = useSelector(state => state.Home.isFetching);
 
   const cityList1 = useSelector(state => state.City.CityList);
   let cityList = cityList1?.cities;
@@ -65,7 +66,7 @@ const SearchRetailer = () => {
   return (
     <View style={{flex: 1}}>
       <StatusBar />
-      {fetching || isFetching ? <Loader /> : null}
+      {fetching || isFetching || searchBtn? <Loader /> : null}
 
       <View
         style={{

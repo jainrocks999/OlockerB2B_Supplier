@@ -1,12 +1,11 @@
 import { View, Text } from 'react-native'
-import React,{useState} from 'react'
-import InviteretailerModal from '../Modal/inviteRetailer'
+import React from 'react'
+import AddProductTooffer from '../addProductTooffer'
 
 export default function index() {
-  const [visiable,setVisiable]=useState(true)
   return (
     <View>
-     <InviteretailerModal  visi={true}  />
+      <AddProductTooffer />
     </View>
   )
 }

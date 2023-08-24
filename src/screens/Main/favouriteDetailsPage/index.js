@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,16 +10,16 @@ import {
   Share,
 } from 'react-native';
 import Header from '../../../components/CustomHeader';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 
 import ImagePath from '../../../components/ImagePath';
 import styles from './styles';
-
+import Loader from '../../../components/Loader';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FavouriteList = () => {
@@ -29,7 +29,15 @@ const FavouriteList = () => {
   const isFocuse = useIsFocused();
   const [click1, setClick1] = useState(false);
   const selector = useSelector(state => state.Home.getWishList);
-  console.log('=><>>>>>>>>>>>>>>>',selector);
+
+  useEffect(() => {
+    RetailerRequest();
+  }, [isFocuse]);
+
+  const isFetching = useSelector(state => state.Home.isFetching);
+  const dispatch = useDispatch();
+
+const imagePath = selector?.imagepath
   const click = click1 => {
     if (click1) {
       setClick1(false);
@@ -43,29 +51,19 @@ const FavouriteList = () => {
     });
   };
 
-
-  
-
-
-  useEffect(() => {
-    RetailerReques();
-  }, [isFocuse]);
-
-
-  const dispatch = useDispatch();
-
-  const RetailerReques = async () => {
+  const RetailerRequest = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
 
     dispatch({
       type: 'getWishList_request',
-      url: '/getWishListItem',
-      userId: user_id,
+      url: '/wishListProduct',
+      userId: 10,
     });
   };
 
   return (
     <View style={styles.container}>
+      {isFetching ? <Loader /> : null}
       <Header
         source={require('../../../assets/L.png')}
         source2={require('../../../assets/Fo.png')}
@@ -82,11 +80,10 @@ const FavouriteList = () => {
         </View>
         <View style={styles.card}>
           <FlatList
-            data={data1}
+            data={selector?.wishlistitems}
             numColumns={2}
-            renderItem={({ item, index }) => (
+            renderItem={({item, index}) => (
               <View style={styles.cardview}>
-               
                 <View
                   style={{
                     height: hp('100%'),
@@ -96,7 +93,7 @@ const FavouriteList = () => {
                     borderColor: 'red',
                   }}>
                   <View
-                    style={{ height: hp('7%'), width: '100%', borderWidth: 0 }}>
+                    style={{height: hp('7%'), width: '100%', borderWidth: 0}}>
                     <View
                       style={{
                         padding: 0,
@@ -107,7 +104,6 @@ const FavouriteList = () => {
                       }}>
                       <TouchableOpacity
                         onPress={() => {
-                         
                           if (liked.includes(index)) {
                             let unlike = liked.filter(elem => elem !== index);
                             setLiked(unlike);
@@ -115,32 +111,22 @@ const FavouriteList = () => {
                             setLiked([...liked, index]);
                           }
                         }}
-                      // onPress={() => click(click1)}
+                        // onPress={() => click(click1)}
                       >
                         <Image
                           style={{
                             height: hp('2.4%'),
                             width: wp('5.8%'),
                             marginLeft: 5,
-                            marginVertical:5,
+                            marginVertical: 5,
                             marginTop: 2,
-                            tintColor: liked.includes(index) ? 'red' : 'grey',
+                            tintColor: liked.includes(index) ? 'grey' :'red' ,
                           }}
                           source={require('../../../assets/Image/dil.png')}
                         />
                       </TouchableOpacity>
-                      <TouchableOpacity onPress={() => share(item)}>
-                        <Image
-                          style={{
-                            height: hp('2%'),
-                            width: wp('6%'),
-                            marginTop: 5,
-                            marginLeft: 8,
-                            tintColor:'#3f5799'
-                          }}
-                          source={require('../../../assets/Image/share1.png')}
-                        />
-                      </TouchableOpacity>
+                     
+                    
                     </View>
                     <View
                       style={{
@@ -151,9 +137,9 @@ const FavouriteList = () => {
                         alignSelf: 'flex-end',
                         height: hp('2.4%'),
                         width: '40%',
-                        marginRight:10
+                        marginRight: 10,
                       }}>
-                      <Text style={styles.cardview2text}>{`$ GM`}</Text>
+                      <Text style={styles.cardview2text}>{`${item.GrossWt?.substring(0,4)} GM`}</Text>
                     </View>
                   </View>
                   <TouchableOpacity
@@ -173,26 +159,33 @@ const FavouriteList = () => {
                         alignSelf: 'center',
                         // borderWidth: 5,
                       }}
-                      source={item.title1}
+                      source={{uri:`${imagePath}/${item.ImageName}`}}
                     />
                   </TouchableOpacity>
                   <View
-                    style={{ height: hp('3%'), width: '100%', marginLeft: 20 }}>
-                    <Text style={styles.cardbottomtext}>{item.Name}</Text>
-                    <View style={styles.cardbottom1}>
-                      <Image
-                        style={{ width: 16, height: 20 }}
-                        source={require('../../../assets/Image/rupay.png')}
-                      />
-                      <Text style={styles.cardbottom1text}>{'2000'}</Text>
-                    </View>
+                    style={{width: '100%',marginLeft:5,flexDirection:'row',justifyContent:'space-between'}}>
+                    <Text style={styles.cardbottomtext}>ProductID:-</Text>
+                    <Text style={{fontWeight:'500',width:'50%'}}>{item.ProductSku}</Text>
+                    
+                  </View>
+                  <View
+                    style={{width: '100%',marginLeft:5,flexDirection:'row',justifyContent:'space-between'}}>
+                    <Text style={styles.cardbottomtext}>Product Name:-</Text>
+                    <Text style={{fontWeight:'500',width:'50%'}}> {item.ItemName}</Text>
+                    
+                  </View>
+                  <View
+                    style={{width: '100%',marginLeft:5,flexDirection:'row',justifyContent:'space-between'}}>
+                    <Text style={styles.cardbottomtext}>Product Price:-</Text>
+                    <Text style={{fontWeight:'500',width:'50%'}}> {item.ProductsPrice?.substring(0,8)}</Text>
+                    
                   </View>
                 </View>
               </View>
             )}
           />
         </View>
-        <View style={{ height: 70 }} />
+        <View style={{height: 70}} />
       </ScrollView>
     </View>
   );

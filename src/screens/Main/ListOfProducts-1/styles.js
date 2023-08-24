@@ -36,15 +36,21 @@ export default StyleSheet.create({
     fontSize: 16,
   },
   placeholderStyle: {
+    fontWeight:'800',
+    color:'#000',
+    fontSize: 16,
+  },
+  itemTxt: {
+    fontWeight:'800',
+    color:'#333',
     fontSize: 16,
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontWeight:'800',
+    color:'#0d0c0c',
+    fontSize: 18,
   },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
+ 
   inputSearchStyle: {
     height: 40,
     fontSize: 16,

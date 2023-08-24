@@ -50,6 +50,9 @@ import AddSupplierProdcut from '../screens/Main/addSupplierProduct';
 import ChooseSupplierProduct from '../screens/Main/ChooseSupplireAddProduct';
 import FavouriteList from '../screens/Main/favouriteDetailsPage';
 import myNetworkBtn from '../screens/Main/myNetworkBtn';
+import index from '../screens/Main/addMore';
+import addMore from '../screens/Main/addMore';
+import AddProductTooffer from '../screens/Main/addProductTooffer';
 
 const Stack1 = createNativeStackNavigator();
 function HomeScreen1() {
@@ -82,6 +85,8 @@ function HomeScreen1() {
       <Stack1.Screen name="AddSupplierProdcut" component={AddSupplierProdcut} />
       <Stack1.Screen name="ChooseSupplierProduct" component={ChooseSupplierProduct} />
       <Stack1.Screen name="myNetworkBtn" component={myNetworkBtn} />
+      <Stack1.Screen name="addMore" component={addMore} />
+      <Stack1.Screen name="AddProductTooffer" component={AddProductTooffer} />
     </Stack1.Navigator>
   );
 }

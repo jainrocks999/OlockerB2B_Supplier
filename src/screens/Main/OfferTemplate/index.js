@@ -125,16 +125,7 @@ const OfferTemplate = () => {
     }
   };
 
-  const handleAddOffer=async()=>{
-    const user_id = await AsyncStorage.getItem('user_id')
-   
-    dispatch({
-      type: 'Offer_List_Request',
-      url: '/getOfferList',
-      userid:user_id,
-      navigation
-     })
-  }
+  
 
   return (
     <View style={{flex:1}}>
@@ -239,7 +230,7 @@ const OfferTemplate = () => {
                 paddingVertical:7,
                 borderRadius:15,
             }}>
-                <Image style={{height:11,width:11}} source={require('../../../assets/supplierImage/addPlus.png')}/>
+             
                 <Text style={{color:'#fff',fontFamily:'Roboto-Medium',marginLeft:10}}>Offer List</Text>
             </TouchableOpacity>
         </View> 

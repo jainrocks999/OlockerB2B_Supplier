@@ -234,6 +234,10 @@ const AddOffer = () => {
         marginHorizontal:10,
         justifyContent:'space-between'}}>
           <TouchableOpacity
+
+          onPress={()=>{
+            navigation.navigate('AddProductTooffer')
+          }}
             style={{
               backgroundColor: '#032e63',
               borderRadius: 20,
