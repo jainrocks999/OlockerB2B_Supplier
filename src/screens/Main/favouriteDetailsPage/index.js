@@ -10,7 +10,7 @@ import {
   Share,
 } from 'react-native';
 import Header from '../../../components/CustomHeader';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 import ImagePath from '../../../components/ImagePath';
 import styles from './styles';
@@ -19,15 +19,17 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FavouriteList = () => {
   const navigation = useNavigation();
   const [liked, setLiked] = useState([]);
   const win = Dimensions.get('window');
-  const WishList = useSelector(state => state.WishList)
+  const isFocuse = useIsFocused();
   const [click1, setClick1] = useState(false);
-  console.log('data ,,,get', WishList);
+  const selector = useSelector(state => state.Home.getWishList);
+  console.log('=><>>>>>>>>>>>>>>>',selector);
   const click = click1 => {
     if (click1) {
       setClick1(false);
@@ -40,6 +42,28 @@ const FavouriteList = () => {
       message: `Product Name : ${name} \nProduct Price : ${pr} \n Product Description : ${Description}`,
     });
   };
+
+
+  
+
+
+  useEffect(() => {
+    RetailerReques();
+  }, [isFocuse]);
+
+
+  const dispatch = useDispatch();
+
+  const RetailerReques = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+
+    dispatch({
+      type: 'getWishList_request',
+      url: '/getWishListItem',
+      userId: user_id,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Header

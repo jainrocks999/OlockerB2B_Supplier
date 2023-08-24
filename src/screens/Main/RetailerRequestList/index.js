@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   View,
   Text,
@@ -19,10 +19,12 @@ import {
 } from 'react-native-responsive-screen';
 import {Table, TableWrapper, Row} from 'react-native-table-component';
 import {TextInput} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RetailerRequestList = () => {
-const navigation = useNavigation()
+  const navigation = useNavigation();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
   let tableHead = [
@@ -36,6 +38,44 @@ const navigation = useNavigation()
     'Action',
   ];
   let widthArr = [80, 120, 120, 120, 120, 200, 120, 120];
+
+  const selector = useSelector(state => state.Home.RetailerRequestList);
+  const [arr, setArr] = useState([]);
+  const isFocuse = useIsFocused();
+  useEffect(() => {
+    RetailerReques();
+    getDetails();
+  }, [isFocuse]);
+
+  const getDetails = () => {
+    selector?.map(item => {
+      arr.push([
+        item.SrNo,
+        item.CompanyName,
+        item.state_name,
+        item.city_name,
+        item.CategoryType,
+        item.IsShowInRetailerApp,
+        item.Status,
+        'Remove',
+      ]);
+    });
+
+    console.log(arr);
+  };
+
+  const dispatch = useDispatch();
+
+  const RetailerReques = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+
+    dispatch({
+      type: 'Retailer_RequestList',
+      url: '/getReatilerRequest',
+      userId: user_id,
+      role: '6',
+    });
+  };
 
   const renderItem = item => {
     return (
@@ -55,7 +95,6 @@ const navigation = useNavigation()
   return (
     <View style={{flex: 1}}>
       <ScrollView contentContainerStyle={{}}>
-       
         <View style={styles.searchbar}>
           <TextInput placeholder="Search" style={{fontSize: 18}} />
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -87,7 +126,16 @@ const navigation = useNavigation()
         </View>
 
         <View style={{}}>
-        <Text style={{fontSize:20,fontWeight:'800',color:'#032E63',marginLeft:10,marginVertical:15}}>Retailer Request List</Text>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: '800',
+              color: '#032E63',
+              marginLeft: 10,
+              marginVertical: 15,
+            }}>
+            Retailer Request List
+          </Text>
           <ScrollView horizontal={true}>
             <View>
               <Table>
@@ -105,15 +153,15 @@ const navigation = useNavigation()
               </Table>
               <ScrollView style={styles.dataWrapper}>
                 <FlatList
-                  data={data}
+                  data={arr}
                   renderItem={({item}) => (
                     <Table
-                      borderStyle={{borderWidth:1}}
+                      borderStyle={{borderWidth: 1}}
                       style={{alignItems: 'center'}}>
                       <Row
                         data={item}
                         widthArr={widthArr}
-                        style={{height:45}}
+                        style={{height: 45}}
                         textStyle={{
                           fontWeight: '700',
                           fontSize: 16,
@@ -128,36 +176,56 @@ const navigation = useNavigation()
           </ScrollView>
         </View>
 
-        <View style={{flexDirection:'row',marginBottom:0,marginTop:50, marginHorizontal:10}}>
-        <TouchableOpacity style={{borderWidth:2,paddingVertical:5,
-          borderRadius:15,
-          paddingHorizontal:15,
-            borderColor:'#032E63',backgroundColor:'#032E63'}}>
-            <Text style={{color:'white'}}>Prev</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginBottom: 0,
+            marginTop: 50,
+            marginHorizontal: 10,
+          }}>
+          <TouchableOpacity
+            style={{
+              borderWidth: 2,
+              paddingVertical: 5,
+              borderRadius: 15,
+              paddingHorizontal: 15,
+              borderColor: '#032E63',
+              backgroundColor: '#032E63',
+            }}>
+            <Text style={{color: 'white'}}>Prev</Text>
           </TouchableOpacity>
           <View style={{}}>
-          <FlatList
+            <FlatList
               data={page}
               horizontal
               renderItem={({item}) => (
-                <View style={{height:40,width:40,backgroundColor:'#032E63',
-                alignItems:'center',justifyContent:'center',marginHorizontal:5,
-                borderRadius:20}}>
-                  
-                  <Text style={{color:'white'}}>{item.number}</Text>
+                <View
+                  style={{
+                    height: 40,
+                    width: 40,
+                    backgroundColor: '#032E63',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginHorizontal: 5,
+                    borderRadius: 20,
+                  }}>
+                  <Text style={{color: 'white'}}>{item.number}</Text>
                 </View>
               )}
             />
           </View>
-          <TouchableOpacity style={{borderWidth:2,paddingVertical:5,
-          borderRadius:15,
-          paddingHorizontal:15,
-            borderColor:'#032E63',backgroundColor:'#032E63'}}>
-            <Text style={{color:'white'}}>Next</Text>
+          <TouchableOpacity
+            style={{
+              borderWidth: 2,
+              paddingVertical: 5,
+              borderRadius: 15,
+              paddingHorizontal: 15,
+              borderColor: '#032E63',
+              backgroundColor: '#032E63',
+            }}>
+            <Text style={{color: 'white'}}>Next</Text>
           </TouchableOpacity>
         </View>
-
-      
       </ScrollView>
 
       {/* <TouchableOpacity
@@ -180,7 +248,6 @@ const navigation = useNavigation()
 };
 export default RetailerRequestList;
 
-
 const DropData = [
   {label: 'Item 1', value: '1'},
   {label: 'Item 2', value: '2'},
@@ -192,67 +259,27 @@ const DropData = [
   {label: 'Item 8', value: '8'},
 ];
 
-const page =[
+const page = [
   {
-number:'1'
+    number: '1',
   },
   {
-number:'2'
+    number: '2',
   },
   {
-number:'3'
+    number: '3',
   },
   {
-number:'4'
+    number: '4',
   },
   {
-number:'5'
+    number: '5',
   },
-]
-
+];
 
 const data = [
-  [
-  '01',
-   'Rohan sahu',
-     'MP',
-  'Indore',
-   'Lorem',
-    'lorem',
-    'pending',
-    'pending'
-],
-  [
-  '01',
-   'Rohan sahu',
-     'MP',
-  'Indore',
-   'Lorem',
-    'lorem',
-    'pending',
-    'pending'
-],
-  [
-  '01',
-   'Rohan sahu',
-     'MP',
-  'Indore',
-   'Lorem',
-    'lorem',
-    'pending',
-    'pending'
-],
-  [
-  '01',
-   'Rohan sahu',
-     'MP',
-  'Indore',
-   'Lorem',
-    'lorem',
-    'pending',
-    'pending'
-],
- 
-
- 
+  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
+  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
+  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
+  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
 ];

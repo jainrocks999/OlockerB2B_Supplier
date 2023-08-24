@@ -1,127 +1,188 @@
-import { ToastAndroid, YellowBox } from 'react-native';
-import { takeEvery, put, call } from 'redux-saga/effects';
+import {ToastAndroid, YellowBox} from 'react-native';
+import {takeEvery, put, call} from 'redux-saga/effects';
 import Api from '../Api';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { parse } from 'react-native-svg';
+import {parse} from 'react-native-svg';
 
 //Login
 function* bannerList(action) {
-    try {
-      const data={
-       
-      }
-      const response = yield call(Api.fetchDataByGET1,action.url,data);
-     console.log('thisi is user response',response);
-      if (response.success == true) {
-        yield put({
-          type: 'Banner_List_Success',
-          payload: response.data,
-        });
-      } else {
-        yield put({
-          type: 'Banner_List_Error',
-        });
-      }
-    } catch (error) {
+  try {
+    const data = {};
+    const response = yield call(Api.fetchDataByGET1, action.url, data);
+    console.log('thisi is user response', response);
+    if (response.success == true) {
+      yield put({
+        type: 'Banner_List_Success',
+        payload: response.data,
+      });
+    } else {
       yield put({
         type: 'Banner_List_Error',
       });
     }
+  } catch (error) {
+    yield put({
+      type: 'Banner_List_Error',
+    });
   }
+}
 
-
-  function* networkList(action) {
-    try {
-      const data={
-       userRole:6,
-       userId:13
-      }
-      const response = yield call(Api.fetchDataByGET1,action.url,data);
-     console.log('thisi is user response',response);
-      if (response.success == true) {
-        yield put({
-          type: 'Network_List_Success',
-          payload: response.data.networkretailer,
-        });
-      } else {
-        yield put({
-          type: 'Network_List_Error',
-        });
-      }
-    } catch (error) {
+function* networkList(action) {
+  try {
+    const data = {
+      userRole: 6,
+      userId: 13,
+    };
+    const response = yield call(Api.fetchDataByGET1, action.url, data);
+    console.log('thisi is user response', response);
+    if (response.success == true) {
+      yield put({
+        type: 'Network_List_Success',
+        payload: response.data.networkretailer,
+      });
+    } else {
       yield put({
         type: 'Network_List_Error',
       });
     }
+  } catch (error) {
+    yield put({
+      type: 'Network_List_Error',
+    });
   }
-   function* SearchRetailerRequest(action) {
+}
+function* SearchRetailerRequest(action) {
+  try {
+    const data = {
+      userRole: action.role,
+      userId: action.userId,
+      stateId: action.state,
+      cityId: action.city,
+      retailerName: action.Rname,
+    };
+    const response = yield call(Api.fetchDataByGET1, action.url, data);
 
+    console.log('serach saga= >>>>>>>', response);
 
-     try {
-      
-      const data = {
-        userRole:action.role,
-        userId:action.userId,
-        stateId:action.state,
-        cityId:action.city,
-        retailerName:action.Rname,   
-      };
-      const response = yield call(Api.fetchDataByGET1,action.url,data);
-
-       console.log('serach saga= >>>>>>>',response);
-
-          if (response.status == 'success') {
-
-        yield put({
-          type: 'Search_Retailer_Success',
-          payload: response.data.searchpartner,
-        });
-      } else {
-        yield put({
-          type: 'Search_Retailer_Error',
-        });
-      }
-    } catch (error) {
+    if (response.status == 'success') {
+      yield put({
+        type: 'Search_Retailer_Success',
+        payload: response.data.searchpartner,
+      });
+    } else {
       yield put({
         type: 'Search_Retailer_Error',
       });
     }
+  } catch (error) {
+    yield put({
+      type: 'Search_Retailer_Error',
+    });
+  }
 }
-   function* SearchMynetworkRequest(action) {
+function* SearchMynetworkRequest(action) {
+  try {
+    const data = {
+      userRole: action.role,
+      userId: action.userId,
+    };
+    const response = yield call(Api.fetchDataByGET1, action.url, data);
 
-
-     try {
-      
-      const data = {
-        userRole:action.role,
-        userId:action.userId, 
-      };
-      const response = yield call(Api.fetchDataByGET1,action.url,data);
-
-
-          if (response.status == 'success') {
-
-        yield put({
-          type: 'Search_MyNetwork_Success',
-          payload: response.data.networkretailer,
-        });
-      } else {
-        yield put({
-          type: 'Search_MyNetwork_Error',
-        });
-      }
-    } catch (error) {
+    if (response.status == 'success') {
+      yield put({
+        type: 'Search_MyNetwork_Success',
+        payload: response.data.networkretailer,
+      });
+    } else {
       yield put({
         type: 'Search_MyNetwork_Error',
       });
     }
+  } catch (error) {
+    yield put({
+      type: 'Search_MyNetwork_Error',
+    });
+  }
+}
+function* retailerRequestList(action) {
+  try {
+    const data = {
+      userRole: action.role,
+      userId: action.userId,
+    };
+    const response = yield call(Api.fetchDataByGET1, action.url, data);
+
+    if (response.status == 'success') {
+      yield put({
+        type: 'Retailer_RequestList_Success',
+        payload: response.data.retailer,
+      });
+    } else {
+      yield put({
+        type: 'Retailer_RequestList_Error',
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'Retailer_RequestList_Error',
+    });
+  }
+}
+function* InviteRetailerList(action) {
+  try {
+    const data = {
+      userRole: action.role,
+      userId: action.userId,
+    };
+    const response = yield call(Api.fetchDataByGET1, action.url, data);
+
+    if (response.status == 'success') {
+      yield put({
+        type: 'Invite_RetailerList_Success',
+        payload: response.data.inviteRetailer,
+      });
+    } else {
+      yield put({
+        type: 'Invite_RetailerList_Error',
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'Invite_RetailerList_Error',
+    });
+  }
+}
+function* getWishList(action) {
+  try {
+    const data = {
+      wishlistid: action.userId,
+    };
+    const response = yield call(Api.fetchDataByGET1, action.url, data);
+
+    if (response.status == 'success') {
+      yield put({
+        type: 'getWishList_Success',
+        payload: response.data,
+      });
+    } else {
+      yield put({
+        type: 'getWishList_Error',
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'getWishList_Error',
+    });
+  }
 }
 
 export default function* homeSaga() {
-    yield takeEvery('Banner_List_Request',bannerList)
-    yield takeEvery('Network_List_Request',networkList)
-    yield takeEvery('Search_Retailer_Request',SearchRetailerRequest)
-    yield takeEvery('Search_MyNetwork_Request',SearchMynetworkRequest)
-  }
-  
+  yield takeEvery('Banner_List_Request', bannerList);
+  yield takeEvery('Network_List_Request', networkList);
+  yield takeEvery('Search_Retailer_Request', SearchRetailerRequest);
+  yield takeEvery('Search_MyNetwork_Request', SearchMynetworkRequest);
+  yield takeEvery('Retailer_RequestList', retailerRequestList);
+  yield takeEvery('Invite_RetailerList', InviteRetailerList);
+  yield takeEvery('getWishList_request', getWishList);
+}

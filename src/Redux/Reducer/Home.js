@@ -5,7 +5,10 @@ initialstate = {
   BannerList: [],
   NetworkList: [],
   SearchRetailerList: [],
-  SearchMyNetworkList:[]
+  SearchMyNetworkList:[],
+  RetailerRequestList:[],
+  InviteRetailerList:[],
+  getWishList:[]
 };
 export default (state = initialstate, action) => {
   switch (action.type) {
@@ -28,6 +31,27 @@ export default (state = initialstate, action) => {
     case 'Search_MyNetwork_Success':
       return {...state, isFetching: false, SearchMyNetworkList: action.payload};
     case 'Search_MyNetwork_Error':
+      return {...state, isFetching: false};
+
+    case 'Retailer_RequestList':
+      return {...state, isFetching: true};
+    case 'Retailer_RequestList_Success':
+      return {...state, isFetching: false, RetailerRequestList: action.payload};
+    case 'Retailer_RequestList_Error':
+      return {...state, isFetching: false};
+
+    case 'Invite_RetailerList':
+      return {...state, isFetching: true};
+    case 'Invite_RetailerList_Success':
+      return {...state, isFetching: false, InviteRetailerList: action.payload};
+    case 'Invite_RetailerList_Error':
+      return {...state, isFetching: false};
+
+    case 'getWishList_request':
+      return {...state, isFetching: true};
+    case 'getWishList_Success':
+      return {...state, isFetching: false, getWishList: action.payload};
+    case 'getWishList_Error':
       return {...state, isFetching: false};
 
     case 'Network_List_Request':

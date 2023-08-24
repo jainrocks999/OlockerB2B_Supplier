@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   View,
   Text,
@@ -18,8 +18,10 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {TextInput} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {Table, TableWrapper, Row} from 'react-native-table-component';
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const InviteRetailerList = () => {
   const navigation = useNavigation();
@@ -36,6 +38,45 @@ const InviteRetailerList = () => {
     'Contact Number',
   ];
   let widthArr = [80, 120, 200, 120, 120, 200, 140];
+
+  const selector = useSelector(state => state.Home.inviteRetailer);
+  const [arr, setArr] = useState([]);
+  const isFocuse = useIsFocused();
+  useEffect(() => {
+    RetailerReques();
+    getDetails();
+  }, [isFocuse]);
+
+  const getDetails = () => {
+    selector?.map(item => {
+      arr.push([
+        item.SrNo,
+        item.CompanyName,
+        item.state_name,
+        item.city_name,
+        item.CategoryType,
+        item.IsShowInRetailerApp,
+        item.Status,
+        'Remove',
+      ]);
+    });
+
+    console.log(arr);
+  };
+
+  const dispatch = useDispatch();
+
+  const RetailerReques = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+
+    dispatch({
+      type: 'Invite_RetailerList',
+      url: '/inviteRetailerList',
+      userId: user_id,
+      role: '6',
+    });
+  };
+
   return (
     <View style={{flex: 1}}>
       <View contentContainerStyle={{}}>
@@ -61,7 +102,7 @@ const InviteRetailerList = () => {
               </Table>
               <ScrollView style={styles.dataWrapper}>
                 <FlatList
-                  data={data}
+                  data={arr}
                   renderItem={({item}) => (
                     <Table
                       borderStyle={{borderWidth: 1}}
