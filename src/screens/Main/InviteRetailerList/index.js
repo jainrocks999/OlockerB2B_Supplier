@@ -7,11 +7,9 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import {Dropdown} from 'react-native-element-dropdown';
+import Loader from '../../../components/Loader';
 import styles from './styles';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+
 import CheckBox from '@react-native-community/checkbox';
 import {
   widthPercentageToDP as wp,
@@ -27,7 +25,7 @@ const InviteRetailerList = () => {
   const navigation = useNavigation();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
-
+  const isFetching = useSelector(state => state.Home.isFetching);
   let tableHead = [
     'S.No',
     'Retailer Name',
@@ -40,29 +38,14 @@ const InviteRetailerList = () => {
   let widthArr = [80, 120, 200, 120, 120, 200, 140];
 
   const selector = useSelector(state => state.Home.inviteRetailer);
-  const [arr, setArr] = useState([]);
+
   const isFocuse = useIsFocused();
   useEffect(() => {
     RetailerReques();
-    getDetails();
+    
   }, [isFocuse]);
 
-  const getDetails = () => {
-    selector?.map(item => {
-      arr.push([
-        item.SrNo,
-        item.CompanyName,
-        item.state_name,
-        item.city_name,
-        item.CategoryType,
-        item.IsShowInRetailerApp,
-        item.Status,
-        'Remove',
-      ]);
-    });
-
-    console.log(arr);
-  };
+ 
 
   const dispatch = useDispatch();
 
@@ -79,6 +62,7 @@ const InviteRetailerList = () => {
 
   return (
     <View style={{flex: 1}}>
+       {isFetching ? <Loader /> : null}
       <View contentContainerStyle={{}}>
      
 
@@ -102,13 +86,22 @@ const InviteRetailerList = () => {
               </Table>
               <ScrollView style={styles.dataWrapper}>
                 <FlatList
-                  data={arr}
+                  data={selector}
                   renderItem={({item}) => (
                     <Table
                       borderStyle={{borderWidth: 1}}
                       style={{alignItems: 'center'}}>
                       <Row
-                        data={item}
+                        data={[
+                          item.SrNo,
+                          item.CompanyName,
+                          item.state_name,
+                          item.city_name,
+                          item.CategoryType,
+                          item.IsShowInRetailerApp,
+                          item.Status,
+                          'Remove',
+                        ]}
                         widthArr={widthArr}
                         style={{height: 45}}
                         textStyle={{

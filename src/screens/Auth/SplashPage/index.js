@@ -6,7 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from "react-redux";
 const Splash = () => {
   const navigation = useNavigation();
-  const dispatch=useDispatch()
+  const dispatch=useDispatch();
+
   useEffect(() => {
     const unmemory = setInterval(() => {}, 3000);
     console.log('vireddfdffffggggegeg', unmemory);
@@ -14,7 +15,8 @@ const Splash = () => {
       clearInterval(unmemory);
       console.log('vireddfdffffggggegeg23244', unmemory);
     };
-  });
+  },[]);
+  
   useEffect(() => {
     initial();
   }, []);

@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import CheckBox from '@react-native-community/checkbox';
+import Loader from '../../../components/Loader';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -20,13 +20,14 @@ import {
 import {Table, TableWrapper, Row} from 'react-native-table-component';
 import {TextInput} from 'react-native';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RetailerRequestList = () => {
   const navigation = useNavigation();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
+  const isFetching = useSelector(state => state.Home.isFetching);
   let tableHead = [
     'S.No',
     'Retailer Name',
@@ -40,29 +41,11 @@ const RetailerRequestList = () => {
   let widthArr = [80, 120, 120, 120, 120, 200, 120, 120];
 
   const selector = useSelector(state => state.Home.RetailerRequestList);
-  const [arr, setArr] = useState([]);
+
   const isFocuse = useIsFocused();
   useEffect(() => {
     RetailerReques();
-    getDetails();
   }, [isFocuse]);
-
-  const getDetails = () => {
-    selector?.map(item => {
-      arr.push([
-        item.SrNo,
-        item.CompanyName,
-        item.state_name,
-        item.city_name,
-        item.CategoryType,
-        item.IsShowInRetailerApp,
-        item.Status,
-        'Remove',
-      ]);
-    });
-
-    console.log(arr);
-  };
 
   const dispatch = useDispatch();
 
@@ -94,6 +77,7 @@ const RetailerRequestList = () => {
   };
   return (
     <View style={{flex: 1}}>
+      {isFetching ? <Loader /> : null}
       <ScrollView contentContainerStyle={{}}>
         <View style={styles.searchbar}>
           <TextInput placeholder="Search" style={{fontSize: 18}} />
@@ -153,13 +137,20 @@ const RetailerRequestList = () => {
               </Table>
               <ScrollView style={styles.dataWrapper}>
                 <FlatList
-                  data={arr}
+                  data={selector}
                   renderItem={({item}) => (
-                    <Table
-                      borderStyle={{borderWidth: 1}}
-                      style={{alignItems: 'center'}}>
+                    <Table borderStyle={{borderWidth: 1}} style={{}}>
                       <Row
-                        data={item}
+                        data={[
+                          item.SrNo,
+                          item.CompanyName,
+                          item.state_name,
+                          item.city_name,
+                          item.CategoryType,
+                          item.IsShowInRetailerApp,
+                          item.Status,
+                          'remove',
+                        ]}
                         widthArr={widthArr}
                         style={{height: 45}}
                         textStyle={{

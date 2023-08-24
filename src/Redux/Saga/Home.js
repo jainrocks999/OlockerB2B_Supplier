@@ -70,6 +70,7 @@ function* SearchRetailerRequest(action) {
         type: 'Search_Retailer_Success',
         payload: response.data.searchpartner,
       });
+      action.navigation.navigate('myNetworkBtn', {data: 'List'})
     } else {
       yield put({
         type: 'Search_Retailer_Error',

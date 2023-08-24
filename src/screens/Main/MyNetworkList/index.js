@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,50 +7,29 @@ import {
   Image,
   FlatList,
 } from 'react-native';
+import Loader from '../../../components/Loader';
 import styles from './styles';
 import {Table, TableWrapper, Row} from 'react-native-table-component';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MyNetworkList = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const navigation = useNavigation();
   const selector = useSelector(state => state.Home.SearchMyNetworkList);
+  const isFetching = useSelector(state => state.Home.isFetching);
   const [arr, setArr] = useState([]);
   const isFocuse = useIsFocused();
   useEffect(() => {
     myNetworkList();
-    getDetails()
   }, [isFocuse]);
-
-
-
-
-
-
-  const getDetails = () => {
-
-    selector?.map(item => {
-      arr.push([item.SrNo, item.CompanyName, item.StateName, item.CityName,
-      item.CategoryType,
-        item.IsShowInRetailerApp,
-      item.Status,
-      'Remove'
-      ]);
-    });
-
-    console.log(arr);
-  };
-
-
-
 
   const dispatch = useDispatch();
 
   const myNetworkList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
-  
+
     dispatch({
       type: 'Search_MyNetwork_Request',
       url: '/getNetworkRetailer',
@@ -58,12 +37,6 @@ const MyNetworkList = () => {
       role: '6',
     });
   };
-  
-
-
-
-
-
 
   let tableHead = [
     'S.No',
@@ -79,12 +52,19 @@ const MyNetworkList = () => {
 
   return (
     <View style={{flex: 1}}>
-      <View >
-      
-
-       
+      {isFetching ? <Loader /> : null}
+      <View>
         <View style={{}}>
-        <Text style={{fontSize:20,fontWeight:'800',color:'#032E63',marginLeft:10,marginVertical:10}}>My Network</Text>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: '800',
+              color: '#032E63',
+              marginLeft: 10,
+              marginVertical: 10,
+            }}>
+            My Network
+          </Text>
           <ScrollView horizontal={true}>
             <View>
               <Table>
@@ -102,15 +82,24 @@ const MyNetworkList = () => {
               </Table>
               <ScrollView style={styles.dataWrapper}>
                 <FlatList
-                  data={arr}
+                  data={selector}
                   renderItem={({item}) => (
                     <Table
-                      borderStyle={{borderWidth:1}}
+                      borderStyle={{borderWidth: 1}}
                       style={{alignItems: 'center'}}>
                       <Row
-                        data={item}
+                        data={[
+                          item.SrNo,
+                          item.CompanyName,
+                          item.StateName,
+                          item.CityName,
+                          item.CategoryType,
+                          item.IsShowInRetailerApp,
+                          item.Status,
+                          'remove',
+                        ]}
                         widthArr={widthArr}
-                        style={{height:45}}
+                        style={{height: 45}}
                         textStyle={{
                           fontWeight: '700',
                           fontSize: 16,
@@ -147,47 +136,8 @@ const MyNetworkList = () => {
 export default MyNetworkList;
 
 const data = [
-  [
-  '01',
-   'Rohan sahu',
-     'MP',
-  'Indore',
-   'Lorem',
-    'lorem',
-    'pending',
-    'pending'
-],
-  [
-  '01',
-   'Rohan sahu',
-     'MP',
-  'Indore',
-   'Lorem',
-    'lorem',
-    'pending',
-    'pending'
-],
-  [
-  '01',
-   'Rohan sahu',
-     'MP',
-  'Indore',
-   'Lorem',
-    'lorem',
-    'pending',
-    'pending'
-],
-  [
-  '01',
-   'Rohan sahu',
-     'MP',
-  'Indore',
-   'Lorem',
-    'lorem',
-    'pending',
-    'pending'
-],
- 
-
- 
+  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
+  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
+  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
+  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
 ];

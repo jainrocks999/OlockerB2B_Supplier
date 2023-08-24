@@ -58,6 +58,7 @@ const SearchRetailer = () => {
       city: city,
       state: state,
       Rname: search,
+      navigation:navigation
     });
   };
   
