@@ -182,7 +182,7 @@ function Bottom() {
         }}
       />
       <Tab.Screen
-        name="Message"
+        name="Message1"
         component={ChatStack}
        
         options={{
@@ -256,6 +256,8 @@ function Navigate() {
         <Stack.Screen name="Home" component={Bottom} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="RegisterPage" component={Register} />
+        <Stack.Screen name="Message" component={ChatStack} />
+   
       </Stack.Navigator>
     </NavigationContainer>
   );
