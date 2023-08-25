@@ -54,6 +54,13 @@ export default (state = initialstate, action) => {
     case 'getWishList_Error':
       return {...state, isFetching: false};
 
+    case 'removeWishList_request':
+      return {...state, isFetching: true};
+    case 'removeWishList_Success':
+      return {...state, isFetching: false, getWishList: action.payload};
+    case 'removeWishList_Error':
+      return {...state, isFetching: false};
+
     case 'Network_List_Request':
       return {...state, isFetching: true};
     case 'Network_List_Success':

@@ -5,6 +5,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 export default StyleSheet.create({
+ 
   img: {
     height: 18,
     width: 12,
@@ -32,6 +33,8 @@ export default StyleSheet.create({
     paddingHorizontal: 12,
     flexDirection: 'row',
     paddingVertical: 15,
+ 
+
   },
   text: {
     color: 'white',

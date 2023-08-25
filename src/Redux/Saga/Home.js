@@ -180,6 +180,32 @@ function* getWishList(action) {
     });
   }
 }
+function* RemoveWishList(action) {
+  try {
+    const data = {
+      userId: action.userId,
+      userType: 'supplier',
+    };
+    const response = yield call(Api.fetchDataByGET1, action.url, data);
+
+  
+
+    if (response.status) {
+      yield put({
+        type: 'removeWishList_Success',
+        payload: response.data,
+      });
+    } else {
+      yield put({
+        type: 'removeWishList_Error',
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'removeWishList_Error',
+    });
+  }
+}
 
 export default function* homeSaga() {
   yield takeEvery('Banner_List_Request', bannerList);
@@ -189,4 +215,5 @@ export default function* homeSaga() {
   yield takeEvery('Retailer_RequestList', retailerRequestList);
   yield takeEvery('Invite_RetailerList', InviteRetailerList);
   yield takeEvery('getWishList_request', getWishList);
+  yield takeEvery('removeWishList_request', RemoveWishList);
 }

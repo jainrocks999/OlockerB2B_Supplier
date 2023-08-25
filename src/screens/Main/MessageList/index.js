@@ -96,59 +96,7 @@ const HomeScreen = () => {
         onPress2={() => navigation.navigate('FavDetails')}
       />
       <View>
-        <View
-          style={{
-            paddingHorizontal: 20,
-            paddingVertical: 5,
-            flexDirection: 'row',
-            width: '75%',
-            alignItems: 'center',
-            marginTop: 8,
-          }}>
-          <TouchableOpacity
-            onPress={() => manageBusiness()}
-            style={{
-              borderWidth: 1,
-              height: 35,
-              borderRadius: 16,
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingHorizontal: 20,
-              backgroundColor: business == true ? '#032e63' : '#fff',
-              borderColor: business == true ? '#032e63' : '#2b2b2b',
-            }}>
-            <Text
-              style={{
-                fontSize: 13,
-                fontFamily: 'Acephimere',
-                color: business == true ? '#fff' : '#2b2b2b',
-              }}>
-              Business
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => manageCustomer()}
-            style={{
-              borderWidth: 1,
-              height: 35,
-              borderRadius: 16,
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingHorizontal: 20,
-              marginLeft: 15,
-              backgroundColor: customer == true ? '#032e63' : '#fff',
-              borderColor: customer == true ? '#032e63' : '#2b2b2b',
-            }}>
-            <Text
-              style={{
-                fontSize: 13,
-                fontFamily: 'Acephimere',
-                color: customer == true ? '#fff' : '#2b2b2b',
-              }}>
-              Customer
-            </Text>
-          </TouchableOpacity>
-        </View>
+      
         <View>
           {business == true ? (
             <FlatList

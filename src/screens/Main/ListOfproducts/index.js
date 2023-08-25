@@ -21,7 +21,7 @@ import {TextInput} from 'react-native';
 import CategoryViewModal from '../Modal/categoryList';
 import { useNavigation } from '@react-navigation/native';
 
-const AddSupplierProdcut = () => {
+const ListOfproducts = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [ViewModal, setViewModal] = useState(false);
   const [value, setValue] = useState(null);
@@ -443,7 +443,7 @@ const navigation = useNavigation()
     </View>
   );
 };
-export default AddSupplierProdcut;
+export default ListOfproducts;
 
 
 

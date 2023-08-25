@@ -14,12 +14,11 @@ import Addproduct from '../screens/Main/Addproduct';
 import DetailsFav from '../screens/Main/favouriteDetailsPage';
 import MyProductDetails from '../screens/Main/MyProductDetails';
 import SubCategory from '../screens/Main/SubCategory';
-import MessageList from '../screens/Main/MessageList';
 import Customers from '../screens/Main/Customers';
 import Mycustomer from '../screens/Main/Mycustomers';
 import MyCustomerDetail from '../screens/Main/MyCustomerDetail';
 import Feedback from '../screens/Main/Feedback';
-import Messagebox from '../screens/Main/Messagebox';
+
 import Chat from '../screens/Main/chatOnline';
 import Purchase from '../screens/Main/Purchasehistory';
 import LoyaltyPage from '../screens/Main/Loyaltypage';
@@ -46,13 +45,17 @@ import EditOfferTemp from '../screens/Main/EditOfferTemp';
 import AddOffer from '../screens/Main/AddOffer';
 import OfferList from '../screens/Main/OfferList';
 import ListOfProduct from '../screens/Main/ListOfProducts-1';
-import AddSupplierProdcut from '../screens/Main/addSupplierProduct';
-import ChooseSupplierProduct from '../screens/Main/ChooseSupplireAddProduct';
+import AddSupplierProdcut from '../screens/Main/ListOfproducts';
+import ChooseSupplierProduct from '../screens/Main/AddProducts';
 import FavouriteList from '../screens/Main/favouriteDetailsPage';
 import myNetworkBtn from '../screens/Main/myNetworkBtn';
 import index from '../screens/Main/addMore';
 import addMore from '../screens/Main/addMore';
 import AddProductTooffer from '../screens/Main/addProductTooffer';
+
+import ChatScreen from '../screens/Main/ChatScreen';
+import Messagebox from '../screens/Main/chatOnline';
+import MessageBox2 from '../screens/Main/MessageBox2';
 
 const Stack1 = createNativeStackNavigator();
 function HomeScreen1() {
@@ -104,7 +107,7 @@ function Customer1() {
       <Stack3.Screen name="Mycustomer" component={Mycustomer} />
       <Stack3.Screen name="Feedback" component={Feedback} />
       <Stack3.Screen name="MyCustomerDetail" component={MyCustomerDetail} />
-      <Stack3.Screen name="Messagebox" component={Messagebox} />
+      <Stack3.Screen name="Messagebox" component={MessageBox2} />
       <Stack3.Screen name="Purchase" component={Purchase} />
       <Stack3.Screen name="Editprofile" component={Edit} />
       <Stack3.Screen name="Loyalty" component={Loyalty} />
@@ -180,8 +183,10 @@ function Bottom() {
       />
       <Tab.Screen
         name="Message"
-        component={MessageList}
+        component={ChatStack}
+       
         options={{
+          tabBarHideOnKeyboard:true,
           tabBarIcon: ({focused}) => {
             return (
               <Image
@@ -256,6 +261,23 @@ function Navigate() {
   );
 }
 export default Navigate;
+
+
+export  const ChatStack  =()=> {
+ 
+  return (
+  
+      <Stack.Navigator
+        initialRouteName="MessageScreen"
+        screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Contact" component={MessageBox2} />
+        <Stack.Screen name="ChatScreen" component={ChatScreen} />
+       
+      </Stack.Navigator>
+
+  );
+}
+
 // const Stack = createNativeStackNavigator();
 // function Navigate() {
 //   return (

@@ -12,10 +12,10 @@ import {
 import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CheckBox from '@react-native-community/checkbox';
-import styles from './styles';
+import styles from './MetalDetails/styles';
 
 
-const MetalViewModal = ({visi, close = () => {}, ...props}) => {
+const StoneViewModal = ({visi, close = () => {}, ...props}) => {
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
@@ -195,7 +195,7 @@ const MetalViewModal = ({visi, close = () => {}, ...props}) => {
 
   );
 };
-export default MetalViewModal;
+export default StoneViewModal;
 const DropData = [
     {label: 'UNDER 25000', value: '1'},
     {label: 'UNDER 25000', value: '2'},

@@ -15,7 +15,7 @@ import CheckBox from '@react-native-community/checkbox';
 import styles from './styles';
 
 
-const MetalViewModal = ({visi, close = () => {}, ...props}) => {
+const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
@@ -195,7 +195,7 @@ const MetalViewModal = ({visi, close = () => {}, ...props}) => {
 
   );
 };
-export default MetalViewModal;
+export default DiamondViewModal;
 const DropData = [
     {label: 'UNDER 25000', value: '1'},
     {label: 'UNDER 25000', value: '2'},

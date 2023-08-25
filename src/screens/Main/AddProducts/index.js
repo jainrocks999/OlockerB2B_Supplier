@@ -19,21 +19,20 @@ import {
 } from 'react-native-responsive-screen';
 import {TextInput} from 'react-native';
 import MetalViewModal from '../Modal/MetalDetails';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
-const ChooseSupplierProduct = () => {
+const AddProducts = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
   const [ViewModal, setViewModal] = useState(false);
 
-  const [modalData,setModalData] = useState('')
-  const navigation = useNavigation()
-  
-  
-    const setModalDetails =(details)=>{
-      setModalData(details)
-      setViewModal(true)
-    }
+  const [modalData, setModalData] = useState('');
+  const navigation = useNavigation();
+
+  const setModalDetails = details => {
+    setModalData(details);
+    setViewModal(true);
+  };
   const renderItem = item => {
     return (
       <View
@@ -60,7 +59,11 @@ const ChooseSupplierProduct = () => {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView contentContainerStyle={{}}>
-        <MetalViewModal  visi={ViewModal} close={() => setViewModal(false)} data={modalData}/>
+        <MetalViewModal
+          visi={ViewModal}
+          close={() => setViewModal(false)}
+          data={modalData}
+        />
         <View style={styles.container}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
@@ -288,7 +291,7 @@ const ChooseSupplierProduct = () => {
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
-                data={DropData}
+                data={live}
                 maxHeight={250}
                 labelField="label"
                 valueField="value"
@@ -305,23 +308,12 @@ const ChooseSupplierProduct = () => {
               ProductSku
             </Text>
             <View>
-              <Dropdown
+              <TextInput
                 style={[
                   styles.dropdown,
                   {borderWidth: 1, borderColor: '#979998'},
                 ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
-                data={DropData}
-                maxHeight={250}
-                labelField="label"
-                valueField="value"
-                placeholder="Product/item type"
-                value={value}
-                onChange={item => {
-                  setValue(item.value);
-                }}
+                placeholder="Optional"
               />
             </View>
           </View>
@@ -330,28 +322,17 @@ const ChooseSupplierProduct = () => {
               Style Id
             </Text>
             <View>
-              <Dropdown
+              <TextInput
                 style={[
                   styles.dropdown,
                   {borderWidth: 1, borderColor: '#979998'},
                 ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
-                data={DropData}
-                maxHeight={250}
-                labelField="label"
-                valueField="value"
-                placeholder="Product/item type"
-                value={value}
-                onChange={item => {
-                  setValue(item.value);
-                }}
+                placeholder="Style Id"
               />
             </View>
           </View>
 
-          <View style={{marginHorizontal: 20, marginTop: 20}}>
+          {/* <View style={{marginHorizontal: 20, marginTop: 20}}>
             <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
               Demensions
             </Text>
@@ -524,7 +505,7 @@ const ChooseSupplierProduct = () => {
                 </View>
               </View>
             </View>
-          </View>
+          </View> */}
         </View>
 
         <View style={{marginHorizontal: 20, marginTop: 15}}>
@@ -716,7 +697,7 @@ const ChooseSupplierProduct = () => {
 
             <View style={{marginHorizontal: 10}}>
               <Text style={{fontSize: 18, color: '#000', fontWeight: '600'}}>
-                Is Best Seller
+                Common
               </Text>
             </View>
           </View>
@@ -730,10 +711,9 @@ const ChooseSupplierProduct = () => {
             justifyContent: 'space-between',
           }}>
           <TouchableOpacity
-
-          onPress={()=>{
-            setModalDetails('Metal')
-          }}
+            onPress={() => {
+              setModalDetails('Metal');
+            }}
             style={{
               borderWidth: 2,
               borderColor: '#032e63',
@@ -749,11 +729,9 @@ const ChooseSupplierProduct = () => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-
-          
-onPress={()=>{
-  setModalDetails('Stone')
-}}
+            onPress={() => {
+              setModalDetails('Stone');
+            }}
             style={{
               borderWidth: 2,
               backgroundColor: '#032e63',
@@ -778,9 +756,9 @@ onPress={()=>{
             justifyContent: 'space-between',
           }}>
           <TouchableOpacity
-          onPress={()=>{
-            setModalDetails('Diamond')
-          }}
+            onPress={() => {
+              setModalDetails('Diamond');
+            }}
             style={{
               borderWidth: 2,
               borderColor: '#032e63',
@@ -796,9 +774,9 @@ onPress={()=>{
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-          onPress={()=>{
-            setModalDetails('Decorative')
-          }}
+            onPress={() => {
+              setModalDetails('Decorative');
+            }}
             style={{
               borderWidth: 2,
               backgroundColor: '#032e63',
@@ -1408,16 +1386,31 @@ onPress={()=>{
           </View>
         </View>
 
-        <View style={{marginHorizontal:20,marginTop:15}}>
-          <TouchableOpacity style={{height:40,borderRadius:30,
-            alignItems:'center',justifyContent:'center',
-            backgroundColor:'#032e63'}}>
-            <Text style={{fontSize:18,color:'white',fontWeight:'600'}}>Update Product</Text>
+        <View style={{marginHorizontal: 20, marginTop: 15}}>
+          <TouchableOpacity
+            style={{
+              height: 40,
+              borderRadius: 30,
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#032e63',
+            }}>
+            <Text style={{fontSize: 18, color: 'white', fontWeight: '600'}}>
+              Update Product
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{height:40,borderRadius:30,
-            alignItems:'center',justifyContent:'center',marginTop:15,
-            backgroundColor:'#666564'}}>
-            <Text style={{fontSize:18,color:'white',fontWeight:'600'}}>Cancel</Text>
+          <TouchableOpacity
+            style={{
+              height: 40,
+              borderRadius: 30,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 15,
+              backgroundColor: '#666564',
+            }}>
+            <Text style={{fontSize: 18, color: 'white', fontWeight: '600'}}>
+              Cancel
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -1442,15 +1435,18 @@ onPress={()=>{
     </View>
   );
 };
-export default ChooseSupplierProduct;
+export default AddProducts;
 
 const DropData = [
-  {label: 'UNDER 25000', value: '1'},
-  {label: 'UNDER 25000', value: '2'},
-  {label: 'UNDER 50000', value: '3'},
+  {label: 'Anklet', value: 'Anklet'},
+  {label: 'Bali', value: 'Bali'},
+  {label: 'Bajuband', value: '3'},
   {label: 'UNDER 100000', value: '4'},
 ];
-
+const live =[
+  {label: 'Live', value: 'Live'},
+  {label: 'Catalog', value: 'Catalog'},
+]
 const page = [
   {
     number: '1',
