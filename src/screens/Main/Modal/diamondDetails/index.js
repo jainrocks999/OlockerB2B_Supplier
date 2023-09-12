@@ -53,7 +53,7 @@ const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
                   color: '#000',
                   marginLeft: -10,
                 }}>
-              {props.data} Details
+             Diamond Details
               </Text> 
               <View style={{flexDirection: 'row',width:'40%'}}>
                   <TouchableOpacity>
@@ -72,14 +72,14 @@ const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
                   </TouchableOpacity>
                 </View>
                 </View>
-              <Text style={{fontSize:16, fontWeight: '800', color: '#000',marginLeft:-10}}>(DETAILS OF PRECIOUS METALS USED IN PRODUCT)
+              <Text style={{fontSize:16, fontWeight: '800', color: '#000',marginLeft:-10}}>(DETAILS OF PRECIOUS Diamond S USED IN PRODUCT)
               </Text>
             </View>
 
 
             <View style={{marginHorizontal: 20, marginTop:5,width:'100%',}}>
             <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-              Gross wt. GMS <Text style={{color: 'red', fontSize: 18}}>*</Text>
+              Diamond  wt.<Text style={{color: 'red', fontSize: 18}}>*</Text>
             </Text>
             <View style={{marginTop:15}}>
               <TextInput
@@ -87,13 +87,13 @@ const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
                   styles.dropdown,
                   {borderWidth: 1, borderColor: '#979998'},
                 ]}
-              placeholder='Gross Wt gms'
+              placeholder='Diamond  Wt gms'
               />
             </View>
           </View>
             <View style={{marginHorizontal: 20,marginTop:5,width:'100%',}}>
             <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Metal type <Text style={{color: 'red', fontSize: 18}}>*</Text>
+            Unit of wt <Text style={{color: 'red', fontSize: 18}}>*</Text>
             </Text>
             <View style={{marginTop:15}}>
               <Dropdown
@@ -108,7 +108,7 @@ const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
                 maxHeight={250}
                 labelField="label"
                 valueField="value"
-                placeholder=" Metal type"
+                placeholder=" Diamond  type"
                 value={value}
                 onChange={item => {
                   setValue(item.value);
@@ -118,7 +118,7 @@ const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
           </View>
             <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',}}>
             <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Gold Metal purity <Text style={{color: 'red', fontSize: 18}}>*</Text>
+            Diamond details <Text style={{color: 'red', fontSize: 18}}>*</Text>
             </Text>
             <View style={{marginTop:15}}>
               <Dropdown
@@ -133,7 +133,7 @@ const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
                 maxHeight={250}
                 labelField="label"
                 valueField="value"
-                placeholder=" Gold Metal purity"
+                placeholder=" Gold Diamond  purity"
                 value={value}
                 onChange={item => {
                   setValue(item.value);
@@ -143,7 +143,7 @@ const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
           </View>
             <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',}}>
             <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Metal net wt. <Text style={{color: 'red', fontSize: 18}}>*</Text>
+            Diamond Shape<Text style={{color: 'red', fontSize: 18}}>*</Text>
             </Text>
             <View style={{marginTop:15}}>
               <TextInput
@@ -151,13 +151,13 @@ const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
                   styles.dropdown,
                   {borderWidth: 1, borderColor: '#979998'},
                 ]}
-               placeholder='Metal net wt'
+               placeholder='Diamond  net wt'
               />
             </View>
           </View>
             <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',marginTop:10}}>
             <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-              Unit of wt. <Text style={{color: 'red', fontSize: 18}}>*</Text>
+            Diamond Quality <Text style={{color: 'red', fontSize: 18}}>*</Text>
             </Text>
             <View style={{marginTop:5}}>
               <Dropdown

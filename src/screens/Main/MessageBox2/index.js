@@ -17,19 +17,33 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Loader from '../../../components/Loader';
 import {TextInput} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
 
 const MessageBox2 = () => {
   const navigation = useNavigation();
   const [business, setBusiness] = useState(true);
   const [customer, setCustomer] = useState(false);
   const [count, setCount] = useState(3);
+const selector = useSelector(state => state.Chat.patnerContact)
+const isFetching = useSelector(state => state.Chat.isFetching);
+console.log('=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',selector);
+  const dispatch = useDispatch();
+  const manageBusiness = async() => {
+setCount(3)
+setBusiness(true);
+setCustomer(false);
+    const user_id = await AsyncStorage.getItem('user_id');
 
-  const manageBusiness = () => {
-    setCount(3)
-    setBusiness(true);
-    setCustomer(false);
+    dispatch({
+      type: 'Patner_Contact_Request',
+      url: '/getContactPartner',
+      id: 763,
+    });
+  
   };
   const manageCustomer = () => {
     setCount(5)
@@ -37,8 +51,10 @@ const MessageBox2 = () => {
     setBusiness(false);
   };
   const dataToShow = page.slice(0,count);
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
+        {isFetching ? <Loader /> : null}
       <ScrollView  showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -125,11 +141,14 @@ const MessageBox2 = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{height: 80, marginTop: 15}}>
-          <FlatList
-            data={dataToShow}
+       {business &&
+       <>
+       
+       <View style={{height: 80, marginTop: 15}}>
+         { <FlatList
+            data={selector}
             horizontal
-            ma
+            
             showsHorizontalScrollIndicator={false}
             renderItem={({item}) => (
               <View>
@@ -159,10 +178,99 @@ const MessageBox2 = () => {
                 </TouchableOpacity>
               </View>
             )}
-          />
+          />}
         </View>
         <View style={[styles.searchbar, {marginTop: 20}]}>
-          <TextInput placeholder="Search" style={{fontSize: 18}} />
+          <TextInput placeholder="Search Business" style={{fontSize: 18}} />
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <Feather name="search" size={30} />
+          </View>
+        </View>
+        <View>
+          <FlatList
+            data={selector}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => (
+              <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('ChatScreen',{uri:item.img,name:item.conatct_name});
+              }}
+                style={styles.Usercard}>
+                <View  style={{height: 60, width: 60, borderRadius: 30,
+                  backgroundColor:'#f0f0f0',marginRight:10,marginTop:5,
+                  alignItems:'center',justifyContent:'center'}}>
+                  <Text
+                  
+                   
+                  > {item.conatct_name[0]}</Text>
+                </View>
+                <View style={{justifyContent: 'center', width: '65%',marginLeft:10}}>
+                  <Text
+                    style={{fontSize: 18, fontWeight: '800', color: '#000'}}>
+                    {item.conatct_name}
+                  </Text>
+                  <Text>{item.updated_at?.substring(0,19)}</Text>
+                </View>
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={{fontWeight: '800'}}>Now</Text>
+                  <View
+                    style={{
+                      backgroundColor: '#4eaefc',
+                      height: 15,
+                      width: 15,
+                      borderWidth: 1,
+                      marginTop: 15,
+                      borderRadius: 7.5,
+                    }}
+                  />
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+        
+        </>
+        }
+
+        {customer && <>
+          <View style={{height: 80, marginTop: 15}}>
+         { <FlatList
+            data={dataToShow}
+            horizontal
+            
+            showsHorizontalScrollIndicator={false}
+            renderItem={({item}) => (
+              <View>
+                <TouchableOpacity 
+                onPress={() => {
+                  navigation.navigate('ChatScreen',{uri:item.img,name:item.name});
+                }}
+                style={{padding: 7}}>
+                  <Image
+                    style={{height: 60, width: 60, borderRadius: 30}}
+                    source={{
+                      uri: item.img,
+                    }}
+                  />
+                  <View
+                    style={{
+                      backgroundColor: '#30fc3a',
+                      height: 15,
+                      width: 15,
+                      borderWidth: 1,
+                      position: 'absolute',
+                      bottom: 10,
+                      right: 10,
+                      borderRadius: 7.5,
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+          />}
+        </View>
+        <View style={[styles.searchbar, {marginTop: 20}]}>
+          <TextInput placeholder="Search Custmore" style={{fontSize: 18}} />
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
             <Feather name="search" size={30} />
           </View>
@@ -209,6 +317,9 @@ const MessageBox2 = () => {
             )}
           />
         </View>
+        </>
+
+        }
 
         <View style={{height: 30}} />
       </ScrollView>

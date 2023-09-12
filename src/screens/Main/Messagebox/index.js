@@ -13,12 +13,19 @@ import {useNavigation} from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
 import BottomTab from '../../../components/StoreButtomTab';
 import Loader from '../../../components/Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
   const [business, setBusiness] = useState(false);
   const [customer, setCustomer] = useState(true);
-  const manageBusiness = () => {
+
+
+  const manageBusiness = async() => {
+
+
+
+
     setBusiness(true);
     setCustomer(false);
   };

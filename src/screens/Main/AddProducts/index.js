@@ -20,6 +20,7 @@ import {
 import {TextInput} from 'react-native';
 import MetalViewModal from '../Modal/MetalDetails';
 import {useNavigation} from '@react-navigation/native';
+import DiamondViewModal from '../Modal/diamondDetails';
 
 const AddProducts = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -30,7 +31,7 @@ const AddProducts = () => {
   const navigation = useNavigation();
 
   const setModalDetails = details => {
-    setModalData(details);
+   // setModalData(details);
     setViewModal(true);
   };
   const renderItem = item => {
@@ -59,7 +60,7 @@ const AddProducts = () => {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView contentContainerStyle={{}}>
-        <MetalViewModal
+        <DiamondViewModal
           visi={ViewModal}
           close={() => setViewModal(false)}
           data={modalData}

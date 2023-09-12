@@ -8,7 +8,9 @@ initialstate = {
   SearchMyNetworkList:[],
   RetailerRequestList:[],
   InviteRetailerList:[],
-  getWishList:[]
+  getWishList:[],
+  addWishList:[],
+
 };
 export default (state = initialstate, action) => {
   switch (action.type) {
@@ -54,12 +56,14 @@ export default (state = initialstate, action) => {
     case 'getWishList_Error':
       return {...state, isFetching: false};
 
-    case 'removeWishList_request':
+    case 'Addpruduct_WishList':
       return {...state, isFetching: true};
-    case 'removeWishList_Success':
-      return {...state, isFetching: false, getWishList: action.payload};
-    case 'removeWishList_Error':
+    case 'AddWishList_Success':
+      return {...state, isFetching: false, addWishList: action.payload};
+    case 'AddWishList_Error':
       return {...state, isFetching: false};
+
+   
 
     case 'Network_List_Request':
       return {...state, isFetching: true};

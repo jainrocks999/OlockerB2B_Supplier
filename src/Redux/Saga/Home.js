@@ -162,8 +162,6 @@ function* getWishList(action) {
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
 
-  
-
     if (response.status) {
       yield put({
         type: 'getWishList_Success',
@@ -180,29 +178,31 @@ function* getWishList(action) {
     });
   }
 }
-function* RemoveWishList(action) {
+
+function* AddproductWishList(action) {
+  console.log( '==;.>...>>>>>>>>>>>>>',action.checkProduct, action.SupplierSrNo);
   try {
     const data = {
-      userId: action.userId,
+      checkProduct: action.checkProduct,
+      SupplierSrNo: action.SupplierSrNo,
       userType: 'supplier',
     };
-    const response = yield call(Api.fetchDataByGET1, action.url, data);
-
+    const response = yield call(Api.fetchDataByGET3, action.url, data);
+    console.log(response);
+    // if (response.status) {
+    //   yield put({
+    //     type: 'AddWishList_Success',
+    //     payload: response,
+    //   });
+    // } else {
+    //   yield put({
+    //     type: 'AddWishList_Error',
+    //   });
+   // }
   
-
-    if (response.status) {
-      yield put({
-        type: 'removeWishList_Success',
-        payload: response.data,
-      });
-    } else {
-      yield put({
-        type: 'removeWishList_Error',
-      });
-    }
-  } catch (error) {
+  } catch (err) {
     yield put({
-      type: 'removeWishList_Error',
+      type: 'AddWishList_Error',
     });
   }
 }
@@ -215,5 +215,5 @@ export default function* homeSaga() {
   yield takeEvery('Retailer_RequestList', retailerRequestList);
   yield takeEvery('Invite_RetailerList', InviteRetailerList);
   yield takeEvery('getWishList_request', getWishList);
-  yield takeEvery('removeWishList_request', RemoveWishList);
+  yield takeEvery('Addpruduct_WishList', AddproductWishList);
 }

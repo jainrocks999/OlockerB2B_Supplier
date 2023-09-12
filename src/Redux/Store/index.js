@@ -10,6 +10,8 @@ import supplierSaga from "../Saga/Supplier";
 import catalogueSaga from "../Saga/Catalogue";
 import homeSaga from "../Saga/Home";
 import offerSaga from "../Saga/Offer"
+import ChatSaga from '../Saga/chat';
+
 
 const sagamiddleware = createSagaMiddleware()
 
@@ -22,6 +24,7 @@ const sagamiddleware = createSagaMiddleware()
   sagamiddleware.run(catalogueSaga)
   sagamiddleware.run(homeSaga)
   sagamiddleware.run(offerSaga)
+  sagamiddleware.run(ChatSaga)
   export default store;
 
     

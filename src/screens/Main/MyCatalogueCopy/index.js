@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  Alert,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import Path from '../../../components/ImagePath';
@@ -23,6 +30,7 @@ const MyCatalogueCopy = () => {
   const bannerList = useSelector(state => state.Home.BannerList);
   const [myproduct, setMyproduct] = useState(true);
   const [mycollection, setMycollection] = useState(false);
+  const wishlist = useSelector(state => state.Home.getWishList);
   const [liked, setLiked] = useState([]);
   //console.log('thhis is selector', selector);
   const handleMyCatalogue = async () => {
@@ -44,22 +52,82 @@ const MyCatalogueCopy = () => {
     setMycollection(true);
   };
 
+  const addWishList = async (item, index) => {
+    if (liked.includes(index)) {
+                                                                                                                                                            
+      let unlike = liked.filter(elem => elem !== index);
+      setLiked(unlike);
+      let Check = await RemoveWhishList(item.productId);
 
-const addWishList =(index)=>{
-  if (liked.includes(index)) {
-    let unlike = liked.filter(elem => elem !== index);
-    setLiked(unlike);
-  } else {
-    setLiked([...liked, index]);
-    // dispatch({
-    //   type: 'Get_Catalogue_Request',
-    //   url: '/addProductitemWishlist',
-    //   user_id: user_id,
-    //   navigation,
-    // });
-   
-  }
-}
+      if (Check.status) {
+        Toast.show('The product has been Removed to your wishlist', Toast.LONG);
+      } else {
+        alert('Item Not Remove This Time');
+      }
+    } else {
+      setLiked([...liked, index]);
+      let check = await addProductWishList(item);
+      if (check.status) {
+        Toast.show('The product has been added to your wishlist', Toast.LONG);
+      }
+    }
+  };
+
+  const RemoveWhishList = async id => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    const Token = await AsyncStorage.getItem('loginToken');
+    var myHeaders = new Headers();
+    myHeaders.append('Olocker', `Bearer ${Token}`);
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    let response = fetch(
+      `https://olocker.co/api/supplier/removeProductWishlist?productId=${id}&SupplierSrNo=${user_id}&userType=supplier`,
+      requestOptions,
+    )
+      .then(response => response.text())
+      .then(result => {
+        return JSON.parse(result);
+      })
+      .catch(error => console.log('error', error));
+
+    return response;
+  };
+
+  const addProductWishList = async item => {
+    const Token = await AsyncStorage.getItem('loginToken');
+    const user_id = await AsyncStorage.getItem('user_id');
+    var myHeaders = new Headers();
+    myHeaders.append('Olocker', `Bearer ${Token}`);
+
+    var formdata = new FormData();
+    formdata.append('checkProduct', item.productId);
+    formdata.append('SupplierSrNo', user_id);
+    formdata.append('userType', 'supplier');
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow',
+    };
+
+    let res = fetch(
+      'https://olocker.co/api/supplier/addProductitemWishlist',
+      requestOptions,
+    )
+      .then(response => response.text())
+      .then(result => {
+        return JSON.parse(result);
+      })
+      .catch(error => console.log('error', error));
+
+    return res;
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -144,7 +212,9 @@ const addWishList =(index)=>{
             }}>
             <View style={{alignItems: 'center'}}>
               <TouchableOpacity
-              onPress={()=>{ navigation.navigate('ListOfProduct')}}
+                onPress={() => {
+                  navigation.navigate('ListOfProduct');
+                }}
                 style={{
                   height: 120,
                   width: 120,
@@ -287,7 +357,7 @@ const addWishList =(index)=>{
             style={{width: '96%'}}
             numColumns={2}
             // contentContainerStyle={{justifyContent:'center',}}
-            renderItem={({item,index}) => (
+            renderItem={({item, index}) => (
               <View
                 style={{
                   width: '46%',
@@ -301,35 +371,33 @@ const addWishList =(index)=>{
                   borderRadius: 10,
                   padding: 10,
                 }}>
-                    <View
+                <View
+                  style={{
+                    padding: 0,
+                    height: hp('5%'),
+                    width: '18%',
+                    borderWidth: 0,
+                    marginTop: 0,
+                  }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      addWishList(item, index);
+                    }}
+                    // onPress={() => click(click1)}
+                  >
+                    <Image
                       style={{
-                        padding: 0,
-                        height: hp('5%'),
-                        width: '18%',
-                        borderWidth: 0,
-                        marginTop: 0,
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => {
-                         addWishList(index);
-                        }}
-                        // onPress={() => click(click1)}
-                      >
-                        <Image
-                          style={{
-                            height: hp('2.4%'),
-                            width: wp('5.8%'),
-                            marginLeft: 5,
-                            marginVertical: 5,
-                            marginTop: 2,
-                            tintColor: liked.includes(index) ?  'red':'grey',
-                          }}
-                          source={require('../../../assets/Image/dil.png')}
-                        />
-                      </TouchableOpacity>
-                     
-                    
-                    </View>
+                        height: hp('2.4%'),
+                        width: wp('5.8%'),
+                        marginLeft: 5,
+                        marginVertical: 5,
+                        marginTop: 2,
+                        tintColor: liked.includes(index) ? 'red' : 'grey',
+                      }}
+                      source={require('../../../assets/Image/dil.png')}
+                    />
+                  </TouchableOpacity>
+                </View>
                 <Image
                   style={{height: 144, width: '100%', borderRadius: 10}}
                   source={{uri: item.images}}
@@ -361,5 +429,3 @@ const addWishList =(index)=>{
   );
 };
 export default MyCatalogueCopy;
-
-

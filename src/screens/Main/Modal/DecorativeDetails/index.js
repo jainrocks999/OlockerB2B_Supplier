@@ -44,7 +44,7 @@ const DecorativeViewModal = ({visi, close = () => {}, ...props}) => {
               }}>
               <Text style={{fontSize: 18, color: 'white'}}>X</Text>
             </TouchableOpacity>
-            <View style={{marginTop:10}}>
+            <View style={{marginTop:'30%'}}>
                 <View style={{flexDirection:'row',justifyContent:'space-between'}}>
               <Text
                 style={{
@@ -53,7 +53,7 @@ const DecorativeViewModal = ({visi, close = () => {}, ...props}) => {
                   color: '#000',
                   marginLeft: -10,
                 }}>
-              {props.data} Details
+              Decorative Details
               </Text> 
               <View style={{flexDirection: 'row',width:'40%'}}>
                   <TouchableOpacity>
@@ -77,9 +77,9 @@ const DecorativeViewModal = ({visi, close = () => {}, ...props}) => {
             </View>
 
 
-            <View style={{marginHorizontal: 20, marginTop:5,width:'100%',}}>
+            <View style={{marginHorizontal: 20, marginTop:30,width:'100%',}}>
             <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-              Gross wt. GMS <Text style={{color: 'red', fontSize: 18}}>*</Text>
+            Decorative item weight<Text style={{color: 'red', fontSize: 18}}>*</Text>
             </Text>
             <View style={{marginTop:15}}>
               <TextInput
@@ -91,70 +91,9 @@ const DecorativeViewModal = ({visi, close = () => {}, ...props}) => {
               />
             </View>
           </View>
-            <View style={{marginHorizontal: 20,marginTop:5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Metal type <Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:15}}>
-              <Dropdown
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
-                data={DropData}
-                maxHeight={250}
-                labelField="label"
-                valueField="value"
-                placeholder=" Metal type"
-                value={value}
-                onChange={item => {
-                  setValue(item.value);
-                }}
-              />
-            </View>
-          </View>
-            <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Gold Metal purity <Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:15}}>
-              <Dropdown
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
-                data={DropData}
-                maxHeight={250}
-                labelField="label"
-                valueField="value"
-                placeholder=" Gold Metal purity"
-                value={value}
-                onChange={item => {
-                  setValue(item.value);
-                }}
-              />
-            </View>
-          </View>
-            <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Metal net wt. <Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:15}}>
-              <TextInput
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-               placeholder='Metal net wt'
-              />
-            </View>
-          </View>
+         
+        
+        
             <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',marginTop:10}}>
             <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
               Unit of wt. <Text style={{color: 'red', fontSize: 18}}>*</Text>
@@ -180,7 +119,32 @@ const DecorativeViewModal = ({visi, close = () => {}, ...props}) => {
               />
             </View>
           </View>
-            <View style={{width:'100%'}}>
+          <View style={{marginHorizontal: 20,marginTop:5,width:'100%',}}>
+            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
+            Decorative item details<Text style={{color: 'red', fontSize: 18}}>*</Text>
+            </Text>
+            <View style={{marginTop:15}}>
+              <Dropdown
+                style={[
+                  styles.dropdown,
+                  {borderWidth: 1, borderColor: '#979998'},
+                ]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                iconStyle={styles.iconStyle}
+                data={DropData}
+                maxHeight={250}
+                labelField="label"
+                valueField="value"
+                placeholder=" Metal type"
+                value={value}
+                onChange={item => {
+                  setValue(item.value);
+                }}
+              />
+            </View>
+          </View>
+            <View style={{width:'100%',marginTop:'20%'}}>
 <TouchableOpacity style={styles.addbtn}>
     <Text style={{fontSize:18,color:'white',fontWeight:'800'}}>Add {props.data} Details</Text>
 </TouchableOpacity>

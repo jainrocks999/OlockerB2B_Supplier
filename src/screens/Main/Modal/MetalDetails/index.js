@@ -53,7 +53,7 @@ const MetalViewModal = ({visi, close = () => {}, ...props}) => {
                   color: '#000',
                   marginLeft: -10,
                 }}>
-              {props.data} Details
+              Metal Details
               </Text> 
               <View style={{flexDirection: 'row',width:'40%'}}>
                   <TouchableOpacity>
@@ -118,7 +118,7 @@ const MetalViewModal = ({visi, close = () => {}, ...props}) => {
           </View>
             <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',}}>
             <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Gold Metal purity <Text style={{color: 'red', fontSize: 18}}>*</Text>
+             Metal purity <Text style={{color: 'red', fontSize: 18}}>*</Text>
             </Text>
             <View style={{marginTop:15}}>
               <Dropdown

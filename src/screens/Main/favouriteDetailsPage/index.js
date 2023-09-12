@@ -8,10 +8,12 @@ import {
   Image,
   Dimensions,
   Share,
+  Alert
 } from 'react-native';
+import Toast from 'react-native-simple-toast';
 import Header from '../../../components/CustomHeader';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-
+import axios from 'axios';
 import ImagePath from '../../../components/ImagePath';
 import styles from './styles';
 import Loader from '../../../components/Loader';
@@ -20,14 +22,15 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useDispatch, useSelector} from 'react-redux';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from '../../../Redux/Constants';
 
 const FavouriteList = () => {
   const navigation = useNavigation();
   const [liked, setLiked] = useState([]);
   const win = Dimensions.get('window');
   const isFocuse = useIsFocused();
-  const [click1, setClick1] = useState(false);
   const selector = useSelector(state => state.Home.getWishList);
 
   useEffect(() => {
@@ -37,14 +40,8 @@ const FavouriteList = () => {
   const isFetching = useSelector(state => state.Home.isFetching);
   const dispatch = useDispatch();
 
-const imagePath = selector?.imagepath
-  const click = click1 => {
-    if (click1) {
-      setClick1(false);
-    } else {
-      setClick1(true);
-    }
-  };
+  const imagePath = selector?.imagepath;
+
   const share = async () => {
     await Share.share({
       message: `Product Name : ${name} \nProduct Price : ${pr} \n Product Description : ${Description}`,
@@ -57,8 +54,38 @@ const imagePath = selector?.imagepath
     dispatch({
       type: 'getWishList_request',
       url: '/wishListProduct',
-      userId: 10,
+      userId: user_id,
     });
+  };
+  const RemoveWhishList = async id => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    const Token = await AsyncStorage.getItem('loginToken');
+    const data = {
+      productId: id,
+      SupplierSrNo: user_id,
+      userType: 'supplier',
+    };
+
+    try {
+      const response = await axios({
+        method: 'GET',
+        url: Constants.MainUrl + 'removeProductWishlist',
+        params: data,
+        headers: {
+          Olocker: `Bearer ${Token}`,
+        },
+      });
+
+      if (response.status) {
+        RetailerRequest();
+        Toast.show('The product has been Removed to your wishlist', Toast.LONG);
+       
+      } else {
+        alert('Item Not Remove This Time');
+      }
+    } catch (error) {
+      throw error;
+    }
   };
 
   return (
@@ -93,7 +120,14 @@ const imagePath = selector?.imagepath
                     borderColor: 'red',
                   }}>
                   <View
-                    style={{height: hp('7%'), width: '100%', borderWidth: 0}}>
+                    style={{
+                      height: hp('7%'),
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginVertical: 5,
+                      marginHorizontal: 5,
+                      borderWidth: 0,
+                    }}>
                     <View
                       style={{
                         padding: 0,
@@ -102,17 +136,7 @@ const imagePath = selector?.imagepath
                         borderWidth: 0,
                         marginTop: 0,
                       }}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          if (liked.includes(index)) {
-                            let unlike = liked.filter(elem => elem !== index);
-                            setLiked(unlike);
-                          } else {
-                            setLiked([...liked, index]);
-                          }
-                        }}
-                        // onPress={() => click(click1)}
-                      >
+                      <View>
                         <Image
                           style={{
                             height: hp('2.4%'),
@@ -120,28 +144,22 @@ const imagePath = selector?.imagepath
                             marginLeft: 5,
                             marginVertical: 5,
                             marginTop: 2,
-                            tintColor: liked.includes(index) ? 'grey' :'red' ,
+                            tintColor: 'red',
                           }}
                           source={require('../../../assets/Image/dil.png')}
                         />
-                      </TouchableOpacity>
-                     
-                    
+                      </View>
                     </View>
-                    <View
-                      style={{
-                        borderTopRightRadius: 10,
-                        borderBottomLeftRadius: 10,
-                        backgroundColor: '#24a31e',
-                        marginTop: Platform.OS == 'android' ? -36 : -44,
-                        alignSelf: 'flex-end',
-                        height: hp('2.4%'),
-                        width: '40%',
-                        marginRight: 10,
-                      }}>
-                      <Text style={styles.cardview2text}>{`${item.GrossWt?.substring(0,4)} GM`}</Text>
-                    </View>
+
+                    <TouchableOpacity
+                      onPress={() => {
+                        RemoveWhishList(item.SrNo);
+                      }}
+                      style={{marginLeft: 2}}>
+                      <MaterialCommunityIcons name="delete" size={30} />
+                    </TouchableOpacity>
                   </View>
+
                   <TouchableOpacity
                     // onPress={() => manageCategory1(item.Product)}
                     style={{
@@ -159,27 +177,66 @@ const imagePath = selector?.imagepath
                         alignSelf: 'center',
                         // borderWidth: 5,
                       }}
-                      source={{uri:`${imagePath}/${item.ImageName}`}}
+                      source={{uri: `${imagePath}/${item.ImageName}`}}
                     />
                   </TouchableOpacity>
                   <View
-                    style={{width: '100%',marginLeft:5,flexDirection:'row',justifyContent:'space-between'}}>
+                    style={{
+                      width: '100%',
+                      marginLeft: 5,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
                     <Text style={styles.cardbottomtext}>ProductID:-</Text>
-                    <Text style={{fontWeight:'500',width:'50%'}}>{item.ProductSku}</Text>
-                    
+                    <Text style={{fontWeight: '500', width: '50%'}}>
+                      {item.ProductSku.substring(0, 10)}
+                    </Text>
                   </View>
                   <View
-                    style={{width: '100%',marginLeft:5,flexDirection:'row',justifyContent:'space-between'}}>
+                    style={{
+                      width: '100%',
+                      marginLeft: 5,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
                     <Text style={styles.cardbottomtext}>Product Name:-</Text>
-                    <Text style={{fontWeight:'500',width:'50%'}}> {item.ItemName}</Text>
-                    
+                    <Text style={{fontWeight: '500', width: '50%'}}>
+                      {' '}
+                      {item.ItemName}
+                    </Text>
                   </View>
                   <View
-                    style={{width: '100%',marginLeft:5,flexDirection:'row',justifyContent:'space-between'}}>
+                    style={{
+                      width: '100%',
+                      marginLeft: 5,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
                     <Text style={styles.cardbottomtext}>Product Price:-</Text>
-                    <Text style={{fontWeight:'500',width:'50%'}}> {item.ProductsPrice?.substring(0,8)}</Text>
-                    
+                    <Text style={{fontWeight: '500', width: '50%'}}>
+                      {' '}
+                      {item.ProductsPrice?.substring(0, 8)}
+                    </Text>
                   </View>
+                </View>
+                <View
+                  style={{
+                    borderTopRightRadius: 10,
+                    borderBottomLeftRadius: 10,
+                    backgroundColor: '#24a31e',
+                    marginTop: 45,
+                    marginRight: 8,
+                    marginVertical: 10,
+                    alignSelf: 'flex-end',
+                    //   marginRight:10,
+                    height: hp('2.4%'),
+                    width: '40%',
+                  }}>
+                  <Text
+                    style={styles.cardview2text}>{`${item.GrossWt?.substring(
+                    0,
+                    4,
+                  )} GM`}</Text>
                 </View>
               </View>
             )}

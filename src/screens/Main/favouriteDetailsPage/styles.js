@@ -22,11 +22,12 @@ export default StyleSheet.create({
     paddingHorizontal: 5,
   },
   cardview: {
-    height: hp('30%'),
+    height: hp('34%'),
   paddingVertical:5,
     // height:Platform.OS=="android"?210:210,
     backgroundColor: '#fff',
     // flex:1,
+
     margin: 6,
     borderRadius: 10,
     elevation: 3,
