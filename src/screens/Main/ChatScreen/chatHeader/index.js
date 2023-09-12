@@ -26,10 +26,17 @@ export default function ChatHeader({...props}) {
           />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Image
-            style={{height: 45, width: 45, borderRadius: 22.5, marginLeft: 20}}
-            source={{uri: props.img}}
-          />
+        <View  style={{height: 45, width: 45, borderRadius: 22.5, marginLeft: 20,
+                  backgroundColor:'#f0f0f0',
+                  alignItems:'center',justifyContent:'center'}}
+
+                  >
+                  <Text
+                  
+                   
+                  > {props.name[0]}</Text>
+                </View>
+          
         </TouchableOpacity>
         <View style={{marginLeft: 20}}>
           <Text style={{fontSize: 18, fontWeight: '600', color: '#fff'}}>
