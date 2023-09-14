@@ -7,16 +7,17 @@ import ChatScreen2 from './chatUi';
 export default function ChatScreen() {
 
   const route = useRoute();
-	const receivedData = route.params?.uri;
-	const name = route.params?.name;
+	const item = route.params?.item;
+
   
+
   return (
     <View style={{flex:1}}>
      
-      <ChatHeader  img={receivedData} name={name}/>
+      <ChatHeader  name={item.conatct_name}/>
       <View style={{flex:1}}>
 
-     <ChatScreen2 />
+     <ChatScreen2   data={item}/>
       </View>
    
  

@@ -10,7 +10,7 @@ import supplierSaga from "../Saga/Supplier";
 import catalogueSaga from "../Saga/Catalogue";
 import homeSaga from "../Saga/Home";
 import offerSaga from "../Saga/Offer"
-import ChatSaga from '../Saga/chat';
+import ChatSaga from '../Saga/Chat';
 
 
 const sagamiddleware = createSagaMiddleware()

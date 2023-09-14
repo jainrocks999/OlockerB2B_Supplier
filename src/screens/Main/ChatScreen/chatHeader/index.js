@@ -31,10 +31,7 @@ export default function ChatHeader({...props}) {
                   alignItems:'center',justifyContent:'center'}}
 
                   >
-                  <Text
-                  
-                   
-                  > {props.name[0]}</Text>
+                  <Text > {props.name[0]}</Text>
                 </View>
           
         </TouchableOpacity>

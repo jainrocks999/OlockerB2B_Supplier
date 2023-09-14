@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -19,23 +19,22 @@ import {
 } from 'react-native-responsive-screen';
 import Loader from '../../../components/Loader';
 import {TextInput} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 
 const MessageBox2 = () => {
   const navigation = useNavigation();
-  const [business, setBusiness] = useState(true);
-  const [customer, setCustomer] = useState(false);
-  const [count, setCount] = useState(3);
 const selector = useSelector(state => state.Chat.patnerContact)
 const isFetching = useSelector(state => state.Chat.isFetching);
-console.log('=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',selector);
+const isFoucse = useIsFocused();
+useEffect(()=>{
+  manageBusiness();
+},[isFoucse])
+
   const dispatch = useDispatch();
   const manageBusiness = async() => {
-setCount(3)
-setBusiness(true);
-setCustomer(false);
+
     const user_id = await AsyncStorage.getItem('user_id');
 
     dispatch({
@@ -45,12 +44,8 @@ setCustomer(false);
     });
   
   };
-  const manageCustomer = () => {
-    setCount(5)
-    setCustomer(true);
-    setBusiness(false);
-  };
-  const dataToShow = page.slice(0,count);
+  
+ 
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -86,64 +81,7 @@ setCustomer(false);
             </TouchableOpacity>
           </View>
         </View>
-        <View
-          style={{
-            paddingVertical: 5,
-            flexDirection: 'row',
-            marginHorizontal: 20,
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginTop: 8,
-          }}>
-          <TouchableOpacity
-            onPress={() => manageBusiness()}
-            style={{
-              borderWidth: 1,
-              height: 35,
-              width: '45%',
-              borderRadius: 16,
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingHorizontal: 20,
-              backgroundColor: business == true ? '#032e63' : '#fff',
-              borderColor: business == true ? '#032e63' : '#2b2b2b',
-            }}>
-            <Text
-              style={{
-                fontSize: 13,
-                fontFamily: 'Acephimere',
-                color: business == true ? '#fff' : '#2b2b2b',
-              }}>
-              Business
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => manageCustomer()}
-            style={{
-              width: '45%',
-              borderWidth: 1,
-              height: 35,
-              borderRadius: 16,
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingHorizontal: 20,
-              marginLeft: 15,
-              backgroundColor: customer == true ? '#032e63' : '#fff',
-              borderColor: customer == true ? '#032e63' : '#2b2b2b',
-            }}>
-            <Text
-              style={{
-                fontSize: 13,
-                fontFamily: 'Acephimere',
-                color: customer == true ? '#fff' : '#2b2b2b',
-              }}>
-              Customer
-            </Text>
-          </TouchableOpacity>
-        </View>
-       {business &&
-       <>
-       
+     
        <View style={{height: 80, marginTop: 15}}>
          { <FlatList
             data={selector}
@@ -156,13 +94,12 @@ setCustomer(false);
                 onPress={() => {
                   navigation.navigate('ChatScreen',{uri:item.img,name:item.name});
                 }}
-                style={{padding: 7}}>
-                  <Image
-                    style={{height: 60, width: 60, borderRadius: 30}}
-                    source={{
-                      uri: item.img,
-                    }}
-                  />
+                style={{height: 60, width: 60, borderRadius: 30,backgroundColor:'#f0f0f0',
+                borderWidth:1,margin:7,justifyContent:'center',alignItems:'center'}}
+            >
+                  <Text
+                  style={{fontSize:22,fontWeight:'700'}}
+                  >{item.conatct_name[0]}</Text>
                   <View
                     style={{
                       backgroundColor: '#30fc3a',
@@ -170,8 +107,8 @@ setCustomer(false);
                       width: 15,
                       borderWidth: 1,
                       position: 'absolute',
-                      bottom: 10,
-                      right: 10,
+                      bottom: 2,
+                      right:2,
                       borderRadius: 7.5,
                     }}
                   />
@@ -193,7 +130,8 @@ setCustomer(false);
             renderItem={({item}) => (
               <TouchableOpacity
               onPress={() => {
-                navigation.navigate('ChatScreen',{uri:item.img,name:item.conatct_name});
+                navigation.navigate('ChatScreen',{item:item});
+              
               }}
                 style={styles.Usercard}>
                 <View  style={{height: 60, width: 60, borderRadius: 30,
@@ -229,97 +167,9 @@ setCustomer(false);
           />
         </View>
         
-        </>
-        }
 
-        {customer && <>
-          <View style={{height: 80, marginTop: 15}}>
-         { <FlatList
-            data={dataToShow}
-            horizontal
-            
-            showsHorizontalScrollIndicator={false}
-            renderItem={({item}) => (
-              <View>
-                <TouchableOpacity 
-                onPress={() => {
-                  navigation.navigate('ChatScreen',{uri:item.img,name:item.name});
-                }}
-                style={{padding: 7}}>
-                  <Image
-                    style={{height: 60, width: 60, borderRadius: 30}}
-                    source={{
-                      uri: item.img,
-                    }}
-                  />
-                  <View
-                    style={{
-                      backgroundColor: '#30fc3a',
-                      height: 15,
-                      width: 15,
-                      borderWidth: 1,
-                      position: 'absolute',
-                      bottom: 10,
-                      right: 10,
-                      borderRadius: 7.5,
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-            )}
-          />}
-        </View>
-        <View style={[styles.searchbar, {marginTop: 20}]}>
-          <TextInput placeholder="Search Custmore" style={{fontSize: 18}} />
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
-            <Feather name="search" size={30} />
-          </View>
-        </View>
-        <View>
-          <FlatList
-            data={dataToShow}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
-              <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('ChatScreen',{uri:item.img,name:item.name});
-              }}
-                style={styles.Usercard}>
-                <View style={{padding: 7}}>
-                  <Image
-                    style={{height: 60, width: 60, borderRadius: 30}}
-                    source={{
-                      uri: item.img,
-                    }}
-                  />
-                </View>
-                <View style={{justifyContent: 'center', width: '70%'}}>
-                  <Text
-                    style={{fontSize: 18, fontWeight: '800', color: '#000'}}>
-                    {item.name}
-                  </Text>
-                  <Text>{item.name}</Text>
-                </View>
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Text style={{fontWeight: '800'}}>Now</Text>
-                  <View
-                    style={{
-                      backgroundColor: '#4eaefc',
-                      height: 15,
-                      width: 15,
-                      borderWidth: 1,
-                      marginTop: 15,
-                      borderRadius: 7.5,
-                    }}
-                  />
-                </View>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-        </>
 
-        }
+
 
         <View style={{height: 30}} />
       </ScrollView>

@@ -7,7 +7,7 @@ import City from "./City";
 import Catalogue from "./Catalogue";
 import Home from "./Home";
 import Offer from "./Offer";
-import Chat from "./chat";
+import Chat from "./Chat";
 
 export default combineReducers({
   Auth,

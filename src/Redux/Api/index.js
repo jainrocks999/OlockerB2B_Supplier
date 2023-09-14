@@ -57,6 +57,7 @@ export default class Api {
   };
 
 static fetchDataByGET3 = async (url, data) => {
+
   const Token=await AsyncStorage.getItem('loginToken')
     try {
       const response = await axios({
@@ -89,4 +90,38 @@ static fetchDataByGET3 = async (url, data) => {
       throw error;
     }
   };
+
+
+  static sendMessage = async (action)=>{
+
+    try{
+    var myHeaders = new Headers();
+    myHeaders.append("Olocker", `Bearer ${action.token}`);
+    
+    var formdata = new FormData();
+    formdata.append("sender_id", "763");
+    formdata.append("reciver_id", action.reciverId);
+    formdata.append("user_type", "supplier");
+    formdata.append("message", action.message,);
+    
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow'
+    };
+    
+  const response =  fetch("https://olocker.co/api/supplier/msgSentSuccess", requestOptions)
+      .then(response => response.text())
+      .then(result =>  {return  JSON.parse(result)})
+      .catch(error => console.log('error', error));
+  
+  return response;
+} catch (error) {
+  throw error;
 }
+
+}
+}
+
+
