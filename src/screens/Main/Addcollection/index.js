@@ -78,7 +78,7 @@ const Addcollection = () => {
         },
         url: 'https://olocker.co/api/supplier//postCreateCollection',
       });
-      console.log('thissi is rresponse');
+      // console.log('thissi is rresponse');
       if (response.data.status == 'success') {
         setFetching(false)
         dispatch({
@@ -91,11 +91,11 @@ const Addcollection = () => {
       } else {
         setFetching(false);
         Toast.show(response.data.msg)
-        console.log('thissi is rresponseelse');
+        // console.log('thissi is rresponseelse');
       }
     } catch (error) {
      setFetching(false)
-     console.log('this isi error',error);
+     // console.log('this isi error',error);
     }
   }
   };

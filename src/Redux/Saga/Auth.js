@@ -7,7 +7,7 @@ import {parse} from 'react-native-svg';
 
 //Login
 function* doLogin(action) {
-  console.log(action);
+  // // console.log(action);
   // try {
   //   const params = new URLSearchParams();
   //   params.append('email', 'issuenotfound.404+1@gmail.com');
@@ -32,7 +32,7 @@ function* doLogin(action) {
   //     Toast.show(response.message);
   //   }
   // } catch (error) {
-  //   console.log('error223', error);
+  //   // console.log('error223', error);
   //   yield put({
   //     type: 'User_Login_Error',
   //   });
@@ -41,7 +41,7 @@ function* doLogin(action) {
 // WishList Request
 
 function* WishListRequest(action) {
-  console.log('this is action detail', action.user_id);
+  // // console.log('this is action detail', action.user_id);
   try {
     const data = {
       userid: action.user_id,
@@ -53,7 +53,7 @@ function* WishListRequest(action) {
         payload: response.data,
       });
       action.navigation.navigate('FavDetails');
-      console.log('data get by WishList by Data ', response);
+    
       // action.navigation.navigate('MyNetwork1', { screen: 'MyNetwork' })
     } else {
       yield put({
@@ -75,7 +75,7 @@ function* SupportProfileRequest(action) {
       role: '6',
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-    console.log('this is user response', response);
+    // console.log('this is user response', response);
     if (response.status == true) {
       yield put({
         type: 'Supplier_Profile_Success',
@@ -293,7 +293,7 @@ function* SupplierProductList(action) {
 //Supplier Categories
 
 function* SupplierCategories(action) {
-  console.log('data ,,,actoin', action);
+  // console.log('data ,,,actoin', action);
   try {
     // const data = {
     //   userId: action.userId,
@@ -318,7 +318,7 @@ function* SupplierCategories(action) {
       });
     }
   } catch (error) {
-    console.log('why this ,, errow ', error);
+    // console.log('why this ,, errow ', error);
     yield put({
       type: 'User_SupplierCategories_Error',
     });
@@ -327,7 +327,7 @@ function* SupplierCategories(action) {
 
 // My Product Categories
 function* ProductCategories(action) {
-  console.log('data ,,,actoin', action);
+  // console.log('data ,,,actoin', action);
   try {
     const data = {
       userId: action.userId,
@@ -352,7 +352,7 @@ function* ProductCategories(action) {
       });
     }
   } catch (error) {
-    console.log('why this ,, errow ', error);
+    // console.log('why this ,, errow ', error);
     yield put({
       type: 'User_categories_Error',
     });
@@ -453,7 +453,7 @@ function* StateList(action) {
 }
 // Pending Request
 function* pendinRequest(action) {
-  console.log('fufseoufasiofsdoif', action);
+  // console.log('fufseoufasiofsdoif', action);
   try {
     const data = {
       partnerId: action.partnerId,
@@ -485,7 +485,7 @@ function* pendinRequest(action) {
 
 // sent Request
 function* SentRequest(action) {
-  console.log('fufseoufasiofsdoif', action);
+  // console.log('fufseoufasiofsdoif', action);
   try {
     const data = {
       partnerId: action.partnerId,
@@ -517,7 +517,7 @@ function* SentRequest(action) {
 
 // Acecpt Reequest
 function* AcecptRequest(action) {
-  console.log('fufseoufasiofsdoif', action);
+  // console.log('fufseoufasiofsdoif', action);
   try {
     let data = new FormData();
     data.append('partnerId', action.partnerId);
@@ -568,7 +568,7 @@ function* RejectRequest(action) {
       action.Token,
       data,
     );
-    console.log('data reject appp log .....', response);
+    // console.log('data reject appp log .....', response);
     if (response.status == true) {
       yield put({
         type: 'Get_/updateSupplierRequest1_Success',
@@ -589,7 +589,7 @@ function* RejectRequest(action) {
 }
 // Supplier Details
 function* SupplierDetail(action) {
-  console.log('fufseoufasiofsdoif', action);
+  // console.log('fufseoufasiofsdoif', action);
   try {
     const data = {
       supplierId: action.supplierId,

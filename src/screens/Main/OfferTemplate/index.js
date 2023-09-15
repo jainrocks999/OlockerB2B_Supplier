@@ -80,7 +80,7 @@ const OfferTemplate = () => {
       }
     } catch (error) {
       setFetching(false)
-      console.log('this isi error', error);
+      // console.log('this isi error', error);
     }
   }
   };
@@ -117,11 +117,11 @@ const OfferTemplate = () => {
       } else {
         setFetching(false);
         Toast.show(response.data.msg)
-        console.log('thissi is rresponseelse');
+        // console.log('thissi is rresponseelse');
       }
     } catch (error) {
       setFetching(false)
-      console.log('this isi error', error);
+      // console.log('this isi error', error);
     }
   };
 

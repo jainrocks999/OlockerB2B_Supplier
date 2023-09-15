@@ -98,12 +98,12 @@ const Loyalty = () => {
 
     const data3 = await AsyncStorage.getItem('data4');
     // let data = JSON.parse(data3);
-    console.log(
-      'item store Get item  in response ',
-      // data.map(item => {
-      //   console.log('temvff', item.response.StartDate);
-      // }),
-    );
+    // console.log(
+    //   'item store Get item  in response ',
+    //   // data.map(item => {
+    //   //   console.log('temvff', item.response.StartDate);
+    //   // }),
+    // );
 
     data.map(item => {
       if (value === item.Id) {

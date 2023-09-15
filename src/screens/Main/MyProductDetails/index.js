@@ -32,7 +32,7 @@ const MyProducts = ({route}) => {
   const selector = useSelector(state => state.ProductList?.list);
   const selector1 = useSelector(state => state.SupplierProduct?.list);
   const isFetching = useSelector(state => state.isFetching);
-  console.log('slector........', partner ? selector : selector1);
+  // console.log('slector........', partner ? selector : selector1);
   const [liked, setLiked] = useState([]);
   const [search, setSearch] = useState('');
 
@@ -137,7 +137,7 @@ const MyProducts = ({route}) => {
                       }}>
                       <TouchableOpacity
                         onPress={() => {
-                          console.log('liked i ii i ', liked);
+                          // console.log('liked i ii i ', liked);
                           if (liked.includes(index)) {
                             let unlike = liked.filter(elem => elem !== index);
                             setLiked(unlike);

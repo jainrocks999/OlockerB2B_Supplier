@@ -10,7 +10,7 @@ function* bannerList(action) {
   try {
     const data = {};
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-    console.log('thisi is user response', response);
+    // console.log('thisi is user response', response);
     if (response.success) {
       yield put({
         type: 'Banner_List_Success',
@@ -35,7 +35,7 @@ function* networkList(action) {
       userId: 13,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-    console.log('thisi is user response', response);
+    // console.log('thisi is user response', response);
     if (response.success == true) {
       yield put({
         type: 'Network_List_Success',
@@ -63,7 +63,7 @@ function* SearchRetailerRequest(action) {
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
 
-    console.log('serach saga= >>>>>>>', response);
+    // console.log('serach saga= >>>>>>>', response);
 
     if (response.status) {
       yield put({
@@ -180,7 +180,7 @@ function* getWishList(action) {
 }
 
 function* AddproductWishList(action) {
-  console.log( '==;.>...>>>>>>>>>>>>>',action.checkProduct, action.SupplierSrNo);
+  // console.log( '==;.>...>>>>>>>>>>>>>',action.checkProduct, action.SupplierSrNo);
   try {
     const data = {
       checkProduct: action.checkProduct,
@@ -188,7 +188,7 @@ function* AddproductWishList(action) {
       userType: 'supplier',
     };
     const response = yield call(Api.fetchDataByGET3, action.url, data);
-    console.log(response);
+    // console.log(response);
     // if (response.status) {
     //   yield put({
     //     type: 'AddWishList_Success',

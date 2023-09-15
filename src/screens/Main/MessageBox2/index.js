@@ -40,7 +40,7 @@ useEffect(()=>{
     dispatch({
       type: 'Patner_Contact_Request',
       url: '/getContactPartner',
-      id: 763,
+      id:parseInt(user_id) ,
     });
   
   };
@@ -92,7 +92,7 @@ useEffect(()=>{
               <View>
                 <TouchableOpacity 
                 onPress={() => {
-                  navigation.navigate('ChatScreen',{uri:item.img,name:item.name});
+                  navigation.navigate('ChatScreen',{item:item});
                 }}
                 style={{height: 60, width: 60, borderRadius: 30,backgroundColor:'#f0f0f0',
                 borderWidth:1,margin:7,justifyContent:'center',alignItems:'center'}}

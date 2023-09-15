@@ -13,7 +13,7 @@ function* SupportProfileRequest(action) {
         role:'6'
       };
       const response = yield call(Api.fetchDataByGET1,action.url,data);
-    //  console.log('this is user response',response);
+    //  // console.log('this is user response',response);
       if (response.status == true) {
         yield put({
           type: 'Supplier_Profile_Success',

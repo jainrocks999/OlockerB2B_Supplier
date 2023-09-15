@@ -72,7 +72,7 @@ export default App;
 //         value={Status}
 //         useNativeAndroidPickerStyle={false}
 //         placeholder={{label: 'Select', value: ''}}
-//         onValueChange={val => console.log('value', val)}
+//         onValueChange={val => // console.log('value', val)}
 //       />
 //     </View>
 //   );

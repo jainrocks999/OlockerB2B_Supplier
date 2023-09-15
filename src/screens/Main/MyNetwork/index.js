@@ -36,7 +36,7 @@ const MyCatalogue = () => {
   const focus = useIsFocused();
   const dispatch = useDispatch();
   const selector = useSelector(state => state.State.StateList?.satates);
-  console.log('this is state list', selector);
+  // console.log('this is state list', selector);
   const isFetching = useSelector(state => state?.isFetching);
   const [data, setData1] = useState('');
   const BannerWidth = (Dimensions.get('window').width * 15) / 16;
@@ -96,21 +96,21 @@ const MyCatalogue = () => {
         if (response.data.status == true) {
           setData1(response.data.list);
           setVisible1(false);
-          console.log('seach api data ', JSON.stringify(response.data.list));
+          // console.log('seach api data ', JSON.stringify(response.data.list));
 
           if (Object.keys(response.data.list).length) {
             setShow(false);
-            console.log('data log view on...', show);
+            // console.log('data log view on...', show);
           } else {
             setShow(true);
-            console.log('data log view of...', show);
+            // console.log('data log view of...', show);
           }
         }
       })
       .catch(error => {
         Toast.show('Server not responding');
         setVisible1(false);
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -181,7 +181,7 @@ const MyCatalogue = () => {
       navigation,
     });
   };
-  console.log('this is data on Heart', selector);
+  // console.log('this is data on Heart', selector);
 
   const citySearch = async value => {
     setState(value);
@@ -212,7 +212,7 @@ const MyCatalogue = () => {
         }
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
 
         Toast.show('Server not responding');
         setVisible1(false);
@@ -605,7 +605,7 @@ const MyCatalogue = () => {
                     placeholder={{label: 'Select Metal', value: ''}}
                   /> */}
                   {/* </View> */}
-                  {/* {console.log('resssmish',metal)} */}
+                  {/* {// console.log('resssmish',metal)} */}
 
                   {/* <RNPickerSelect
                   

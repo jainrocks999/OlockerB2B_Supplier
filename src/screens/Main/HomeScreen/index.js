@@ -32,7 +32,7 @@ const HomeScreen = () => {
   const selector1 = useSelector(state => state.Home.NetworkList);
   const bannerList = useSelector(state => state.Home.BannerList);
   const fetching = useSelector(state => state.Home.isFetching);
-  // console.log('this is network data daaa', bannerList);
+  // // console.log('this is network data daaa', bannerList);
   const win = Dimensions.get('window');
 
   const date = new Date();
@@ -61,7 +61,7 @@ const HomeScreen = () => {
 
     navigation.navigate('Login');
     const Token = await AsyncStorage.getItem('loginToken');
-   //  console.log('Logout time TOken  print ....', Token);
+   //  // console.log('Logout time TOken  print ....', Token);
   };
 
   const dispatch = useDispatch();
@@ -163,7 +163,7 @@ const HomeScreen = () => {
 
   const handleMyCatalogue = async () => {
 
-    console.log('Catalogue');
+    // console.log('Catalogue');
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
       type: 'My_Product_Request',

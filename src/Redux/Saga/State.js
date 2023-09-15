@@ -9,7 +9,7 @@ import {parse} from 'react-native-svg';
 function* stateList(action) {
   try {
     const response = yield call(Api.fetchDataByGET1, action.url);
-   // console.log('this is states', response);
+   // // console.log('this is states', response);
     if (response.status === true) {
       yield put({
         type: 'State_List_Success',
@@ -20,7 +20,7 @@ function* stateList(action) {
         type: 'State_List_Error',
       });
     }
-  //  console.log('this is state list from saga', response);
+  //  // console.log('this is state list from saga', response);
   } catch (error) {
     yield put({
       type: 'State_List_Error',

@@ -33,7 +33,7 @@ const HomeScreen = () => {
   const [pending, setPending] = useState(true);
   const [accepted, setAccepted] = useState(false);
   const demo = (ind ,index2) => {
-    console.log('srno ..................', ind);
+    // console.log('srno ..................', ind);
     const tempData=data2?data2:selector?.suppliers
     var data= tempData.filter((item, index) => {
       return index != index2;
@@ -63,13 +63,13 @@ let config = {
 
 axios.request(config)
 .then((response) => {
-  console.log(' delete data from api', JSON.stringify(response.data));
+  // console.log(' delete data from api', JSON.stringify(response.data));
   if (response.data.status == true) {
     demo(id,index2)
   }
 })
 .catch((error) => {
-  console.log(error);
+  // console.log(error);
 });
 
    

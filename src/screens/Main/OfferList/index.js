@@ -31,7 +31,7 @@ const OfferList = () => {
   const [description, setDescription] = useState('')
   const selector = useSelector(state => state.Offer.OfferListData)
 
-  console.log('=>>>>>>>>>>>>>>>>>>>>',selector);
+  // console.log('=>>>>>>>>>>>>>>>>>>>>',selector);
 
   const isFetching = useSelector(state => state.Offer.isFetching)
 const[temp,setTemp]=useState()
@@ -80,7 +80,7 @@ useEffect(()=>{
         }
       } catch (error) {
         setFetching(false)
-        console.log('this isi error', error);
+        // console.log('this isi error', error);
       }
     }
   };
@@ -117,11 +117,11 @@ useEffect(()=>{
       } else {
         setFetching(false);
         Toast.show(response.data.msg)
-        console.log('thissi is rresponseelse');
+        // console.log('thissi is rresponseelse');
       }
     } catch (error) {
       setFetching(false)
-      console.log('this isi error', error);
+      // console.log('this isi error', error);
     }
   };
 
@@ -164,10 +164,10 @@ let config = {
 axios.request(config)
 .then((response) => {
   setTemp(response.data.data.offerList);
-  console.log(JSON.stringify(response.data.data.offerList));
+  // console.log(JSON.stringify(response.data.data.offerList));
 })
 .catch((error) => {
-  console.log(error);
+  // console.log(error);
 });
 
  }

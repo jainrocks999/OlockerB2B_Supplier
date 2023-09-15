@@ -15,7 +15,7 @@ const MyCatalogue = () => {
   const [fetching, setFetching] = useState(false);
 
   const validateUser = async item => {
-    console.log('this is iteem', item);
+    // console.log('this is iteem', item);
     const Token = await AsyncStorage.getItem('loginToken');
     const user_id = await AsyncStorage.getItem('user_id');
     try {
@@ -33,10 +33,10 @@ const MyCatalogue = () => {
         },
         url: `https://olocker.co/api/supplier//removeCollection?SrNo=${item.SrNo}`,
       });
-      console.log('thissi is rresponse', response.data);
+      // console.log('thissi is rresponse', response.data);
       if (response.data.status == 'success') {
         setFetching(false);
-        console.log('thissi is rresponse1', response.data.status);
+        // console.log('thissi is rresponse1', response.data.status);
         dispatch({
           type: 'Get_Catalogue_Request',
           url: '/listCollection',
@@ -48,12 +48,12 @@ const MyCatalogue = () => {
         setFetching(false);
         Toast.show(response.data.msg);
 
-        console.log('thissi is rresponseelse');
+        // console.log('thissi is rresponseelse');
       }
     } catch (error) {
       setFetching(false);
       console.error(error.response.data);
-      console.log('this isi error', error);
+      // console.log('this isi error', error);
     }
   };
 

@@ -28,7 +28,7 @@
 //   const [data2, setUserdata1] = useState('');
 //   const date = new Date();
 //   let ToDAY = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-//   console.log('change formate', ToDAY);
+//   // console.log('change formate', ToDAY);
 
 //   const data = [
 //     {quarter: 1, earnings: 500},
@@ -132,7 +132,7 @@
 //                 // onPress={() => userProfile(item.SrNo)}
 //                 //  onPress={()=>navigation.navigate('MyCustomerDetail')}
 //                 style={styles.cardView}>
-//                 {console.log('item233', item)}
+//                 {// console.log('item233', item)}
 //                 <View style={styles.carditem}>
 //                   <Image
 //                     style={styles.carditemimg}
@@ -250,7 +250,7 @@ const HomeScreen = () => {
   const selector1 = useSelector(state => state.Supplier.SupplierDetail);
   const selector = selector1?.data;
   const ownerImagePath = 'https://olocker.co/uploads/supplier/';
-  console.log('this is selector');
+  // console.log('this is selector');
   const isFetching = useSelector(state => state.Supplier.isFetching);
   const isFetching1 = useSelector(state => state.City.isFetching);
   const [profile, setProfile] = useState(true);

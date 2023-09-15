@@ -3,7 +3,7 @@ import {SearchBar} from 'react-native-screens';
 initialstate = {
   isFetching:false,
   patnerContact:[],
-  MessageSend:false,
+  MessageSend:null,
   GetMessage:[]
 };
 export default (state = initialstate, action) => {
@@ -19,16 +19,16 @@ export default (state = initialstate, action) => {
     case 'Message_Send_Request':
       return {...state, isFetching: true,};
     case 'Message_Send_Success':
-      return {...state, isFetching: false, MessageSend:true};
+      return {...state, isFetching: false, MessageSend:action.payload};
     case 'Message_Send_Error':
-      return {...state, isFetching: false,MessageSend:false};
+      return {...state, isFetching: false,};
 
     case 'get_Message_Request':
       return {...state, isFetching: true,};
     case 'get_Message_Success':
       return {...state, isFetching: false, GetMessage:action.payload};
     case 'get_Message_Error':
-      return {...state, isFetching: false,MessageSend:false};
+      return {...state, isFetching: false,};
 
     default:
       return state;

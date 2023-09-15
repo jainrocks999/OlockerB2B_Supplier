@@ -28,7 +28,7 @@ const MyCatalogueDetaill = () => {
   const [selected, setSelected] = useState([])
   const refRBSheet = useRef();
   const [product, setProduct] = useState('')
-console.log('this is product',product[0]);
+// console.log('this is product',product[0]);
   const manageActive = () => {
     setActive('checked');
     setInActive('unchecked');
@@ -62,18 +62,18 @@ console.log('this is product',product[0]);
           },
           url: 'https://olocker.co/api/supplier//addCollectionProduct',
         });
-        console.log('thissi is rresponse');
+        // console.log('thissi is rresponse');
         if (response.data.status == 'success') {
           setFetching(false)
           Toast.show(response.data.msg)
         } else {
           setFetching(false);
           Toast.show(response.data.msg)
-          console.log('thissi is rresponseelse');
+          // console.log('thissi is rresponseelse');
         }
       } catch (error) {
         setFetching(false)
-        console.log('this isi error', error);
+        // console.log('this isi error', error);
       }
     }
   };
@@ -95,7 +95,7 @@ console.log('this is product',product[0]);
         },
         url: 'https://olocker.co/api/supplier//deleteCollectionProduct',
       });
-      console.log('thissi is rresponse', response);
+      // console.log('thissi is rresponse', response);
       if (response.data.status == 'success') {
         setFetching(false)
         Toast.show(response.data.msg)
@@ -117,18 +117,18 @@ console.log('this is product',product[0]);
       } else {
         setFetching(false);
         Toast.show(response.data.msg)
-        console.log('thissi is rresponseelse');
+        // console.log('thissi is rresponseelse');
       }
     } catch (error) {
       setFetching(false)
-      console.log('this isi error', error);
+      // console.log('this isi error', error);
     }
   };
 
   const handleMove = async (item) => {
     const Token = await AsyncStorage.getItem('loginToken')
     const user_id = await AsyncStorage.getItem('user_id')
-    console.log('this i item srno',item.pcm_srno);
+    // console.log('this i item srno',item.pcm_srno);
 
     try {
       setFetching(true)
@@ -145,7 +145,7 @@ console.log('this is product',product[0]);
         },
         url: 'https://olocker.co/api/supplier//moveProductToCollection',
       });
-      console.log('thissi is rresponse', response);
+      // console.log('thissi is rresponse', response);
       if (response.data.status == 'success') {
         setFetching(false)
         Toast.show(response.data.msg)
@@ -158,11 +158,11 @@ console.log('this is product',product[0]);
       } else {
         setFetching(false);
         Toast.show(response.data.msg)
-        console.log('thissi is rresponseelse');
+        // console.log('thissi is rresponseelse');
       }
     } catch (error) {
       setFetching(false)
-      console.log('this isi error', error);
+      // console.log('this isi error', error);
     }
   };
 
@@ -191,7 +191,7 @@ console.log('this is product',product[0]);
       setSelected([])
     }
   }
-console.log('this i selected',selected);
+// console.log('this i selected',selected);
   const renderCheck = (item) => {
     let check = false
     if (selected.includes(item.SrNo)) {

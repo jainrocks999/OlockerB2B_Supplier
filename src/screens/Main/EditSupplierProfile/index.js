@@ -27,7 +27,7 @@ const EditSupplierProfile = ({route}) => {
     const showroomImage=route.params.showroomImage
     const supplierLogo=route.params.supplierLogo
     const ownerImage=route.params.ownerImage
-    console.log('ownerName1,productImage',productImage,ownerImage);
+    // console.log('ownerName1,productImage',productImage,ownerImage);
     const [supplierName,setSupplierName]=useState(details.SupplierName)
     const [contactPerson,setContactPerson]=useState(details.ContactPersonName)
     const [mobile,setMobile]=useState(details.MobileNo)
@@ -165,7 +165,7 @@ const EditSupplierProfile = ({route}) => {
     const validateUser = async () => {
         const user_id=await AsyncStorage.getItem('user_id')
         const Token=await AsyncStorage.getItem('loginToken')
-        console.log('this is user id',user_id);
+        // console.log('this is user id',user_id);
         if(supplierName==''){
           Toast.show('Please enter supplier name')
         }
@@ -308,19 +308,19 @@ const EditSupplierProfile = ({route}) => {
             },
             url: 'https://olocker.co/api/supplier//updateProfile',
           });
-          console.log('this is iresponae',response);
+          // console.log('this is iresponae',response);
           if (response.data.status == 'success') {
             setFetching(false)
             Toast.show(response.data.msg)
           } else {
             setFetching(false);
             Toast.show(response.data.msg)
-            console.log('this is iresponae',response);
+            // console.log('this is iresponae',response);
           }
         } catch (error) {
-            // console.log("err->", error.response.data)
+            // // console.log("err->", error.response.data)
          setFetching(false)
-         console.log('this is iresponae',error);
+         // console.log('this is iresponae',error);
         }
       }
       };
@@ -394,7 +394,7 @@ const EditSupplierProfile = ({route}) => {
             } else if (response.errorCode == 'others') {
                 return;
             }
-            console.log('this is respponsee valu',response);
+            // console.log('this is respponsee valu',response);
            setLogoName(response.assets[0].fileName.substring(response.assets[0].fileName.lastIndexOf('-') + 1))
            setLogoUri(response.assets[0].uri)
            setLogoType(response.assets[0].type)

@@ -23,9 +23,9 @@ const HomeScreen = () => {
   const selector = useSelector(state => state.Pending);
   const data2 = useSelector(state => state.deletData1)
   const isFetching = useSelector(state => state?.isFetching)
-  console.log('pendind request on  get daat ', selector);
+  // console.log('pendind request on  get daat ', selector);
   const demo = (ind, index2) => {
-    console.log('srno ..................', ind);
+    // console.log('srno ..................', ind);
     const tempData = data2 ? data2 : selector?.list
     var data = tempData.filter((item, index) => {
       return index != index2;
@@ -63,7 +63,7 @@ const HomeScreen = () => {
 
     axios.request(config)
       .then((response) => {
-        console.log('response data ........', (response.data));
+        // console.log('response data ........', (response.data));
         if (response.data.status == true) {
           demo(index)
 
@@ -71,14 +71,14 @@ const HomeScreen = () => {
 
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
 
 
   }
   const RejectMEthod = async (id, index) => {
 
-    console.log('data iss s', id);
+    // console.log('data iss s', id);
     const srno = await AsyncStorage.getItem('Partnersrno');
     const Token = await AsyncStorage.getItem('loginToken')
 
@@ -102,7 +102,7 @@ const HomeScreen = () => {
 
     axios.request(config)
       .then((response) => {
-        console.log('response data ........', (response.data));
+        // console.log('response data ........', (response.data));
         if (response.data.status == true) {
           demo(index)
 
@@ -110,7 +110,7 @@ const HomeScreen = () => {
 
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
 
 
@@ -153,7 +153,7 @@ const HomeScreen = () => {
               paddingHorizontal: 20,
               flexDirection: 'row',
             }}>
-            {console.log('image shows aaa  ', item.logoImage)}
+            {/* {console.log('image shows aaa  ', item.logoImage)} */}
             <View
               style={{
                 width: '38%',
@@ -243,7 +243,7 @@ const HomeScreen = () => {
                 </TouchableOpacity>
               </View>
             </View>
-            {/* {console.log('zvvvv',item)} */}
+            {/* {// console.log('zvvvv',item)} */}
           </View>
         )}
       />

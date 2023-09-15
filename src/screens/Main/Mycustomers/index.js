@@ -91,10 +91,10 @@ const Mycustomer = () => {
                 alignItems: 'center',
                 paddingVertical: 10,
               }}>
-              {console.log(
+              {/* {console.log(
                 'image......hhh',
                 `${ImagePath.Path}${item.ProfilePic}`,
-              )}
+              )} */}
               <View
                 style={{
                   height: 40,

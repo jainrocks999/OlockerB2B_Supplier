@@ -7,10 +7,12 @@ import {parse} from 'react-native-svg';
 
 //Login
 function* doLogin(action) {
+
   try {
     const params = new URLSearchParams();
     params.append('email', action.email);
     params.append('password', action.password);
+    params.append("fcm_token", action.fcmToken);
     const response = yield call(Api.fetchDataByPOST, action.url, params);
 
     if (!response) {
@@ -31,7 +33,7 @@ function* doLogin(action) {
       Toast.show(response.message);
     }
   } catch (error) {
-    console.log('error223', error);
+    // console.log('error223', error);
     yield put({
       type: 'User_Login_Error',
     });

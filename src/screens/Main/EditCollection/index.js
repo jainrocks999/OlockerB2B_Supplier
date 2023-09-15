@@ -126,7 +126,7 @@
 //         },
 //         url: 'https://olocker.co/api/supplier//postCreateCollection',
 //       });
-//       console.log('thissi is rresponse');
+//       // console.log('thissi is rresponse');
 //       if (response.data.status == 'success') {
 //         setFetching(false)
 //         dispatch({
@@ -139,11 +139,11 @@
 //       } else {
 //         setFetching(false);
 //         Toast.show(response.data.msg)
-//         console.log('thissi is rresponseelse');
+//         // console.log('thissi is rresponseelse');
 //       }
 //     } catch (error) {
 //      setFetching(false)
-//      console.log('this isi error',error);
+//      // console.log('this isi error',error);
 //     }
 //   }
 //   };
@@ -430,7 +430,7 @@
 //         },
 //         url: 'https://olocker.co/api/supplier//postCreateCollection',
 //       });
-//       console.log('thissi is rresponse');
+//       // console.log('thissi is rresponse');
 //       if (response.data.status == 'success') {
 //         setFetching(false)
 //         dispatch({
@@ -443,11 +443,11 @@
 //       } else {
 //         setFetching(false);
 //         Toast.show(response.data.msg)
-//         console.log('thissi is rresponseelse');
+//         // console.log('thissi is rresponseelse');
 //       }
 //     } catch (error) {
 //      setFetching(false)
-//      console.log('this isi error',error);
+//      // console.log('this isi error',error);
 //     }
 //   }
 //   };
@@ -636,7 +636,7 @@ import { useDispatch } from "react-redux";
 import { RadioButton } from "react-native-paper";
 
 const EditCollection = ({route}) => {
-  console.log('this i route data',route.params)
+  // console.log('this i route data',route.params)
   const data=route.params.item
   const navigation = useNavigation();
   const dispatch=useDispatch()
@@ -650,10 +650,10 @@ const EditCollection = ({route}) => {
   const [photoName, setPhotoName] = useState(data.ImageName);
   const [photoType, setPhotoType] = useState('image/jpeg');
   const [fetching,setFetching]=useState(false)
- console.log('this is imagee',photo,"kd;kv;zx",photoName,"dska",photoType);
+ // console.log('this is imagee',photo,"kd;kv;zx",photoName,"dska",photoType);
 
   const validateUser = async () => {
-    console.log('this is se=rno',data.SrNo);
+    // console.log('this is se=rno',data.SrNo);
     const user_id=await AsyncStorage.getItem('user_id')
     const Token=await AsyncStorage.getItem('loginToken')
     if(name==''){
@@ -699,7 +699,7 @@ const EditCollection = ({route}) => {
         },
         url: 'https://olocker.co/api/supplier//postCreateCollection',
       });
-      console.log('thissi is rresponse',response.data);
+      // console.log('thissi is rresponse',response.data);
       if (response.data.status == 'success') {
         setFetching(false)
         dispatch({
@@ -712,12 +712,12 @@ const EditCollection = ({route}) => {
       } else {
         setFetching(false);
         Toast.show(response.data.msg)
-        console.log('thissi is rresponseelse');
+        // console.log('thissi is rresponseelse');
       }
     } catch (error) {
      setFetching(false)
     //  console.error(error.response.data); 
-     console.log('this isi error',error,data.SrNo);
+     // console.log('this isi error',error,data.SrNo);
     }
   }
   };

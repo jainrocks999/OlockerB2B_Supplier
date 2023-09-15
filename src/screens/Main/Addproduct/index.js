@@ -174,18 +174,18 @@ const Addproduct = () => {
           },
           url: 'https://olocker.co/api/supplier//addCollectionProduct',
         });
-        console.log('thissi is rresponse');
+        // console.log('thissi is rresponse');
         if (response.data.status == 'success') {
           setFetching(false)
           Toast.show(response.data.msg)
         } else {
           setFetching(false);
           Toast.show(response.data.msg)
-          console.log('thissi is rresponseelse');
+          // console.log('thissi is rresponseelse');
         }
       } catch (error) {
         setFetching(false)
-        console.log('this isi error', error);
+        // console.log('this isi error', error);
       }
     }
   };
@@ -207,7 +207,7 @@ const Addproduct = () => {
         },
         url: 'https://olocker.co/api/supplier//deleteCollectionProduct',
       });
-      console.log('thissi is rresponse', response);
+      // console.log('thissi is rresponse', response);
       if (response.data.status == 'success') {
         setFetching(false)
         Toast.show(response.data.msg)
@@ -229,11 +229,11 @@ const Addproduct = () => {
       } else {
         setFetching(false);
         Toast.show(response.data.msg)
-        console.log('thissi is rresponseelse');
+        // console.log('thissi is rresponseelse');
       }
     } catch (error) {
       setFetching(false)
-      console.log('this isi error', error);
+      // console.log('this isi error', error);
     }
   };
 
@@ -255,7 +255,7 @@ const Addproduct = () => {
         },
         url: 'https://olocker.co/api/supplier//moveProductToCollection',
       });
-      console.log('thissi is rresponse', response);
+      // console.log('thissi is rresponse', response);
       if (response.data.status == 'success') {
         setFetching(false)
         Toast.show(response.data.msg)
@@ -268,11 +268,11 @@ const Addproduct = () => {
       } else {
         setFetching(false);
         Toast.show(response.data.msg)
-        console.log('thissi is rresponseelse');
+        // console.log('thissi is rresponseelse');
       }
     } catch (error) {
       setFetching(false)
-      console.log('this isi error', error);
+      // console.log('this isi error', error);
     }
   };
 

@@ -65,7 +65,7 @@ const Profile = () => {
                   width: '35%',
                   paddingVertical: 15,
                 }}>
-                {/* {console.log('bire', `https://olocker.co/uploads/supplier/${item.ImageName}`)} */}
+                {/* {// console.log('bire', `https://olocker.co/uploads/supplier/${item.ImageName}`)} */}
 
                 <View style={{width: '80%', alignItems: 'center'}}>
                   <View style={{height: 90, width: '100%', borderWidth: 1}}>

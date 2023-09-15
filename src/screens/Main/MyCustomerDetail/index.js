@@ -57,10 +57,10 @@ const Mycustomer = () => {
         )
         // .fetch('GET', `https:\/\/ekyatraterapanth.com\/adminpanel\/assets\/doc\/terapanth_ka_itihaas_part_1.pdf`, {})
         .then(res => {
-          console.log('higiidgdigzigz', res.path());
+          // console.log('higiidgdigzigz', res.path());
         });
     } catch (e) {
-      console.log('ffflkkf', e);
+      // console.log('ffflkkf', e);
     }
   };
 
@@ -73,7 +73,7 @@ const Mycustomer = () => {
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log('ggergewg', granted);
+          // console.log('ggergewg', granted);
           actualDownload();
         } else {
           Alert.alert(

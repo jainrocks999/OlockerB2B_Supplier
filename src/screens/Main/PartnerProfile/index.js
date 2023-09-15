@@ -28,7 +28,7 @@ const HomeScreen = () => {
   const navigation = useNavigation();
   const selector = useSelector(state => state.Supplier.SupplierDetail?.detail)
   const isFetching = useSelector(state => state.isFetching);
-  console.log('supplier detail.......', selector.logoImage);
+  // console.log('supplier detail.......', selector.logoImage);
   const [profile, setProfile] = useState(true);
   const [message, setMessage] = useState(false);
   const [catalogue, setCatalogue] = useState(false);

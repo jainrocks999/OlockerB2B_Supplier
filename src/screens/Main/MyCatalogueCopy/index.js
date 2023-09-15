@@ -32,7 +32,7 @@ const MyCatalogueCopy = () => {
   const [mycollection, setMycollection] = useState(false);
   const wishlist = useSelector(state => state.Home.getWishList);
   const [liked, setLiked] = useState([]);
-  //console.log('thhis is selector', selector);
+  //// console.log('thhis is selector', selector);
   const handleMyCatalogue = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({

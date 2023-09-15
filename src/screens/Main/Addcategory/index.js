@@ -44,7 +44,7 @@ const AddCategory = () => {
             <Text style={styles.Text1}>Select Type</Text>
             <View style={styles.main1}>
               <RNPickerSelect
-                onValueChange={val => console.log(val)}
+                onValueChange={val =>  console.log(val)}
                 items={Data}
                 style={{
                   inputAndroid: {

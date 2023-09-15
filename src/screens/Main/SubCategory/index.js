@@ -26,10 +26,10 @@ const SubCategory = ({route}) => {
   const name = route.params.name;
   const name1 = route.params.name;
   const Detail = route.params.Details;
-  console.log(
-    'detailss........................',
-    Detail ? selector : selector1,
-  );
+  // console.log(
+  //   'detailss........................',
+  //   Detail ? selector : selector1,
+  // );
 
   const isFetching = useSelector(state => state.isFetching);
   const [collection, setCollection] = useState(

@@ -10,10 +10,10 @@ const Splash = () => {
 
   useEffect(() => {
     const unmemory = setInterval(() => {}, 3000);
-    console.log('vireddfdffffggggegeg', unmemory);
+    // console.log('vireddfdffffggggegeg', unmemory);
     return () => {
       clearInterval(unmemory);
-      console.log('vireddfdffffggggegeg23244', unmemory);
+      // console.log('vireddfdffffggggegeg23244', unmemory);
     };
   },[]);
   
@@ -28,14 +28,14 @@ const Splash = () => {
       type:'Banner_List_Request',
       url:'/getBannerList'
     })
-    console.log('Login Before app run by print Token', Token);
+    // console.log('Login Before app run by print Token', Token);
 
     if (!Token) {
       setTimeout(() => navigation.replace('Login'), 2000);
     } else {
       //  if(SubscribeDetails.exp_date >= currentDate){
       setTimeout(() => navigation.replace('Home'), 2000);
-      console.log('ets worikkdgj');
+      // console.log('ets worikkdgj');
     }
   };
   return (

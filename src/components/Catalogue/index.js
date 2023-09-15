@@ -10,7 +10,7 @@ const Catalogue = () => {
   const dispatch = useDispatch();
   const categiroes = useSelector(state => state.Auth.SupplierCategories);
   const isFetching = useSelector(state => state.Auth.isFetching)
-  console.log('categiroes   list  show on ', categiroes);
+  // // console.log('categiroes   list  show on ', categiroes);
 
   const ProductList1 = async item => {
     const supplier = await AsyncStorage.getItem('supplierID');
@@ -64,7 +64,7 @@ const Catalogue = () => {
               backgroundColor: '#fff',
               borderWidth: 0.3,
             }}>
-            {console.log('this is user respons2234', item)}
+            {/* {// console.log('this is user respons2234', item)} */}
 
             <Image
               style={{ height: 100, width: '100%' }}

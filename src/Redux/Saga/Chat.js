@@ -2,6 +2,7 @@ import {ToastAndroid, YellowBox} from 'react-native';
 import {takeEvery, put, call} from 'redux-saga/effects';
 import Api from '../Api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { GetMessageCommon } from '../../screens/Main/ChatScreen/common';
 
 function* PatnerContact(action) {
   try {
@@ -34,7 +35,11 @@ function* SendMessage(action) {
     if (response.status == true) {
       yield put({
         type: 'Message_Send_Success',
+        payload:action.reciverId
+       
       });
+
+      GetMessageCommon(action.reciverId);
     } else {
       yield put({
         type: 'Message_Send_Error',
@@ -47,31 +52,43 @@ function* SendMessage(action) {
   }
 }
 function* GetMessage(action) {
+  const data = {
+    sender_id:action.senderId,
+    reciver_id:action.reciverid,
+  };
 
-  console.log('=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>safgadfsasada',action);
+  
   try {
-    const data = {
-      sender_id:action.senderId,
-      reciver_id: action.reciverid,
-    };
+    const res = yield call(Api.fetchDataByGET1, action.url, data);
 
-    const response = yield call(Api.fetchDataByGET1, data);
-console.log('res=>>>>>>>>>>>>>>>>>>>>>>>>>>>>saga ',response);
-    // if (response.status == true) {
-    //   yield put({
-    //     type: 'get_Message_Success',
-    //     payload: response.data,
-
-    //   });
-    // } else {
-    //   yield put({
-    //     type: 'get_Message_Error',
-    //   });
-    // }
+    if (res.status == true) {
+      let message = [];
+      res.data.map(item => {
+        let sendId = parseInt(item.sender_id);
+        message.push({
+          _id: item.id,
+          text: item.message,
+          createdAt: item.created_at,
+          user: {
+            _id: sendId,
+          },
+        });
+      }),
+        yield put({
+          type: 'get_Message_Success',
+          payload: message,
+        });
+    } else {
+      yield put({
+        type: 'get_Message_Error',
+        payload: []
+      });
+    }
   } catch (error) {
-    console.log('tycatch errosadaga get msd=>>>>>>>>>',error);
+    // console.log('try catch  saga =>>>>>>>>>', error);
     yield put({
       type: 'get_Message_Error',
+      payload: []
     });
   }
 }

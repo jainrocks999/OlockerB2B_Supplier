@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
 
 const Addproduct = ({route}) => {
-    console.log('this is useer data',)
+    // console.log('this is useer data',)
   const navigation = useNavigation();
   const dispatch=useDispatch()
   const [fetching,setFetching]=useState(false)
@@ -74,7 +74,7 @@ const Addproduct = ({route}) => {
       }
     } catch (error) {
       setFetching(false)
-      console.log('this isi error', error);
+      // console.log('this isi error', error);
     }
   }
   };

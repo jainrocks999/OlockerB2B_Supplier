@@ -12,7 +12,7 @@ function* offerList(action) {
         userid:action.userid
       }
       const response = yield call(Api.fetchDataByGET1,action.url,data);
-  // console.log('this is user response',response.status);
+  // // console.log('this is user response',response.status);
 
       if (response.status == 'success') {
         yield put({
@@ -26,7 +26,7 @@ function* offerList(action) {
         });
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       yield put({
         type: 'Template_Detail_Error',
       });
@@ -39,7 +39,7 @@ function* offerList(action) {
         userid:action.userid
       }
       const response = yield call(Api.fetchDataByGET1,action.url,data);
-     // console.log('this is user response',response);
+     // // console.log('this is user response',response);
       if (response.status == 'success') {
         yield put({
           type: 'Add_Offer_Success',
@@ -65,7 +65,7 @@ function* offerList(action) {
         userid:action.userid
       }
       const response = yield call(Api.fetchDataByGET1,action.url,data);
-   //   console.log('this is user response',response);
+   //   // console.log('this is user response',response);
       if (response.status == 'success') {
         yield put({
           type: 'Offer_List_Success',

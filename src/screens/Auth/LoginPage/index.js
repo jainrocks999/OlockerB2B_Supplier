@@ -23,7 +23,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
+import messaging from '@react-native-firebase/messaging';
 const loginValidationSchema = yup.object().shape({
   email: yup
     .string()
@@ -41,7 +41,7 @@ const Login = () => {
   const isFetching = useSelector(state => state.isFetching);
   //  const [fetching, setFetching] = useState(false);
   const pertnerLogin = async values => {
-    console.log('values', values);
+    // console.log('values', values);
     setFetching(true);
     const axios = require('axios');
 
@@ -55,7 +55,7 @@ const Login = () => {
     axios
       .request(config)
       .then(response => {
-        console.log(JSON.stringify(response.data));
+        // console.log(JSON.stringify(response.data));
         if (response.data.status) {
           setFetching(false);
           navigation.replace('Home');
@@ -66,7 +66,7 @@ const Login = () => {
         }
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -89,18 +89,23 @@ const Login = () => {
     //     url: 'https://olocker.co/api/supplier//login',
     //     params: params,
     //   });
-    //   console.log('response.....',response.data);
+    //   // console.log('response.....',response.data);
     //   return response;
     // } catch (error) {
-    //   console.log('why eorror fatch by login', error);
+    //   // console.log('why eorror fatch by login', error);
     // }
     //  const response=   await axios.post('https://olocker.co/api/supplier//login', params, config)
-    //      console.log('this is useer response',response.data);
+    //      // console.log('this is useer response',response.data);
+
+      let token = await messaging().getToken();
+
+    
     dispatch({
       type: 'User_Login_Request',
       url: '/login',
       email: values.email,
       password: values.password,
+      fcmToken:token,
       navigation,
     });
   };

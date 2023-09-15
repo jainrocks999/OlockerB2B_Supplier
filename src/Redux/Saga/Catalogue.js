@@ -36,7 +36,7 @@ function* getCatalogue(action) {
 
   function* getProducts(action) {
 
-console.log(action);
+// console.log(action);
     try {
       const data={
         userid:action.user_id,
@@ -116,7 +116,7 @@ console.log(action);
         action.url,
         data
       );
-      console.log('this is user response',response);
+      // console.log('this is user response',response);
       if (response.status=='success') {
         yield put({
           type: 'Self_Product_Success',
@@ -133,7 +133,7 @@ console.log(action);
       yield put({
         type: 'Self_Product_Error',
       });
-      console.log('this is error methood',error);
+      // console.log('this is error methood',error);
     }
   }
 
@@ -155,7 +155,7 @@ console.log(action);
         action.url,
         data
       );
-      console.log('this is user response',response);
+      // console.log('this is user response',response);
       if (response.status=='success') {
         yield put({
           type: 'Olocker_Product_Success',
@@ -171,7 +171,7 @@ console.log(action);
       yield put({
         type: 'Olocker_Product_Error',
       });
-      console.log('this is error methood',error);
+      // console.log('this is error methood',error);
     }
   }
 
