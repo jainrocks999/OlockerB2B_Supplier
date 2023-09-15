@@ -33,7 +33,7 @@ function* doLogin(action) {
       Toast.show(response.message);
     }
   } catch (error) {
-    // console.log('error223', error);
+     console.log('error223', error);
     yield put({
       type: 'User_Login_Error',
     });

@@ -92,9 +92,51 @@ function* GetMessage(action) {
     });
   }
 }
+function* GetMessage2(action) {
+  const data = {
+    sender_id:action.senderId,
+    reciver_id:action.reciverid,
+  };
+
+  
+  try {
+    const res = yield call(Api.fetchDataByGET1, action.url, data);
+
+    if (res.status == true) {
+      let message = [];
+      res.data.map(item => {
+        let sendId = parseInt(item.sender_id);
+        message.push({
+          _id: item.id,
+          text: item.message,
+          createdAt: item.created_at,
+          user: {
+            _id: sendId,
+          },
+        });
+      }),
+        yield put({
+          type: 'get_Message_Success',
+          payload: message,
+        });
+    } else {
+      yield put({
+        type: 'get_Message_Error',
+        payload: []
+      });
+    }
+  } catch (error) {
+    // console.log('try catch  saga =>>>>>>>>>', error);
+    yield put({
+      type: 'get_Message_Error',
+      payload: []
+    });
+  }
+}
 
 export default function* ChatSaga() {
   yield takeEvery('Patner_Contact_Request', PatnerContact);
   yield takeEvery('Message_Send_Request', SendMessage);
   yield takeEvery('get_Message_Request', GetMessage);
+  yield takeEvery('get_Message_Request2', GetMessage2);
 }

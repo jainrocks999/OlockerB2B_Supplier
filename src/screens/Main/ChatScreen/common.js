@@ -10,7 +10,7 @@ const { default: store } = require("../../../Redux/Store");
 
 
   store.dispatch({
-      type: 'get_Message_Request',
+      type: 'get_Message_Request2',
       url: '/getMessage',
       senderId: parseInt(user_id._j),
       reciverid: parseInt(id),

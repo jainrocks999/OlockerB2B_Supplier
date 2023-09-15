@@ -26,7 +26,7 @@ function* offerList(action) {
         });
       }
     } catch (error) {
-      // console.log(error);
+       console.log(error);
       yield put({
         type: 'Template_Detail_Error',
       });

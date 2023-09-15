@@ -52,6 +52,30 @@ function* networkList(action) {
     });
   }
 }
+function* productTypeList(action) {
+  try {
+    const data = {
+      userId: 13,
+      userType:'supplier'
+    };
+    const response = yield call(Api.fetchDataByGET1, action.url, data);
+    // console.log('thisi is user response', response);
+    if (response.status) {
+      yield put({
+        type: 'product_TypeList_Success',
+        payload: response.data,
+      });
+    } else {
+      yield put({
+        type: 'product_TypeList_Error',
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'product_TypeList_Error',
+    });
+  }
+}
 function* SearchRetailerRequest(action) {
   try {
     const data = {
@@ -188,17 +212,17 @@ function* AddproductWishList(action) {
       userType: 'supplier',
     };
     const response = yield call(Api.fetchDataByGET3, action.url, data);
-    // console.log(response);
-    // if (response.status) {
-    //   yield put({
-    //     type: 'AddWishList_Success',
-    //     payload: response,
-    //   });
-    // } else {
-    //   yield put({
-    //     type: 'AddWishList_Error',
-    //   });
-   // }
+    
+    if (response.status) {
+      yield put({
+        type: 'AddWishList_Success',
+        payload: response,
+      });
+    } else {
+      yield put({
+        type: 'AddWishList_Error',
+      });
+   }
   
   } catch (err) {
     yield put({
@@ -216,4 +240,5 @@ export default function* homeSaga() {
   yield takeEvery('Invite_RetailerList', InviteRetailerList);
   yield takeEvery('getWishList_request', getWishList);
   yield takeEvery('Addpruduct_WishList', AddproductWishList);
+  yield takeEvery('product_TypeList+Request', productTypeList);
 }

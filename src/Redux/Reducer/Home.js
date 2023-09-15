@@ -10,6 +10,7 @@ initialstate = {
   InviteRetailerList:[],
   getWishList:[],
   addWishList:[],
+  productTypeList:[]
 
 };
 export default (state = initialstate, action) => {
@@ -70,6 +71,13 @@ export default (state = initialstate, action) => {
     case 'Network_List_Success':
       return {...state, isFetching: false, NetworkList: action.payload};
     case 'Network_List_Error':
+      return {...state, isFetching: false};
+
+    case 'product_TypeList_Request':
+      return {...state, isFetching: true};
+    case 'product_TypeListSuccess':
+      return {...state, isFetching: false, productTypeList: action.payload};
+    case 'product_TypeList_Error':
       return {...state, isFetching: false};
 
     default:

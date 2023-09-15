@@ -11,9 +11,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../../components/Loader'
 const ChatScreen2 = ({...props}) => {
   const data = useSelector(state => state.Chat.GetMessage);
-  const Message = useSelector(state => state.Chat.MessageSend);
+
 
   const isFetching = useSelector(state => state.Chat.isFetching);
+
   const dispatch = useDispatch();
 
   const [userId, setUserId] = useState();
@@ -71,7 +72,7 @@ const ChatScreen2 = ({...props}) => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#f0f0f0'}}>
-      {/* {isFetching ? <Loader/> : null} */}
+      {isFetching ? <View/> : 
       <GiftedChat
           messages={data}
           alwaysShowSend={true}
@@ -192,6 +193,7 @@ const ChatScreen2 = ({...props}) => {
             );
           }}
         />
+}
     </View>
   );
 };
