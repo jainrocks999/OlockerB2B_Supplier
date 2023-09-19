@@ -13,12 +13,15 @@ import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CheckBox from '@react-native-community/checkbox';
 import styles from './styles';
+import { useSelector } from 'react-redux';
 
 
 const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
-
+  const productType = useSelector(state => state.Home?.productTypeList);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
+
+
   return (
  
     <View style={{flex: 1}}>
@@ -87,7 +90,7 @@ const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
                   styles.dropdown,
                   {borderWidth: 1, borderColor: '#979998'},
                 ]}
-              placeholder='Diamond  Wt gms'
+              placeholder='Diamond Wt'
               />
             </View>
           </View>
@@ -116,6 +119,20 @@ const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
               />
             </View>
           </View>
+          <View style={{marginHorizontal: 20,marginTop:5,width:'100%',}}>
+            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
+            Diamond value<Text style={{color: 'red', fontSize: 18}}>*</Text>
+            </Text>
+            <View style={{marginTop:15}}>
+              <TextInput
+                style={[
+                  styles.dropdown,
+                  {borderWidth: 1, borderColor: '#979998'},
+                ]}
+              placeholder='Amount in Rs.'
+              />
+            </View>
+          </View>
             <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',}}>
             <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
             Diamond details <Text style={{color: 'red', fontSize: 18}}>*</Text>
@@ -129,11 +146,11 @@ const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
-                data={DropData}
+                data={productType?.dimondDetails}
                 maxHeight={250}
-                labelField="label"
-                valueField="value"
-                placeholder=" Gold Diamond  purity"
+                labelField="Value"
+                valueField="Value"
+                placeholder="Diamond Details"
                 value={value}
                 onChange={item => {
                   setValue(item.value);
@@ -141,17 +158,29 @@ const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
               />
             </View>
           </View>
+
             <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',}}>
             <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
             Diamond Shape<Text style={{color: 'red', fontSize: 18}}>*</Text>
             </Text>
             <View style={{marginTop:15}}>
-              <TextInput
+              <Dropdown
                 style={[
                   styles.dropdown,
                   {borderWidth: 1, borderColor: '#979998'},
                 ]}
-               placeholder='Diamond  net wt'
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                iconStyle={styles.iconStyle}
+                data={productType?.dimondShape}
+                maxHeight={200}
+                labelField="Value"
+                valueField="Value"
+                placeholder="Diamond Shape"
+                value={value}
+                onChange={item => {
+                  setValue(item.value);
+                }}
               />
             </View>
           </View>
@@ -168,11 +197,12 @@ const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
-                data={DropData}
-                maxHeight={250}
-                labelField="label"
-                valueField="value"
-                placeholder="  Unit of wt."
+                data={productType?.dimondQuality}
+                dropdownPosition='top'
+                maxHeight={200}
+                labelField="Value"
+                valueField="Value"
+                placeholder="Diamond Quality"
                 value={value}
                 onChange={item => {
                   setValue(item.value);
@@ -197,8 +227,7 @@ const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
 };
 export default DiamondViewModal;
 const DropData = [
-    {label: 'UNDER 25000', value: '1'},
-    {label: 'UNDER 25000', value: '2'},
-    {label: 'UNDER 50000', value: '3'},
-    {label: 'UNDER 100000', value: '4'},
+    {label: 'Cts.', value: 'Cts.'},
+    {label: 'Gms', value: 'Gms'},
+   
   ];

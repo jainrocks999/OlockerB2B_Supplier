@@ -12,11 +12,12 @@ import {
 import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CheckBox from '@react-native-community/checkbox';
-import styles from './MetalDetails/styles';
+import styles from './styles'; 
+import { useSelector } from 'react-redux';
 
 
 const StoneViewModal = ({visi, close = () => {}, ...props}) => {
-
+  const productType = useSelector(state => state.Home?.productTypeList);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
   return (
@@ -87,7 +88,7 @@ const StoneViewModal = ({visi, close = () => {}, ...props}) => {
                   styles.dropdown,
                   {borderWidth: 1, borderColor: '#979998'},
                 ]}
-              placeholder='Gross Wt gms'
+              placeholder='Stone Wt'
               />
             </View>
           </View>
@@ -108,11 +109,25 @@ const StoneViewModal = ({visi, close = () => {}, ...props}) => {
                 maxHeight={250}
                 labelField="label"
                 valueField="value"
-                placeholder=" Metal type"
+                placeholder="Select Unit of Wt"
                 value={value}
                 onChange={item => {
                   setValue(item.value);
                 }}
+              />
+            </View>
+          </View>
+          <View style={{marginHorizontal: 20, marginTop:10,width:'100%',}}>
+            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
+            Stone value<Text style={{color: 'red', fontSize: 18}}>*</Text>
+            </Text>
+            <View style={{marginTop:10}}>
+              <TextInput
+                style={[
+                  styles.dropdown,
+                  {borderWidth: 1, borderColor: '#979998'},
+                ]}
+              placeholder='Amount in Rs.'
               />
             </View>
           </View>
@@ -129,11 +144,11 @@ const StoneViewModal = ({visi, close = () => {}, ...props}) => {
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
-                data={DropData}
-                maxHeight={250}
-                labelField="label"
-                valueField="value"
-                placeholder=" Gold Metal purity"
+                data={productType?.stoneDetails}
+                maxHeight={200}
+                labelField="Value"
+                valueField="Value"
+                placeholder="Select Stone Name"
                 value={value}
                 onChange={item => {
                   setValue(item.value);
@@ -143,7 +158,7 @@ const StoneViewModal = ({visi, close = () => {}, ...props}) => {
           </View>
           
             
-            <View style={{width:'100%',marginTop:'45%'}}>
+            <View style={{width:'100%',marginTop:'5%'}}>
 <TouchableOpacity style={styles.addbtn}>
     <Text style={{fontSize:18,color:'white',fontWeight:'800'}}>Add {props.data} Details</Text>
 </TouchableOpacity>
@@ -160,8 +175,7 @@ const StoneViewModal = ({visi, close = () => {}, ...props}) => {
 };
 export default StoneViewModal;
 const DropData = [
-    {label: 'UNDER 25000', value: '1'},
-    {label: 'UNDER 25000', value: '2'},
-    {label: 'UNDER 50000', value: '3'},
-    {label: 'UNDER 100000', value: '4'},
-  ];
+  {label: 'Cts.', value: 'Cts.'},
+  {label: 'Gms', value: 'Gms'},
+ 
+];

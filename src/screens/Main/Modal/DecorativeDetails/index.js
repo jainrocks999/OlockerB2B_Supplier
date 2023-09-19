@@ -13,10 +13,11 @@ import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CheckBox from '@react-native-community/checkbox';
 import styles from './styles';
+import { useSelector } from 'react-redux';
 
 
 const DecorativeViewModal = ({visi, close = () => {}, ...props}) => {
-
+  const productType = useSelector(state => state.Home?.productTypeList);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
   return (
@@ -44,7 +45,7 @@ const DecorativeViewModal = ({visi, close = () => {}, ...props}) => {
               }}>
               <Text style={{fontSize: 18, color: 'white'}}>X</Text>
             </TouchableOpacity>
-            <View style={{marginTop:'30%'}}>
+            <View style={{marginTop:'20%'}}>
                 <View style={{flexDirection:'row',justifyContent:'space-between'}}>
               <Text
                 style={{
@@ -87,7 +88,7 @@ const DecorativeViewModal = ({visi, close = () => {}, ...props}) => {
                   styles.dropdown,
                   {borderWidth: 1, borderColor: '#979998'},
                 ]}
-              placeholder='Gross Wt gms'
+              placeholder='Decorative item Wt'
               />
             </View>
           </View>
@@ -111,11 +112,26 @@ const DecorativeViewModal = ({visi, close = () => {}, ...props}) => {
                 maxHeight={250}
                 labelField="label"
                 valueField="value"
-                placeholder="  Unit of wt."
+                placeholder="Select Unit of wt."
                 value={value}
                 onChange={item => {
                   setValue(item.value);
                 }}
+              />
+            </View>
+          </View>
+          
+          <View style={{marginHorizontal: 20, marginTop:10,width:'100%',}}>
+            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
+            Decorative item value<Text style={{color: 'red', fontSize: 18}}>*</Text>
+            </Text>
+            <View style={{marginTop:15}}>
+              <TextInput
+                style={[
+                  styles.dropdown,
+                  {borderWidth: 1, borderColor: '#979998'},
+                ]}
+              placeholder='Amount in Rs.'
               />
             </View>
           </View>
@@ -132,11 +148,11 @@ const DecorativeViewModal = ({visi, close = () => {}, ...props}) => {
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
-                data={DropData}
+                data={productType?.decItemDetails}
                 maxHeight={250}
-                labelField="label"
-                valueField="value"
-                placeholder=" Metal type"
+                labelField="Value"
+                valueField="Value"
+                placeholder="Select Decorative item name"
                 value={value}
                 onChange={item => {
                   setValue(item.value);
@@ -144,7 +160,8 @@ const DecorativeViewModal = ({visi, close = () => {}, ...props}) => {
               />
             </View>
           </View>
-            <View style={{width:'100%',marginTop:'20%'}}>
+          
+            <View style={{width:'100%',marginTop:'5%'}}>
 <TouchableOpacity style={styles.addbtn}>
     <Text style={{fontSize:18,color:'white',fontWeight:'800'}}>Add {props.data} Details</Text>
 </TouchableOpacity>
@@ -161,8 +178,7 @@ const DecorativeViewModal = ({visi, close = () => {}, ...props}) => {
 };
 export default DecorativeViewModal;
 const DropData = [
-    {label: 'UNDER 25000', value: '1'},
-    {label: 'UNDER 25000', value: '2'},
-    {label: 'UNDER 50000', value: '3'},
-    {label: 'UNDER 100000', value: '4'},
-  ];
+  {label: 'Cts.', value: 'Cts.'},
+  {label: 'Gms', value: 'Gms'},
+ 
+];

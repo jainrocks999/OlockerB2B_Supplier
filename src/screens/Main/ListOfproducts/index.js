@@ -33,6 +33,7 @@ const navigation = useNavigation()
     setModalData(details)
     setViewModal(true)
   }
+  
   return (
     <View style={{flex: 1,backgroundColor:'white'}}>
       <ScrollView contentContainerStyle={{}}>
@@ -425,7 +426,7 @@ const navigation = useNavigation()
         </View>
       </ScrollView>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{
           position: 'absolute',
           backgroundColor: '#032e63',
@@ -439,7 +440,7 @@ const navigation = useNavigation()
           width: wp(18),
         }}>
         <Ionicons name="chatbubbles-outline" size={45} color={'white'} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

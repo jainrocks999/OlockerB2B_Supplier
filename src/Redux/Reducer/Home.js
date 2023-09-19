@@ -75,7 +75,7 @@ export default (state = initialstate, action) => {
 
     case 'product_TypeList_Request':
       return {...state, isFetching: true};
-    case 'product_TypeListSuccess':
+    case 'product_TypeList_Success':
       return {...state, isFetching: false, productTypeList: action.payload};
     case 'product_TypeList_Error':
       return {...state, isFetching: false};

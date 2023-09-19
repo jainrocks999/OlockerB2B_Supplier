@@ -53,17 +53,20 @@ function* networkList(action) {
   }
 }
 function* productTypeList(action) {
+
+ 
   try {
     const data = {
-      userId: 13,
-      userType:'supplier'
+      userId: action.userId
+
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-    // console.log('thisi is user response', response);
+    
     if (response.status) {
+     
       yield put({
         type: 'product_TypeList_Success',
-        payload: response.data,
+        payload:response.data,
       });
     } else {
       yield put({
@@ -240,5 +243,5 @@ export default function* homeSaga() {
   yield takeEvery('Invite_RetailerList', InviteRetailerList);
   yield takeEvery('getWishList_request', getWishList);
   yield takeEvery('Addpruduct_WishList', AddproductWishList);
-  yield takeEvery('product_TypeList+Request', productTypeList);
+  yield takeEvery('product_TypeList_Request', productTypeList);
 }

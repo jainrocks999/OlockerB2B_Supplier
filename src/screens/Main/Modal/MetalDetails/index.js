@@ -13,12 +13,14 @@ import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CheckBox from '@react-native-community/checkbox';
 import styles from './styles';
+import { useSelector } from 'react-redux';
 
 
 const MetalViewModal = ({visi, close = () => {}, ...props}) => {
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
+  const productType = useSelector(state => state.Home?.productTypeList);
   return (
  
     <View style={{flex: 1}}>
@@ -104,10 +106,10 @@ const MetalViewModal = ({visi, close = () => {}, ...props}) => {
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
-                data={DropData}
+                data={productType?.MetalTypes}
                 maxHeight={250}
-                labelField="label"
-                valueField="value"
+                labelField="Value"
+                valueField="Value"
                 placeholder=" Metal type"
                 value={value}
                 onChange={item => {
@@ -129,11 +131,11 @@ const MetalViewModal = ({visi, close = () => {}, ...props}) => {
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
-                data={DropData}
+                data={productType?.MetalPurity}
                 maxHeight={250}
-                labelField="label"
-                valueField="value"
-                placeholder=" Gold Metal purity"
+                labelField="Value"
+                valueField="Value"
+                placeholder="Metal purity"
                 value={value}
                 onChange={item => {
                   setValue(item.value);
@@ -197,8 +199,7 @@ const MetalViewModal = ({visi, close = () => {}, ...props}) => {
 };
 export default MetalViewModal;
 const DropData = [
-    {label: 'UNDER 25000', value: '1'},
-    {label: 'UNDER 25000', value: '2'},
-    {label: 'UNDER 50000', value: '3'},
-    {label: 'UNDER 100000', value: '4'},
-  ];
+  {label: 'Cts.', value: 'Cts.'},
+  {label: 'Gms', value: 'Gms'},
+ 
+];

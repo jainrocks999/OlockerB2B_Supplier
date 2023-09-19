@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -18,22 +18,46 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {TextInput} from 'react-native';
-import MetalViewModal from '../Modal/MetalDetails';
 import {useNavigation} from '@react-navigation/native';
+
+import {useDispatch, useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import DiamondViewModal from '../Modal/diamondDetails';
+import MetalViewModal from '../Modal/MetalDetails';
+import DecorativeViewModal from '../Modal/DecorativeDetails';
+import StoneViewModal from '../Modal/stoneDetails';
 
 const AddProducts = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [itemName, setItemName] = useState(null);
   const [value, setValue] = useState(null);
-  const [ViewModal, setViewModal] = useState(false);
+  const [ViewMetalModal, setViewMetalModal] = useState(false);
+  const [ViewStoneModal, setViewStoneModal] = useState(false);
+  const [ViewDiamondModal, setViewDiamondModal] = useState(false);
+  const [ViewDecorativeModal, setViewDecorativeModal] = useState(false);
+  const productType = useSelector(state => state.Home.productTypeList);
 
-  const [modalData, setModalData] = useState('');
-  const navigation = useNavigation();
+  const [radioInventoryPreInsured,setradioInventoryPreInsured] = useState(0)
 
-  const setModalDetails = details => {
-   // setModalData(details);
-    setViewModal(true);
+    useEffect(() => {
+    productTypeList();
+  }, []);
+  
+
+  const dispatch = useDispatch();
+
+  const productTypeList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+   
+
+    dispatch({
+      type: 'product_TypeList_Request',
+      url: '/productAddListData',
+      userId: Number(user_id),
+    });
   };
+  
+  const navigation = useNavigation();
   const renderItem = item => {
     return (
       <View
@@ -42,7 +66,10 @@ const AddProducts = () => {
           height: 40,
           flexDirection: 'row',
           alignItems: 'center',
+          borderWidth:2,
+          //backgroundColor:'#f0f0f0',
           paddingLeft: 5,
+          width:'100%'
         }}>
         <CheckBox />
         <Text
@@ -52,20 +79,36 @@ const AddProducts = () => {
             fontWeight: '700',
             color: '#000',
           }}>
-          {item.label}
+          {item.Name}
         </Text>
       </View>
     );
   };
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+<View style={{flex: 1, backgroundColor: 'white'}}>
+
       <ScrollView contentContainerStyle={{}}>
-        <DiamondViewModal
-          visi={ViewModal}
-          close={() => setViewModal(false)}
-          data={modalData}
+      <DiamondViewModal
+          visi={ViewDiamondModal}
+          close={() => setViewDiamondModal(false)}
+          
         />
-        <View style={styles.container}>
+        <MetalViewModal
+          visi={ViewMetalModal}
+          close={() => setViewMetalModal(false)}
+          
+        />
+        <DecorativeViewModal
+          visi={ViewDecorativeModal}
+          close={() => setViewDecorativeModal(false)}
+          
+        />
+        <StoneViewModal
+          visi={ViewStoneModal}
+          close={() => setViewStoneModal(false)}
+          
+        />
+ <View style={styles.container}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
               delayPressIn={0}
@@ -109,7 +152,6 @@ const AddProducts = () => {
               CHOOSE SUPPLIER ADD PRODUCT
             </Text>
           </View>
-
           <View>
             <View
               style={{
@@ -119,7 +161,7 @@ const AddProducts = () => {
                 marginTop: '5%',
                 flexDirection: 'row',
               }}>
-              <View
+              <TouchableOpacity
                 style={{
                   borderWidth: 2,
                   width: 25,
@@ -137,15 +179,16 @@ const AddProducts = () => {
                     width: 20,
                     height: 20,
                     borderRadius: 10,
-                    backgroundColor: '#032e63',
-                  }}></View>
-              </View>
+                    backgroundColor:radioInventoryPreInsured == 0?'#fff':'#032e63',
+                  }}>  
+                  </View>
+              </TouchableOpacity>
               <View style={{marginLeft: 5}}>
                 <Text style={{fontSize: 18, fontWeight: '600'}}>
                   Digital Inventory
                 </Text>
               </View>
-              <View
+              <TouchableOpacity
                 style={{
                   borderWidth: 2,
                   marginLeft: 10,
@@ -164,9 +207,11 @@ const AddProducts = () => {
                     width: 20,
                     height: 20,
                     borderRadius: 10,
-                    backgroundColor: '#032e63',
-                  }}></View>
-              </View>
+                    backgroundColor:radioInventoryPreInsured == 1?'#fff':'#032e63',
+                  }}>
+
+                  </View>
+              </TouchableOpacity>
               <View style={{marginLeft: 10}}>
                 <Text style={{fontSize: 18, fontWeight: '600'}}>
                   Pre-Insured Jewellery
@@ -174,14 +219,12 @@ const AddProducts = () => {
               </View>
             </View>
           </View>
-
           <View style={{marginHorizontal: 10, marginTop: 20}}>
             <Text style={{fontSize: 22, fontWeight: '800', color: '#000'}}>
               {' '}
               Choose Price Calculation Method
             </Text>
           </View>
-
           <View>
             <View
               style={{
@@ -191,7 +234,7 @@ const AddProducts = () => {
                 marginTop: '5%',
                 flexDirection: 'row',
               }}>
-              <View
+              <TouchableOpacity
                 style={{
                   borderWidth: 2,
                   width: 25,
@@ -211,13 +254,13 @@ const AddProducts = () => {
                     borderRadius: 10,
                     backgroundColor: '#032e63',
                   }}></View>
-              </View>
+              </TouchableOpacity>
               <View style={{marginLeft: 5}}>
                 <Text style={{fontSize: 18, fontWeight: '600'}}>
                   Break Up Pricing
                 </Text>
               </View>
-              <View
+              <TouchableOpacity
                 style={{
                   borderWidth: 2,
                   marginLeft: 10,
@@ -238,7 +281,7 @@ const AddProducts = () => {
                     borderRadius: 10,
                     backgroundColor: '#032e63',
                   }}></View>
-              </View>
+              </TouchableOpacity>
               <View style={{marginLeft: 10, width: '40%'}}>
                 <Text style={{fontSize: 18, fontWeight: '600'}}>
                   MRP Pricing
@@ -267,14 +310,14 @@ const AddProducts = () => {
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
-                data={DropData}
+                data={productType?.productType}
                 maxHeight={250}
-                labelField="label"
-                valueField="value"
+                labelField="Value"
+                valueField="Id"
                 placeholder="Product/item type"
-                value={value}
+                value={itemName}
                 onChange={item => {
-                  setValue(item.value);
+                  setItemName(item.value);
                 }}
               />
             </View>
@@ -332,181 +375,6 @@ const AddProducts = () => {
               />
             </View>
           </View>
-
-          {/* <View style={{marginHorizontal: 20, marginTop: 20}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-              Demensions
-            </Text>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                height: 60,
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  height: 35,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  width: '48%',
-                }}>
-                <View
-                  style={{
-                    width: '60%',
-                    justifyContent: 'center',
-                    height: 50,
-                  }}>
-                  <TextInput
-                    style={{fontSize: 18, fontWeight: '600'}}
-                    placeholder="Width"
-                  />
-                </View>
-
-                <View
-                  style={{
-                    backgroundColor: '#032e63',
-                    borderTopRightRadius: 2,
-                    borderBottomRightRadius: 2,
-                    width: '35%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={{fontSize: 18, color: 'white', fontWeight: '600'}}>
-                    mm
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  height: 35,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  width: '48%',
-                }}>
-                <View
-                  style={{
-                    width: '60%',
-                    justifyContent: 'center',
-                    height: 50,
-                  }}>
-                  <TextInput
-                    style={{fontSize: 18, fontWeight: '600'}}
-                    placeholder="Height"
-                  />
-                </View>
-
-                <View
-                  style={{
-                    backgroundColor: '#032e63',
-                    borderTopRightRadius: 2,
-                    borderBottomRightRadius: 2,
-                    width: '35%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={{fontSize: 18, color: 'white', fontWeight: '600'}}>
-                    mm
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                height: 60,
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  height: 35,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  width: '48%',
-                }}>
-                <View
-                  style={{
-                    width: '60%',
-                    justifyContent: 'center',
-                    height: 50,
-                  }}>
-                  <TextInput
-                    style={{fontSize: 18, fontWeight: '600'}}
-                    placeholder="Thickness"
-                  />
-                </View>
-
-                <View
-                  style={{
-                    backgroundColor: '#032e63',
-                    borderTopRightRadius: 2,
-                    borderBottomRightRadius: 2,
-                    width: '35%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={{fontSize: 18, color: 'white', fontWeight: '600'}}>
-                    mm
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  height: 35,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  width: '48%',
-                }}>
-                <View
-                  style={{
-                    width: '60%',
-                    justifyContent: 'center',
-                    height: 50,
-                  }}>
-                  <TextInput
-                    style={{fontSize: 18, fontWeight: '600'}}
-                    placeholder="Size"
-                  />
-                </View>
-
-                <View
-                  style={{
-                    backgroundColor: '#032e63',
-                    borderTopRightRadius: 2,
-                    borderBottomRightRadius: 2,
-                    width: '35%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={{fontSize: 18, color: 'white', fontWeight: '600'}}>
-                    mm
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View> */}
         </View>
 
         <View style={{marginHorizontal: 20, marginTop: 15}}>
@@ -520,7 +388,7 @@ const AddProducts = () => {
               marginTop: '5%',
               flexDirection: 'row',
             }}>
-            <View
+            <TouchableOpacity
               style={{
                 borderWidth: 2,
                 width: 25,
@@ -538,12 +406,12 @@ const AddProducts = () => {
                   borderRadius: 10,
                   backgroundColor: '#032e63',
                 }}></View>
-            </View>
+            </TouchableOpacity>
 
             <View style={{marginHorizontal: 20}}>
               <Text style={{fontSize: 18, fontWeight: '600'}}>Yes</Text>
             </View>
-            <View
+            <TouchableOpacity
               style={{
                 borderWidth: 2,
                 marginLeft: 10,
@@ -562,7 +430,7 @@ const AddProducts = () => {
                   borderRadius: 10,
                   backgroundColor: '#032e63',
                 }}></View>
-            </View>
+            </TouchableOpacity>
             <View style={{marginLeft: 20}}>
               <Text style={{fontSize: 18, fontWeight: '600'}}>No</Text>
             </View>
@@ -579,7 +447,7 @@ const AddProducts = () => {
               marginTop: '5%',
               flexDirection: 'row',
             }}>
-            <View
+            <TouchableOpacity
               style={{
                 borderWidth: 2,
                 width: 25,
@@ -597,12 +465,12 @@ const AddProducts = () => {
                   borderRadius: 10,
                   backgroundColor: '#032e63',
                 }}></View>
-            </View>
+            </TouchableOpacity>
 
             <View style={{marginHorizontal: 20}}>
               <Text style={{fontSize: 18, fontWeight: '600'}}>Male</Text>
             </View>
-            <View
+            <TouchableOpacity
               style={{
                 borderWidth: 2,
                 marginLeft: 10,
@@ -621,11 +489,11 @@ const AddProducts = () => {
                   borderRadius: 10,
                   backgroundColor: '#032e63',
                 }}></View>
-            </View>
+            </TouchableOpacity>
             <View style={{marginHorizontal: 20}}>
               <Text style={{fontSize: 18, fontWeight: '600'}}>Female</Text>
             </View>
-            <View
+            <TouchableOpacity
               style={{
                 borderWidth: 2,
                 marginLeft: 10,
@@ -644,7 +512,7 @@ const AddProducts = () => {
                   borderRadius: 10,
                   backgroundColor: '#032e63',
                 }}></View>
-            </View>
+            </TouchableOpacity>
             <View style={{marginLeft: 20}}>
               <Text style={{fontSize: 18, fontWeight: '600'}}>Kids</Text>
             </View>
@@ -676,7 +544,7 @@ const AddProducts = () => {
             </View>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <View
+            <TouchableOpacity
               style={{
                 borderWidth: 2,
                 width: 25,
@@ -694,7 +562,7 @@ const AddProducts = () => {
                   borderRadius: 10,
                   backgroundColor: '#032e63',
                 }}></View>
-            </View>
+            </TouchableOpacity>
 
             <View style={{marginHorizontal: 10}}>
               <Text style={{fontSize: 18, color: '#000', fontWeight: '600'}}>
@@ -703,7 +571,6 @@ const AddProducts = () => {
             </View>
           </View>
         </View>
-
         <View
           style={{
             flexDirection: 'row',
@@ -713,7 +580,7 @@ const AddProducts = () => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              setModalDetails('Metal');
+              setViewMetalModal(true);
             }}
             style={{
               borderWidth: 2,
@@ -731,7 +598,7 @@ const AddProducts = () => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setModalDetails('Stone');
+              setViewStoneModal(true);
             }}
             style={{
               borderWidth: 2,
@@ -758,7 +625,7 @@ const AddProducts = () => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              setModalDetails('Diamond');
+              setViewDiamondModal(true);
             }}
             style={{
               borderWidth: 2,
@@ -776,7 +643,7 @@ const AddProducts = () => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setModalDetails('Decorative');
+              setViewDecorativeModal(true);
             }}
             style={{
               borderWidth: 2,
@@ -937,7 +804,7 @@ const AddProducts = () => {
               marginTop: '5%',
               flexDirection: 'row',
             }}>
-            <View
+            <TouchableOpacity
               style={{
                 borderWidth: 2,
                 width: 25,
@@ -955,14 +822,14 @@ const AddProducts = () => {
                   borderRadius: 10,
                   backgroundColor: '#032e63',
                 }}></View>
-            </View>
+            </TouchableOpacity>
 
             <View style={{marginHorizontal: 5}}>
               <Text style={{fontSize: 14, fontWeight: '600'}}>
                 Charges Per Gram Rs
               </Text>
             </View>
-            <View
+            <TouchableOpacity
               style={{
                 borderWidth: 2,
                 marginLeft: 10,
@@ -981,7 +848,7 @@ const AddProducts = () => {
                   borderRadius: 10,
                   backgroundColor: '#032e63',
                 }}></View>
-            </View>
+            </TouchableOpacity>
             <View style={{marginLeft: 5}}>
               <Text style={{fontSize: 14, fontWeight: '600'}}>
                 Wastage(% of Net Gold wt)
@@ -1115,15 +982,36 @@ const AddProducts = () => {
             TO APPEAR IN CLINT SEARCH)
           </Text>
         </View>
-        <View
+      <View style={{marginTop:10}}>
+        <FlatList 
+        data={productType?.category}
+        renderItem={({item})=>(
+          <View style={{marginVertical:5}}>
+<View style={{
+            marginHorizontal: 20,
+       
+        
+        borderBottomWidth:0,
+           marginTop:5,
+            height:40,
+            backgroundColor:'#032E63',
+          }}>
+            <Text style={{fontSize:20,fontWeight:'700',
+            marginLeft:10,
+            color:'#fff'}}>{item.Name}</Text>
+            </View>
+          <View
           style={{
             marginHorizontal: 20,
-            borderWidth: 2,
-            marginTop: 15,
+             borderWidth:2,
             borderBottomWidth: 0,
+           
+           
           }}>
+         
+            
           <Dropdown
-            style={{borderBottomWidth: 2}}
+            style={{borderBottomWidth: 2,height:40}}
             placeholderStyle={[
               styles.placeholderStyle,
               {fontWeight: '800', fontSize: 18, marginLeft: 10, color: '#000'},
@@ -1133,11 +1021,11 @@ const AddProducts = () => {
               {fontSize: 18, fontWeight: '700', color: '#000', marginLeft: 10},
             ]}
             iconStyle={{width: 30, height: 30}}
-            data={DropData}
-            maxHeight={250}
-            labelField="label"
-            valueField="value"
-            placeholder="Price"
+            data={item.subcategory}
+            maxHeight={200}
+            labelField="Name"
+            valueField="Name"
+            placeholder="Select"
             value={value}
             renderItem={renderItem}
             itemTextStyle={{fontSize: 18, fontWeight: '700', color: '#000'}}
@@ -1145,122 +1033,13 @@ const AddProducts = () => {
               setValue(item.value);
             }}
           />
-          <Dropdown
-            style={{borderBottomWidth: 2}}
-            placeholderStyle={[
-              styles.placeholderStyle,
-              {fontWeight: '800', fontSize: 18, marginLeft: 10, color: '#000'},
-            ]}
-            selectedTextStyle={[
-              styles.selectedTextStyle,
-              {fontSize: 18, fontWeight: '700', color: '#000', marginLeft: 10},
-            ]}
-            iconStyle={{width: 30, height: 30}}
-            data={DropData}
-            maxHeight={250}
-            labelField="label"
-            valueField="value"
-            placeholder="Gold Colour"
-            value={value}
-            renderItem={renderItem}
-            itemTextStyle={{fontSize: 18, fontWeight: '700', color: '#000'}}
-            onChange={item => {
-              setValue(item.value);
-            }}
-          />
-          <Dropdown
-            style={{borderBottomWidth: 2}}
-            placeholderStyle={[
-              styles.placeholderStyle,
-              {fontWeight: '800', fontSize: 18, marginLeft: 10, color: '#000'},
-            ]}
-            selectedTextStyle={[
-              styles.selectedTextStyle,
-              {fontSize: 18, fontWeight: '700', color: '#000', marginLeft: 10},
-            ]}
-            iconStyle={{width: 30, height: 30}}
-            data={DropData}
-            maxHeight={250}
-            labelField="label"
-            valueField="value"
-            placeholder="Metal"
-            value={value}
-            renderItem={renderItem}
-            itemTextStyle={{fontSize: 18, fontWeight: '700', color: '#000'}}
-            onChange={item => {
-              setValue(item.value);
-            }}
-          />
-          <Dropdown
-            style={{borderBottomWidth: 2}}
-            placeholderStyle={[
-              styles.placeholderStyle,
-              {fontWeight: '800', fontSize: 18, marginLeft: 10, color: '#000'},
-            ]}
-            selectedTextStyle={[
-              styles.selectedTextStyle,
-              {fontSize: 18, fontWeight: '700', color: '#000', marginLeft: 10},
-            ]}
-            iconStyle={{width: 30, height: 30}}
-            data={DropData}
-            maxHeight={250}
-            labelField="label"
-            valueField="value"
-            placeholder="Metal Purity"
-            value={value}
-            renderItem={renderItem}
-            itemTextStyle={{fontSize: 18, fontWeight: '700', color: '#000'}}
-            onChange={item => {
-              setValue(item.value);
-            }}
-          />
-          <Dropdown
-            style={{borderBottomWidth: 2}}
-            placeholderStyle={[
-              styles.placeholderStyle,
-              {fontWeight: '800', fontSize: 18, marginLeft: 10, color: '#000'},
-            ]}
-            selectedTextStyle={[
-              styles.selectedTextStyle,
-              {fontSize: 18, fontWeight: '700', color: '#000', marginLeft: 10},
-            ]}
-            iconStyle={{width: 30, height: 30}}
-            data={DropData}
-            maxHeight={250}
-            labelField="label"
-            valueField="value"
-            placeholder="Test Necklace1"
-            value={value}
-            renderItem={renderItem}
-            itemTextStyle={{fontSize: 18, fontWeight: '700', color: '#000'}}
-            onChange={item => {
-              setValue(item.value);
-            }}
-          />
-          <Dropdown
-            style={{borderBottomWidth: 2}}
-            placeholderStyle={[
-              styles.placeholderStyle,
-              {fontWeight: '800', fontSize: 18, marginLeft: 10, color: '#000'},
-            ]}
-            selectedTextStyle={[
-              styles.selectedTextStyle,
-              {fontSize: 18, fontWeight: '700', color: '#000', marginLeft: 10},
-            ]}
-            iconStyle={{width: 30, height: 30}}
-            data={DropData}
-            maxHeight={250}
-            labelField="label"
-            valueField="value"
-            placeholder="Test Category"
-            value={value}
-            renderItem={renderItem}
-            itemTextStyle={{fontSize: 18, fontWeight: '700', color: '#000'}}
-            onChange={item => {
-              setValue(item.value);
-            }}
-          />
-        </View>
+          </View>
+          </View>
+        )
+      
+      }
+        />
+      </View>
         <View style={{marginHorizontal: 10, marginTop: 15}}>
           <Text style={{fontSize: 20, fontWeight: '800', color: '#000'}}>
             CHOOSE CATEGORIES TO PRODUCT
@@ -1270,7 +1049,11 @@ const AddProducts = () => {
             TO APPEAR IN CLINT SEARCH)
           </Text>
         </View>
-        <View
+       <View>
+        <FlatList 
+        data={productType?.collection}
+        renderItem={({item})=>(
+          <View
           style={{
             marginHorizontal: 20,
             borderWidth: 2,
@@ -1292,100 +1075,13 @@ const AddProducts = () => {
                 fontWeight: '700',
                 color: '#000',
               }}>
-              UNDER 25000
-            </Text>
-          </View>
-          <View
-            style={{
-              borderBottomWidth: 2,
-              height: 40,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <CheckBox />
-            <Text
-              style={{
-                fontSize: 18,
-                marginLeft: 5,
-                fontWeight: '700',
-                color: '#000',
-              }}>
-              UNDER 25000
-            </Text>
-          </View>
-          <View
-            style={{
-              borderBottomWidth: 2,
-              height: 40,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <CheckBox />
-            <Text
-              style={{
-                fontSize: 18,
-                marginLeft: 5,
-                fontWeight: '700',
-                color: '#000',
-              }}>
-              UNDER 50000
-            </Text>
-          </View>
-          <View
-            style={{
-              borderBottomWidth: 2,
-              height: 40,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <CheckBox />
-            <Text
-              style={{
-                fontSize: 18,
-                marginLeft: 5,
-                fontWeight: '700',
-                color: '#000',
-              }}>
-              UNDER 100000
-            </Text>
-          </View>
-          <View
-            style={{
-              borderBottomWidth: 2,
-              height: 40,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <CheckBox />
-            <Text
-              style={{
-                fontSize: 18,
-                marginLeft: 5,
-                fontWeight: '700',
-                color: '#000',
-              }}>
-              UNDER 200000
-            </Text>
-          </View>
-          <View
-            style={{
-              borderBottomWidth: 2,
-              height: 40,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <CheckBox />
-            <Text
-              style={{
-                fontSize: 18,
-                marginLeft: 5,
-                fontWeight: '700',
-                color: '#000',
-              }}>
-              UNDER 200000
+              {item.Name}
             </Text>
           </View>
         </View>
+        )}
+        />
+       </View>
 
         <View style={{marginHorizontal: 20, marginTop: 15}}>
           <TouchableOpacity
@@ -1413,97 +1109,21 @@ const AddProducts = () => {
               Cancel
             </Text>
           </TouchableOpacity>
-        </View>
 
-        <View style={{height: 100}} />
+          </View>
+
       </ScrollView>
-
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          backgroundColor: '#032e63',
-          bottom: 15,
-          alignItems: 'center',
-          justifyContent: 'center',
-
-          borderRadius: 40,
-          right: 25,
-          height: hp(9),
-          width: wp(18),
-        }}>
-        <Ionicons name="chatbubbles-outline" size={45} color={'white'} />
-      </TouchableOpacity>
     </View>
-  );
-};
-export default AddProducts;
+  )
+}
 
+export default AddProducts ;
 const DropData = [
-  {label: 'Anklet', value: 'Anklet'},
-  {label: 'Bali', value: 'Bali'},
-  {label: 'Bajuband', value: '3'},
-  {label: 'UNDER 100000', value: '4'},
+  {label: 'Yes', value: 1},
+  {label: 'No', value: 2},
+ 
 ];
-const live =[
+const live = [
   {label: 'Live', value: 'Live'},
   {label: 'Catalog', value: 'Catalog'},
-]
-const page = [
-  {
-    number: '1',
-  },
-  {
-    number: '2',
-  },
-  {
-    number: '3',
-  },
-  {
-    number: '4',
-  },
-  {
-    number: '5',
-  },
-];
-const data = [
-  {
-    sNo: '01',
-    RName: 'Rohan sahu',
-    State: 'MP',
-    city: 'Indore',
-    ACategory: 'Lorem',
-    Iproduct: 'lorem',
-  },
-  {
-    sNo: '02',
-    RName: 'Rohan sahu',
-    State: 'MP',
-    city: 'Indore',
-    ACategory: 'Lorem',
-    Iproduct: 'lorem',
-  },
-  {
-    sNo: '03',
-    RName: 'Rohan sahu',
-    State: 'MP',
-    city: 'Indore',
-    ACategory: 'Lorem',
-    Iproduct: 'lorem',
-  },
-  {
-    sNo: '03',
-    RName: 'Rohan sahu',
-    State: 'MP',
-    city: 'Indore',
-    ACategory: 'Lorem',
-    Iproduct: 'lorem',
-  },
-  {
-    sNo: '03',
-    RName: 'Rohan sahu',
-    State: 'MP',
-    city: 'Indore',
-    ACategory: 'Lorem',
-    Iproduct: 'lorem',
-  },
 ];
