@@ -20,6 +20,7 @@ import {
 import {TextInput} from 'react-native';
 import CategoryViewModal from '../Modal/categoryList';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const ListOfProduct = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -28,7 +29,7 @@ const ListOfProduct = () => {
   const [modalData,setModalData] = useState('')
   const [SearctTxt,setSearctTxt] = useState('')
 const navigation = useNavigation()
-
+const selector = useSelector(state => state.Catalogue.Products);
   const setModalDetails =(details)=>{
     setModalData(details)
     setViewModal(true)
@@ -129,315 +130,80 @@ const navigation = useNavigation()
             Excel
           </Text>
         </TouchableOpacity>
-
-        <View style={{flex: 1, width: wp(100),}}>
-          {/* Table Rows */}
+       
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 20,
+          }}>
           <FlatList
-            data={Offer}
-            renderItem={({item}) => (
-              <View style={styles.Card}>
-                <View style={{padding:7}}>
-                  <Image
-                    style={{height: hp(24), width: '100%'}}
-                    source={{
-                      uri: 'https://as1.ftcdn.net/v2/jpg/02/73/22/74/1000_F_273227473_N0WRQuX3uZCJJxlHKYZF44uaJAkh2xLG.jpg',
-                    }}
-                  />
+            data={selector}
+            style={{width: '96%'}}
+            numColumns={2}
+            // contentContainerStyle={{justifyContent:'center',}}
+            renderItem={({item, index}) => (
+              <View
+                style={{
+                  width: '46%',
+                  margin: 7,
+                  shadowColor: '#000',
+                  shadowOffset: {width: 0, height: 2},
+                  shadowOpacity: 0.2,
+                  shadowRadius: 5,
+                  elevation: 5,
+                  backgroundColor: '#fff',
+                  borderRadius: 10,
+                  paddingHorizontal: 10,
+                  paddingVertical:5,
+                  paddingBottom:10
+                }}>
+                <View
+                  style={{
+                    padding: 0,
+                    height: hp('3%'),
+                    backgroundColor:'#7fb582',
+                    borderWidth: 0,
+                    marginTop: 0,
+                    borderRadius:10,
+                    borderBottomStartRadius:0,
+                    marginVertical:5,
+                    borderTopEndRadius:0,
+                    borderBottomEndRadius:20,
+                    alignContent:'center',paddingLeft:5
+                  }}>
+          <Text style={{color:'#fff'}}>Gross wt {item.grossWt}</Text>
                 </View>
-                <View style={{paddingHorizontal: 20}}>
+                <Image
+                  style={{height: 144, width: '100%', borderRadius: 10}}
+                  source={{uri: item.images}}
+                />
+                <View style={{marginTop: 10}}>
                   <Text
                     style={{
-                      fontSize: 18,
-                      fontWeight: '700',
-                      marginTop: 10,
-                      color: '#000',
+                      fontFamily: 'Roboto-Medium',
+                      fontSize: 14,
+                      
+                      color: '#666666',
                     }}>
-                    ProductsSku:-{' '}
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        fontWeight: '700',
-                        color: '#707371',
-                      }}>
-                      {item.ProductSku}
-                    </Text>
-                  </Text>
-
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: '700',
-                      marginTop: 10,
-                      color: '#000',
-                    }}>
-                    Products Uniqueld:-{' '}
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: '700',
-                        color: '#707371',
-                      }}>
-                      {item.ProductSku}
-                    </Text>
+                 Product Name : {item.productTypeName}
                   </Text>
                   <Text
                     style={{
-                      fontSize: 18,
-                      fontWeight: '600',
-                      marginTop: 10,
-                      color: '#000',
+                      fontFamily: 'Roboto-Medium',
+                      fontSize: 14,
+                      color: '#666666',
                     }}>
-                    Products Type:-{' '}
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: '700',
-                        color: '#707371',
-                      }}>
-                      {item.ProductType}
-                    </Text>
+                   ProductSku : {item.productSku}
                   </Text>
                   <Text
                     style={{
-                      fontSize: 18,
-                      fontWeight: '600',
-                      marginTop: 10,
-                      color: '#000',
+                      fontFamily: 'Roboto-Medium',
+                      fontSize: 14,
+                      color: '#666666',
                     }}>
-                    NetWt:-{' '}
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: '700',
-                        color: '#707371',
-                      }}>
-                      {item.NetWT}
-                    </Text>
+                   Price : {item.productPrice}
                   </Text>
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: '600',
-                      marginTop: 10,
-                      color: '#000',
-                    }}>
-                    Price:-{' '}
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: '700',
-                        color: '#707371',
-                      }}>
-                      {item.Price}
-                    </Text>
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: '600',
-                      marginTop: 10,
-                      color: '#000',
-                    }}>
-                    PreInsured:-{' '}
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: '700',
-                        color: '#707371',
-                      }}>
-                      {item.PreInsured}
-                    </Text>
-                  </Text>
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      flexDirection: 'row',
-                      marginTop: 10,
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        fontWeight: '600',
-
-                        color: '#000',
-                      }}>
-                      isBestSeller:-{' '}
-                    </Text>
-                    <View>
-                      <CheckBox
-                
-                tintColors={({ true: '#032e63' }, { false: '#032e63' })}
-                 
-                        disabled={false}
-                        value={toggleCheckBox}
-                        onValueChange={newValue => setToggleCheckBox(newValue)}
-                      />
-                    </View>
-                  </View>
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: '600',
-                      marginTop: 10,
-                      color: '#000',
-                    }}>
-                    ProductsSku:-{' '}
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: '700',
-                        color: '#707371',
-                      }}>
-                      {item.ProductSku}
-                    </Text>
-                  </Text>
-
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginTop: 10,
-                      alignItems: 'center',
-                    }}>
-                    <View style={{}}>
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          fontWeight: '600',
-                          color: '#000',
-                        }}>
-                        Product Status:
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-
-                        width: '58%',
-                      }}>
-                      <TouchableOpacity
-                        style={{
-                          backgroundColor: '#032E63',
-                          width: 90,
-                          height: 30,
-                          borderRadius: 20,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <Text style={{color: 'white', fontWeight: '700'}}>
-                          Catalog
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          width: 90,
-                          height: 30,
-                          borderRadius: 20,
-                          justifyContent: 'center',
-                          borderWidth: 2,
-                          borderColor: '#032E63',
-                          alignItems: 'center',
-                        }}>
-                        <Text
-                          style={{
-                            fontWeight: '800',
-                          }}>
-                          Live
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginTop: 10,
-                      alignItems: 'center',
-                    }}>
-                    <View style={{}}>
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          fontWeight: '600',
-                          color: '#000',
-                        }}>
-                        Collection
-                      </Text>
-                    </View>
-                    <TouchableOpacity 
-
-                    onPress={()=>{setModalDetails('Collection')}}
-                      style={{
-                        backgroundColor: '#032E63',
-                        paddingHorizontal: 20,
-                        height: 30,
-                        borderRadius: 20,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <Text style={{color: 'white'}}>View</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginTop: 10,
-                      alignItems: 'center',
-                    }}>
-                    <View style={{}}>
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          fontWeight: '600',
-                          color: '#000',
-                        }}>
-                        Categories
-                      </Text>
-                    </View>
-                    <TouchableOpacity
-                       onPress={()=>{setModalDetails('Categories')}}
-                      style={{
-                        backgroundColor: '#032E63',
-                        paddingHorizontal: 20,
-                        height: 30,
-                        borderRadius: 20,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <Text style={{color: 'white'}}>View</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginTop: 10,
-                      alignItems: 'center',
-                    }}>
-                    <View style={{}}>
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          fontWeight: '600',
-                          color: '#000',
-                        }}>
-                        Action
-                      </Text>
-                    </View>
-                    <TouchableOpacity
-                      style={{
-                        backgroundColor: '#032E63',
-                        paddingHorizontal: 20,
-                        height: 30,
-                        borderRadius: 20,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <Text style={{color: 'white'}}>Activate</Text>
-                    </TouchableOpacity>
-                  </View>
                 </View>
               </View>
             )}

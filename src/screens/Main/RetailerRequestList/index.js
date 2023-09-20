@@ -28,17 +28,8 @@ const RetailerRequestList = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
   const isFetching = useSelector(state => state.Home.isFetching);
-  let tableHead = [
-    'S.No',
-    'Retailer Name',
-    'State',
-    'City',
-    'Assign Category',
-    'Is products show on Retailer s App',
-    'Status',
-    'Action',
-  ];
-  let widthArr = [80, 120, 120, 120, 120, 200, 120, 120];
+
+
 
   const selector = useSelector(state => state.Home.RetailerRequestList);
 
@@ -120,51 +111,87 @@ const RetailerRequestList = () => {
             }}>
             Retailer Request List
           </Text>
-          <ScrollView horizontal={true}>
+    
             <View>
-              <Table>
-                <Row
-                  data={tableHead}
-                  widthArr={widthArr}
-                  style={styles.header}
-                  textStyle={{
-                    fontWeight: '800',
-                    fontSize: 18,
-                    color: '#fff',
-                    marginLeft: 15,
-                  }}
-                />
-              </Table>
-              <ScrollView style={styles.dataWrapper}>
-                <FlatList
-                  data={selector}
-                  renderItem={({item}) => (
-                    <Table borderStyle={{borderWidth: 1}} style={{}}>
-                      <Row
-                        data={[
-                          item.SrNo,
-                          item.CompanyName,
-                          item.state_name,
-                          item.city_name,
-                          item.CategoryType,
-                          item.IsShowInRetailerApp,
-                          item.Status,
-                          'remove',
-                        ]}
-                        widthArr={widthArr}
-                        style={{height: 45}}
-                        textStyle={{
-                          fontWeight: '700',
-                          fontSize: 16,
-                          marginLeft: 15,
-                        }}
-                      />
-                    </Table>
-                  )}
-                />
-              </ScrollView>
+              <FlatList
+                data={selector}
+                renderItem={({item}) => (
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      marginVertical: 10,
+                      marginHorizontal:10,
+                      padding: 5,
+                      borderRadius: 10,
+                    }}>
+                    <View style={styles.txt}>
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                        Retailer Name 
+                      </Text>
+                      <Text>:</Text>
+                      <Text style={{width: '60%'}}>{item.CompanyName}</Text>
+                    </View>
+                    <View style={styles.txt}>
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                        City
+                      </Text>
+                      <Text>:</Text>
+                      <Text style={{width: '60%'}}>{item.CityName}</Text>
+                    </View>
+                    <View style={styles.txt}>
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                        State
+                      </Text>
+                      <Text>:</Text>
+                      <Text style={{width: '60%'}}>{item.StateName}</Text>
+                    </View>
+                    <View style={styles.txt}>
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                        Assign Category 
+                      </Text>
+                      <Text>:</Text>
+                      <Text style={{width: '60%'}}>{item.CategoryType}</Text>
+                    </View>
+                    <View style={styles.txt}>
+                      <Text
+                        style={{fontSize: 16, fontWeight: '700', width: '40%'}}>
+                        Is products show on Retailer s App{' '}
+                      </Text>
+                      <Text>:</Text>
+                      <Text style={{width: '60%'}}>
+                        {item.IsShowInRetailerApp}
+                      </Text>
+                    </View>
+                    <View style={styles.txt}>
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                        Status 
+                      </Text>
+                      <Text>:</Text>
+                      <Text style={{width: '60%'}}>{item.Status}</Text>
+                    </View>
+                    <View style={styles.txt}>
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                        Action 
+                      </Text>
+                      <Text>:</Text>
+                      <TouchableOpacity style={{width: '60%',
+                      
+                    }}>
+                        <Text
+                          style={{
+                            width: '60%',
+                            color: 'blue',
+                            fontWeight: '700',
+                          }}>
+                          Remove 
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
+              />
             </View>
-          </ScrollView>
+        
         </View>
 
         <View
@@ -268,9 +295,3 @@ const page = [
   },
 ];
 
-const data = [
-  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
-  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
-  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
-  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
-];

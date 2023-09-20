@@ -52,7 +52,7 @@ const Editprofile = () => {
             <Text style={{fontSize: 16, color: '#fff'}}>Add Photo</Text>
           </View>
           <View style={styles.main1}>
-            <RNPickerSelect
+            {/* <RNPickerSelect
               onValueChange={val => setSelectedItems(val)}
               items={Data}
               style={styles.rn}
@@ -67,7 +67,7 @@ const Editprofile = () => {
                   source={require('../../../assets/F.png')}
                 />
               )}
-            />
+            /> */}
           </View>
 
           <View style={styles.main1}>

@@ -9,11 +9,10 @@ import MultiSelect from 'react-native-multiple-select';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import Toast from "react-native-simple-toast";
 import { useDispatch, useSelector } from "react-redux";
-import RNPickerSelect from "react-native-picker-select";
 import Loading from "../../../components/Loader";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {Dropdown} from 'react-native-element-dropdown';
 let goldSpecilization=[]
 let diamondSpecilization=[]
 let silverSpecilization=[]
@@ -688,71 +687,64 @@ const renderScreen=()=>{
         </View>
         <View style={{ marginTop: 10 }}>
             <Text style={styles.text}>State<Text style={{ color: 'red' }}>{' *'}</Text></Text>
-           <View  style={{ borderWidth: 1, marginTop: 4, height: 40, borderRadius: 6, borderColor: 'grey', paddingLeft: 6 }}>
-            <RNPickerSelect
-              onValueChange={val => manageCity(val)}
-              items={stateList}
-              style={{
-                inputAndroid: {
-                  color: '#474747',
-                  width: '100%',
-                  fontSize: 14,
-                  marginBottom: -1,
-                  fontFamily: 'Acephimere',
-                },
-                inputIOS: {
-                  color: '#474747',
-                  width: '100%',
-                  fontSize: 14,
-                  marginBottom: 10,
-                  fontFamily: 'Acephimere',
-                },
-                placeholder: {
-                  color: 'grey',
-                  width: '100%',
-                  alignSelf: 'center',
-                  fontFamily: 'Acephimere',
-                },
-              }}
-              value={state}
-              useNativeAndroidPickerStyle={false}
-              placeholder={{label: 'Select State', value: ''}}
-            />
+           <View  style={{ 
+
+            }}>
+          
+            <Dropdown
+                style={[
+                  styles.dropdown,
+                  {borderWidth: 1, borderColor: '#979998'},
+                ]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                iconStyle={styles.iconStyle}
+                data={stateList1?.satates}
+                inputSearchStyle={{
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
+                }}
+                searchPlaceholder="search.."
+                maxHeight={250}
+                search
+                labelField="label"
+                valueField="value"
+                placeholder="state"
+                value={state}
+                onChange={item => {
+                    manageCity(item.value);
+                }}
+              />
         </View>
         </View>
         <View style={{ marginTop: 10 }}>
             <Text style={styles.text}>City<Text style={{ color: 'red' }}>{' *'}</Text></Text>
-            <View  style={{ borderWidth: 1, marginTop: 4, height: 40, borderRadius: 6, borderColor: 'grey', paddingLeft: 6 }}>
-            <RNPickerSelect
-              onValueChange={val => setCity(val)}
-              items={cityList}
-              style={{
-                inputAndroid: {
-                  color: '#474747',
-                  width: '100%',
-                  fontSize: 14,
-                  marginBottom: -1,
-                  fontFamily: 'Acephimere',
-                },
-                inputIOS: {
-                  color: '#474747',
-                  width: '100%',
-                  fontSize: 14,
-                  marginBottom: 10,
-                  fontFamily: 'Acephimere',
-                },
-                placeholder: {
-                  color: 'grey',
-                  width: '100%',
-                  alignSelf: 'center',
-                  fontFamily: 'Acephimere',
-                },
-              }}
-              value={city}
-              useNativeAndroidPickerStyle={false}
-              placeholder={{label: 'Select State', value: ''}}
-            />
-        </View>
+             <View>
+              <Dropdown
+                style={[
+                  styles.dropdown,
+                  {borderWidth: 1, borderColor: '#979998'},
+                ]}
+                search
+                searchPlaceholder="search.."
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                iconStyle={styles.iconStyle}
+                data={cityList ? cityList : []}
+                maxHeight={250}
+                labelField="label"
+                valueField="value"
+                placeholder="City"
+                value={city}
+                onChange={item => {
+                  setCity(item.value);
+                }}
+                inputSearchStyle={{
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
+                }}
+              />
+            </View>
         </View>
         <View style={{ marginTop: 10 }}>
             <Text style={styles.text}>Pincode</Text>

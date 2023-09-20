@@ -21,36 +21,33 @@ import Loader from '../../../components/Loader';
 import {TextInput} from 'react-native';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 const MessageBox2 = () => {
   const navigation = useNavigation();
-const selector = useSelector(state => state.Chat.patnerContact)
-const isFetching = useSelector(state => state.Chat.isFetching);
-const isFoucse = useIsFocused();
-useEffect(()=>{
-  manageBusiness();
-},[isFoucse])
+  const selector = useSelector(state => state.Chat.patnerContact);
+  const isFetching = useSelector(state => state.Chat.isFetching);
+  const isFoucse = useIsFocused();
+  useEffect(() => {
+    manageBusiness();
+  }, [isFoucse]);
 
   const dispatch = useDispatch();
-  const manageBusiness = async() => {
-
+  const manageBusiness = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
 
     dispatch({
       type: 'Patner_Contact_Request',
       url: '/getContactPartner',
-      id:parseInt(user_id) ,
+      id: parseInt(user_id),
     });
-  
   };
   
- 
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-        {isFetching ? <Loader /> : null}
-      <ScrollView  showsVerticalScrollIndicator={false}>
+      {isFetching ? <Loader /> : null}
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
@@ -81,41 +78,49 @@ useEffect(()=>{
             </TouchableOpacity>
           </View>
         </View>
-     
-       <View style={{height: 80, marginTop: 15}}>
-         { <FlatList
-            data={selector}
-            horizontal
-            
-            showsHorizontalScrollIndicator={false}
-            renderItem={({item}) => (
-              <View>
-                <TouchableOpacity 
-                onPress={() => {
-                  navigation.navigate('ChatScreen',{item:item});
-                }}
-                style={{height: 60, width: 60, borderRadius: 30,backgroundColor:'#f0f0f0',
-                borderWidth:1,margin:7,justifyContent:'center',alignItems:'center'}}
-            >
-                  <Text
-                  style={{fontSize:22,fontWeight:'700'}}
-                  >{item.conatct_name[0]}</Text>
-                  <View
-                    style={{
-                      backgroundColor: '#30fc3a',
-                      height: 15,
-                      width: 15,
-                      borderWidth: 1,
-                      position: 'absolute',
-                      bottom: 2,
-                      right:2,
-                      borderRadius: 7.5,
+
+        <View style={{height: 80, marginTop: 15}}>
+          {
+            <FlatList
+              data={selector}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              renderItem={({item}) => (
+                <View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('ChatScreen', {item: item});
                     }}
-                  />
-                </TouchableOpacity>
-              </View>
-            )}
-          />}
+                    style={{
+                      height: 60,
+                      width: 60,
+                      borderRadius: 30,
+                      backgroundColor: '#f0f0f0',
+                      borderWidth: 1,
+                      margin: 7,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Text style={{fontSize: 22, fontWeight: '700'}}>
+                      {item.conatct_name[0]}
+                    </Text>
+                    <View
+                      style={{
+                        backgroundColor: '#30fc3a',
+                        height: 15,
+                        width: 15,
+                        borderWidth: 1,
+                        position: 'absolute',
+                        bottom: 2,
+                        right: 2,
+                        borderRadius: 7.5,
+                      }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+          }
         </View>
         <View style={[styles.searchbar, {marginTop: 20}]}>
           <TextInput placeholder="Search Business" style={{fontSize: 18}} />
@@ -129,25 +134,34 @@ useEffect(()=>{
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => (
               <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('ChatScreen',{item:item});
-              
-              }}
+                onPress={() => {
+                  navigation.navigate('ChatScreen', {item: item});
+                }}
                 style={styles.Usercard}>
-                <View  style={{height: 60, width: 60, borderRadius: 30,
-                  backgroundColor:'#f0f0f0',marginRight:10,marginTop:5,
-                  alignItems:'center',justifyContent:'center'}}>
-                  <Text
-                  
-                   
-                  > {item.conatct_name[0]}</Text>
+                <View
+                  style={{
+                    height: 60,
+                    width: 60,
+                    borderRadius: 30,
+                    backgroundColor: '#f0f0f0',
+                    marginRight: 10,
+                    marginTop: 5,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text> {item.conatct_name[0]}</Text>
                 </View>
-                <View style={{justifyContent: 'center', width: '65%',marginLeft:10}}>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    width: '65%',
+                    marginLeft: 10,
+                  }}>
                   <Text
                     style={{fontSize: 18, fontWeight: '800', color: '#000'}}>
                     {item.conatct_name}
                   </Text>
-                  <Text>{item.updated_at?.substring(0,19)}</Text>
+                  <Text>{item.updated_at?.substring(0, 19)}</Text>
                 </View>
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
                   <Text style={{fontWeight: '800'}}>Now</Text>
@@ -166,10 +180,6 @@ useEffect(()=>{
             )}
           />
         </View>
-        
-
-
-
 
         <View style={{height: 30}} />
       </ScrollView>

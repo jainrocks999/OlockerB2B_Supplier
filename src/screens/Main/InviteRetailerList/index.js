@@ -69,53 +69,68 @@ const InviteRetailerList = () => {
 
         <View style={{}}>
           <Text style={{fontSize:22,fontWeight:'800',color:'#032E63',marginLeft:10,marginVertical:10}}>Invite Retailers List</Text>
-          <ScrollView horizontal={true}>
-            <View>
-              <Table>
-                <Row
-                  data={tableHead}
-                  widthArr={widthArr}
-                  style={styles.header}
-                  textStyle={{
-                    fontWeight: '800',
-                    fontSize: 16,
-                    color: '#fff',
-                    marginLeft: 15,
-                  }}
-                />
-              </Table>
-              <ScrollView style={styles.dataWrapper}>
-                <FlatList
-                  data={selector}
-                  renderItem={({item}) => (
-                    <Table
-                      borderStyle={{borderWidth: 1}}
-                      style={{alignItems: 'center'}}>
-                      <Row
-                        data={[
-                          item.SrNo,
-                          item.CompanyName,
-                          item.state_name,
-                          item.city_name,
-                          item.CategoryType,
-                          item.IsShowInRetailerApp,
-                          item.Status,
-                          'Remove',
-                        ]}
-                        widthArr={widthArr}
-                        style={{height: 45}}
-                        textStyle={{
-                          fontWeight: '700',
-                          fontSize: 16,
-                          marginLeft: 15,
-                        }}
-                      />
-                    </Table>
-                  )}
-                />
-              </ScrollView>
+          <View>
+              <FlatList
+                data={selector}
+                renderItem={({item}) => (
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      marginVertical: 10,
+                      marginHorizontal:10,
+                      padding: 5,
+                      borderRadius: 10,
+                    }}>
+                    <View style={styles.txt}>
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                        Retailer Name 
+                      </Text>
+                      <Text>:</Text>
+                      <Text style={{width: '60%'}}>{item.CompanyName}</Text>
+                    </View>
+                    <View style={styles.txt}>
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                      EmailId
+                      </Text>
+                      <Text>:</Text>
+                      <Text style={{width: '60%'}}>{item.CityName}</Text>
+                    </View>
+                    <View style={styles.txt}>
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                      Location
+                      </Text>
+                      <Text>:</Text>
+                      <Text style={{width: '60%'}}>{item.StateName}</Text>
+                    </View>
+                    <View style={styles.txt}>
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                      Category type
+                      </Text>
+                      <Text>:</Text>
+                      <Text style={{width: '60%'}}>{item.CategoryType}</Text>
+                    </View>
+                    <View style={styles.txt}>
+                      <Text
+                        style={{fontSize: 16, fontWeight: '700', width: '40%'}}>
+                        Contact Person Name
+                      </Text>
+                      <Text>:</Text>
+                      <Text style={{width: '60%'}}>
+                        {item.IsShowInRetailerApp}
+                      </Text>
+                    </View>
+                    <View style={styles.txt}>
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                      Contact Number
+                      </Text>
+                      <Text>:</Text>
+                      <Text style={{width: '60%'}}>{item.Status}</Text>
+                    </View>
+                   
+                  </View>
+                )}
+              />
             </View>
-          </ScrollView>
         </View>
       </View>
 

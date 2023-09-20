@@ -18,8 +18,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {TextInput} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import Loader from '../../../components/Loader';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DiamondViewModal from '../Modal/diamondDetails';
@@ -35,13 +35,19 @@ const AddProducts = () => {
   const [ViewStoneModal, setViewStoneModal] = useState(false);
   const [ViewDiamondModal, setViewDiamondModal] = useState(false);
   const [ViewDecorativeModal, setViewDecorativeModal] = useState(false);
+  
   const productType = useSelector(state => state.Home.productTypeList);
+  const isFetching = useSelector(state => state.Home.isFetching);
+
 
   const [radioInventoryPreInsured,setradioInventoryPreInsured] = useState(0)
 
+
+  const isFocuse = useIsFocused();
+
     useEffect(() => {
     productTypeList();
-  }, []);
+  }, [isFocuse]);
   
 
   const dispatch = useDispatch();
@@ -59,7 +65,10 @@ const AddProducts = () => {
   
   const navigation = useNavigation();
   const renderItem = item => {
-    return (
+    return (<>
+        {isFetching ? <Loader/>:null }
+        
+
       <View
         style={{
           borderBottomWidth: 2,
@@ -82,6 +91,7 @@ const AddProducts = () => {
           {item.Name}
         </Text>
       </View>
+      </>
     );
   };
   return (
@@ -301,7 +311,7 @@ const AddProducts = () => {
             <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
               Item Name
             </Text>
-            <View>
+            <View>{productType?.productType &&
               <Dropdown
                 style={[
                   styles.dropdown,
@@ -320,6 +330,7 @@ const AddProducts = () => {
                   setItemName(item.value);
                 }}
               />
+}
             </View>
           </View>
           <View style={{marginHorizontal: 20, marginTop: 10}}>

@@ -1,7 +1,12 @@
 import React from 'react';
 import {Platform, StyleSheet} from 'react-native';
 export default StyleSheet.create({
- 
+  txt:{flexDirection:'row',
+alignItems:'center',
+justifyContent:'space-between',
+marginVertical:5,
+marginLeft:10
+},
   header: {
     alignItems:'center',justifyContent:'center',
     height: 50,
