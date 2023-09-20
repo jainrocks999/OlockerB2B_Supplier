@@ -451,8 +451,11 @@ const HomeScreen = () => {
           <View
             style={{
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent:'space-around',
               marginTop: 10,
+              alignSelf:'flex-end',
+              flexDirection:'row',
+              width:'65%'
             }}>
             <TouchableOpacity
               // onPress={()=>addToNetwork()}
@@ -466,6 +469,21 @@ const HomeScreen = () => {
               <Text
                 style={{color: '#fff', fontSize: 12, fontFamily: 'Acephimere'}}>
                 {'Edit Profile'}
+                {/* Added To Network */}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              // onPress={()=>addToNetwork()}
+              onPress={() => manageUpdate()}
+              style={{
+                backgroundColor: '#ea056c',
+                paddingHorizontal: 20,
+                paddingVertical: 10,
+                borderRadius: 20,
+              }}>
+              <Text
+                style={{color: '#fff', fontSize: 12, fontFamily: 'Acephimere'}}>
+                {'Change Password'}
                 {/* Added To Network */}
               </Text>
             </TouchableOpacity>

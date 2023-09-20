@@ -8,7 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 import styles from './styles';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 import CheckBox from '@react-native-community/checkbox';
 import Loader from '../../../components/Loader';
 import {Table, TableWrapper, Row} from 'react-native-table-component';
@@ -17,21 +17,46 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import AssignCategory from '../Modal/assigncategoryModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const ListOfRetailer = () => {
   const navigation = useNavigation();
 
   const isFetching = useSelector(state => state.Home.isFetching);
   const selector = useSelector(state => state.Home.SearchRetailerList);
-console.log(selector);
+  const [AssignModal, setAssignModal] = useState(false);
+  const [data, setData] = useState(false);
   let SubtableHead = ['S.No', 'Company Name', 'State', 'City'];
   let SubwidthArr = [80, 120, 120, 120];
 
+  const sendData = item => {
+    setData(item);
+    setAssignModal(true);
+  };
+  const dispatch = useDispatch();
+
+  const addPatnerTonetwork = async (id) => {
+    const user_id = AsyncStorage.getItem('user_id');
+    const Token = await AsyncStorage.getItem('loginToken');
+
+    dispatch({
+      type: 'Addnetwork_toPatner_Request',
+      url: '/addtoNetwork',
+      userId: parseInt(user_id._j),
+      id:id,
+      token: Token,
+    });
+  };
 
   return (
     <View style={{flex: 1}}>
       {isFetching ? <Loader /> : null}
-
+      <AssignCategory
+        visi={AssignModal}
+        data={data}
+        close={() => setAssignModal(false)}
+      />
       <View style={{}}>
         <Text
           style={{
@@ -44,96 +69,109 @@ console.log(selector);
           List of Retailers (Matching your search criteria)
         </Text>
         <View>
-              <FlatList
-                data={selector}
-                renderItem={({item}) => (
+          <FlatList
+            data={selector?.requestlist}
+            renderItem={({item}) => (
+              <View
+                style={{
+                  borderWidth: 1,
+                  marginVertical: 10,
+                  marginHorizontal: 10,
+                  padding: 5,
+                  borderRadius: 10,
+                }}>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700'}}>Sr No</Text>
+                  <Text>:</Text>
+                  <Text style={{width: '60%'}}>{item.SrNo}</Text>
+                </View>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700'}}>
+                    Retailer Name
+                  </Text>
+                  <Text>:</Text>
+                  <Text style={{width: '60%'}}>{item.CompanyName}</Text>
+                </View>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700'}}>City</Text>
+                  <Text>:</Text>
+                  <Text style={{width: '60%'}}>{item.CityName}</Text>
+                </View>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700'}}>State</Text>
+                  <Text>:</Text>
+                  <Text style={{width: '60%'}}>{item.StateName}</Text>
+                </View>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700'}}>
+                    Assign Category
+                  </Text>
+                  <Text>:</Text>
+                  <Text style={{width: '60%'}}>{item.CategoryType}</Text>
+                </View>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700', width: '35%'}}>
+                    Is products show on Retailer s App{' '}
+                  </Text>
+                  <Text>:</Text>
+                  <Text style={{width: '60%'}}>{item.IsShowInRetailerApp}</Text>
+                </View>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700'}}>Status</Text>
+                  <Text>:</Text>
+                  <Text style={{width: '60%'}}>{item.Status}</Text>
+                </View>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700'}}>Action</Text>
+                  <Text>:</Text>
                   <View
                     style={{
-                      borderWidth: 1,
-                      marginVertical: 10,
-                 marginHorizontal:10,
-                      padding: 5,
-                      borderRadius: 10,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      width: '60%',
                     }}>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        Sr No 
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{ item.SrNo}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        Retailer Name 
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.CompanyName}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        City
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.city_name}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        State
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{ item.state_name}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        Assign Category 
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.CategoryType}</Text>
-                    </View>
-                    <View style={styles.txt}>
+                    <TouchableOpacity
+                      style={{width: '50%'}}
+                      onPress={() => {
+                        sendData(item);
+                      }}>
                       <Text
-                        style={{fontSize: 16, fontWeight: '700', width: '40%'}}>
-                        Is products show on Retailer s App{' '}
+                        style={{
+                          color: 'blue',
+                          fontWeight: '700',
+                        }}>
+                        Update Status & Assign Category
                       </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>
-                        {item.IsShowInRetailerApp}
+                    </TouchableOpacity>
+                    <Text
+                      style={{
+                        fontSize: 24,
+                        color: '#000',
+                        marginHorizontal: 5,
+                      }}>
+                      |
+                    </Text>
+                    <TouchableOpacity style={{width: '60%'}}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color: 'blue',
+                          fontWeight: '700',
+                        }}>
+                        Remove
                       </Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        Status 
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.Status}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        Action 
-                      </Text>
-                      <Text>:</Text>
-                      <TouchableOpacity style={{width: '60%',
-                      
-                    }}>
-                        <Text
-                          style={{
-                            width: '60%',
-                            color: 'blue',
-                            fontWeight: '700',
-                          }}>
-                          Remove 
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
+                    </TouchableOpacity>
                   </View>
-                )}
-              />
-            </View>
+                </View>
+              </View>
+            )}
+          />
+        </View>
       </View>
       <View contentContainerStyle={{}}>
         <View
           style={{height: hp(5), justifyContent: 'center', marginTop: hp(3)}}>
-          <TouchableOpacity
+          <View
             style={{
               marginLeft: 10,
               alignItems: 'center',
@@ -148,57 +186,64 @@ console.log(selector);
             <Text style={{fontSize: 16, fontWeight: '700', color: 'white'}}>
               Add To Network
             </Text>
-          </TouchableOpacity>
+          </View>
         </View>
         <View style={{marginTop: '5%'}}>
-        <View>
-              <FlatList
-                data={selector}
-                renderItem={({item}) => (
-                  <View
-                    style={{
-                      borderWidth: 1,
-                      marginVertical: 10,
-                 marginHorizontal:10,
-                      padding: 5,
-                      borderRadius: 10,
-                    }}>
-                      <View>
-                        <CheckBox />
-                      </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        Sr No 
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{ item.SrNo}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        Company Name 
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.CompanyName}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        City
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.city_name}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        State
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{ item.state_name}</Text>
-                    </View>
-              
+          <View>
+            <FlatList
+              data={selector?.searchpartner}
+              renderItem={({item}) => (
+                <View
+                  style={{
+                    borderWidth: 1,
+                    marginVertical: 10,
+                    marginHorizontal: 10,
+                    padding: 5,
+                    borderRadius: 10,
+                  }}>
+                  <View style={{alignItems:'flex-end'}}>
+                    <TouchableOpacity
+onPress={()=>{
+  addPatnerTonetwork(item.SrNo)
+}}
+
+                      style={{
+                        backgroundColor: '#51b6f5',
+                        height: 48,
+                        width: '15%',
+                        borderRadius: 10,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Feather name="user-plus" size={35} color={'#fff'} />
+                    </TouchableOpacity>
                   </View>
-                )}
-              />
-            </View>
+                  <View style={styles.txt}>
+                    <Text style={{fontSize: 16, fontWeight: '700'}}>Sr No</Text>
+                    <Text>:</Text>
+                    <Text style={{width: '60%'}}>{item.SrNo}</Text>
+                  </View>
+                  <View style={styles.txt}>
+                    <Text style={{fontSize: 16, fontWeight: '700'}}>
+                      Company Name
+                    </Text>
+                    <Text>:</Text>
+                    <Text style={{width: '60%'}}>{item.CompanyName}</Text>
+                  </View>
+                  <View style={styles.txt}>
+                    <Text style={{fontSize: 16, fontWeight: '700'}}>City</Text>
+                    <Text>:</Text>
+                    <Text style={{width: '60%'}}>{item.city_name}</Text>
+                  </View>
+                  <View style={styles.txt}>
+                    <Text style={{fontSize: 16, fontWeight: '700'}}>State</Text>
+                    <Text>:</Text>
+                    <Text style={{width: '60%'}}>{item.state_name}</Text>
+                  </View>
+                </View>
+              )}
+            />
+          </View>
         </View>
       </View>
 
@@ -221,10 +266,3 @@ console.log(selector);
   );
 };
 export default ListOfRetailer;
-
-const data = [
-  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
-  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
-  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
-  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
-];

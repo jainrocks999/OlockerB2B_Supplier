@@ -10,7 +10,8 @@ initialstate = {
   InviteRetailerList:[],
   getWishList:[],
   addWishList:[],
-  productTypeList:[]
+  productTypeList:[],
+  AddnetworkToPatner:[]
 
 };
 export default (state = initialstate, action) => {
@@ -78,6 +79,13 @@ export default (state = initialstate, action) => {
     case 'product_TypeList_Success':
       return {...state, isFetching: false, productTypeList: action.payload};
     case 'product_TypeList_Error':
+      return {...state, isFetching: false};
+
+    case 'Addnetwork_toPatner_Request':
+      return {...state, isFetching: true};
+    case 'Addnetwork_toPatner_Success':
+      return {...state, isFetching: false, AddnetworkToPatner: action.payload};
+    case 'Addnetwork_toPatner_Error':
       return {...state, isFetching: false};
 
     default:

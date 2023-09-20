@@ -53,20 +53,16 @@ function* networkList(action) {
   }
 }
 function* productTypeList(action) {
-
- 
   try {
     const data = {
-      userId: action.userId
-
+      userId: action.userId,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-    
+
     if (response.status) {
-     
       yield put({
         type: 'product_TypeList_Success',
-        payload:response.data,
+        payload: response.data,
       });
     } else {
       yield put({
@@ -95,7 +91,7 @@ function* SearchRetailerRequest(action) {
     if (response.status) {
       yield put({
         type: 'Search_Retailer_Success',
-        payload: response.data.searchpartner,
+        payload: response.data,
       });
       action.navigation.navigate('myNetworkBtn', {data: 'List'});
     } else {
@@ -215,7 +211,7 @@ function* AddproductWishList(action) {
       userType: 'supplier',
     };
     const response = yield call(Api.fetchDataByGET3, action.url, data);
-    
+
     if (response.status) {
       yield put({
         type: 'AddWishList_Success',
@@ -225,8 +221,32 @@ function* AddproductWishList(action) {
       yield put({
         type: 'AddWishList_Error',
       });
-   }
-  
+    }
+  } catch (err) {
+    yield put({
+      type: 'AddWishList_Error',
+    });
+  }
+}
+function* AddnetworkToPatner(action) {
+  console.log('==>>>>>>>>>>>>>>>>>>>>>>>>>>', action);
+  try {
+    const data = {
+      userId: userId,
+      id: action.id,
+    };
+    const response = yield call(Api.fetchDataByGET3, action.url, data);
+    console.log(response, '=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+    //   if (response.status) {
+    //     yield put({
+    //       type: 'AddWishList_Success',
+    //       payload: response,
+    //     });
+    //   } else {
+    //     yield put({
+    //       type: 'AddWishList_Error',
+    //     });
+    // }
   } catch (err) {
     yield put({
       type: 'AddWishList_Error',
@@ -244,4 +264,5 @@ export default function* homeSaga() {
   yield takeEvery('getWishList_request', getWishList);
   yield takeEvery('Addpruduct_WishList', AddproductWishList);
   yield takeEvery('product_TypeList_Request', productTypeList);
+  yield takeEvery('Addnetwork_toPatner_Request', AddnetworkToPatner);
 }

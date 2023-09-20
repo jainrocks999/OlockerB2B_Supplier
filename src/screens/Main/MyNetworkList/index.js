@@ -38,10 +38,10 @@ const MyNetworkList = () => {
     });
   };
 
-  let widthArr = [80, 120, 120, 120, 120, 200, 120, 120];
+
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1,}}>
       {isFetching ? <Loader /> : null}
       <View>
         <View style={{}}>
@@ -58,16 +58,26 @@ const MyNetworkList = () => {
           <ScrollView horizontal={true}>
             <View>
               <FlatList
+              showsVerticalScrollIndicator={false}
                 data={selector}
                 renderItem={({item}) => (
                   <View
                     style={{
-                      borderWidth: 1,
+                      backgroundColor:'#F4F5FC',
+             
                       marginVertical: 10,
                       marginLeft: 30,
                       padding: 5,
                       borderRadius: 10,
-                    }}>
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 5,
+                      },
+                      shadowOpacity: 0.34,
+                      shadowRadius: 6.27,
+                      
+                      elevation: 10,   }}>
                     <View style={styles.txt}>
                       <Text style={{fontSize: 16, fontWeight: '700'}}>
                         Retailer Name 
@@ -159,9 +169,3 @@ const MyNetworkList = () => {
 };
 export default MyNetworkList;
 
-const data = [
-  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
-  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
-  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
-  ['01', 'Rohan sahu', 'MP', 'Indore', 'Lorem', 'lorem', 'pending', 'pending'],
-];

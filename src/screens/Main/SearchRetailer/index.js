@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
- 
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -34,7 +33,7 @@ const SearchRetailer = () => {
 
   const manageState = val => {
     setState(val);
-    
+
     dispatch({
       type: 'City_List_Request',
       url: '/getCities',
@@ -50,23 +49,24 @@ const SearchRetailer = () => {
 
   const getDetails = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
-
-    dispatch({
-      type: 'Search_Retailer_Request',
-      url: '/searchRetailer',
-      userId: user_id,
-      role: '6',
-      city: city,
-      state: state,
-      Rname: search,
-      navigation:navigation
-    });
+    if (city != '' || state != '' || search != '') {
+      dispatch({
+        type: 'Search_Retailer_Request',
+        url: '/searchRetailer',
+        userId: user_id,
+        role: '6',
+        city: city,
+        state: state,
+        Rname: search,
+        navigation: navigation,
+      });
+    }
   };
-  
+
   return (
     <View style={{flex: 1}}>
       <StatusBar />
-      {fetching || isFetching || searchBtn? <Loader /> : null}
+      {fetching || isFetching || searchBtn ? <Loader /> : null}
 
       <View
         style={{
@@ -220,11 +220,24 @@ const SearchRetailer = () => {
               marginTop: 30,
             }}>
             <TouchableOpacity
-              onPress={()=>{getDetails()}}
+              onPress={() => {
+                if (
+                  city != '' || state != '' || search != ''
+                ) {
+                  getDetails();
+                }
+              }}
               style={{
                 borderWidth: 1,
+                borderColor:
+                  city != '' || state != '' || search != ''
+                    ? '#032e63'
+                    : 'grey',
                 width: '48%',
-                backgroundColor: '#032e63',
+                backgroundColor:
+                  city != '' || state != '' || search != ''
+                    ? '#032e63'
+                    : 'grey',
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingVertical: 7,
@@ -341,4 +354,3 @@ const SearchRetailer = () => {
   );
 };
 export default SearchRetailer;
-
