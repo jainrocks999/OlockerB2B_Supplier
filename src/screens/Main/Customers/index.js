@@ -474,7 +474,7 @@ const HomeScreen = () => {
             </TouchableOpacity>
             <TouchableOpacity
               // onPress={()=>addToNetwork()}
-              onPress={() => manageUpdate()}
+              onPress={() => navigation.navigate('ChangePassword')}
               style={{
                 backgroundColor: '#ea056c',
                 paddingHorizontal: 20,

@@ -20,7 +20,7 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {Table, TableWrapper, Row} from 'react-native-table-component';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import Feather from 'react-native-vector-icons/Feather';
 const InviteRetailerList = () => {
   const navigation = useNavigation();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -37,7 +37,7 @@ const InviteRetailerList = () => {
   ];
   let widthArr = [80, 120, 200, 120, 120, 200, 140];
 
-  const selector = useSelector(state => state.Home.inviteRetailer);
+  const selector = useSelector(state => state.Home.InviteRetailerList);
 
   const isFocuse = useIsFocused();
   useEffect(() => {
@@ -46,7 +46,7 @@ const InviteRetailerList = () => {
   }, [isFocuse]);
 
  
-
+console.log(selector);
   const dispatch = useDispatch();
 
   const RetailerReques = async () => {
@@ -69,68 +69,74 @@ const InviteRetailerList = () => {
 
         <View style={{}}>
           <Text style={{fontSize:22,fontWeight:'800',color:'#032E63',marginLeft:10,marginVertical:10}}>Invite Retailers List</Text>
+          <View style={{marginTop: '5%'}}>
           <View>
-              <FlatList
-                data={selector}
-                renderItem={({item}) => (
-                  <View
-                    style={{
-                      borderWidth: 1,
-                      marginVertical: 10,
-                      marginHorizontal:10,
-                      padding: 5,
-                      borderRadius: 10,
-                    }}>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        Retailer Name 
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.CompanyName}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                      EmailId
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.CityName}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                      Location
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.StateName}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                      Category type
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.CategoryType}</Text>
-                    </View>
-                    <View style={styles.txt}>
+            <FlatList
+              data={selector}
+              renderItem={({item}) => (
+                <View style={styles.list}>
+                  <View style={{}}>
+                    <Text
+                      style={{
+                        width: '60%',
+                        fontWeight: '600',
+                        fontSize: 18,
+                        
+                      }}>
+                      {item.RetailerName}
+                
+                    </Text>
+<Text>{item.EmailId}</Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                      
+                        marginTop: 5,
+                      }}>
                       <Text
-                        style={{fontSize: 16, fontWeight: '700', width: '40%'}}>
-                        Contact Person Name
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '700',
+                          marginRight: 10,
+                        }}>
+                        City :  <Text style={{fontWeight: '400',}}>
+                          {item.Location}{' '}
+                        </Text>
                       </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>
-                        {item.IsShowInRetailerApp}
-                      </Text>
-                    </View>
-                    <View style={styles.txt}>
                       <Text style={{fontSize: 16, fontWeight: '700'}}>
-                      Contact Number
+                      Contact Number :  <Text style={{fontWeight: '400'}}>
+                          {item.ContactNumber}{' '}
+                        </Text>
                       </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.Status}</Text>
                     </View>
-                   
+                    <View
+                      style={{
+                      
+                        marginTop: 5,
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '700',
+                          marginRight: 10,
+                        }}>
+                        Category Type :   <Text style={{fontWeight: '400'}}>
+                          {item.CategoryType}{' '}
+                        </Text>
+                      </Text>
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                      Contact Name :  <Text style={{fontWeight: '400'}}>
+                          {item.ContactPersonFirstName}{' '}
+                        </Text>
+                      </Text>
+                    </View>
                   </View>
-                )}
-              />
-            </View>
+                 
+                </View>
+              )}
+            />
+          </View>
+        </View>
         </View>
       </View>
 

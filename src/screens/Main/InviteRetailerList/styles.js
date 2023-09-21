@@ -110,7 +110,25 @@ row: {height: 40},
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
   },
-  
+  list:{
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+paddingLeft:20,
+    shadowOpacity: 0.39,
+    shadowRadius: 8.3,
+    flexDirection: 'row',
+    elevation: 13,
+    marginVertical: 10,
+    marginHorizontal: 10,
+    padding: 5,
+    borderRadius: 10,
+    height: 140,
+    backgroundColor: 'white',
+  },
 
   row: {
     backgroundColor:'#032e63',

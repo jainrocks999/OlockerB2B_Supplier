@@ -26,7 +26,7 @@ import Loyalty from '../screens/Main/Loyalty';
 import MyNetwork from '../screens/Main/MyNetwork';
 import PendingRequest from '../screens/Main/PendingRequest';
 import SentRequest from '../screens/Main/SentRequest';
-import MyNetworks from '../screens/Main/MyNetworks';
+
 import PartnerProfile from '../screens/Main/PartnerProfile';
 import editProduct from '../screens/Main/EditProductDetails';
 import CategoryDetails from '../screens/Main/CategoryDetails';
@@ -56,6 +56,8 @@ import AddProductTooffer from '../screens/Main/addProductTooffer';
 import ChatScreen from '../screens/Main/ChatScreen';
 import Messagebox from '../screens/Main/chatOnline';
 import MessageBox2 from '../screens/Main/MessageBox2';
+import MyNetworkList from '../screens/Main/MyNetworkList';
+import ChangePassword from '../screens/Main/changePassword';
 
 const Stack1 = createNativeStackNavigator();
 function HomeScreen1() {
@@ -113,6 +115,7 @@ function Customer1() {
       <Stack3.Screen name="Loyalty" component={Loyalty} />
       <Stack3.Screen name="Loyalty1" component={LoyaltyPage} />
       <Stack3.Screen name="Chat" component={Chat} />
+      <Stack3.Screen name="ChangePassword" component={ChangePassword} />
     </Stack3.Navigator>
   );
 }
@@ -123,7 +126,7 @@ function MyNetwork1() {
       initialRouteName="MyNetwork"
       screenOptions={{headerShown: false}}>
       <Stack2.Screen name="MyNetwork" component={MyNetwork} />
-      <Stack2.Screen name="MyNetworks" component={MyNetworks} />
+      <Stack2.Screen name="MyNetworks" component={MyNetworkList} />
       <Stack2.Screen name="PartnerProfile" component={PartnerProfile} />
       <Stack2.Screen name="PendingRequest" component={PendingRequest} />
       <Stack2.Screen name="SentRequest" component={SentRequest} />

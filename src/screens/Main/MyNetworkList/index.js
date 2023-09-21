@@ -38,114 +38,119 @@ const MyNetworkList = () => {
     });
   };
 
-
-
   return (
-    <View style={{flex: 1,}}>
+    <View style={{flex: 1}}>
       {isFetching ? <Loader /> : null}
-      <View>
-        <View style={{}}>
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: '800',
-              color: '#032E63',
-              marginLeft: 10,
-              marginVertical: 10,
-            }}>
-            My Network
-          </Text>
-          <ScrollView horizontal={true}>
-            <View>
-              <FlatList
-              showsVerticalScrollIndicator={false}
-                data={selector}
-                renderItem={({item}) => (
-                  <View
-                    style={{
-                      backgroundColor:'#F4F5FC',
-             
-                      marginVertical: 10,
-                      marginLeft: 30,
-                      padding: 5,
-                      borderRadius: 10,
-                      shadowColor: "#000",
-                      shadowOffset: {
-                        width: 0,
-                        height: 5,
-                      },
-                      shadowOpacity: 0.34,
-                      shadowRadius: 6.27,
-                      
-                      elevation: 10,   }}>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        Retailer Name 
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.CompanyName}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        City
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.CityName}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        State
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.StateName}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        Assign Category 
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.CategoryType}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text
-                        style={{fontSize: 16, fontWeight: '700', width: '40%'}}>
-                        Is products show on Retailer s App{' '}
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>
-                        {item.IsShowInRetailerApp}
-                      </Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        Status 
-                      </Text>
-                      <Text>:</Text>
-                      <Text style={{width: '60%'}}>{item.Status}</Text>
-                    </View>
-                    <View style={styles.txt}>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                        Action 
-                      </Text>
-                      <Text>:</Text>
-                      <TouchableOpacity style={{width: '60%',
-                      
-                    }}>
-                        <Text
-                          style={{
-                            width: '60%',
-                            color: 'blue',
-                            fontWeight: '700',
-                          }}>
-                          Remove 
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                )}
-              />
-            </View>
-          </ScrollView>
+
+      <View style={{flex: 1}}>
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: '800',
+            color: '#032E63',
+            marginLeft: 10,
+            marginVertical: 10,
+          }}>
+          My Network
+        </Text>
+
+        <View>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={selector}
+            renderItem={({item}) => (
+              <View
+                style={{
+                  backgroundColor: '#F4F5FC',
+                  marginHorizontal: 10,
+                  marginVertical: 10,
+
+                  padding: 5,
+                  borderRadius: 10,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 5,
+                  },
+                  shadowOpacity: 0.34,
+                  shadowRadius: 6.27,
+
+                  elevation: 10,
+                }}>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700', width: '35%'}}>
+                    Retailer Name
+                  </Text>
+                    <Text style={{marginHorizontal:10}}>:</Text>
+                  <Text style={{width: '60%', fontSize: 16}}>
+                    {item.CompanyName}
+                  </Text>
+                </View>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700', width: '35%'}}>
+                    City
+                  </Text>
+                    <Text style={{marginHorizontal:10}}>:</Text>
+                  <Text style={{width: '60%', fontSize: 16}}>
+                    {item.CityName}
+                  </Text>
+                </View>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700', width: '35%'}}>
+                    State
+                  </Text>
+                    <Text style={{marginHorizontal:10}}>:</Text>
+                  <Text style={{width: '60%', fontSize: 16}}>
+                    {item.StateName}
+                  </Text>
+                </View>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700', width: '35%'}}>
+                    Assign Category
+                  </Text>
+                    <Text style={{marginHorizontal:10}}>:</Text>
+                  <Text style={{width: '60%', fontSize: 16}}>
+                    {item.CategoryType}
+                  </Text>
+                </View>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700', width: '35%'}}>
+                    Is products show on Retailer s App{' '}
+                  </Text>
+                    <Text style={{marginHorizontal:10}}>:</Text>
+                  <Text style={{width: '60%', fontSize: 16}}>
+                    {item.IsShowInRetailerApp}
+                  </Text>
+                </View>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700', width: '35%'}}>
+                    Status
+                  </Text>
+                    <Text style={{marginHorizontal:10}}>:</Text>
+                  <Text style={{width: '60%', fontSize: 16}}>
+                    {item.Status}
+                  </Text>
+                </View>
+                <View style={styles.txt}>
+                  <Text style={{fontSize: 16, fontWeight: '700', width: '35%'}}>
+                    Action
+                  </Text>
+                    <Text style={{marginHorizontal:10}}>:</Text>
+                  <TouchableOpacity style={{width: '60%'}}>
+                    <Text
+                      style={{
+                        width: '60%',
+                        color: 'blue',
+                        fontWeight: '700',
+                        fontSize: 16,
+                      }}>
+                      Remove
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          />
         </View>
       </View>
 
@@ -168,4 +173,3 @@ const MyNetworkList = () => {
   );
 };
 export default MyNetworkList;
-

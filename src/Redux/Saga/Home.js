@@ -229,27 +229,27 @@ function* AddproductWishList(action) {
   }
 }
 function* AddnetworkToPatner(action) {
-  console.log('==>>>>>>>>>>>>>>>>>>>>>>>>>>', action);
+
   try {
-    const data = {
-      userId: userId,
-      id: action.id,
-    };
-    const response = yield call(Api.fetchDataByGET3, action.url, data);
-    console.log(response, '=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-    //   if (response.status) {
-    //     yield put({
-    //       type: 'AddWishList_Success',
-    //       payload: response,
-    //     });
-    //   } else {
-    //     yield put({
-    //       type: 'AddWishList_Error',
-    //     });
-    // }
+ 
+     const response = yield call(Api.AddPatnerToNetwork, action);
+  
+      if (response.status) {
+        yield put({
+          type: 'Addnetwork_toPatner_Success',
+          payload: response.msg,
+        });
+      } else {
+        yield put({
+          type: 'Addnetwork_toPatner_Error',
+        });
+    }
+
+   
   } catch (err) {
+    console.log('=>>>>>>>>..error',err);
     yield put({
-      type: 'AddWishList_Error',
+      type: 'Addnetwork_toPatner_Error',
     });
   }
 }

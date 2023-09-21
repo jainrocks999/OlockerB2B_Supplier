@@ -11,7 +11,7 @@ marginLeft:10
 
   dropdown: {
    marginVertical:10,
-    height: 45,
+    height: 50,
     backgroundColor: 'white',
     borderRadius:5,
     padding: 12,

@@ -27,9 +27,7 @@ const ListOfRetailer = () => {
   const selector = useSelector(state => state.Home.SearchRetailerList);
   const [AssignModal, setAssignModal] = useState(false);
   const [data, setData] = useState(false);
-  let SubtableHead = ['S.No', 'Company Name', 'State', 'City'];
-  let SubwidthArr = [80, 120, 120, 120];
-
+ 
   const sendData = item => {
     setData(item);
     setAssignModal(true);
@@ -37,16 +35,14 @@ const ListOfRetailer = () => {
   const dispatch = useDispatch();
 
   const addPatnerTonetwork = async (id) => {
-    const user_id = AsyncStorage.getItem('user_id');
-    const Token = await AsyncStorage.getItem('loginToken');
-
-    dispatch({
+    const user_id = await AsyncStorage.getItem('user_id');
+   
+   dispatch({
       type: 'Addnetwork_toPatner_Request',
-      url: '/addtoNetwork',
-      userId: parseInt(user_id._j),
-      id:id,
-      token: Token,
+      userId: user_id,
+      id: id
     });
+
   };
 
   return (
@@ -74,93 +70,135 @@ const ListOfRetailer = () => {
             renderItem={({item}) => (
               <View
                 style={{
-                  borderWidth: 1,
-                  marginVertical: 10,
-                  marginHorizontal: 10,
-                  padding: 5,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 6,
+                  },
+                  marginVertical:5,
+                  shadowOpacity: 0.39,
+                  shadowRadius: 8.3,
+
+                  elevation: 13,
+                  backgroundColor: 'white',
+
+                  height: hp(18),
+                  flexDirection: 'row',
+                  alignItems: 'center',
                   borderRadius: 10,
+                  marginHorizontal: 5,
                 }}>
-                <View style={styles.txt}>
-                  <Text style={{fontSize: 16, fontWeight: '700'}}>Sr No</Text>
-                  <Text>:</Text>
-                  <Text style={{width: '60%'}}>{item.SrNo}</Text>
-                </View>
-                <View style={styles.txt}>
-                  <Text style={{fontSize: 16, fontWeight: '700'}}>
-                    Retailer Name
+                <View>
+                  <Text
+                    style={{
+                      fontWeight: '500',
+                      fontSize: 18,
+                      marginLeft: 10,
+                    }}>
+                    CompanyName :
+                    <Text
+                      style={{
+                        fontWeight: '500',
+                        fontSize: 18,
+                      }}>
+                      {' '}
+                      {item.CompanyName}
+                    </Text>
                   </Text>
-                  <Text>:</Text>
-                  <Text style={{width: '60%'}}>{item.CompanyName}</Text>
-                </View>
-                <View style={styles.txt}>
-                  <Text style={{fontSize: 16, fontWeight: '700'}}>City</Text>
-                  <Text>:</Text>
-                  <Text style={{width: '60%'}}>{item.CityName}</Text>
-                </View>
-                <View style={styles.txt}>
-                  <Text style={{fontSize: 16, fontWeight: '700'}}>State</Text>
-                  <Text>:</Text>
-                  <Text style={{width: '60%'}}>{item.StateName}</Text>
-                </View>
-                <View style={styles.txt}>
-                  <Text style={{fontSize: 16, fontWeight: '700'}}>
-                    Assign Category
-                  </Text>
-                  <Text>:</Text>
-                  <Text style={{width: '60%'}}>{item.CategoryType}</Text>
-                </View>
-                <View style={styles.txt}>
-                  <Text style={{fontSize: 16, fontWeight: '700', width: '35%'}}>
-                    Is products show on Retailer s App{' '}
-                  </Text>
-                  <Text>:</Text>
-                  <Text style={{width: '60%'}}>{item.IsShowInRetailerApp}</Text>
-                </View>
-                <View style={styles.txt}>
-                  <Text style={{fontSize: 16, fontWeight: '700'}}>Status</Text>
-                  <Text>:</Text>
-                  <Text style={{width: '60%'}}>{item.Status}</Text>
-                </View>
-                <View style={styles.txt}>
-                  <Text style={{fontSize: 16, fontWeight: '700'}}>Action</Text>
-                  <Text>:</Text>
                   <View
                     style={{
                       flexDirection: 'row',
-                      alignItems: 'center',
-                      width: '60%',
+                      marginHorizontal: 10,
+                      marginTop: 5,
                     }}>
-                    <TouchableOpacity
-                      style={{width: '50%'}}
-                      onPress={() => {
-                        sendData(item);
-                      }}>
-                      <Text
-                        style={{
-                          color: 'blue',
-                          fontWeight: '700',
-                        }}>
-                        Update Status & Assign Category
-                      </Text>
-                    </TouchableOpacity>
                     <Text
                       style={{
-                        fontSize: 24,
-                        color: '#000',
-                        marginHorizontal: 5,
+                        fontSize: 16,
+                        fontWeight: '700',
+                        marginRight: 10,
                       }}>
-                      |
+                      City :
+                      <Text style={{fontWeight: '400'}}> {item.CityName} </Text>
                     </Text>
-                    <TouchableOpacity style={{width: '60%'}}>
+                    <Text style={{fontSize: 16, fontWeight: '700'}}>
+                      State :
+                      <Text style={{fontWeight: '400'}}>
+                        {' '}
+                        {item.StateName}{' '}
+                      </Text>
+                    </Text>
+                  </View>
+                  <View style={{marginLeft: 10}}>
+                    <Text style={{fontSize: 16, fontWeight: '700'}}>
+                      Assign Category :
+                      <Text style={{width: '60%'}}> {item.CategoryType}</Text>
+                    </Text>
+                  </View>
+                  <View style={{marginLeft: 10, flexDirection: 'row'}}>
+                    <Text style={{fontSize: 16, fontWeight: '700'}}>
+                      IsShowInRetailerApp :
+                      <Text style={{width: '60%', fontWeight: '400'}}>
+                        {' '}
+                        {item.IsShowInRetailerApp}
+                      </Text>
+                    </Text>
+                    <Text
+                      style={{fontSize: 16, fontWeight: '700', marginLeft: 10}}>
+                      Status :
+                      <Text style={{width: '60%', fontWeight: '400'}}>
+                        {' '}
+                        {item.Status}
+                      </Text>
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginLeft: 10,
+                      marginTop: 5,
+                    }}>
+                    <Text style={{fontSize: 16, fontWeight: '700'}}>
+                      Action :{' '}
+                    </Text>
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: '60%',
+                      }}>
+                      <TouchableOpacity
+                        style={{width: '80%', marginLeft: 10}}
+                        onPress={() => {
+                          sendData(item);
+                        }}>
+                        <Text
+                          style={{
+                            color: 'blue',
+                            fontWeight: '700',
+                          }}>
+                          Update Status & Assign Category
+                        </Text>
+                      </TouchableOpacity>
                       <Text
                         style={{
-                          fontSize: 16,
-                          color: 'blue',
-                          fontWeight: '700',
+                          fontSize: 24,
+                          color: '#000',
+                          marginHorizontal: 5,
                         }}>
-                        Remove
+                        |
                       </Text>
-                    </TouchableOpacity>
+                      <TouchableOpacity style={{width: '60%', marginLeft: 10}}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: 'blue',
+                            fontWeight: '700',
+                          }}>
+                          Remove
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -193,52 +231,56 @@ const ListOfRetailer = () => {
             <FlatList
               data={selector?.searchpartner}
               renderItem={({item}) => (
-                <View
-                  style={{
-                    borderWidth: 1,
-                    marginVertical: 10,
-                    marginHorizontal: 10,
-                    padding: 5,
-                    borderRadius: 10,
-                  }}>
-                  <View style={{alignItems:'flex-end'}}>
-                    <TouchableOpacity
-onPress={()=>{
-  addPatnerTonetwork(item.SrNo)
-}}
+                <View style={styles.list}>
+                  <View style={{}}>
+                    <Text
+                      style={{
+                        width: '60%',
+                        fontWeight: '600',
+                        fontSize: 18,
+                        marginLeft: 10,
+                      }}>
+                      {item.CompanyName}
+                    </Text>
 
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        marginHorizontal: 10,
+                        marginTop: 5,
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '700',
+                          marginRight: 10,
+                        }}>
+                        City :  <Text style={{fontWeight: '400'}}>
+                          {item.city_name}{' '}
+                        </Text>
+                      </Text>
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                        State : <Text style={{fontWeight: '400'}}>
+                          {item.state_name}{' '}
+                        </Text>
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={{width: '16%', height: 58}}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        addPatnerTonetwork(item.SrNo);
+                      }}
                       style={{
                         backgroundColor: '#51b6f5',
-                        height: 48,
-                        width: '15%',
+
+                        height: '100%',
                         borderRadius: 10,
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}>
                       <Feather name="user-plus" size={35} color={'#fff'} />
                     </TouchableOpacity>
-                  </View>
-                  <View style={styles.txt}>
-                    <Text style={{fontSize: 16, fontWeight: '700'}}>Sr No</Text>
-                    <Text>:</Text>
-                    <Text style={{width: '60%'}}>{item.SrNo}</Text>
-                  </View>
-                  <View style={styles.txt}>
-                    <Text style={{fontSize: 16, fontWeight: '700'}}>
-                      Company Name
-                    </Text>
-                    <Text>:</Text>
-                    <Text style={{width: '60%'}}>{item.CompanyName}</Text>
-                  </View>
-                  <View style={styles.txt}>
-                    <Text style={{fontSize: 16, fontWeight: '700'}}>City</Text>
-                    <Text>:</Text>
-                    <Text style={{width: '60%'}}>{item.city_name}</Text>
-                  </View>
-                  <View style={styles.txt}>
-                    <Text style={{fontSize: 16, fontWeight: '700'}}>State</Text>
-                    <Text>:</Text>
-                    <Text style={{width: '60%'}}>{item.state_name}</Text>
                   </View>
                 </View>
               )}

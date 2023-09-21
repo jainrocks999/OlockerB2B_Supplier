@@ -1,12 +1,25 @@
 import React from 'react';
 import {Platform, StyleSheet} from 'react-native';
 export default StyleSheet.create({
-  txt:{flexDirection:'row',
-alignItems:'center',
-justifyContent:'space-between',
-marginVertical:5,
-marginLeft:10
-},
+  list:{
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    justifyContent:'space-around',
+    shadowOpacity: 0.39,
+    shadowRadius: 8.3,
+    flexDirection: 'row',
+    elevation: 13,
+    marginVertical: 10,
+    marginHorizontal: 10,
+    padding: 5,
+    borderRadius: 10,
+    height: 100,
+    backgroundColor: 'white',
+  },
   header: {
     alignItems:'center',justifyContent:'center',
     height: 50,

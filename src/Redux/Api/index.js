@@ -150,4 +150,36 @@ export default class Api {
       throw error;
     }
   };
+
+static AddPatnerToNetwork = async action =>{
+  const  Token = await AsyncStorage.getItem('loginToken');
+  var myHeaders = new Headers();
+myHeaders.append("Olocker", `Bearer ${Token}`);
+
+var formdata = new FormData();
+formdata.append("userId", action.userId);
+formdata.append("id", action.id);
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: formdata,
+  redirect: 'follow'
+};
+
+const res = fetch("https://olocker.co/api/supplier//addtoNetwork", requestOptions)
+  .then(response => response.text())
+  .then(result => {
+   return  JSON.parse(result)})
+  .catch(error => console.log('error', error));
+
+  return res 
+}
+
+
+
+
+
+
+
 }
