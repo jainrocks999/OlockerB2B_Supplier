@@ -32,7 +32,7 @@ const FavouriteList = () => {
   const win = Dimensions.get('window');
   const isFocuse = useIsFocused();
   const selector = useSelector(state => state.Home.getWishList);
-
+console.log(selector);
   useEffect(() => {
     RetailerRequest();
   }, [isFocuse]);

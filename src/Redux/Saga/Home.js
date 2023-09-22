@@ -253,6 +253,35 @@ function* AddnetworkToPatner(action) {
     });
   }
 }
+function* RemovePatner(action) {
+
+console.log('=........>>>>>>>>>>>>>>>>>',action);
+const data = {
+    id:action.Id
+  }
+  try {
+ 
+     const response = yield call(Api.fetchDataByGET1, action.url,data);
+  console.log(response,'=>>>>>>>>>>>>>>>>>>>>>>');
+      if (response.status) {
+        yield put({
+          type: 'RemovePatner_Success',
+          payload: response.msg,
+        });
+      } else {
+        yield put({
+          type: 'RemovePatner_Error',
+        });
+    }
+
+   
+  } catch (err) {
+    console.log('=>>>>>>>>..error',err);
+    yield put({
+      type: 'RemovePatner_Error',
+    });
+  }
+}
 
 export default function* homeSaga() {
   yield takeEvery('Banner_List_Request', bannerList);
@@ -265,4 +294,5 @@ export default function* homeSaga() {
   yield takeEvery('Addpruduct_WishList', AddproductWishList);
   yield takeEvery('product_TypeList_Request', productTypeList);
   yield takeEvery('Addnetwork_toPatner_Request', AddnetworkToPatner);
+  yield takeEvery('RemovePatner_Request', RemovePatner);
 }

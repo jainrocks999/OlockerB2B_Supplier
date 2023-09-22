@@ -226,21 +226,35 @@ const ListOfRetailer = () => {
             </Text>
           </View>
         </View>
-        <View style={{marginTop: '5%'}}>
-          <View>
+        <View style={{marginTop: '5%',flex:1}}>
+          <View style={{flex:1}}>
             <FlatList
               data={selector?.searchpartner}
               renderItem={({item}) => (
-                <View style={styles.list}>
+                <TouchableOpacity 
+                onPress={()=>{
+                  navigation.navigate('PatnerProfile')
+                }}
+                style={styles.list}>
                   <View style={{}}>
                     <Text
                       style={{
-                        width: '60%',
+                        width: '100%',
                         fontWeight: '600',
                         fontSize: 18,
                         marginLeft: 10,
                       }}>
                       {item.CompanyName}
+                    </Text>
+                    <Text
+                      style={{
+                        width: '100%',
+                        fontWeight: '400',
+                        fontSize: 18,
+                        marginLeft: 10,
+                        marginTop:5
+                      }}>
+                      {item.BillingContactEmail}
                     </Text>
 
                     <View
@@ -266,7 +280,7 @@ const ListOfRetailer = () => {
                       </Text>
                     </View>
                   </View>
-                  <View style={{width: '16%', height: 58}}>
+                  {/* <View style={{width: '16%', height: 58}}>
                     <TouchableOpacity
                       onPress={() => {
                         addPatnerTonetwork(item.SrNo);
@@ -281,8 +295,8 @@ const ListOfRetailer = () => {
                       }}>
                       <Feather name="user-plus" size={35} color={'#fff'} />
                     </TouchableOpacity>
-                  </View>
-                </View>
+                  </View> */}
+                </TouchableOpacity>
               )}
             />
           </View>

@@ -38,10 +38,21 @@ const MyNetworkList = () => {
     });
   };
 
+  const RemovePatner = async (id) => {
+    const user_id = await AsyncStorage.getItem('user_id');
+
+    dispatch({
+      type: 'RemovePatner_Request',
+      url: '/removepartner',
+      Id: id,
+    
+    });
+  };
+
   return (
     <View style={{flex: 1}}>
       {isFetching ? <Loader /> : null}
-
+{selector != '' &&
       <View style={{flex: 1}}>
         <Text
           style={{
@@ -59,7 +70,11 @@ const MyNetworkList = () => {
             showsVerticalScrollIndicator={false}
             data={selector}
             renderItem={({item}) => (
-              <View
+              <TouchableOpacity
+
+              onPress={()=>{
+                navigation.navigate('PatnerProfile')
+              }}
                 style={{
                   backgroundColor: '#F4F5FC',
                   marginHorizontal: 10,
@@ -104,56 +119,16 @@ const MyNetworkList = () => {
                     {item.StateName}
                   </Text>
                 </View>
-                <View style={styles.txt}>
-                  <Text style={{fontSize: 16, fontWeight: '700', width: '35%'}}>
-                    Assign Category
-                  </Text>
-                    <Text style={{marginHorizontal:10}}>:</Text>
-                  <Text style={{width: '60%', fontSize: 16}}>
-                    {item.CategoryType}
-                  </Text>
-                </View>
-                <View style={styles.txt}>
-                  <Text style={{fontSize: 16, fontWeight: '700', width: '35%'}}>
-                    Is products show on Retailer s App{' '}
-                  </Text>
-                    <Text style={{marginHorizontal:10}}>:</Text>
-                  <Text style={{width: '60%', fontSize: 16}}>
-                    {item.IsShowInRetailerApp}
-                  </Text>
-                </View>
-                <View style={styles.txt}>
-                  <Text style={{fontSize: 16, fontWeight: '700', width: '35%'}}>
-                    Status
-                  </Text>
-                    <Text style={{marginHorizontal:10}}>:</Text>
-                  <Text style={{width: '60%', fontSize: 16}}>
-                    {item.Status}
-                  </Text>
-                </View>
-                <View style={styles.txt}>
-                  <Text style={{fontSize: 16, fontWeight: '700', width: '35%'}}>
-                    Action
-                  </Text>
-                    <Text style={{marginHorizontal:10}}>:</Text>
-                  <TouchableOpacity style={{width: '60%'}}>
-                    <Text
-                      style={{
-                        width: '60%',
-                        color: 'blue',
-                        fontWeight: '700',
-                        fontSize: 16,
-                      }}>
-                      Remove
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
+               
+             
+              
+            
+              </TouchableOpacity>
             )}
           />
         </View>
       </View>
-
+}
       {/* <TouchableOpacity
         style={{
           position: 'absolute',

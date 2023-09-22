@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Path from '../../../components/ImagePath';
 import Loader from '../../../components/Loader';
 import {
@@ -33,6 +33,9 @@ const MyCatalogueCopy = () => {
   const wishlist = useSelector(state => state.Home.getWishList);
   const [liked, setLiked] = useState([]);
   //// console.log('thhis is selector', selector);
+  
+const isFocuse = useIsFocused();
+
   const handleMyCatalogue = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
@@ -56,7 +59,7 @@ const MyCatalogueCopy = () => {
     if (liked.includes(index)) {
                                                                                                                                                             
       let unlike = liked.filter(elem => elem !== index);
-      setLiked(unlike);
+      
       let Check = await RemoveWhishList(item.productId);
 
       if (Check.status) {
@@ -158,7 +161,7 @@ const MyCatalogueCopy = () => {
               fontFamily: 'Roboto-Medium',
               marginLeft: 14,
             }}>
-            MyCatalogue
+            MyCatalogue 
           </Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>

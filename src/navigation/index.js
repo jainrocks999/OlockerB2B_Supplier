@@ -58,6 +58,7 @@ import Messagebox from '../screens/Main/chatOnline';
 import MessageBox2 from '../screens/Main/MessageBox2';
 import MyNetworkList from '../screens/Main/MyNetworkList';
 import ChangePassword from '../screens/Main/changePassword';
+import PatnerProfile from '../screens/Main/patnerProfile';
 
 const Stack1 = createNativeStackNavigator();
 function HomeScreen1() {
@@ -92,6 +93,7 @@ function HomeScreen1() {
       <Stack1.Screen name="myNetworkBtn" component={myNetworkBtn} />
       <Stack1.Screen name="addMore" component={addMore} />
       <Stack1.Screen name="AddProductTooffer" component={AddProductTooffer} />
+      <Stack2.Screen name="PatnerProfile" component={PatnerProfile} />
     </Stack1.Navigator>
   );
 }
@@ -130,6 +132,7 @@ function MyNetwork1() {
       <Stack2.Screen name="PartnerProfile" component={PartnerProfile} />
       <Stack2.Screen name="PendingRequest" component={PendingRequest} />
       <Stack2.Screen name="SentRequest" component={SentRequest} />
+  
     </Stack2.Navigator>
   );
 }
