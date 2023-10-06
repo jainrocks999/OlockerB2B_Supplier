@@ -6,176 +6,308 @@ import {
   TouchableOpacity,
   Image,
   Modal,
-
-  TextInput
+  TextInput,
+  FlatList,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CheckBox from '@react-native-community/checkbox';
-import styles from './styles'; 
-import { useSelector } from 'react-redux';
+import styles from './styles';
+import {useSelector, useDispatch} from 'react-redux';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loading from '../../../../components/Loader';
 
-
-const StoneViewModal = ({visi, close = () => {}, ...props}) => {
+const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
+  const dispatch = useDispatch();
   const productType = useSelector(state => state.Home?.productTypeList);
+  const session = useSelector(state => state.Home?.session);
+  const stoneData = useSelector(state => state.Catalogue?.stoneData);
+  const isFetching = useSelector(state => state.Catalogue?.isFetching);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [value, setValue] = useState(null);
+  const [inputs, setInputs] = useState({
+    StoneWt: '',
+    StoneWtUnit: '',
+    ChargAmt: '',
+    StoneName: '',
+  });
+  const stoneDetails = productType?.stoneDetails?.map(item => {
+    return {label: item.Value, value: item.Value};
+  });
+  const handleInputs = (text, input) => {
+    setInputs(prev => ({...prev, [text]: input}));
+  };
+
+  const handleOnSubmit = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'add_stone_request',
+      url: 'addStone',
+      data: {
+        ...inputs,
+        BreakUp: isBrekup,
+        hProductSrNo: user_id,
+        hStonesSrNo: '',
+        isAdd: 1,
+        current_session_id: session,
+      },
+    });
+  };
+
   return (
- 
-    <View style={{flex: 1}}>
-      <Modal
-         animationType="slide"
-         transparent={true}
-    
-           visible={visi}
-           >
-               <ScrollView >
-        <View style={[styles.centeredView,{backgroundColor: 'rgba(52, 52, 52, 0.8)',marginTop:0}]}>
+    <View style={styles.container}>
+      <Modal animationType="fade" transparent visible={visi}>
+        <ScrollView>
           <View style={styles.modalView}>
-            <TouchableOpacity
-             onPress={() => close()}
-              style={{
-                height: 40,
-                width: 40,
-                borderRadius: 20,
-                backgroundColor: '#032e63',
-                alignItems: 'center',
-                justifyContent: 'center',
-                position:'absolute',right:0,margin:10
-              }}>
-              <Text style={{fontSize: 18, color: 'white'}}>X</Text>
+            {isFetching ? Loading : null}
+            <TouchableOpacity onPress={() => close()} style={styles.crossbtn}>
+              <Text style={styles.xbtn}>X</Text>
             </TouchableOpacity>
-            <View style={{marginTop:10}}>
-                <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-              <Text
-                style={{
-                  fontSize: 24,
-                  fontWeight: '800',
-                  color: '#000',
-                  marginLeft: -10,
-                }}>
-             Stone Details
-              </Text> 
-              <View style={{flexDirection: 'row',width:'40%'}}>
-                  <TouchableOpacity>
-                    <MaterialCommunityIcons
-                      name="pencil"
-                      size={20}
-                      color={'#000'}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <MaterialCommunityIcons
-                      name="delete"
-                      size={20}
-                      color={'#000'}
-                    />
-                  </TouchableOpacity>
-                </View>
-                </View>
-              <Text style={{fontSize:16, fontWeight: '800', color: '#000',marginLeft:-10}}>(DETAILS OF PRECIOUS METALS USED IN PRODUCT)
+            <View style={styles.modalText}>
+              <View style={styles.item}>
+                <Text style={styles.textItem}>Metal Details</Text>
+              </View>
+              <View style={{width: wp(80)}}>
+                <Text style={styles.deta}>
+                  (DETAILS OF PRECIOUS METALS USED IN PRODUCT)
+                </Text>
+              </View>
+            </View>
+            {stoneData ? (
+              <View style={{marginTop: wp(3)}}>
+                <FlatList
+                  data={stoneData}
+                  scrollEnabled={false}
+                  renderItem={({item, index}) => {
+                    return (
+                      <View
+                        style={{
+                          borderWidth: 1,
+                          marginVertical: wp(1),
+                          paddingVertical: wp(2),
+                          paddingHorizontal: wp(3),
+                          backgroundColor: '#f3f3f5',
+                          borderRadius: wp(2),
+                          elevation: 5,
+                        }}>
+                        <View style={styles.editdelete}>
+                          <MaterialCommunityIcons
+                            name="pencil"
+                            size={wp(4.5)}
+                            color={'black'}
+                          />
+                          <Text
+                            style={[
+                              styles.cardTitle,
+                              {
+                                width: 5,
+                                fontSize: wp(5),
+                                color: 'black',
+                                marginTop: wp(-1),
+                              },
+                            ]}>
+                            |
+                          </Text>
+                          <MaterialCommunityIcons
+                            name="delete"
+                            size={wp(4.5)}
+                            color={'black'}
+                          />
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Stone Name
+                          </Text>
+
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>{item.StoneName}</Text>
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Stone Wt.
+                          </Text>
+
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>{item.StoneWt}</Text>
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Unit of Stone Wt.
+                          </Text>
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>
+                            {item.UnitStoneWt}
+                          </Text>
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Stone value
+                          </Text>
+
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>
+                            {item.StoneChargeableAmount}
+                          </Text>
+                        </View>
+                      </View>
+                    );
+                  }}
+                />
+              </View>
+            ) : null}
+            <View style={{marginLeft: wp(2)}}>
+              <Text style={styles.buttonClose}>
+                Stone wt. <Text style={{color: 'red'}}>*</Text>
               </Text>
+              <View style={styles.inputFiled}>
+                <TextInput
+                  value={inputs.StoneWt}
+                  onChangeText={input => {
+                    handleInputs('StoneWt', input);
+                  }}
+                  placeholder="Stone Wt "
+                />
+              </View>
             </View>
-
-
-            <View style={{marginHorizontal: 20, marginTop:30,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Stone weight<Text style={{color: 'red', fontSize: 18}}>*</Text>
+            <Text style={[styles.buttonClose, {marginLeft: wp(3)}]}>
+              Unit of Wt. <Text style={{color: 'red'}}>*</Text>
             </Text>
-            <View style={{marginTop:10}}>
-              <TextInput
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-              placeholder='Stone Wt'
-              />
-            </View>
-          </View>
-            <View style={{marginHorizontal: 20,marginTop:5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Unit of Wt.<Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:15}}>
+
+            <View
+              style={[
+                styles.inputFiled,
+                {paddingHorizontal: 10, marginHorizontal: wp(2)},
+              ]}>
               <Dropdown
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
+                style={{
+                  color: '#032e63',
+                  width: '100%',
+                  height: 40,
+                  // marginTop: 5
+                }}
+                placeholderStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  alignSelf: 'center',
+                  fontSize: wp(4),
+                  paddingLeft: wp(2),
+                }}
+                selectedTextStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  fontSize: wp(4),
+                  fontFamily: 'Acephimere',
+                  paddingLeft: wp(2),
+                }}
+                // iconStyle={{ tintColor: '#ffff' }}
                 data={DropData}
+                inputSearchStyle={{
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
+                }}
+                // itemTextStyle={{ fontSize: 15 }}
+                // itemContainerStyle={{ marginBottom: -20, }}
+                searchPlaceholder="search.."
                 maxHeight={250}
+                search
                 labelField="label"
                 valueField="value"
-                placeholder="Select Unit of Wt"
-                value={value}
+                placeholder="Select Unit of Wt."
+                value={inputs.StoneWtUnit}
                 onChange={item => {
-                  setValue(item.value);
+                  handleInputs('StoneWtUnit', item.value);
                 }}
               />
             </View>
-          </View>
-          <View style={{marginHorizontal: 20, marginTop:10,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Stone value<Text style={{color: 'red', fontSize: 18}}>*</Text>
+            {isBrekup ? (
+              <>
+                <Text style={[styles.buttonClose, {marginLeft: wp(3)}]}>
+                  Stone value<Text style={{color: 'red'}}>*</Text>
+                </Text>
+                <View style={[styles.inputFiled, {marginHorizontal: wp(2)}]}>
+                  <TextInput
+                    value={inputs.ChargAmt}
+                    onChangeText={input => {
+                      handleInputs('ChargAmt', input);
+                    }}
+                    placeholder="Amount in Rs."
+                  />
+                </View>
+              </>
+            ) : null}
+            <Text style={[styles.buttonClose, {marginLeft: wp(3)}]}>
+              Stone details <Text style={{color: 'red'}}>*</Text>
             </Text>
-            <View style={{marginTop:10}}>
-              <TextInput
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-              placeholder='Amount in Rs.'
-              />
-            </View>
-          </View>
-            <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Stone details<Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:15}}>
+
+            <View
+              style={[
+                styles.inputFiled,
+                {paddingHorizontal: 10, marginHorizontal: wp(2)},
+              ]}>
               <Dropdown
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
-                data={productType?.stoneDetails}
-                maxHeight={200}
-                labelField="Value"
-                valueField="Value"
+                style={{
+                  color: '#032e63',
+                  width: '100%',
+
+                  marginBottom: -1,
+                  height: 40,
+                  // marginTop: 5
+                }}
+                placeholderStyle={{
+                  color: 'grey',
+                  width: '100%',
+                  alignSelf: 'center',
+                  // fontFamily: 'Acephimere'
+                  fontSize: wp(4),
+                  paddingLeft: wp(4),
+                }}
+                selectedTextStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  fontSize: wp(4),
+                  fontFamily: 'Acephimere',
+                  paddingLeft: wp(2),
+                }}
+                // iconStyle={{ tintColor: '#ffff' }}
+                data={stoneDetails}
+                inputSearchStyle={{
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
+                }}
+                // itemTextStyle={{ fontSize: 15 }}
+                // itemContainerStyle={{ marginBottom: -20, }}
+                searchPlaceholder="search.."
+                maxHeight={250}
+                search
+                labelField="label"
+                valueField="value"
                 placeholder="Select Stone Name"
-                value={value}
+                value={inputs.StoneName}
                 onChange={item => {
-                  setValue(item.value);
+                  handleInputs('StoneName', item.value);
                 }}
               />
             </View>
+            <TouchableOpacity
+              onPress={() => handleOnSubmit()}
+              style={styles.buttonOpen}>
+              <Text
+                style={{color: 'white', fontSize: wp(4.5), fontWeight: 'bold'}}>
+                Add Details
+              </Text>
+            </TouchableOpacity>
           </View>
-          
-            
-            <View style={{width:'100%',marginTop:'5%'}}>
-<TouchableOpacity style={styles.addbtn}>
-    <Text style={{fontSize:18,color:'white',fontWeight:'800'}}>Add {props.data} Details</Text>
-</TouchableOpacity>
-            </View>
-          </View>
-        </View>
         </ScrollView>
       </Modal>
-
-   
     </View>
-
   );
 };
 export default StoneViewModal;
 const DropData = [
   {label: 'Cts.', value: 'Cts.'},
   {label: 'Gms', value: 'Gms'},
- 
 ];

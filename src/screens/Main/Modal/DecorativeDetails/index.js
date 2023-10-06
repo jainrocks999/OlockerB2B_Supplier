@@ -6,179 +6,302 @@ import {
   TouchableOpacity,
   Image,
   Modal,
-
-  TextInput
+  TextInput,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CheckBox from '@react-native-community/checkbox';
 import styles from './styles';
-import { useSelector } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {FlatList} from 'react-native';
 
-
-const DecorativeViewModal = ({visi, close = () => {}, ...props}) => {
+const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
+  const dispatch = useDispatch();
   const productType = useSelector(state => state.Home?.productTypeList);
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
-  const [value, setValue] = useState(null);
+  const [inputs, setInputs] = useState({
+    DecoWt: '',
+    DecoWtUnit: '',
+    ChargAmt: '',
+    DecoItemName: '',
+  });
+  //decItemDetails
+  const decItemDetails = productType?.decItemDetails?.map(item => {
+    return {label: item.Value, value: item.Value};
+  });
+  const session = useSelector(state => state.Home?.session);
+  const handleInputs = (text, input) => {
+    setInputs(prev => ({...prev, [text]: input}));
+  };
+  //decorativeData
+  const decorativeData = useSelector(state => state.Catalogue?.decorativeData);
+
+  const handleOnSubmit = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'add_decItem_request',
+      url: 'addDecorative',
+      data: {
+        ...inputs,
+        hProductSrNo: user_id,
+        isAdd: 1,
+        hDecorationSrNo: '',
+        current_session_id: session,
+        BreakUp: isBrekup,
+      },
+    });
+  };
+
   return (
- 
-    <View style={{flex: 1}}>
-      <Modal
-         animationType="slide"
-         transparent={true}
-    
-           visible={visi}
-           >
-               <ScrollView >
-        <View style={[styles.centeredView,{backgroundColor: 'rgba(52, 52, 52, 0.8)',marginTop:0}]}>
-          <View style={styles.modalView}>
-            <TouchableOpacity
-             onPress={() => close()}
-              style={{
-                height: 40,
-                width: 40,
-                borderRadius: 20,
-                backgroundColor: '#032e63',
-                alignItems: 'center',
-                justifyContent: 'center',
-                position:'absolute',right:0,margin:10
-              }}>
-              <Text style={{fontSize: 18, color: 'white'}}>X</Text>
+    <View style={styles.container}>
+      <Modal animationType="fade" transparent visible={visi}>
+        <View style={styles.modalView}>
+          <ScrollView>
+            <TouchableOpacity onPress={() => close()} style={styles.crossbtn}>
+              <Text style={styles.xbtn}>X</Text>
             </TouchableOpacity>
-            <View style={{marginTop:'20%'}}>
-                <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-              <Text
-                style={{
-                  fontSize: 24,
-                  fontWeight: '800',
-                  color: '#000',
-                  marginLeft: -10,
-                }}>
-              Decorative Details
-              </Text> 
-              <View style={{flexDirection: 'row',width:'40%'}}>
-                  <TouchableOpacity>
-                    <MaterialCommunityIcons
-                      name="pencil"
-                      size={20}
-                      color={'#000'}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <MaterialCommunityIcons
-                      name="delete"
-                      size={20}
-                      color={'#000'}
-                    />
-                  </TouchableOpacity>
-                </View>
-                </View>
-              <Text style={{fontSize:16, fontWeight: '800', color: '#000',marginLeft:-10}}>(DETAILS OF PRECIOUS METALS USED IN PRODUCT)
+            <View style={styles.modalText}>
+              <View style={styles.item}>
+                <Text style={styles.textItem}>Metal Details</Text>
+              </View>
+              <View style={{width: wp(80)}}>
+                <Text style={styles.deta}>
+                  (DETAILS OF PRECIOUS METALS USED IN PRODUCT)
+                </Text>
+              </View>
+            </View>
+            {decItemDetails ? (
+              <View style={{marginTop: wp(3)}}>
+                <FlatList
+                  data={decorativeData}
+                  scrollEnabled={false}
+                  renderItem={({item, index}) => {
+                    return (
+                      <View
+                        style={{
+                          borderWidth: 1,
+                          marginVertical: wp(1),
+                          paddingVertical: wp(2),
+                          paddingHorizontal: wp(3),
+                          backgroundColor: '#f3f3f5',
+                          borderRadius: wp(2),
+                          elevation: 5,
+                        }}>
+                        <View style={styles.editdelete}>
+                          <MaterialCommunityIcons
+                            name="pencil"
+                            size={wp(4.5)}
+                            color={'black'}
+                          />
+                          <Text
+                            style={[
+                              styles.cardTitle,
+                              {
+                                width: 5,
+                                fontSize: wp(5),
+                                color: 'black',
+                                marginTop: wp(-1),
+                              },
+                            ]}>
+                            |
+                          </Text>
+                          <MaterialCommunityIcons
+                            name="delete"
+                            size={wp(4.5)}
+                            color={'black'}
+                          />
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Decorative Item Name
+                          </Text>
+
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>
+                            {item.DecorativeItemName}
+                          </Text>
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Decorative Item Wt.
+                          </Text>
+
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>
+                            {item.DecorativeItemWt}
+                          </Text>
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Unit of Decorative Wt.
+                          </Text>
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>
+                            {item.UnitDecoItemWt}
+                          </Text>
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Decorative Item value
+                          </Text>
+
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>
+                            {item.DecorativeChargeableAmount}
+                          </Text>
+                        </View>
+                      </View>
+                    );
+                  }}
+                />
+              </View>
+            ) : null}
+            <View style={{marginLeft: wp(2)}}>
+              <Text style={styles.buttonClose}>
+                Decorative item weight<Text style={{color: 'red'}}>*</Text>
               </Text>
+              <View style={styles.inputFiled}>
+                <TextInput
+                  value={inputs.DecoWt}
+                  onChangeText={input => {
+                    handleInputs('DecoWt', input);
+                  }}
+                  placeholder="Stone Wt "
+                />
+              </View>
             </View>
-
-
-            <View style={{marginHorizontal: 20, marginTop:30,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Decorative item weight<Text style={{color: 'red', fontSize: 18}}>*</Text>
+            <Text style={[styles.buttonClose, {marginLeft: wp(3)}]}>
+              Unit of Wt. <Text style={{color: 'red'}}>*</Text>
             </Text>
-            <View style={{marginTop:15}}>
-              <TextInput
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-              placeholder='Decorative item Wt'
-              />
-            </View>
-          </View>
-         
-        
-        
-            <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',marginTop:10}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-              Unit of wt. <Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:5}}>
+
+            <View
+              style={[
+                styles.inputFiled,
+                {paddingHorizontal: 10, marginHorizontal: wp(2)},
+              ]}>
               <Dropdown
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
+                style={{
+                  color: '#032e63',
+                  width: '100%',
+                  height: 40,
+                }}
+                placeholderStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  alignSelf: 'center',
+                  fontSize: wp(4),
+                }}
+                selectedTextStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  fontSize: wp(4),
+                  fontFamily: 'Acephimere',
+                }}
+                // iconStyle={{ tintColor: '#ffff' }}
                 data={DropData}
+                inputSearchStyle={{
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
+                }}
+                searchPlaceholder="search.."
                 maxHeight={250}
+                search
                 labelField="label"
                 valueField="value"
-                placeholder="Select Unit of wt."
-                value={value}
+                placeholder="Select Unit of Wt."
+                value={inputs.DecoWtUnit}
                 onChange={item => {
-                  setValue(item.value);
+                  handleInputs('DecoWtUnit', item.value);
                 }}
               />
             </View>
-          </View>
-          
-          <View style={{marginHorizontal: 20, marginTop:10,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Decorative item value<Text style={{color: 'red', fontSize: 18}}>*</Text>
+
+            {isBrekup ? (
+              <>
+                <Text style={[styles.buttonClose, {marginLeft: wp(3)}]}>
+                  Decorative item value<Text style={{color: 'red'}}>*</Text>
+                </Text>
+                <View style={[styles.inputFiled, {marginHorizontal: wp(2)}]}>
+                  <TextInput
+                    value={inputs.ChargAmt}
+                    onChangeText={input => {
+                      handleInputs('ChargAmt', input);
+                    }}
+                    placeholder="Amount in Rs."
+                  />
+                </View>
+              </>
+            ) : null}
+
+            <Text style={[styles.buttonClose, {marginLeft: wp(3)}]}>
+              Decorative item details <Text style={{color: 'red'}}>*</Text>
             </Text>
-            <View style={{marginTop:15}}>
-              <TextInput
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-              placeholder='Amount in Rs.'
-              />
-            </View>
-          </View>
-          <View style={{marginHorizontal: 20,marginTop:5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Decorative item details<Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:15}}>
+
+            <View
+              style={[
+                styles.inputFiled,
+                {paddingHorizontal: wp(2), marginHorizontal: wp(2)},
+              ]}>
               <Dropdown
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
-                data={productType?.decItemDetails}
+                style={{
+                  color: '#032e63',
+                  width: '100%',
+                  height: 40,
+                  // marginTop: 5
+                }}
+                placeholderStyle={{
+                  color: 'grey',
+                  width: '100%',
+                  alignSelf: 'center',
+                  // fontFamily: 'Acephimere'
+                  fontSize: wp(4),
+                }}
+                selectedTextStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  fontSize: wp(4),
+                  fontFamily: 'Acephimere',
+                }}
+                // iconStyle={{ tintColor: '#ffff' }}
+                data={decItemDetails}
+                inputSearchStyle={{
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
+                }}
+                // itemTextStyle={{ fontSize: 15 }}
+                // itemContainerStyle={{ marginBottom: -20, }}
+                searchPlaceholder="search.."
                 maxHeight={250}
-                labelField="Value"
-                valueField="Value"
-                placeholder="Select Decorative item name"
-                value={value}
+                search
+                labelField="label"
+                valueField="value"
+                placeholder="Select Decorative item Name"
+                value={inputs.DecoItemName}
                 onChange={item => {
-                  setValue(item.value);
+                  handleInputs('DecoItemName', item.value);
                 }}
               />
             </View>
-          </View>
-          
-            <View style={{width:'100%',marginTop:'5%'}}>
-<TouchableOpacity style={styles.addbtn}>
-    <Text style={{fontSize:18,color:'white',fontWeight:'800'}}>Add {props.data} Details</Text>
-</TouchableOpacity>
-            </View>
-          </View>
+            <TouchableOpacity
+              onPress={() => handleOnSubmit()}
+              style={styles.buttonOpen}>
+              <Text
+                style={{color: 'white', fontSize: wp(4.5), fontWeight: 'bold'}}>
+                Add Details
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
-        </ScrollView>
       </Modal>
-
-   
     </View>
-
   );
 };
 export default DecorativeViewModal;
 const DropData = [
   {label: 'Cts.', value: 'Cts.'},
   {label: 'Gms', value: 'Gms'},
- 
 ];

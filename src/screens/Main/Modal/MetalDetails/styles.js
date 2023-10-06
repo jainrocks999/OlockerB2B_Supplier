@@ -7,40 +7,35 @@ import {
 export default StyleSheet.create({
   centeredView: {
     flex: 1,
-    //justifyContent: 'center',
-    // alignItems: 'center',
     marginTop: 22,
-    
   },
 
   modalView: {
-    margin: 20,
-    
+    height: hp(85),
+    width: wp(85),
     backgroundColor: 'white',
-    borderRadius: 20,
-    paddingVertical: 35,
-    paddingHorizontal: 15,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    alignSelf: 'center',
     elevation: 5,
-    height:'90%'
+    marginTop: wp(3),
+    borderRadius: wp(2),
+    paddingHorizontal: wp(4),
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
+
   buttonOpen: {
-    backgroundColor: '#F194FF',
+    height: hp(5.5),
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: hp(3),
+    width: wp(55),
+    backgroundColor: '#032e63',
+    borderRadius: wp(5),
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    fontSize: wp(4.5),
+    marginTop: hp(2),
+    fontWeight: 'bold',
+    color: 'black',
   },
   textStyle: {
     color: 'white',
@@ -48,8 +43,8 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
+    width: wp(100),
+    marginTop: hp(5),
   },
   dropdown: {
     marginVertical: 10,
@@ -64,21 +59,20 @@ export default StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-
     elevation: 2,
   },
   icon: {
     marginRight: 5,
   },
   item: {
-    padding: 17,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    width: wp(60),
   },
   textItem: {
-    flex: 1,
-    fontSize: 16,
+    fontSize: wp(5),
+    marginLeft: wp(2),
+    fontWeight: 'bold',
+    color: 'black',
   },
   placeholderStyle: {
     fontSize: 16,
@@ -103,22 +97,61 @@ export default StyleSheet.create({
     marginTop: 15,
   },
   container: {
-    width: '100%',
+    flex: 1,
+  },
+
+  crossbtn: {
+    height: hp(5),
+    width: hp(5),
     backgroundColor: '#032e63',
+    borderRadius: wp(4.5),
+    position: 'absolute',
+    right: wp(4),
+    top: wp(4),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  xbtn: {
+    color: 'white',
+    fontSize: wp(5),
+    fontWeight: 'bold',
+  },
+  deta: {
+    fontSize: wp(3),
+    fontWeight: 'bold',
+    color: 'grey',
+    textAlign: 'center',
+  },
+  inputFiled: {
+    borderWidth: 1,
+    height: hp(5.5),
+    paddingLeft: wp(2),
+    marginTop: wp(2),
+    borderRadius: wp(2),
+  },
+  cartItem: {
+    flexDirection: 'row',
+    width: '70%',
+    justifyContent: 'space-between',
+  },
+  cardTitle: {
+    fontSize: wp(4),
+    width: '65%',
+    marginTop: wp(1),
+  },
+  dot: {
+    width: '20%',
+    color: 'grey',
+    fontSize: wp(4),
+    fontWeight: 'bold',
+  },
+  editdelete: {
+    flexDirection: 'row',
+    position: 'absolute',
+    right: wp(1),
+    top: wp(2),
+    width: '17%',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    flexDirection: 'row',
-    paddingVertical: 15,
-  },
-  text: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  headertouch: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
   },
 });

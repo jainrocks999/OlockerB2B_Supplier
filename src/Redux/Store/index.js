@@ -1,4 +1,4 @@
-import { createStore,applyMiddleware} from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import logger from 'redux-logger';
 import Reducer from '../Reducer';
@@ -14,17 +14,15 @@ import ChatSaga from '../Saga/Chat';
 
 
 const sagamiddleware = createSagaMiddleware()
+const store = createStore(Reducer, applyMiddleware(sagamiddleware))
+sagamiddleware.run(authSaga)
+sagamiddleware.run(loginSaga)
+sagamiddleware.run(citySaga)
+sagamiddleware.run(stateSaga)
+sagamiddleware.run(supplierSaga)
+sagamiddleware.run(catalogueSaga)
+sagamiddleware.run(homeSaga)
+sagamiddleware.run(offerSaga)
+sagamiddleware.run(ChatSaga)
+export default store;
 
- const store=createStore(Reducer,applyMiddleware(sagamiddleware,logger))
-  sagamiddleware.run(authSaga)
-  sagamiddleware.run(loginSaga)
-  sagamiddleware.run(citySaga)
-  sagamiddleware.run(stateSaga)
-  sagamiddleware.run(supplierSaga)
-  sagamiddleware.run(catalogueSaga)
-  sagamiddleware.run(homeSaga)
-  sagamiddleware.run(offerSaga)
-  sagamiddleware.run(ChatSaga)
-  export default store;
-
-    

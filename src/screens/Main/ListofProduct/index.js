@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import {Dropdown} from 'react-native-element-dropdown';
+import { Dropdown } from 'react-native-element-dropdown';
 import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -17,7 +17,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {TextInput} from 'react-native';
+import { TextInput } from 'react-native';
 
 const ProductsList2 = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -39,10 +39,10 @@ const ProductsList2 = () => {
     );
   };
   return (
-    <View style={{flex: 1,backgroundColor:'white'}}>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
       <ScrollView contentContainerStyle={{}}>
         <View style={styles.container}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <TouchableOpacity
               delayPressIn={0}
               onPress={() => navigation.goBack()}>
@@ -51,7 +51,7 @@ const ProductsList2 = () => {
                 source={require('../../../assets/L.png')}
               />
             </TouchableOpacity>
-            <Text style={[styles.text, {marginLeft: 15}]}>
+            <Text style={[styles.text, { marginLeft: 15 }]}>
               List Of Products
             </Text>
           </View>
@@ -63,7 +63,7 @@ const ProductsList2 = () => {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              style={{marginLeft: 15}}
+              style={{ marginLeft: 15 }}
               onPress={() => handleWishList()}>
               <Image
                 style={styles.img2}
@@ -79,27 +79,27 @@ const ProductsList2 = () => {
           </View>
         </View>
 
-        <View style={[styles.searchbar, {marginTop: 20}]}>
-          <TextInput placeholder="Search" style={{fontSize: 18}} />
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <View style={[styles.searchbar, { marginTop: 20 }]}>
+          <TextInput placeholder="Search" style={{ fontSize: 18 }} />
+          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             <Feather name="search" size={30} />
           </View>
         </View>
 
-        <View style={{marginHorizontal: 10}}>
-          <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}} > 
+        <View style={{ marginHorizontal: 10 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }} >
 
-          <Text
-            style={{
-              fontSize: 18,
-              marginLeft: 5,
-              fontWeight: '600',
-              color: '#000',
-            }}>
-            Show
-          </Text>
-<Text  style={{fontWeight:'600',fontSize:18}}>Entries</Text>
-              </View>
+            <Text
+              style={{
+                fontSize: 18,
+                marginLeft: 5,
+                fontWeight: '600',
+                color: '#000',
+              }}>
+              Show
+            </Text>
+            <Text style={{ fontWeight: '600', fontSize: 18 }}>Entries</Text>
+          </View>
           <Dropdown
             style={styles.dropdown}
             placeholderStyle={styles.placeholderStyle}
@@ -127,17 +127,17 @@ const ProductsList2 = () => {
             borderRadius: 20,
             marginVertical: 20,
           }}>
-          <Text style={{color: 'white', fontSize: 18, fontWeight: '600'}}>
+          <Text style={{ color: 'white', fontSize: 18, fontWeight: '600' }}>
             Excel
           </Text>
         </TouchableOpacity>
 
         <ScrollView horizontal >
-          <View style={{flex: 1,marginHorizontal:10, width: wp(100)}}>
+          <View style={{ flex: 1, marginHorizontal: 10, width: wp(100) }}>
             <View style={styles.row}>
-              <Text style={styles.cell}>S.No 
+              <Text style={styles.cell}>S.No
               </Text>
-              
+
               <Text style={styles.cell}>Retailer Name</Text>
               <Text style={styles.cell}>State</Text>
               <Text style={styles.cell}>City</Text>
@@ -148,18 +148,18 @@ const ProductsList2 = () => {
             {/* Table Rows */}
             <FlatList
               data={data}
-              renderItem={({item}) => (
+              renderItem={({ item }) => (
                 <View style={styles.Subrow}>
-                  <View style={{flexDirection:'row',alignItems:'center',}}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', }}>
 
-                  <Text style={styles.Subcell}>{item.sNo}</Text>
-                  <View style={{height:45,marginLeft:10}}>
+                    <Text style={styles.Subcell}>{item.sNo}</Text>
+                    <View style={{ height: 45, marginLeft: 10 }}>
 
-                  <Image 
-              style={{height:40,width:40}}
-              source={{uri:'https://m.media-amazon.com/images/I/41DEcqSKIEL._SY300_SX300_QL70_FMwebp_.jpg'}} />
-              </View>
-              </View>
+                      <Image
+                        style={{ height: 40, width: 40 }}
+                        source={{ uri: 'https://m.media-amazon.com/images/I/41DEcqSKIEL._SY300_SX300_QL70_FMwebp_.jpg' }} />
+                    </View>
+                  </View>
                   <Text style={styles.Subcell}>{item.RName}</Text>
                   <Text style={styles.Subcell}>{item.State}</Text>
                   <Text style={styles.Subcell}>{item.city}</Text>
@@ -171,38 +171,46 @@ const ProductsList2 = () => {
           </View>
         </ScrollView>
 
-        <View style={{flexDirection:'row',
-        marginBottom:40,marginTop:20, marginHorizontal:20}}>
-        <TouchableOpacity style={{borderWidth:2,paddingVertical:5,
-          borderRadius:15,
-          paddingHorizontal:15,alignItems:'center',justifyContent:'center',
-            borderColor:'#032E63',backgroundColor:'#032E63'}}>
-            <Text style={{color:'white'}}>Prev</Text>
+        <View style={{
+          flexDirection: 'row',
+          marginBottom: 40, marginTop: 20, marginHorizontal: 20
+        }}>
+          <TouchableOpacity style={{
+            borderWidth: 2, paddingVertical: 5,
+            borderRadius: 15,
+            paddingHorizontal: 15, alignItems: 'center', justifyContent: 'center',
+            borderColor: '#032E63', backgroundColor: '#032E63'
+          }}>
+            <Text style={{ color: 'white' }}>Prev</Text>
           </TouchableOpacity>
           <View style={{}}>
-          <FlatList
+            <FlatList
               data={page}
               horizontal
-              renderItem={({item}) => (
-                <View style={{height:40,width:40,backgroundColor:'#032E63',
-                alignItems:'center',justifyContent:'center',marginHorizontal:5,
-                borderRadius:20}}>
-                  
-                  <Text style={{color:'white'}}>{item.number}</Text>
+              renderItem={({ item }) => (
+                <View style={{
+                  height: 40, width: 40, backgroundColor: '#032E63',
+                  alignItems: 'center', justifyContent: 'center', marginHorizontal: 5,
+                  borderRadius: 20
+                }}>
+
+                  <Text style={{ color: 'white' }}>{item.number}</Text>
                 </View>
               )}
             />
           </View>
-          <TouchableOpacity style={{borderWidth:2,paddingVertical:5,
-          borderRadius:15,alignItems:'center',justifyContent:'center',
-          paddingHorizontal:15,
-            borderColor:'#032E63',backgroundColor:'#032E63'}}>
-            <Text style={{color:'white'}}>Next</Text>
+          <TouchableOpacity style={{
+            borderWidth: 2, paddingVertical: 5,
+            borderRadius: 15, alignItems: 'center', justifyContent: 'center',
+            paddingHorizontal: 15,
+            borderColor: '#032E63', backgroundColor: '#032E63'
+          }}>
+            <Text style={{ color: 'white' }}>Next</Text>
           </TouchableOpacity>
         </View>
-      
-        <View   
-        style={{height:70}}
+
+        <View
+          style={{ height: 70 }}
         />
       </ScrollView>
 
@@ -227,31 +235,31 @@ const ProductsList2 = () => {
 export default ProductsList2;
 
 const DropData = [
-  {label: 'Item 1', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},
-  {label: 'Item 4', value: '4'},
-  {label: 'Item 5', value: '5'},
-  {label: 'Item 6', value: '6'},
-  {label: 'Item 7', value: '7'},
-  {label: 'Item 8', value: '8'},
+  { label: 'Item 1', value: '1' },
+  { label: 'Item 2', value: '2' },
+  { label: 'Item 3', value: '3' },
+  { label: 'Item 4', value: '4' },
+  { label: 'Item 5', value: '5' },
+  { label: 'Item 6', value: '6' },
+  { label: 'Item 7', value: '7' },
+  { label: 'Item 8', value: '8' },
 ];
 
-const page =[
+const page = [
   {
-number:'1'
+    number: '1'
   },
   {
-number:'2'
+    number: '2'
   },
   {
-number:'3'
+    number: '3'
   },
   {
-number:'4'
+    number: '4'
   },
   {
-number:'5'
+    number: '5'
   },
 ]
 const data = [

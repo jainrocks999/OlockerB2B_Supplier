@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,8 @@ import {
   FlatList,
   Alert,
 } from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Path from '../../../components/ImagePath';
 import Loader from '../../../components/Loader';
 import {
@@ -19,8 +19,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-simple-toast';
 import Banner from '../../../components/Banner';
-import {FlatListSlider} from 'react-native-flatlist-slider';
-import {ScrollView} from 'react-native-gesture-handler';
+import { FlatListSlider } from 'react-native-flatlist-slider';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const MyCatalogueCopy = () => {
   const dispatch = useDispatch();
@@ -32,9 +32,8 @@ const MyCatalogueCopy = () => {
   const [mycollection, setMycollection] = useState(false);
   const wishlist = useSelector(state => state.Home.getWishList);
   const [liked, setLiked] = useState([]);
-  //// console.log('thhis is selector', selector);
-  
-const isFocuse = useIsFocused();
+  const [isFetching, setIsFetching] = useState()
+  const isFocuse = useIsFocused();
 
   const handleMyCatalogue = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
@@ -55,28 +54,20 @@ const isFocuse = useIsFocused();
     setMycollection(true);
   };
 
-  const addWishList = async (item, index) => {
+  const manageWishList = async (item, index) => {
     if (liked.includes(index)) {
-                                                                                                                                                            
-      let unlike = liked.filter(elem => elem !== index);
-      
-      let Check = await RemoveWhishList(item.productId);
-
-      if (Check.status) {
-        Toast.show('The product has been Removed to your wishlist', Toast.LONG);
-      } else {
-        alert('Item Not Remove This Time');
-      }
-    } else {
-      setLiked([...liked, index]);
-      let check = await addProductWishList(item);
-      if (check.status) {
-        Toast.show('The product has been added to your wishlist', Toast.LONG);
-      }
+      let like = liked.filter(elem => elem != index)
+      const res = await RemoveWhishList(item.productId, like)
+      Toast.show(res.msg)
+    }
+    else {
+      const res = await addProductWishList(item)
+      Toast.show(res.msg)
     }
   };
 
-  const RemoveWhishList = async id => {
+  const RemoveWhishList = async (id, liked) => {
+    setIsFetching(true)
     const user_id = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
     var myHeaders = new Headers();
@@ -94,14 +85,18 @@ const isFocuse = useIsFocused();
     )
       .then(response => response.text())
       .then(result => {
+        setIsFetching(false)
+        setLiked(liked)
         return JSON.parse(result);
+
       })
-      .catch(error => console.log('error', error));
+      .catch(error => { console.log('error', error); setIsFetching(false) });
 
     return response;
   };
 
   const addProductWishList = async item => {
+    setIsFetching(true)
     const Token = await AsyncStorage.getItem('loginToken');
     const user_id = await AsyncStorage.getItem('user_id');
     var myHeaders = new Headers();
@@ -125,16 +120,18 @@ const isFocuse = useIsFocused();
     )
       .then(response => response.text())
       .then(result => {
+        setIsFetching(false)
+        setLiked([...liked, item.SrNo])
         return JSON.parse(result);
       })
-      .catch(error => console.log('error', error));
+      .catch(error => { console.log('error', error); setIsFetching(false) });
 
     return res;
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
-      {isFetching1 ? <Loader /> : null}
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      {isFetching1 || isFetching ? <Loader /> : null}
       <View
         style={{
           backgroundColor: '#032e63',
@@ -145,12 +142,12 @@ const isFocuse = useIsFocused();
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{paddingHorizontal: 5}}>
+            style={{ paddingHorizontal: 5 }}>
             <Image
-              style={{height: 20, width: 14}}
+              style={{ height: 20, width: 14 }}
               source={require('../../../assets/L.png')}
             />
           </TouchableOpacity>
@@ -161,25 +158,25 @@ const isFocuse = useIsFocused();
               fontFamily: 'Roboto-Medium',
               marginLeft: 14,
             }}>
-            MyCatalogue 
+            MyCatalogue
           </Text>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image
-            style={{height: 24, width: 28}}
+            style={{ height: 24, width: 28 }}
             source={require('../../../assets/Fo.png')}
           />
           <Image
-            style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
+            style={{ height: 22, width: 26, tintColor: '#fff', marginLeft: 15 }}
             source={require('../../../assets/Image/dil.png')}
           />
           <Image
-            style={{height: 24, width: 28, tintColor: '#fff', marginLeft: 15}}
+            style={{ height: 24, width: 28, tintColor: '#fff', marginLeft: 15 }}
             source={require('../../../assets/supplierImage/more.png')}
           />
         </View>
       </View>
-      <ScrollView style={{flex: 1}}>
+      <ScrollView style={{ flex: 1 }}>
         <View
           style={{
             backgroundColor: '#032e63',
@@ -195,7 +192,7 @@ const isFocuse = useIsFocused();
               marginVertical: 0,
               paddingHorizontal: 30,
             }}
-            indicatorContainerStyle={{position: 'absolute', bottom: 10}}
+            indicatorContainerStyle={{ position: 'absolute', bottom: 10 }}
             indicatorActiveColor={'#032e63'}
             indicatorInActiveColor={'#ffffff'}
             indicatorActiveWidth={5}
@@ -213,7 +210,7 @@ const isFocuse = useIsFocused();
               marginTop: 40,
               paddingHorizontal: 40,
             }}>
-            <View style={{alignItems: 'center'}}>
+            <View style={{ alignItems: 'center' }}>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate('ListOfProduct');
@@ -225,7 +222,7 @@ const isFocuse = useIsFocused();
                   backgroundColor: '#fff',
                 }}>
                 <Image
-                  style={{height: 120, width: 120}}
+                  style={{ height: 120, width: 120 }}
                   source={require('../../../assets/Image/my.png')}
                 />
               </TouchableOpacity>
@@ -239,7 +236,7 @@ const isFocuse = useIsFocused();
                 My Product
               </Text>
             </View>
-            <View style={{alignItems: 'center'}}>
+            <View style={{ alignItems: 'center' }}>
               <TouchableOpacity
                 onPress={() =>
                   // navigation.navigate('MyCatalogue')
@@ -252,7 +249,7 @@ const isFocuse = useIsFocused();
                   backgroundColor: '#fff',
                 }}>
                 <Image
-                  style={{height: 120, width: 120}}
+                  style={{ height: 120, width: 120 }}
                   source={require('../../../assets/Image/neck.png')}
                 />
               </TouchableOpacity>
@@ -268,7 +265,7 @@ const isFocuse = useIsFocused();
             </View>
           </View>
           <View
-            style={{alignItems: 'center', paddingVertical: 10, marginTop: 40}}>
+            style={{ alignItems: 'center', paddingVertical: 10, marginTop: 40 }}>
             <TouchableOpacity
               onPress={() => navigation.navigate('addMore')}
               style={{
@@ -300,7 +297,7 @@ const isFocuse = useIsFocused();
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{paddingHorizontal: 12, marginTop: 40}}>
+        <View style={{ paddingHorizontal: 12, marginTop: 40 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -357,16 +354,16 @@ const isFocuse = useIsFocused();
           }}>
           <FlatList
             data={mycollection == true ? [] : selector}
-            style={{width: '96%'}}
+            style={{ width: '96%' }}
             numColumns={2}
             // contentContainerStyle={{justifyContent:'center',}}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <View
                 style={{
                   width: '46%',
                   margin: 7,
                   shadowColor: '#000',
-                  shadowOffset: {width: 0, height: 2},
+                  shadowOffset: { width: 0, height: 2 },
                   shadowOpacity: 0.2,
                   shadowRadius: 5,
                   elevation: 5,
@@ -374,6 +371,7 @@ const isFocuse = useIsFocused();
                   borderRadius: 10,
                   padding: 10,
                 }}>
+                {console.log('this is timemeeee', item)}
                 <View
                   style={{
                     padding: 0,
@@ -384,10 +382,11 @@ const isFocuse = useIsFocused();
                   }}>
                   <TouchableOpacity
                     onPress={() => {
-                      addWishList(item, index);
+                      manageWishList(item, item.SrNo);
                     }}
-                    // onPress={() => click(click1)}
+                  // onPress={() => click(click1)}
                   >
+
                     <Image
                       style={{
                         height: hp('2.4%'),
@@ -395,17 +394,17 @@ const isFocuse = useIsFocused();
                         marginLeft: 5,
                         marginVertical: 5,
                         marginTop: 2,
-                        tintColor: liked.includes(index) ? 'red' : 'grey',
+                        tintColor: liked.includes(item.SrNo) ? 'red' : 'grey',
                       }}
                       source={require('../../../assets/Image/dil.png')}
                     />
                   </TouchableOpacity>
                 </View>
                 <Image
-                  style={{height: 144, width: '100%', borderRadius: 10}}
-                  source={{uri: item.images}}
+                  style={{ height: 144, width: '100%', borderRadius: 10 }}
+                  source={{ uri: item.images }}
                 />
-                <View style={{marginTop: 10}}>
+                <View style={{ marginTop: 10 }}>
                   <Text
                     style={{
                       fontFamily: 'Roboto-Medium',
@@ -420,7 +419,7 @@ const isFocuse = useIsFocused();
                       fontSize: 14,
                       color: '#666666',
                     }}>
-                    3 Items
+                    {console.log('this is item', item)}
                   </Text>
                 </View>
               </View>

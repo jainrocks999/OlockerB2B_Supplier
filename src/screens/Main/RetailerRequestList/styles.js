@@ -1,19 +1,21 @@
 import React from 'react';
-import {Platform, StyleSheet} from 'react-native';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { Platform, StyleSheet } from 'react-native';
 export default StyleSheet.create({
-  txt:{flexDirection:'row',
-alignItems:'center',
-justifyContent:'space-between',
-marginVertical:5,
-marginLeft:10
-},
+  txt: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 5,
+    marginLeft: 10
+  },
 
 
   dropdown: {
-   marginVertical:10,
-    height: 50,
+    marginVertical: 10,
+    height: hp(6),
     backgroundColor: 'white',
-    borderRadius:5,
+    borderRadius: 5,
     padding: 12,
     shadowColor: '#000',
     shadowOffset: {
@@ -33,7 +35,7 @@ marginLeft:10
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  
+
   },
   textItem: {
     flex: 1,
@@ -54,23 +56,24 @@ marginLeft:10
     fontSize: 16,
   },
 
-searchbar:{
-  borderWidth: 2,
-  flexDirection:'row',
-  justifyContent:'space-between',
-  marginHorizontal: 8,
-  borderColor: '#032E63',
-  marginBottom: 20,
-  paddingHorizontal: 20,
-  borderRadius: 30,
-  shadowColor: '#000',
-  shadowOffset: {
-    width: 10,
-    height: 20,
+  searchbar: {
+    borderWidth: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 8,
+    borderColor: '#032E63',
+    marginBottom: 20,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 10,
+      height: 20,
+    },
+    shadowOpacity: 0.57,
+    shadowRadius: 15.19,
+    height: hp(6.5)
   },
-  shadowOpacity: 0.57,
-  shadowRadius: 15.19,
-},
   img: {
     height: 18,
     width: 12,
@@ -111,44 +114,45 @@ searchbar:{
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
   },
-  
+
 
   row: {
-    backgroundColor:'#032e63',
+    backgroundColor: '#032e63',
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderColor: '#ccc',
     paddingVertical: 10,
-    width:'100%'
+    width: '100%'
   },
   Subrow: {
-   
+
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 2,
-    borderColor:'#032e63',
+    borderColor: '#032e63',
     borderColor: '#ccc',
     paddingVertical: 10,
   },
   cell: {
-    color:'white',
+    color: 'white',
     flex: 1,
     textAlign: 'center',
-  fontWeight:'600'
+    fontWeight: '600'
   },
   Subcell: {
-    color:'#000',
+    color: '#000',
     flex: 1,
     textAlign: 'center',
-  fontWeight:'700'
+    fontWeight: '700'
   },
   header: {
-    alignItems:'center',justifyContent:'center',
+    alignItems: 'center', justifyContent: 'center',
     height: 50,
-     backgroundColor: '#032e63'},
+    backgroundColor: '#032e63'
+  },
 
-  text: {textAlign: 'center', fontWeight: '100'},
-  dataWrapper: {marginTop: -2},
-  row: {height: 40},
+  text: { textAlign: 'center', fontWeight: '100' },
+  dataWrapper: { marginTop: -2 },
+  row: { height: 40 },
 });

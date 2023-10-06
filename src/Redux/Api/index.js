@@ -4,10 +4,11 @@ import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class Api {
   static fetchDataByPOST = async (url, params) => {
+    const Token = await AsyncStorage.getItem('loginToken');
     const config = {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        // "Olocker": `Bearer ${Token}`,
+        Olocker: `Bearer ${Token}`,
       },
     };
     try {
@@ -38,7 +39,6 @@ export default class Api {
     }
   };
   static fetchDataByGET1 = async (url, data) => {
-     console.log(Constants.MainUrl + url);
     const Token = await AsyncStorage.getItem('loginToken');
     try {
       const response = await axios({
@@ -98,7 +98,7 @@ export default class Api {
       var formdata = new FormData();
       formdata.append('sender_id', action.senderId);
       formdata.append('reciver_id', action.reciverId);
-      formdata.append('user_type', 'supplier');
+      formdata.append('user_type', action.user_type);
       formdata.append('message', action.message);
 
       var requestOptions = {
@@ -124,8 +124,6 @@ export default class Api {
     }
   };
   static getMessage = async action => {
-
-
     try {
       var myHeaders = new Headers();
       myHeaders.append('Olocker', `Bearer ${action.token}`);
@@ -151,35 +149,32 @@ export default class Api {
     }
   };
 
-static AddPatnerToNetwork = async action =>{
-  const  Token = await AsyncStorage.getItem('loginToken');
-  var myHeaders = new Headers();
-myHeaders.append("Olocker", `Bearer ${Token}`);
+  static AddPatnerToNetwork = async action => {
+    const Token = await AsyncStorage.getItem('loginToken');
+    var myHeaders = new Headers();
+    myHeaders.append('Olocker', `Bearer ${Token}`);
 
-var formdata = new FormData();
-formdata.append("userId", action.userId);
-formdata.append("id", action.id);
+    var formdata = new FormData();
+    formdata.append('userId', action.userId);
+    formdata.append('id', action.id);
 
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: formdata,
-  redirect: 'follow'
-};
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow',
+    };
 
-const res = fetch("https://olocker.co/api/supplier//addtoNetwork", requestOptions)
-  .then(response => response.text())
-  .then(result => {
-   return  JSON.parse(result)})
-  .catch(error => console.log('error', error));
+    const res = fetch(
+      'https://olocker.co/api/supplier//addtoNetwork',
+      requestOptions,
+    )
+      .then(response => response.text())
+      .then(result => {
+        return JSON.parse(result);
+      })
+      .catch(error => console.log('error', error));
 
-  return res 
-}
-
-
-
-
-
-
-
+    return res;
+  };
 }

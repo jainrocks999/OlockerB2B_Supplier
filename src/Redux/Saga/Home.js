@@ -63,6 +63,7 @@ function* productTypeList(action) {
       yield put({
         type: 'product_TypeList_Success',
         payload: response.data,
+        session: response.current_session_id,
       });
     } else {
       yield put({
@@ -77,22 +78,34 @@ function* productTypeList(action) {
 }
 function* SearchRetailerRequest(action) {
   try {
+    console.log('called');
     const data = {
       userRole: action.role,
       userId: action.userId,
       stateId: action.state,
       cityId: action.city,
       retailerName: action.Rname,
+      start: action.start,
+      length: action.length,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-
-    // console.log('serach saga= >>>>>>>', response);
-
     if (response.status) {
+      Toast.show('jtttotototo');
+      console.log('this is search response');
       yield put({
         type: 'Search_Retailer_Success',
         payload: response.data,
+        data2: {
+          city: action.city,
+          state: action.state,
+          role: action.role,
+          RRname: action.Rname,
+          userId: action.userId,
+          start: action.start,
+          length: action.length,
+        },
       });
+
       action.navigation.navigate('myNetworkBtn', {data: 'List'});
     } else {
       yield put({
@@ -103,6 +116,7 @@ function* SearchRetailerRequest(action) {
     yield put({
       type: 'Search_Retailer_Error',
     });
+    console.log(error);
   }
 }
 function* SearchMynetworkRequest(action) {
@@ -229,54 +243,46 @@ function* AddproductWishList(action) {
   }
 }
 function* AddnetworkToPatner(action) {
-
   try {
- 
-     const response = yield call(Api.AddPatnerToNetwork, action);
-  
-      if (response.status) {
-        yield put({
-          type: 'Addnetwork_toPatner_Success',
-          payload: response.msg,
-        });
-      } else {
-        yield put({
-          type: 'Addnetwork_toPatner_Error',
-        });
-    }
+    const response = yield call(Api.AddPatnerToNetwork, action);
 
-   
+    if (response.status) {
+      yield put({
+        type: 'Addnetwork_toPatner_Success',
+        payload: response.msg,
+      });
+    } else {
+      yield put({
+        type: 'Addnetwork_toPatner_Error',
+      });
+    }
   } catch (err) {
-    console.log('=>>>>>>>>..error',err);
+    console.log('=>>>>>>>>..error', err);
     yield put({
       type: 'Addnetwork_toPatner_Error',
     });
   }
 }
 function* RemovePatner(action) {
-
-console.log('=........>>>>>>>>>>>>>>>>>',action);
-const data = {
-    id:action.Id
-  }
+  console.log('=........>>>>>>>>>>>>>>>>>', action);
+  const data = {
+    id: action.Id,
+  };
   try {
- 
-     const response = yield call(Api.fetchDataByGET1, action.url,data);
-  console.log(response,'=>>>>>>>>>>>>>>>>>>>>>>');
-      if (response.status) {
-        yield put({
-          type: 'RemovePatner_Success',
-          payload: response.msg,
-        });
-      } else {
-        yield put({
-          type: 'RemovePatner_Error',
-        });
+    const response = yield call(Api.fetchDataByGET1, action.url, data);
+    console.log(response, '=>>>>>>>>>>>>>>>>>>>>>>');
+    if (response.status) {
+      yield put({
+        type: 'RemovePatner_Success',
+        payload: response.msg,
+      });
+    } else {
+      yield put({
+        type: 'RemovePatner_Error',
+      });
     }
-
-   
   } catch (err) {
-    console.log('=>>>>>>>>..error',err);
+    console.log('=>>>>>>>>..error', err);
     yield put({
       type: 'RemovePatner_Error',
     });

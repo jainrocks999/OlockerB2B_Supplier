@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import {Dropdown} from 'react-native-element-dropdown';
+import { Dropdown } from 'react-native-element-dropdown';
 import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -17,7 +17,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {TextInput} from 'react-native';
+import { TextInput } from 'react-native';
 
 const Notification = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -47,10 +47,10 @@ const Notification = () => {
     );
   };
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
       <ScrollView contentContainerStyle={{}}>
         <View style={styles.container}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <TouchableOpacity
               delayPressIn={0}
               onPress={() => navigation.goBack()}>
@@ -59,7 +59,7 @@ const Notification = () => {
                 source={require('../../../assets/L.png')}
               />
             </TouchableOpacity>
-            <Text style={[styles.text, {marginLeft: 15}]}>
+            <Text style={[styles.text, { marginLeft: 15 }]}>
               Product Stone Details
             </Text>
           </View>
@@ -71,7 +71,7 @@ const Notification = () => {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              style={{marginLeft: 15}}
+              style={{ marginLeft: 15 }}
               onPress={() => handleWishList()}>
               <Image
                 style={styles.img2}
@@ -87,10 +87,10 @@ const Notification = () => {
           </View>
         </View>
         <View>
-          <View style={{marginHorizontal: 15, marginTop: 20}}>
-            <Text style={{fontSize: 22, fontWeight: '800', color: '#000'}}>
+          <View style={{ marginHorizontal: 15, marginTop: 20 }}>
+            <Text style={{ fontSize: 22, fontWeight: '800', color: '#000' }}>
               STONE DETAILS{' '}
-              <Text style={{fontSize: 18}}>
+              <Text style={{ fontSize: 18 }}>
                 (DETAILS OF PRECIOUS STONE USED IN PRODUCT)
               </Text>
             </Text>
@@ -110,13 +110,13 @@ const Notification = () => {
                   width: '45.5%',
                   justifyContent: 'space-between',
                 }}>
-                <Text style={{fontWeight: '600', fontSize: 18}}>Stone Name</Text>
-                <Text style={{fontWeight: '600', fontSize: 18}}>:</Text>
+                <Text style={{ fontWeight: '600', fontSize: 18 }}>Stone Name</Text>
+                <Text style={{ fontWeight: '600', fontSize: 18 }}>:</Text>
               </View>
-              <View style={{width: '41.5%',alignItems:'center'}}>
-                <Text style={{fontWeight: '500', fontSize: 18,marginLeft:26}}>Amazonite</Text>
+              <View style={{ width: '41.5%', alignItems: 'center' }}>
+                <Text style={{ fontWeight: '500', fontSize: 18, marginLeft: 26 }}>Amazonite</Text>
               </View>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity>
                   <MaterialCommunityIcons
                     name="pencil"
@@ -146,31 +146,11 @@ const Notification = () => {
                   width: '45.5%',
                   justifyContent: 'space-between',
                 }}>
-                <Text style={{fontWeight: '600', fontSize: 18}}>Stone Wt.</Text>
-                <Text style={{fontWeight: '600', fontSize: 18}}>:</Text>
+                <Text style={{ fontWeight: '600', fontSize: 18 }}>Stone Wt.</Text>
+                <Text style={{ fontWeight: '600', fontSize: 18 }}>:</Text>
               </View>
-              <View style={{width: '41.5%'}}>
-                <Text style={{fontWeight: '500', fontSize: 18}}>0.5000</Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginTop: 15,
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  width: '45.5%',
-                  justifyContent: 'space-between',
-                }}>
-                <Text style={{fontWeight: '600', fontSize: 18}}>Unit of Stone Wt.</Text>
-                <Text style={{fontWeight: '600', fontSize: 18}}>:</Text>
-              </View>
-              <View style={{width: '41.5%'}}>
-                <Text style={{fontWeight: '500', fontSize: 18}}>GMS</Text>
+              <View style={{ width: '41.5%' }}>
+                <Text style={{ fontWeight: '500', fontSize: 18 }}>0.5000</Text>
               </View>
             </View>
             <View
@@ -186,27 +166,47 @@ const Notification = () => {
                   width: '45.5%',
                   justifyContent: 'space-between',
                 }}>
-                <Text style={{fontWeight: '600', fontSize: 18}}>
-                 Stone value
+                <Text style={{ fontWeight: '600', fontSize: 18 }}>Unit of Stone Wt.</Text>
+                <Text style={{ fontWeight: '600', fontSize: 18 }}>:</Text>
+              </View>
+              <View style={{ width: '41.5%' }}>
+                <Text style={{ fontWeight: '500', fontSize: 18 }}>GMS</Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginTop: 15,
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: '45.5%',
+                  justifyContent: 'space-between',
+                }}>
+                <Text style={{ fontWeight: '600', fontSize: 18 }}>
+                  Stone value
                 </Text>
-                <Text style={{fontWeight: '600', fontSize: 18}}>:</Text>
+                <Text style={{ fontWeight: '600', fontSize: 18 }}>:</Text>
               </View>
-              <View style={{width: '41.5%'}}>
-                <Text style={{fontWeight: '500', fontSize: 18}}>136520.00</Text>
+              <View style={{ width: '41.5%' }}>
+                <Text style={{ fontWeight: '500', fontSize: 18 }}>136520.00</Text>
               </View>
             </View>
           </View>
         </View>
         <View>
-          <View style={{marginHorizontal: 20, marginTop: 20}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-             Stone Wt. <Text style={{color: 'red', fontSize: 18}}>*</Text>
+          <View style={{ marginHorizontal: 20, marginTop: 20 }}>
+            <Text style={{ fontSize: 18, fontWeight: '700', color: '#000' }}>
+              Stone Wt. <Text style={{ color: 'red', fontSize: 18 }}>*</Text>
             </Text>
             <View>
               <Dropdown
                 style={[
                   styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
+                  { borderWidth: 1, borderColor: '#979998' },
                 ]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -223,15 +223,15 @@ const Notification = () => {
               />
             </View>
           </View>
-          <View style={{marginHorizontal: 20, marginTop: 10}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-              Unit of Wt. <Text style={{color: 'red', fontSize: 18}}>*</Text>
+          <View style={{ marginHorizontal: 20, marginTop: 10 }}>
+            <Text style={{ fontSize: 18, fontWeight: '700', color: '#000' }}>
+              Unit of Wt. <Text style={{ color: 'red', fontSize: 18 }}>*</Text>
             </Text>
             <View>
               <Dropdown
                 style={[
                   styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
+                  { borderWidth: 1, borderColor: '#979998' },
                 ]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -248,18 +248,18 @@ const Notification = () => {
               />
             </View>
           </View>
-          <View style={{marginHorizontal: 20, marginTop: 10}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-              <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-               Stone value
-                <Text style={{color: 'red', fontSize: 18}}>*</Text>
+          <View style={{ marginHorizontal: 20, marginTop: 10 }}>
+            <Text style={{ fontSize: 18, fontWeight: '700', color: '#000' }}>
+              <Text style={{ fontSize: 18, fontWeight: '700', color: '#000' }}>
+                Stone value
+                <Text style={{ color: 'red', fontSize: 18 }}>*</Text>
               </Text>
             </Text>
             <View>
               <Dropdown
                 style={[
                   styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
+                  { borderWidth: 1, borderColor: '#979998' },
                 ]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -276,15 +276,15 @@ const Notification = () => {
               />
             </View>
           </View>
-          <View style={{marginHorizontal: 20, marginTop: 10}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-              Stone details <Text style={{color: 'red', fontSize: 18}}>*</Text>
+          <View style={{ marginHorizontal: 20, marginTop: 10 }}>
+            <Text style={{ fontSize: 18, fontWeight: '700', color: '#000' }}>
+              Stone details <Text style={{ color: 'red', fontSize: 18 }}>*</Text>
             </Text>
             <View>
               <Dropdown
                 style={[
                   styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
+                  { borderWidth: 1, borderColor: '#979998' },
                 ]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -301,15 +301,15 @@ const Notification = () => {
               />
             </View>
           </View>
-          <View style={{marginHorizontal: 20, marginTop: 10}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-              Unit of wt. <Text style={{color: 'red', fontSize: 18}}>*</Text>
+          <View style={{ marginHorizontal: 20, marginTop: 10 }}>
+            <Text style={{ fontSize: 18, fontWeight: '700', color: '#000' }}>
+              Unit of wt. <Text style={{ color: 'red', fontSize: 18 }}>*</Text>
             </Text>
             <View>
               <Dropdown
                 style={[
                   styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
+                  { borderWidth: 1, borderColor: '#979998' },
                 ]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -326,15 +326,15 @@ const Notification = () => {
               />
             </View>
           </View>
-          
+
         </View>
 
         <TouchableOpacity
           style={styles.addbtn}>
-          <Text style={{fontSize: 18, color: 'white'}}>Add Stone Details</Text>
+          <Text style={{ fontSize: 18, color: 'white' }}>Add Stone Details</Text>
         </TouchableOpacity>
       </ScrollView>
-      <View style={{height: 60}} />
+      <View style={{ height: 60 }} />
       <TouchableOpacity
         style={{
           position: 'absolute',
@@ -356,10 +356,10 @@ const Notification = () => {
 export default Notification;
 
 const DropData = [
-  {label: 'UNDER 25000', value: '1'},
-  {label: 'UNDER 25000', value: '2'},
-  {label: 'UNDER 50000', value: '3'},
-  {label: 'UNDER 100000', value: '4'},
+  { label: 'UNDER 25000', value: '1' },
+  { label: 'UNDER 25000', value: '2' },
+  { label: 'UNDER 50000', value: '3' },
+  { label: 'UNDER 100000', value: '4' },
 ];
 
 const page = [

@@ -6,200 +6,379 @@ import {
   TouchableOpacity,
   Image,
   Modal,
-
-  TextInput
+  FlatList,
+  TextInput,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CheckBox from '@react-native-community/checkbox';
 import styles from './styles';
-import { useSelector } from 'react-redux';
-
+import {useSelector, useDispatch} from 'react-redux';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loading from '../../../../components/Loader';
 
 const MetalViewModal = ({visi, close = () => {}, ...props}) => {
-
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
-  const [value, setValue] = useState(null);
+  const dispatch = useDispatch();
   const productType = useSelector(state => state.Home?.productTypeList);
+  const session = useSelector(state => state.Home?.session);
+  const isFetching = useSelector(state => state.Catalogue?.isFetching);
+  const metalData = useSelector(state => state.Catalogue?.metalData);
+  const [inputs, setInputs] = useState({
+    GrossWt: '',
+    MetalPurity: '',
+    MetalTypes: '',
+    MetalWt: '',
+    MetalWtUnit: '',
+  });
+
+  const handleInputs = (type, input) => {
+    setInputs(prev => ({...prev, [type]: input}));
+  };
+
+  const handleOnSubmit = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'add_metal_list_request',
+      url: 'addmetal',
+      data: {
+        ...inputs,
+        hMetalWt: '',
+        hProductSrNo: user_id,
+        isAdd: 1,
+        current_session_id: session,
+      },
+    });
+  };
+
+  const metaltype = productType?.MetalTypes.map(item => {
+    return {value: item.Value, label: item.Value};
+  });
+
   return (
- 
-    <View style={{flex: 1}}>
-      <Modal
-         animationType="slide"
-         transparent={true}
-    
-           visible={visi}
-           >
-               <ScrollView >
-        <View style={[styles.centeredView,{backgroundColor: 'rgba(52, 52, 52, 0.8)',marginTop:0}]}>
-          <View style={styles.modalView}>
-            <TouchableOpacity
-             onPress={() => close()}
-              style={{
-                height: 40,
-                width: 40,
-                borderRadius: 20,
-                backgroundColor: '#032e63',
-                alignItems: 'center',
-                justifyContent: 'center',
-                position:'absolute',right:0,margin:10
-              }}>
-              <Text style={{fontSize: 18, color: 'white'}}>X</Text>
+    <View style={styles.container}>
+      <Modal animationType="fade" transparent visible={visi}>
+        <View style={styles.modalView}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{paddingBottom: wp(4)}}>
+            {isFetching ? <Loading /> : null}
+            <TouchableOpacity onPress={() => close()} style={styles.crossbtn}>
+              <Text style={styles.xbtn}>X</Text>
             </TouchableOpacity>
-            <View style={{marginTop:10}}>
-                <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-              <Text
-                style={{
-                  fontSize: 24,
-                  fontWeight: '800',
-                  color: '#000',
-                  marginLeft: -10,
-                }}>
-              Metal Details
-              </Text> 
-              <View style={{flexDirection: 'row',width:'40%'}}>
-                  <TouchableOpacity>
-                    <MaterialCommunityIcons
-                      name="pencil"
-                      size={20}
-                      color={'#000'}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <MaterialCommunityIcons
-                      name="delete"
-                      size={20}
-                      color={'#000'}
-                    />
-                  </TouchableOpacity>
-                </View>
-                </View>
-              <Text style={{fontSize:16, fontWeight: '800', color: '#000',marginLeft:-10}}>(DETAILS OF PRECIOUS METALS USED IN PRODUCT)
+            <View style={styles.modalText}>
+              <View style={styles.item}>
+                <Text style={styles.textItem}>Metal Details</Text>
+              </View>
+              <View style={{width: wp(80)}}>
+                <Text style={styles.deta}>
+                  (DETAILS OF PRECIOUS METALS USED IN PRODUCT)
+                </Text>
+              </View>
+            </View>
+            {metalData?.result ? (
+              <View style={{marginTop: wp(3)}}>
+                <FlatList
+                  data={metalData?.result}
+                  scrollEnabled={false}
+                  renderItem={({item, index}) => {
+                    return (
+                      <View
+                        style={{
+                          borderWidth: 1,
+                          marginVertical: wp(1),
+                          paddingVertical: wp(2),
+                          paddingHorizontal: wp(3),
+                          backgroundColor: '#f3f3f5',
+                          borderRadius: wp(2),
+                          elevation: 5,
+                        }}>
+                        <View style={styles.editdelete}>
+                          <MaterialCommunityIcons
+                            name="pencil"
+                            size={wp(4.5)}
+                            color={'black'}
+                          />
+                          <Text
+                            style={[
+                              styles.cardTitle,
+                              {
+                                width: 5,
+                                fontSize: wp(5),
+                                color: 'black',
+                                marginTop: wp(-1),
+                              },
+                            ]}>
+                            |
+                          </Text>
+                          <MaterialCommunityIcons
+                            name="delete"
+                            size={wp(4.5)}
+                            color={'black'}
+                          />
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Metal Wt.
+                          </Text>
+
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>{item.MetalWt}</Text>
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Unit of Metal Wt.
+                          </Text>
+
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>
+                            {item.UnitMetalWt}
+                          </Text>
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Metal Type
+                          </Text>
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>{item.MetalType}</Text>
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Metal Purity
+                          </Text>
+
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>
+                            {item.MetalPurity}
+                          </Text>
+                        </View>
+                      </View>
+                    );
+                  }}
+                />
+              </View>
+            ) : null}
+            <View style={{marginLeft: wp(2)}}>
+              <Text style={styles.buttonClose}>
+                Gross wt. GMS <Text style={{color: 'red'}}>*</Text>
+              </Text>
+              <View style={styles.inputFiled}>
+                <TextInput
+                  value={inputs.GrossWt}
+                  onChangeText={input => {
+                    handleInputs('GrossWt', input);
+                  }}
+                  placeholder="Gross Wt gms"
+                />
+              </View>
+              <Text style={[styles.buttonClose, {marginLeft: wp(1)}]}>
+                Metal type <Text style={{color: 'red'}}>*</Text>
               </Text>
             </View>
+            <View
+              style={[
+                styles.inputFiled,
+                {paddingHorizontal: 10, marginHorizontal: wp(2)},
+              ]}>
+              <Dropdown
+                style={{
+                  color: '#032e63',
+                  width: '100%',
 
-
-            <View style={{marginHorizontal: 20, marginTop:5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-              Gross wt. GMS <Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:15}}>
-              <TextInput
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-              placeholder='Gross Wt gms'
-              />
-            </View>
-          </View>
-            <View style={{marginHorizontal: 20,marginTop:5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Metal type <Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:15}}>
-              <Dropdown
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
-                data={productType?.MetalTypes}
-                maxHeight={250}
-                labelField="Value"
-                valueField="Value"
-                placeholder=" Metal type"
-                value={value}
-                onChange={item => {
-                  setValue(item.value);
+                  marginBottom: -1,
+                  height: 40,
+                  paddingLeft: wp(1),
                 }}
-              />
-            </View>
-          </View>
-            <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-             Metal purity <Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:15}}>
-              <Dropdown
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
-                data={productType?.MetalPurity}
-                maxHeight={250}
-                labelField="Value"
-                valueField="Value"
-                placeholder="Metal purity"
-                value={value}
-                onChange={item => {
-                  setValue(item.value);
+                placeholderStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  alignSelf: 'center',
+                  // fontFamily: 'Acephimere'
                 }}
-              />
-            </View>
-          </View>
-            <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Metal net wt. <Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:15}}>
-              <TextInput
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-               placeholder='Metal net wt'
-              />
-            </View>
-          </View>
-            <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',marginTop:10}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-              Unit of wt. <Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:5}}>
-              <Dropdown
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
-                data={DropData}
+                selectedTextStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  fontSize: 14,
+                  marginBottom: -1,
+                  fontFamily: 'Acephimere',
+                }}
+                // iconStyle={{ tintColor: '#ffff' }}
+                data={metaltype}
+                inputSearchStyle={{
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
+                }}
+                // itemTextStyle={{ fontSize: 15 }}
+                // itemContainerStyle={{ marginBottom: -20, }}
+                searchPlaceholder="search.."
                 maxHeight={250}
+                search
                 labelField="label"
                 valueField="value"
-                placeholder="  Unit of wt."
-                value={value}
+                placeholder="Metal type"
+                value={inputs.MetalTypes}
                 onChange={item => {
-                  setValue(item.value);
+                  handleInputs('MetalTypes', item.value);
                 }}
               />
             </View>
-          </View>
-            <View style={{width:'100%'}}>
-<TouchableOpacity style={styles.addbtn}>
-    <Text style={{fontSize:18,color:'white',fontWeight:'800'}}>Add {props.data} Details</Text>
-</TouchableOpacity>
+            <Text style={[styles.buttonClose, {marginLeft: wp(3)}]}>
+              Metal purity <Text style={{color: 'red'}}>*</Text>
+            </Text>
+            <View
+              style={[
+                styles.inputFiled,
+                {paddingHorizontal: 10, marginHorizontal: wp(2)},
+              ]}>
+              <Dropdown
+                style={{
+                  color: '#032e63',
+                  width: '100%',
+
+                  marginBottom: -1,
+                  height: 40,
+                  // marginTop: 5
+                }}
+                placeholderStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  alignSelf: 'center',
+                  // fontFamily: 'Acephimere'
+                }}
+                selectedTextStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  fontSize: 14,
+                  marginBottom: -1,
+                  fontFamily: 'Acephimere',
+                }}
+                // iconStyle={{ tintColor: '#ffff' }}
+                data={metalpurity}
+                inputSearchStyle={{
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
+                }}
+                // itemTextStyle={{ fontSize: 15 }}
+                // itemContainerStyle={{ marginBottom: -20, }}
+                searchPlaceholder="search.."
+                maxHeight={250}
+                search
+                labelField="label"
+                valueField="value"
+                placeholder="Metal purity"
+                value={inputs.MetalPurity}
+                onChange={item => {
+                  handleInputs('MetalPurity', item.value);
+                }}
+              />
             </View>
-          </View>
+            <Text style={[styles.buttonClose, {marginLeft: wp(3)}]}>
+              Metal net wt.<Text style={{color: 'red'}}>*</Text>
+            </Text>
+            <View style={[styles.inputFiled, {marginHorizontal: wp(2)}]}>
+              <TextInput
+                value={inputs.MetalWt}
+                onChangeText={input => handleInputs('MetalWt', input)}
+                placeholder="Net Wt gms"
+              />
+            </View>
+            <Text style={[styles.buttonClose, {marginLeft: wp(3)}]}>
+              Unit of wt.<Text style={{color: 'red'}}>*</Text>
+            </Text>
+            <View
+              style={[
+                styles.inputFiled,
+                {paddingHorizontal: 10, marginHorizontal: wp(2)},
+              ]}>
+              <Dropdown
+                style={{
+                  color: '#032e63',
+                  width: '100%',
+
+                  marginBottom: -1,
+                  height: 40,
+                  // marginTop: 5
+                }}
+                placeholderStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  alignSelf: 'center',
+                  // fontFamily: 'Acephimere'
+                }}
+                selectedTextStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  fontSize: 14,
+                  marginBottom: -1,
+                  fontFamily: 'Acephimere',
+                }}
+                // iconStyle={{ tintColor: '#ffff' }}
+                data={DropData}
+                inputSearchStyle={{
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
+                }}
+                // itemTextStyle={{ fontSize: 15 }}
+                // itemContainerStyle={{ marginBottom: -20, }}
+                searchPlaceholder="search.."
+                maxHeight={250}
+                search
+                labelField="label"
+                valueField="value"
+                placeholder="Select Unit of wt."
+                value={inputs.MetalWtUnit}
+                onChange={item => {
+                  handleInputs('MetalWtUnit', item.value);
+                }}
+              />
+            </View>
+            <TouchableOpacity
+              onPress={() => handleOnSubmit()}
+              style={styles.buttonOpen}>
+              <Text
+                style={{color: 'white', fontSize: wp(4.5), fontWeight: 'bold'}}>
+                Add Details
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
-        </ScrollView>
       </Modal>
-
-   
     </View>
-
   );
 };
 export default MetalViewModal;
 const DropData = [
   {label: 'Cts.', value: 'Cts.'},
   {label: 'Gms', value: 'Gms'},
- 
+];
+// const metaltype = [
+//   {
+//     label: 'Gold', value: 'Gold'
+//   },
+//   { label: 'Platinum', value: 'Platinum' },
+//   { label: 'Silver', value: 'Silver' }
+
+// ]
+
+const metalpurity = [
+  {label: '999 (24k)', value: '999'},
+  {label: '995', value: '995'},
+  {label: '990', value: '990'},
+  {label: '958.3 (23k)', value: '958.3'},
+  {label: '916 (22k)', value: '916'},
+  {label: '900', value: '900'},
+  {label: '834 (20k)', value: '834'},
+  {label: '750 (18k)', value: '750'},
+  {label: '625 (15k)', value: '625'},
+  {label: '585 (14k)', value: '585'},
+  {label: '417 (10k)', value: '417'},
+  {label: '376 (9k)', value: '376'},
+  {label: '800', value: '800'},
+  {label: '850', value: '850'},
+  {label: '880', value: '880'},
+  {label: '985', value: '985'},
+  {label: '833', value: '833'},
 ];

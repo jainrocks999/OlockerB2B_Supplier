@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, StyleSheet} from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -24,29 +24,29 @@ export default StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'center',
-   // alignItems: 'center',
+    // alignItems: 'center',
     marginTop: 22,
-    
+
   },
   Card: {
     marginTop: 15,
-    borderWidth:1,
+    borderWidth: 1,
     borderColor: '#bacae3',
     height: hp(43),
-    
+
     borderRadius: 10,
     padding: 8,
-    width:'100%'
-  //  backgroundColor: '#f0f0f0',
+    width: '100%'
+    //  backgroundColor: '#f0f0f0',
   },
   modalView: {
     margin: 20,
-   
+
 
     backgroundColor: 'white',
     borderRadius: 20,
     paddingVertical: 35,
-    paddingHorizontal:15,
+    paddingHorizontal: 15,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {

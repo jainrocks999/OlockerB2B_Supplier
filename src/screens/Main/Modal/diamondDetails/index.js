@@ -4,230 +4,427 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  Image,
   Modal,
-
-  TextInput
+  TextInput,
+  FlatList,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CheckBox from '@react-native-community/checkbox';
 import styles from './styles';
-import { useSelector } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-const DiamondViewModal = ({visi, close = () => {}, ...props}) => {
+const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const productType = useSelector(state => state.Home?.productTypeList);
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
-  const [value, setValue] = useState(null);
+  const session = useSelector(state => state.Home?.session);
+  const diamondData = useSelector(state => state.Catalogue?.diamondData);
 
+  const dispatch = useDispatch();
+
+  const [value, setValue] = useState(null);
+  const [inputs, setInputs] = useState({
+    Diamondwt: '',
+    ChargAmt: '',
+    DiamondWtUnit: '',
+    DiamondName: '',
+    DiamondShape: '',
+    DiamondQuality: '',
+  });
+
+  const handleInputs = (text, input) => {
+    setInputs(prev => ({...prev, [text]: input}));
+  };
+
+  const diamondDetails = productType?.dimondDetails?.map(item => {
+    return {label: item.Value, value: item.Value};
+  });
+  const dimondShape = productType?.dimondShape?.map(item => {
+    return {label: item.Value, value: item.Value};
+  });
+  const dimondQuality = productType?.dimondQuality?.map(item => {
+    return {label: item.Value, value: item.Value};
+  });
+
+  const handleOnSubmit = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'add_dimon_request',
+      url: 'addDiamond',
+      data: {
+        ...inputs,
+        current_session_id: session,
+        isAdd: 1,
+        hProductSrNo: user_id,
+        BreakUp: isBrekup,
+        hDiamondSrNo: '',
+      },
+    });
+  };
 
   return (
- 
-    <View style={{flex: 1}}>
-      <Modal
-         animationType="slide"
-         transparent={true}
-    
-           visible={visi}
-           >
-               <ScrollView >
-        <View style={[styles.centeredView,{backgroundColor: 'rgba(52, 52, 52, 0.8)',marginTop:0}]}>
-          <View style={styles.modalView}>
-            <TouchableOpacity
-             onPress={() => close()}
-              style={{
-                height: 40,
-                width: 40,
-                borderRadius: 20,
-                backgroundColor: '#032e63',
-                alignItems: 'center',
-                justifyContent: 'center',
-                position:'absolute',right:0,margin:10
-              }}>
-              <Text style={{fontSize: 18, color: 'white'}}>X</Text>
+    <View style={styles.container}>
+      <Modal animationType="fade" transparent visible={visi}>
+        <View style={styles.modalView}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <TouchableOpacity onPress={() => close()} style={styles.crossbtn}>
+              <Text style={styles.xbtn}>X</Text>
             </TouchableOpacity>
-            <View style={{marginTop:10}}>
-                <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-              <Text
-                style={{
-                  fontSize: 24,
-                  fontWeight: '800',
-                  color: '#000',
-                  marginLeft: -10,
-                }}>
-             Diamond Details
-              </Text> 
-              <View style={{flexDirection: 'row',width:'40%'}}>
-                  <TouchableOpacity>
-                    <MaterialCommunityIcons
-                      name="pencil"
-                      size={20}
-                      color={'#000'}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <MaterialCommunityIcons
-                      name="delete"
-                      size={20}
-                      color={'#000'}
-                    />
-                  </TouchableOpacity>
-                </View>
-                </View>
-              <Text style={{fontSize:16, fontWeight: '800', color: '#000',marginLeft:-10}}>(DETAILS OF PRECIOUS Diamond S USED IN PRODUCT)
+            <View style={styles.modalText}>
+              <View style={styles.item}>
+                <Text style={styles.textItem}>Metal Details</Text>
+              </View>
+              <View style={{width: wp(80)}}>
+                <Text style={styles.deta}>
+                  (DETAILS OF PRECIOUS METALS USED IN PRODUCT)
+                </Text>
+              </View>
+            </View>
+
+            {diamondData ? (
+              <View style={{marginTop: wp(3)}}>
+                <FlatList
+                  data={diamondData}
+                  scrollEnabled={false}
+                  renderItem={({item, index}) => {
+                    return (
+                      <View
+                        style={{
+                          borderWidth: 1,
+                          marginVertical: wp(1),
+                          paddingVertical: wp(2),
+                          paddingHorizontal: wp(3),
+                          backgroundColor: '#f3f3f5',
+                          borderRadius: wp(2),
+                          elevation: 5,
+                        }}>
+                        <View style={styles.editdelete}>
+                          <MaterialCommunityIcons
+                            name="pencil"
+                            size={wp(4.5)}
+                            color={'black'}
+                          />
+                          <Text
+                            style={[
+                              styles.cardTitle,
+                              {
+                                width: 5,
+                                fontSize: wp(5),
+                                color: 'black',
+                                marginTop: wp(-1),
+                              },
+                            ]}>
+                            |
+                          </Text>
+                          <MaterialCommunityIcons
+                            name="delete"
+                            size={wp(4.5)}
+                            color={'black'}
+                          />
+                        </View>
+                        <View style={[styles.cartItem, {marginTop: wp(5)}]}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Diamond Name
+                          </Text>
+
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>{item.StoneName}</Text>
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Diamond Wt.
+                          </Text>
+
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>{item.StoneWt}</Text>
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Unit of Diamond Wt.
+                          </Text>
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>
+                            {item.UnitStoneWt}
+                          </Text>
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Diamond Quality
+                          </Text>
+
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>
+                            {item.StoneQuality}
+                          </Text>
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Diamond Shape
+                          </Text>
+
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>
+                            {item.StoneShape}
+                          </Text>
+                        </View>
+                        <View style={styles.cartItem}>
+                          <Text style={[styles.cardTitle, {color: 'black'}]}>
+                            Diamond value
+                          </Text>
+
+                          <Text style={[styles.cardTitle, styles.dot]}>:</Text>
+                          <Text style={styles.cardTitle}>
+                            {item.StoneChargeableAmount}
+                          </Text>
+                        </View>
+                      </View>
+                    );
+                  }}
+                />
+              </View>
+            ) : null}
+
+            <View style={{marginLeft: wp(1)}}>
+              <Text style={styles.buttonClose}>
+                Diamond wt. <Text style={{color: 'red'}}>*</Text>
+              </Text>
+              <View style={styles.inputFiled}>
+                <TextInput
+                  value={inputs.Diamondwt}
+                  onChangeText={input => handleInputs('Diamondwt', input)}
+                  placeholder="Diamond wt"
+                />
+              </View>
+              <Text style={[styles.buttonClose, {marginLeft: wp(1)}]}>
+                Unit of wt. <Text style={{color: 'red'}}>*</Text>
               </Text>
             </View>
-
-
-            <View style={{marginHorizontal: 20, marginTop:5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-              Diamond  wt.<Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:15}}>
-              <TextInput
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-              placeholder='Diamond Wt'
-              />
-            </View>
-          </View>
-            <View style={{marginHorizontal: 20,marginTop:5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Unit of wt <Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:15}}>
+            <View style={[styles.inputFiled, {marginLeft: wp(1)}]}>
               <Dropdown
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
+                style={{
+                  color: '#032e63',
+                  width: '100%',
+                  marginBottom: -1,
+                  height: 40,
+                  // marginTop: 5
+                }}
+                placeholderStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  alignSelf: 'center',
+                  // fontFamily: 'Acephimere'
+                  fontSize: wp(4),
+                }}
+                selectedTextStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  fontSize: wp(4),
+                  fontFamily: 'Acephimere',
+                  marginLeft: wp(2),
+                }}
+                // iconStyle={{ tintColor: '#ffff' }}
                 data={DropData}
+                inputSearchStyle={{
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
+                }}
+                // itemTextStyle={{ fontSize: 15 }}
+                // itemContainerStyle={{ marginBottom: -20, }}
+                searchPlaceholder="search.."
                 maxHeight={250}
+                search
                 labelField="label"
                 valueField="value"
-                placeholder=" Diamond  type"
-                value={value}
+                placeholder="Select Unit of wt."
+                value={inputs.DiamondWtUnit}
                 onChange={item => {
-                  setValue(item.value);
+                  handleInputs('DiamondWtUnit', item.value);
                 }}
               />
             </View>
-          </View>
-          <View style={{marginHorizontal: 20,marginTop:5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Diamond value<Text style={{color: 'red', fontSize: 18}}>*</Text>
+            {isBrekup ? (
+              <>
+                <Text style={[styles.buttonClose, {marginLeft: wp(2)}]}>
+                  Diamond Value<Text style={{color: 'red'}}>*</Text>
+                </Text>
+                <View style={[styles.inputFiled, {marginHorizontal: wp(1)}]}>
+                  <TextInput
+                    value={inputs.ChargAmt}
+                    onChangeText={input => {
+                      handleInputs('ChargAmt', input);
+                    }}
+                    placeholder="Amount in Rs."
+                  />
+                </View>
+              </>
+            ) : null}
+            <Text style={[styles.buttonClose, {marginLeft: wp(2)}]}>
+              Diamond details <Text style={{color: 'red'}}>*</Text>
             </Text>
-            <View style={{marginTop:15}}>
-              <TextInput
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-              placeholder='Amount in Rs.'
-              />
-            </View>
-          </View>
-            <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Diamond details <Text style={{color: 'red', fontSize: 18}}>*</Text>
-            </Text>
-            <View style={{marginTop:15}}>
+            <View
+              style={[
+                styles.inputFiled,
+                {paddingHorizontal: 10, marginHorizontal: wp(1)},
+              ]}>
               <Dropdown
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
-                data={productType?.dimondDetails}
+                style={{
+                  color: '#032e63',
+                  width: '100%',
+                  marginBottom: -1,
+                  height: 40,
+                  // marginTop: 5
+                }}
+                placeholderStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  alignSelf: 'center',
+                  // fontFamily: 'Acephimere'
+                  fontSize: wp(4),
+                }}
+                selectedTextStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  fontSize: wp(4),
+                  fontFamily: 'Acephimere',
+                  marginLeft: wp(2),
+                }}
+                // iconStyle={{ tintColor: '#ffff' }}
+                data={diamondDetails}
+                inputSearchStyle={{
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
+                }}
+                // itemTextStyle={{ fontSize: 15 }}
+                // itemContainerStyle={{ marginBottom: -20, }}
+                searchPlaceholder="search.."
                 maxHeight={250}
-                labelField="Value"
-                valueField="Value"
-                placeholder="Diamond Details"
-                value={value}
+                search
+                labelField="label"
+                valueField="value"
+                placeholder="Diamond details"
+                value={inputs.DiamondName}
                 onChange={item => {
-                  setValue(item.value);
+                  handleInputs('DiamondName', item.value);
                 }}
               />
             </View>
-          </View>
-
-            <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Diamond Shape<Text style={{color: 'red', fontSize: 18}}>*</Text>
+            <Text style={[styles.buttonClose, {marginLeft: wp(2)}]}>
+              Diamond Shape <Text style={{color: 'red'}}>*</Text>
             </Text>
-            <View style={{marginTop:15}}>
+            <View
+              style={[
+                styles.inputFiled,
+                {paddingHorizontal: 10, marginHorizontal: wp(1)},
+              ]}>
               <Dropdown
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
-                data={productType?.dimondShape}
-                maxHeight={200}
-                labelField="Value"
-                valueField="Value"
-                placeholder="Diamond Shape"
-                value={value}
+                style={{
+                  color: '#032e63',
+                  width: '100%',
+                  marginBottom: -1,
+                  height: 40,
+                  // marginTop: 5
+                }}
+                placeholderStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  alignSelf: 'center',
+                  // fontFamily: 'Acephimere'
+                  fontSize: wp(4),
+                }}
+                selectedTextStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  fontSize: wp(4),
+                  fontFamily: 'Acephimere',
+                  marginLeft: wp(2),
+                }}
+                // iconStyle={{ tintColor: '#ffff' }}
+                data={dimondShape}
+                inputSearchStyle={{
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
+                }}
+                // itemTextStyle={{ fontSize: 15 }}
+                // itemContainerStyle={{ marginBottom: -20, }}
+                searchPlaceholder="search.."
+                maxHeight={250}
+                search
+                labelField="label"
+                valueField="value"
+                placeholder="Select Diamond Shape"
+                value={inputs.DiamondShape}
                 onChange={item => {
-                  setValue(item.value);
+                  handleInputs('DiamondShape', item.value);
                 }}
               />
             </View>
-          </View>
-            <View style={{marginHorizontal: 20, marginTop: 5,width:'100%',marginTop:10}}>
-            <Text style={{fontSize: 18, fontWeight: '700', color: '#000'}}>
-            Diamond Quality <Text style={{color: 'red', fontSize: 18}}>*</Text>
+            <Text style={[styles.buttonClose, {marginLeft: wp(2)}]}>
+              Diamond Quality <Text style={{color: 'red'}}>*</Text>
             </Text>
-            <View style={{marginTop:5}}>
+            <View
+              style={[
+                styles.inputFiled,
+                {paddingHorizontal: 10, marginHorizontal: wp(1)},
+              ]}>
               <Dropdown
-                style={[
-                  styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                iconStyle={styles.iconStyle}
-                data={productType?.dimondQuality}
-                dropdownPosition='top'
-                maxHeight={200}
-                labelField="Value"
-                valueField="Value"
+                style={{
+                  color: '#032e63',
+                  width: '100%',
+                  marginBottom: -1,
+                  height: 40,
+                  // marginTop: 5
+                }}
+                placeholderStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  alignSelf: 'center',
+                  fontSize: wp(4),
+                }}
+                selectedTextStyle={{
+                  color: '#474747',
+                  width: '100%',
+                  fontSize: wp(4),
+                  fontFamily: 'Acephimere',
+                  marginLeft: wp(2),
+                }}
+                data={dimondQuality}
+                inputSearchStyle={{
+                  borderRadius: 10,
+                  backgroundColor: '#f0f0f0',
+                }}
+                searchPlaceholder="search.."
+                maxHeight={250}
+                search
+                labelField="label"
+                valueField="value"
                 placeholder="Diamond Quality"
-                value={value}
+                value={inputs.DiamondQuality}
                 onChange={item => {
-                  setValue(item.value);
+                  handleInputs('DiamondQuality', item.value);
                 }}
               />
             </View>
-          </View>
-            <View style={{width:'100%'}}>
-<TouchableOpacity style={styles.addbtn}>
-    <Text style={{fontSize:18,color:'white',fontWeight:'800'}}>Add {props.data} Details</Text>
-</TouchableOpacity>
-            </View>
-          </View>
+
+            <TouchableOpacity
+              onPress={() => handleOnSubmit()}
+              style={styles.buttonOpen}>
+              <Text
+                style={{color: 'white', fontSize: wp(4.5), fontWeight: 'bold'}}>
+                Add Details
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
-        </ScrollView>
       </Modal>
-
-   
     </View>
-
   );
 };
 export default DiamondViewModal;
 const DropData = [
-    {label: 'Cts.', value: 'Cts.'},
-    {label: 'Gms', value: 'Gms'},
-   
-  ];
+  {label: 'Cts.', value: 'Cts.'},
+  {label: 'Gms', value: 'Gms'},
+];

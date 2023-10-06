@@ -1,16 +1,17 @@
-import {View, TouchableOpacity, ScrollView} from 'react-native';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import React, {useState, useCallback, useEffect} from 'react';
-import {Bubble, GiftedChat, InputToolbar, Send} from 'react-native-gifted-chat';
-import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { Bubble, GiftedChat, InputToolbar, Send } from 'react-native-gifted-chat';
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../../../components/Loader'
-const ChatScreen2 = ({...props}) => {
+const ChatScreen2 = ({ ...props }) => {
   const data = useSelector(state => state.Chat.GetMessage);
+  console.log('this is chat data', data)
 
 
   const isFetching = useSelector(state => state.Chat.isFetching);
@@ -23,12 +24,13 @@ const ChatScreen2 = ({...props}) => {
   const isFocused = useIsFocused();
   useEffect(() => {
     GetMessage();
-   
+
   }, [isFocused]);
 
 
 
   const GetMessage = async () => {
+
     const user_id = AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
     setUserId(parseInt(user_id._j));
@@ -38,6 +40,7 @@ const ChatScreen2 = ({...props}) => {
       senderId: parseInt(user_id._j),
       reciverid: props.data.contact_id,
       token: Token,
+      user_type: 'partner' //props.data.user_type
     });
   };
   const onSend = async msg => {
@@ -48,14 +51,15 @@ const ChatScreen2 = ({...props}) => {
 
     dispatch({
       type: 'Message_Send_Request',
-      url: '/chatSupplierToPartner',
+      url: '/msgSentSuccess',
       senderId: userId,
       reciverId: props.data.contact_id,
       message: message,
+      user_type: 'supplier',
       token: Token,
     });
 
-    
+
   };
 
   const renderActions = useCallback(() => {
@@ -64,21 +68,21 @@ const ChatScreen2 = ({...props}) => {
         onPress={() => {
           setVisiable(true);
         }}
-        style={{paddingBottom: 8, marginLeft: 5, height: 40, width: 40}}>
+        style={{ paddingBottom: 8, marginLeft: 5, height: 40, width: 40 }}>
         <Entypo name="emoji-happy" size={32} color={'#333'} />
       </TouchableOpacity>
     );
   }, []);
 
   return (
-    <View style={{flex: 1, backgroundColor: '#f0f0f0'}}>
-      {isFetching ? <View/> : 
-      <GiftedChat
+    <View style={{ flex: 1, backgroundColor: '#f0f0f0' }}>
+      {isFetching ? <View /> :
+        <GiftedChat
           messages={data}
           alwaysShowSend={true}
           onSend={onSend}
           user={{
-            _id: 13,
+            _id: userId,
           }}
           textInputStyle={{
             backgroundColor: '#e1e3e3',
@@ -123,13 +127,13 @@ const ChatScreen2 = ({...props}) => {
                 }}>
                 <Feather name="mic" size={28} color={'#000'} />
               </TouchableOpacity> */}
-                <View style={{width: '80%'}}>
+                <View style={{ width: '80%' }}>
                   <Send {...props}>
                     <Ionicons
                       name="ios-send"
                       size={30}
                       color={'#4282eb'}
-                      style={{marginBottom: 6}}
+                      style={{ marginBottom: 6 }}
                     />
                   </Send>
                 </View>
@@ -193,7 +197,7 @@ const ChatScreen2 = ({...props}) => {
             );
           }}
         />
-}
+      }
     </View>
   );
 };

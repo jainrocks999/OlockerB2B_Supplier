@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -12,26 +12,50 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CheckBox from '@react-native-community/checkbox';
 import styles from './styles';
-import {Dropdown} from 'react-native-element-dropdown';
-const AssignCategory = ({visi, close = () => {}, ...props}) => {
+import { Dropdown } from 'react-native-element-dropdown';
+import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../../../../components/Loader';
+const AssignCategory = ({ visi, close = () => { }, ...props }) => {
+  const dispatch = useDispatch()
+  const isFetching = useSelector(state => state.Supplier.isFetching)
+  const AssiGnModal = useSelector(state => state.Supplier.AssiGnModal)
+  const data2 = useSelector(state => state.Home.data2)
+
   const StatusDropdown = [
-    {label: 'Pending.', value: 'Pending.'},
-    {label: 'Approved', value: 'Approved'},
-    {label: 'Reject', value: 'Reject'},
+    { label: 'Pending', value: '3' },
+    { label: 'Approved', value: '1' },
+    { label: 'Reject', value: '2' },
   ];
 
+  const [allow, setAllow] = useState(false)
+  const [value, setValue] = useState(props.data?.CategoryType);
+  const [name, setName] = useState(props.data?.CompanyName)
+  const [Status, setStatus] = useState(props.data?.Status ? props.data?.Status : 'Select');
+  const updateData = () => {
 
-  const [value, setValue] = useState('');
-  const [Status, setStatus] = useState(JSON.stringify(props.data.Status)?.replace('"',''));
+    let data = new FormData()
+    data.append("hSrNo", props.data.SrNo)
+    data.append("ddlStatus", Status)
+    data.append("ddlCategory", value)
+    data.append("IsShowInRetailerApp", allow)
+    dispatch({
+      type: 'update_status_&_assign_request',
+      data,
+      url: 'retailerStatusUpdate',
+      AssiGnModal: !AssiGnModal,
+      data2
+    })
 
+  }
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Modal animationType="slide" transparent={true} visible={visi}>
         <View
           style={[
             styles.centeredView,
-            {backgroundColor: 'rgba(52, 52, 52, 0.8)', marginTop: 0},
+            { backgroundColor: 'rgba(52, 52, 52, 0.8)', marginTop: 0 },
           ]}>
+          {isFetching ? <Loading /> : null}
           <View style={styles.modalView}>
             <TouchableOpacity
               onPress={() => close()}
@@ -46,7 +70,7 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
                 right: 0,
                 margin: 10,
               }}>
-              <Text style={{fontSize: 18, color: 'white'}}>X</Text>
+              <Text style={{ fontSize: 18, color: 'white' }}>X</Text>
             </TouchableOpacity>
             <View
               style={{
@@ -70,8 +94,8 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
                   marginTop: 10,
                 }}>
                 <View style={{}}>
-                  <Text style={{fontWeight: '600', fontSize: 18}}>
-                    Name of the retailer <Text style={{color: 'red'}}>*</Text>
+                  <Text style={{ fontWeight: '600', fontSize: 18 }}>
+                    Name of the retailer <Text style={{ color: 'red' }}>*</Text>
                   </Text>
                 </View>
 
@@ -84,8 +108,10 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
                     borderRadius: 5,
                   }}>
                   <TextInput
-                    value={props.data.CompanyName}
+                    value={name}
                     placeholder="Anand Jewels"
+                    onChangeText={(input) => setName(input)}
+                    editable={false}
                   />
                 </View>
               </View>
@@ -94,14 +120,14 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
                   marginTop: 10,
                 }}>
                 <View style={{}}>
-                  <Text style={{fontWeight: '600', fontSize: 18}}>
-                    Status <Text style={{color: 'red'}}>*</Text>
+                  <Text style={{ fontWeight: '600', fontSize: 18 }}>
+                    Status <Text style={{ color: 'red' }}>*</Text>
                   </Text>
                 </View>
                 <Dropdown
                   style={[
                     styles.dropdown,
-                    {borderWidth: 1, borderColor: '#979998'},
+                    { borderWidth: 1, borderColor: '#979998' },
                   ]}
                   placeholderStyle={styles.placeholderStyle}
                   selectedTextStyle={styles.selectedTextStyle}
@@ -120,17 +146,18 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
               <View
                 style={{
                   marginTop: 10,
+
                 }}>
                 <View style={{}}>
-                  <Text style={{fontWeight: '600', fontSize: 18}}>
-                    Category <Text style={{color: 'red'}}>*</Text>
+                  <Text style={{ fontWeight: '600', fontSize: 18 }}>
+                    Category <Text style={{ color: 'red' }}>*</Text>
                   </Text>
                 </View>
 
                 <Dropdown
                   style={[
                     styles.dropdown,
-                    {borderWidth: 1, borderColor: '#979998'},
+                    { borderWidth: 1, borderColor: '#979998' },
                   ]}
                   placeholderStyle={styles.placeholderStyle}
                   selectedTextStyle={styles.selectedTextStyle}
@@ -147,41 +174,46 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
                 />
               </View>
 
-              <View
-                style={{
-                  flexDirection: 'row',
 
-                  alignItems: 'center',
-                  marginTop: 15,
-                }}>
-                <View style={{}}>
-                  <CheckBox />
-                </View>
-                <View style={{}}>
-                  <Text style={{fontWeight: '600', fontSize: 14}}>
-                    Allow products to show on Retailer's App
-                  </Text>
-                </View>
-              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+
+                alignItems: 'center',
+                marginTop: 10,
+              }}>
+
+              <CheckBox value={allow} onChange={() => { setAllow(!allow); console.log('called') }} />
+
+
+              <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                Allow products to show on Retailer's App
+              </Text>
+
             </View>
             <View
               style={{
                 flexDirection: 'row',
                 width: '100%',
                 justifyContent: 'space-between',
-                marginTop: 20,
+                marginTop: 10,
               }}>
               <TouchableOpacity
+
+                onPress={() => {
+                  updateData()
+                }}
                 style={{
                   backgroundColor: '#032e63',
-                  height: 40,
+                  height: 45,
                   padding: 5,
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 5,
                   width: '70%',
                 }}>
-                <Text style={{color: '#fff'}}>
+                <Text style={{ color: '#fff', textAlign: 'center' }}>
                   {' '}
                   Update Status & Assign Category
                 </Text>
@@ -198,7 +230,7 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
                   justifyContent: 'center',
                   borderRadius: 5,
                 }}>
-                <Text style={{color: '#fff'}}>Close</Text>
+                <Text style={{ color: '#fff' }}>Close</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -209,6 +241,6 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
 };
 export default AssignCategory;
 const DropData = [
-  {label: 'Exclusive.', value: 'Exclusive.'},
-  {label: 'Common', value: 'Common'},
+  { label: 'Exclusive.', value: 'Exclusive.' },
+  { label: 'Common', value: 'Common' },
 ];

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,13 +7,13 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {Dropdown} from 'react-native-element-dropdown';
+import { useNavigation } from '@react-navigation/native';
+import { Dropdown } from 'react-native-element-dropdown';
 import StatusBar from '../../../components/StatusBar';
 import styles from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../components/Loader';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import InviteretailerModal from '../Modal/inviteRetailer';
 
 const SearchRetailer = () => {
@@ -27,10 +27,12 @@ const SearchRetailer = () => {
   const isFetching = useSelector(state => state.City.isFetching);
   const stateList1 = useSelector(state => state.State.StateList);
   const searchBtn = useSelector(state => state.Home.isFetching);
-
+  const modalStatus = useSelector(state => state.Supplier.modalStatus)
   const cityList1 = useSelector(state => state.City.CityList);
   let cityList = cityList1?.cities;
-
+  useEffect(() => {
+    setInviteModal(false)
+  }, [modalStatus])
   const manageState = val => {
     setState(val);
 
@@ -49,6 +51,7 @@ const SearchRetailer = () => {
 
   const getDetails = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
+    console.log('fkfkffkfkf', city)
     if (city != '' || state != '' || search != '') {
       dispatch({
         type: 'Search_Retailer_Request',
@@ -59,12 +62,14 @@ const SearchRetailer = () => {
         state: state,
         Rname: search,
         navigation: navigation,
+        start: 1,
+        length: 10
       });
     }
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <StatusBar />
       {fetching || isFetching || searchBtn ? <Loader /> : null}
 
@@ -78,12 +83,12 @@ const SearchRetailer = () => {
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{paddingHorizontal: 5}}>
+            style={{ paddingHorizontal: 5 }}>
             <Image
-              style={{height: 20, width: 14}}
+              style={{ height: 20, width: 14 }}
               source={require('../../../assets/L.png')}
             />
           </TouchableOpacity>
@@ -97,23 +102,23 @@ const SearchRetailer = () => {
             Search Retailer's
           </Text>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image
-            style={{height: 24, width: 28}}
+            style={{ height: 24, width: 28 }}
             source={require('../../../assets/Fo.png')}
           />
           <Image
-            style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
+            style={{ height: 22, width: 26, tintColor: '#fff', marginLeft: 15 }}
             source={require('../../../assets/Image/dil.png')}
           />
           <Image
-            style={{height: 24, width: 28, tintColor: '#fff', marginLeft: 15}}
+            style={{ height: 24, width: 28, tintColor: '#fff', marginLeft: 15 }}
             source={require('../../../assets/supplierImage/more.png')}
           />
         </View>
       </View>
       <ScrollView>
-        <View style={{paddingHorizontal: 12, marginTop: 20}}>
+        <View style={{ paddingHorizontal: 12, marginTop: 20 }}>
           <View
             style={{
               width: '100%',
@@ -127,17 +132,17 @@ const SearchRetailer = () => {
             }}>
             <TextInput
               placeholder="Enter Retailer Name"
-              style={{paddingLeft: 10}}
+              style={{ paddingLeft: 10 }}
               placeholderTextColor={'#787676'}
               value={search}
               onChangeText={val => setSearch(val)}
             />
             <Image
-              style={{height: 20, width: 28}}
+              style={{ height: 20, width: 28 }}
               source={require('../../../assets/Image/serch.png')}
             />
           </View>
-          <View style={{marginTop: 15}}>
+          <View style={{ marginTop: 15 }}>
             <Text
               style={{
                 fontSize: 15,
@@ -151,7 +156,7 @@ const SearchRetailer = () => {
               <Dropdown
                 style={[
                   styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
+                  { borderWidth: 1, borderColor: '#979998' },
                 ]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -174,7 +179,7 @@ const SearchRetailer = () => {
               />
             </View>
           </View>
-          <View style={{marginTop: 15}}>
+          <View style={{ marginTop: 15 }}>
             <Text
               style={{
                 fontSize: 15,
@@ -188,7 +193,7 @@ const SearchRetailer = () => {
               <Dropdown
                 style={[
                   styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
+                  { borderWidth: 1, borderColor: '#979998' },
                 ]}
                 search
                 searchPlaceholder="search.."
@@ -243,7 +248,7 @@ const SearchRetailer = () => {
                 paddingVertical: 7,
                 borderRadius: 15,
               }}>
-              <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
+              <Text style={{ color: '#fff', fontFamily: 'Roboto-Medium' }}>
                 Search
               </Text>
             </TouchableOpacity>
@@ -262,7 +267,7 @@ const SearchRetailer = () => {
                 paddingVertical: 7,
                 borderRadius: 15,
               }}>
-              <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
+              <Text style={{ color: '#fff', fontFamily: 'Roboto-Medium' }}>
                 Reset
               </Text>
             </TouchableOpacity>
@@ -283,12 +288,12 @@ const SearchRetailer = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Text style={{fontFamily: 'Roboto-Bold', color: '#fff'}}>
+              <Text style={{ fontFamily: 'Roboto-Bold', color: '#fff' }}>
                 Invite retailers to network
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={{borderWidth: 0.2, marginTop: 20}} />
+          <View style={{ borderWidth: 0.2, marginTop: 20 }} />
           <View
             style={{
               flexDirection: 'row',
@@ -298,19 +303,19 @@ const SearchRetailer = () => {
             }}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('myNetworkBtn', {data: 'List'})
+                navigation.navigate('myNetworkBtn', { data: 'List' })
               }
               style={styles.btn}>
-              <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
+              <Text style={{ color: '#fff', fontFamily: 'Roboto-Medium' }}>
                 List Of Retailer
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('myNetworkBtn', {data: 'Network'})
+                navigation.navigate('myNetworkBtn', { data: 'Network' })
               }
               style={styles.btn}>
-              <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
+              <Text style={{ color: '#fff', fontFamily: 'Roboto-Medium' }}>
                 My Network
               </Text>
             </TouchableOpacity>
@@ -324,19 +329,19 @@ const SearchRetailer = () => {
             }}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('myNetworkBtn', {data: 'Request'})
+                navigation.navigate('myNetworkBtn', { data: 'Request' })
               }
               style={styles.btn}>
-              <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
+              <Text style={{ color: '#fff', fontFamily: 'Roboto-Medium' }}>
                 Retailer Request List
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('myNetworkBtn', {data: 'invite'})
+                navigation.navigate('myNetworkBtn', { data: 'invite' })
               }
               style={styles.btn}>
-              <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
+              <Text style={{ color: '#fff', fontFamily: 'Roboto-Medium' }}>
                 Invite Retailers List
               </Text>
             </TouchableOpacity>
@@ -348,7 +353,7 @@ const SearchRetailer = () => {
             setInviteModal(false);
           }}
         />
-        <View style={{height: 50}} />
+        <View style={{ height: 50 }} />
       </ScrollView>
     </View>
   );
