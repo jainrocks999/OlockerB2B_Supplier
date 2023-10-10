@@ -11,6 +11,7 @@ initialstate = {
   decorativeData: [],
   totalWiegt: '',
   msg: {},
+  itemField: {},
 };
 
 export default (state = initialstate, action) => {
@@ -98,8 +99,18 @@ export default (state = initialstate, action) => {
       };
     case 'verify_product_wieght_error':
       return {...state, isFetching: false};
-    case 'get_item_list_request':
+    case 'get_item_field_list_request':
       return {...state, isFetching: true};
+    case 'get_item_field_list_success':
+      return {...state, isFetching: false, itemField: action.payload};
+    case 'get_item_field_list_error':
+      return {...state, isFetching: false};
+    case 'create_product_request':
+      return {...state, isFetching: true};
+    case 'create_product_success':
+      return {...state, isFetching: false};
+    case 'create_product_error':
+      return {...state, isFetching: false};
 
     default:
       return state;

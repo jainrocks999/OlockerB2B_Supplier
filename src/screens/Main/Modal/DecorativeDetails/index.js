@@ -19,6 +19,7 @@ import {
 } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {FlatList} from 'react-native';
+import Loading from '../../../../components/Loader';
 
 const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   };
   //decorativeData
   const decorativeData = useSelector(state => state.Catalogue?.decorativeData);
+  const isFetching = useSelector(state => state.Catalogue?.isFetching);
 
   const handleOnSubmit = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
@@ -51,7 +53,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         isAdd: 1,
         hDecorationSrNo: '',
         current_session_id: session,
-        BreakUp: isBrekup,
+        BreakUp: isBrekup == 1 ? 0 : 1,
       },
     });
   };
@@ -61,16 +63,18 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
       <Modal animationType="fade" transparent visible={visi}>
         <View style={styles.modalView}>
           <ScrollView>
+            {isFetching ? <Loading /> : null}
             <TouchableOpacity onPress={() => close()} style={styles.crossbtn}>
               <Text style={styles.xbtn}>X</Text>
             </TouchableOpacity>
             <View style={styles.modalText}>
               <View style={styles.item}>
-                <Text style={styles.textItem}>Metal Details</Text>
+                <Text style={styles.textItem}>DECORATIVE ITEM DETAILS </Text>
               </View>
               <View style={{width: wp(80)}}>
                 <Text style={styles.deta}>
-                  (DETAILS OF PRECIOUS METALS USED IN PRODUCT)
+                  (NON-PRECIOUS ITEM DETAILS USED IN PRODUCT ADDING UP IN GROSS
+                  WT)
                 </Text>
               </View>
             </View>
@@ -220,7 +224,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
               />
             </View>
 
-            {isBrekup ? (
+            {isBrekup == 0 ? (
               <>
                 <Text style={[styles.buttonClose, {marginLeft: wp(3)}]}>
                   Decorative item value<Text style={{color: 'red'}}>*</Text>

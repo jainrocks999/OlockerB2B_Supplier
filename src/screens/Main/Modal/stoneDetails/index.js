@@ -26,8 +26,8 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const productType = useSelector(state => state.Home?.productTypeList);
   const session = useSelector(state => state.Home?.session);
   const stoneData = useSelector(state => state.Catalogue?.stoneData);
-  const isFetching = useSelector(state => state.Catalogue?.isFetching);
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const isFetching = useSelector(state => state.Catalogue.isFetching);
+
   const [value, setValue] = useState(null);
   const [inputs, setInputs] = useState({
     StoneWt: '',
@@ -49,7 +49,7 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
       url: 'addStone',
       data: {
         ...inputs,
-        BreakUp: isBrekup,
+        BreakUp: isBrekup == 0 ? 1 : 0,
         hProductSrNo: user_id,
         hStonesSrNo: '',
         isAdd: 1,
@@ -61,19 +61,19 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   return (
     <View style={styles.container}>
       <Modal animationType="fade" transparent visible={visi}>
-        <ScrollView>
-          <View style={styles.modalView}>
-            {isFetching ? Loading : null}
+        <View style={styles.modalView}>
+          <ScrollView>
+            {isFetching ? <Loading /> : null}
             <TouchableOpacity onPress={() => close()} style={styles.crossbtn}>
               <Text style={styles.xbtn}>X</Text>
             </TouchableOpacity>
             <View style={styles.modalText}>
               <View style={styles.item}>
-                <Text style={styles.textItem}>Metal Details</Text>
+                <Text style={styles.textItem}>STONE DETAILS</Text>
               </View>
               <View style={{width: wp(80)}}>
                 <Text style={styles.deta}>
-                  (DETAILS OF PRECIOUS METALS USED IN PRODUCT)
+                  (DETAILS OF PRECIOUS/SEMI-PRECIOUS STONES USED IN PRODUCT)
                 </Text>
               </View>
             </View>
@@ -223,7 +223,7 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 }}
               />
             </View>
-            {isBrekup ? (
+            {isBrekup == 0 ? (
               <>
                 <Text style={[styles.buttonClose, {marginLeft: wp(3)}]}>
                   Stone value<Text style={{color: 'red'}}>*</Text>
@@ -300,8 +300,8 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 Add Details
               </Text>
             </TouchableOpacity>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </View>
       </Modal>
     </View>
   );

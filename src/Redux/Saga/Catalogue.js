@@ -326,9 +326,52 @@ function* getItemFields(action) {
       itemSrNo: action.itemSrNo,
     };
     const res = yield call(Api.fetchDataByGET1, action.url, data);
-    console.log(res);
+    if (res.fields) {
+      yield put({
+        type: 'get_item_field_list_success',
+        payload: res.fields,
+      });
+    } else {
+      yield put({
+        type: 'get_item_field_list_error',
+      });
+      Toast.show('Something went wrong while getting fields.');
+    }
   } catch (err) {
     console.log(err);
+    yield put({
+      type: 'get_item_field_list_error',
+    });
+    Toast.show('Something went wrong while getting fields.');
+  }
+}
+function* createProduct(action) {
+  try {
+    console.log('caleed');
+    let data = new FormData();
+    yield Object.keys(action.data).map(item => {
+      data.append(item, action.data[item]);
+    });
+    //console.log(data);
+    const res = yield call(Api.fetchDataByPOST, action.url, data);
+    console.log(res);
+    if (res?.status) {
+      yield put({
+        type: 'create_product_success',
+      });
+      Toast.show(res?.msg);
+    } else {
+      yield put({
+        type: 'create_product_error',
+      });
+      Toast.show(res?.msg);
+    }
+  } catch (err) {
+    yield put({
+      type: 'create_product_error',
+    });
+    console.log(err);
+    Toast.show('Somenthing went wrong');
   }
 }
 export default function* citySaga() {
@@ -342,5 +385,6 @@ export default function* citySaga() {
   yield takeEvery('add_stone_request', addStone);
   yield takeEvery('add_decItem_request', addDecorative);
   yield takeEvery('verify_product_wieght_request', verifyWt);
-  yield takeEvery('get_item_list_request', getItemFields);
+  yield takeEvery('get_item_field_list_request', getItemFields);
+  yield takeEvery('create_product_request', createProduct);
 }

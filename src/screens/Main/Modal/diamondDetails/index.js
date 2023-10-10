@@ -18,11 +18,13 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loading from '../../../../components/Loader';
 
 const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const productType = useSelector(state => state.Home?.productTypeList);
   const session = useSelector(state => state.Home?.session);
   const diamondData = useSelector(state => state.Catalogue?.diamondData);
+  const isFetching = useSelector(state => state.Catalogue?.isFetching);
 
   const dispatch = useDispatch();
 
@@ -60,7 +62,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         current_session_id: session,
         isAdd: 1,
         hProductSrNo: user_id,
-        BreakUp: isBrekup,
+        BreakUp: isBrekup == 0 ? 1 : 0,
         hDiamondSrNo: '',
       },
     });
@@ -71,16 +73,17 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
       <Modal animationType="fade" transparent visible={visi}>
         <View style={styles.modalView}>
           <ScrollView showsVerticalScrollIndicator={false}>
+            {isFetching ? <Loading /> : null}
             <TouchableOpacity onPress={() => close()} style={styles.crossbtn}>
               <Text style={styles.xbtn}>X</Text>
             </TouchableOpacity>
             <View style={styles.modalText}>
               <View style={styles.item}>
-                <Text style={styles.textItem}>Metal Details</Text>
+                <Text style={styles.textItem}>DIAMOND DETAILS</Text>
               </View>
               <View style={{width: wp(80)}}>
                 <Text style={styles.deta}>
-                  (DETAILS OF PRECIOUS METALS USED IN PRODUCT)
+                  (DETAILS OF DIAMOND USED IN PRODUC)
                 </Text>
               </View>
             </View>
@@ -246,7 +249,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 }}
               />
             </View>
-            {isBrekup ? (
+            {isBrekup == 0 ? (
               <>
                 <Text style={[styles.buttonClose, {marginLeft: wp(2)}]}>
                   Diamond Value<Text style={{color: 'red'}}>*</Text>

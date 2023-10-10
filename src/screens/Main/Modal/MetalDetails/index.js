@@ -21,7 +21,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loading from '../../../../components/Loader';
 
-const MetalViewModal = ({visi, close = () => {}, ...props}) => {
+const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const dispatch = useDispatch();
   const productType = useSelector(state => state.Home?.productTypeList);
   const session = useSelector(state => state.Home?.session);
@@ -71,7 +71,7 @@ const MetalViewModal = ({visi, close = () => {}, ...props}) => {
             </TouchableOpacity>
             <View style={styles.modalText}>
               <View style={styles.item}>
-                <Text style={styles.textItem}>Metal Details</Text>
+                <Text style={styles.textItem}>METAL DETAILS</Text>
               </View>
               <View style={{width: wp(80)}}>
                 <Text style={styles.deta}>

@@ -28,6 +28,11 @@ import DecorativeViewModal from '../Modal/DecorativeDetails';
 import StoneViewModal from '../Modal/stoneDetails';
 import {RadioButton} from 'react-native-paper';
 import DocumentPicker from 'react-native-document-picker';
+import Constants from '../../../Redux/Constants';
+import axios from 'axios';
+import RNFS from 'react-native-fs';
+import RNFetchBlob from 'rn-fetch-blob';
+import Toast from 'react-native-simple-toast';
 
 const AddProducts = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -36,7 +41,7 @@ const AddProducts = () => {
   const [ViewStoneModal, setViewStoneModal] = useState(false);
   const [ViewDiamondModal, setViewDiamondModal] = useState(false);
   const [ViewDecorativeModal, setViewDecorativeModal] = useState(false);
-
+  const session = useSelector(state => state.Home?.session);
   const productType = useSelector(state => state.Home.productTypeList);
   const isFetching = useSelector(state => state.Home.isFetching);
   const isFetching2 = useSelector(state => state.Catalogue.isFetching);
@@ -46,7 +51,9 @@ const AddProducts = () => {
   const metalData = useSelector(state => state.Catalogue?.metalData);
   const totalWiegt = useSelector(state => state.Catalogue?.totalWiegt);
   const diamondData = useSelector(state => state.Catalogue?.diamondData);
+  const itemField = useSelector(state => state.Catalogue?.itemField);
   const msg = useSelector(state => state.Catalogue?.msg);
+
   useEffect(() => {
     productTypeList();
   }, [isFocuse]);
@@ -113,129 +120,17 @@ const AddProducts = () => {
       handleInputs('chk_sc', [...inputs.chk_sc, SrNo]);
     }
   };
-  const something = async () => {
-    const data = {
-      radioInventoryPreInsured: 0,
-      radioPriceCalculator: 1,
-      ItemType: 50,
-      ItemName: 'Baali',
-      hdnProductSku: '',
-      hdnProductType: '',
-      hProductSrNo: 0,
-      hdnIsMrp: 1,
-      hdnProductPartner: '',
-      hdnProductBranch: '',
-      Status: 'Live',
-      DeliveryDays: 30,
-      ProductSku: '',
-      StyleID: '',
-      Hallmarked: 1,
-      radioGender: 'Female',
-      rbCategory: 'Category B',
-      txtProductWidth: '',
-      lblwidthUnit: '',
-      txtProductHeight: '',
-      lblheightUnit: '',
-      txtProductBreadth: '',
-      lblBreadthUnit: '',
-      txtSize: '',
-      lblSizeUnit: '',
-      MetalWtGrandTotal: 2,
-      hMetalWt: 2,
-      GrossWt: 8,
-      hdnGrossWt: 8,
-      MetalTypes: 'Gold',
-      Metal_Purity: 999,
-      MetalWt: 2,
-      MetalWtUnit: 'Gms.',
-      DiamondGrandTotal: 2,
-      hDiamondSrNo: '',
-      Diamondwt: 2,
-      DiamondWtUnit: 'Gms.',
-      DiamondChargeableAmount: '',
-      DiamondName: 'Diamond',
-      DiamondShape: 'Marquis Cut',
-      DiamondQuality: 'SI-FG',
-      StoneGrandTotal: 2,
-      hStonesSrNo: '',
-      StoneWt: 2,
-      StoneWtUnit: 'Gms.',
-      StoneChargeableAmount: '',
-      StoneName: 'Alexendrite',
-      DecorationGrandTotal: 2.0,
-      hDecorationSrNo: '',
-      DecoWt: '',
-      DecoWtUnit: 'Gms.',
-      DecorativeChargeableAmount: '',
-      DecoItemName: '',
-      txtVGrossWt: '10Gms.',
-      txtVMetalWt: '2.000Gms.',
-      txtVDiamondWt: '3.000Gms.',
-      txtVStoneWt: '5.000Gms.',
-      txtVDecoWt: '0.000Gms.',
-      radioIsWastage: 0,
-      txtLabourCharges: '',
-      txtProductCharges: '',
-      txtMrp: 150000,
-      isProductCertd: 0,
-      ProductCertifiedBy: '',
-      hdnImagecount: '',
-      chk_sc: [4, 10, 21],
-      chk_c: [158, 157],
-      submit: 'create product',
-      userid: 13,
-      current_session_id: 1685021903897,
-      IsDefaultSupplier: 0,
-    };
-
-    const arr = Object.keys(data).filter(
-      item => !Object.keys(inputs).includes(item),
-    );
-    console.log(JSON.stringify(arr));
-  };
-
-  let arr = [
-    'ItemType',
-    'hdnProductSku',
-    'hdnProductType',
-    'hProductSrNo',
-    'hdnIsMrp',
-    'hdnProductPartner',
-    'hdnProductBranch',
-    'DeliveryDays',
-    'rbCategory',
-    'txtProductWidth',
-    'lblwidthUnit',
-    'txtProductHeight',
-    'lblheightUnit',
-    'txtProductBreadth',
-    'lblBreadthUnit',
-
-    'lblSizeUnit',
-    'hdnGrossWt',
-    'DecoItemName',
-    'txtVGrossWt',
-    'txtVMetalWt',
-    'txtVDiamondWt',
-    'txtVStoneWt',
-    'txtVDecoWt',
-    'txtMrp',
-    'submit',
-    'userid',
-    'current_session_id',
-    'IsDefaultSupplier',
-  ];
 
   const [inputs, setInputs] = useState({
     radioInventoryPreInsured: 0,
     radioPriceCalculator: 1,
     ItemName: '',
-    Status: '',
+    Status: 'Live',
     ProductSku: '',
     StyleID: '',
     Hallmarked: 1,
     radioGender: 'Male',
-    IsBestSeller: 0,
+    IsBestSeller: false,
     StoneWt: '',
     StoneWtUnit: [],
     StoneName: [],
@@ -268,12 +163,30 @@ const AddProducts = () => {
     txtProductCharges: '',
     isProductCertd: 0,
     ProductCertifiedBy: '',
-    ImgUpload: [],
+    ImgUpload: '',
     chk_sc: [],
-    chk_c: [],
     hdnImagecount: 0,
-    txtSize: '',
+    lblwidthUnit: '', //bacha hai
+    lblBreadthUnit: '', //thikness
     lblSizeUnit: '',
+    lblheightUnit: '',
+    txtProductWidth: '',
+    txtProductHeight: '',
+    txtProductBreadth: '', //thikness
+    txtSize: '',
+    txtVGrossWt: '',
+    txtVMetalWt: '',
+    txtVDiamondWt: '',
+    txtVStoneWt: '',
+    txtVDecoWt: '',
+    txtMrp: '',
+    DeliveryDays: '',
+    hdnGrossWt: '',
+    DecoItemName: '',
+    submit: 'create product',
+    ItemType: '',
+    hdnProductSku: '',
+    hdnProductType: '',
   });
   useEffect(() => {
     stoneData?.length > 0 ? addStonedata() : null;
@@ -289,6 +202,19 @@ const AddProducts = () => {
   }, [decorativeData]);
   const handleInputs = async (params, input) => {
     setInputs(prev => ({...prev, [params]: input}));
+  };
+  useEffect(() => {
+    itemField ? handleitemFIleds() : null;
+  }, [itemField]);
+
+  const handleitemFIleds = () => {
+    setInputs(prev => ({
+      ...prev,
+      lblSizeUnit: itemField?.lblSizeUnit,
+      lblBreadthUnit: itemField?.lblBreadthUnit,
+      lblwidthUnit: itemField?.lblwidthUnit,
+      lblheightUnit: itemField?.lblheightUnit,
+    }));
   };
   const addStonedata = async () => {
     let stonewt = 0;
@@ -315,6 +241,7 @@ const AddProducts = () => {
       StoneChargeableAmount: StoneChargeableAmount,
       StoneGrandTotal: stonewt,
       hStonesSrNo: stoneSrNo,
+      txtVStoneWt: `${stonewt} ${StoneWtUnit[0]}`,
     }));
     calculatePrice();
   };
@@ -350,6 +277,7 @@ const AddProducts = () => {
       DiamondName: DiamondName,
       DiamondShape: DiamondShape,
       DiamondQuality: DiamondQuality,
+      txtVDiamondWt: `${diamondWt} ${DiamondWtUnit[0]}`,
     }));
     calculatePrice();
   };
@@ -377,6 +305,9 @@ const AddProducts = () => {
       MetalWtUnit: MetalWtUnit,
       Metal_Purity: Metal_Purity,
       MetalTypes: MetalTypes,
+      txtVGrossWt: `${totalWiegt} ${MetalWtUnit[0]}`,
+      txtVMetalWt: `${hMetalWt} ${MetalWtUnit[0]}`,
+      hdnGrossWt: totalWiegt,
     }));
     calculatePrice();
   };
@@ -406,6 +337,7 @@ const AddProducts = () => {
       DecorativeChargeableAmount: DecorativeChargeableAmount,
       DecorativeItemName: DecorativeItemName,
       DecoWtUnit: DecoWtUnit,
+      txtVDecoWt: `${DecoWt} ${DecoWtUnit[0]}`,
     }));
     calculatePrice();
   };
@@ -433,10 +365,23 @@ const AddProducts = () => {
       const res = await DocumentPicker.pickSingle({
         type: [DocumentPicker.types.images],
       });
-      console.log(res);
+      //  console.log(res);
+      //  {
+      //     uri: photo,
+      //     name: photo1.substring(photo1.lastIndexOf('/') + 1),
+      //     type: Photo2,
+      //   }
 
-      setInputs(prev => ({...prev, ImgUpload: [...inputs.ImgUpload, res.uri]}));
-      handleInputs('hdnImagecount', inputs.ImgUpload.length);
+      const res2 = RNFetchBlob.fs.createFile(res.uri);
+      // console.log('thisiisi', res2);
+
+      setInputs(prev => ({
+        ...prev,
+        ImgUpload: [
+          ...inputs.ImgUpload,
+          {uri: res.uri, name: res.name, type: res.type},
+        ],
+      }));
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
       } else {
@@ -444,19 +389,73 @@ const AddProducts = () => {
       }
     }
   };
-  const handleOnSubmit = () => {
-    console.log(JSON.stringify(inputs.chk_c));
-    console.log(JSON.stringify(inputs.chk_sc));
+
+  const handleOnSubmit = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+
+    let data = {
+      ...inputs,
+      hdnIsMrp: inputs.radioPriceCalculator,
+      hProductSrNo: 0,
+      hdnProductPartner: '',
+      hdnProductBranch: '',
+      hdnImagecount: inputs.ImgUpload.length,
+      rbCategory: 'Category B',
+      userid: user_id,
+      current_session_id: session,
+      IsDefaultSupplier: 1,
+      IsBestSeller: inputs.IsBestSeller ? 1 : 0,
+    };
+
+    let data2 = new FormData();
+    await Object.keys(data).map(async (item, index) => {
+      if (item === 'chk_sc') {
+        data[item]?.map((item, index) => {
+          data2.append(`chk_sc[${index}]`, item);
+        });
+      } else if (item == 'ImgUpload') {
+        data[item]?.map((item, index) => {
+          data2.append(`ImgUpload[${index}]`, item);
+        });
+      } else {
+        data2.append(item, data[item]);
+      }
+    });
+    // console.log(inputs.ImgUpload);
+    // });
+    //  console.log(JSON.stringify(data2));
+    //  console.log(inputs.txtMrp);
+    fetchDataByPOST('', data2);
   };
-  const handleCategorysub = SrNo => {
-    if (!inputs.chk_c.includes(SrNo)) {
-      handleInputs('chk_c', [...inputs.chk_c, SrNo]);
+  const [isFetching3, setIfetching] = useState(false);
+  const fetchDataByPOST = async (url, params) => {
+    setIfetching(true);
+    const Token = await AsyncStorage.getItem('loginToken');
+    const config = {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Olocker: `Bearer ${Token}`,
+      },
+    };
+    try {
+      const response = await axios.post(
+        Constants.MainUrl + 'createProduct',
+        params,
+        config,
+      );
+
+      setIfetching(false);
+      Toast.show(response.data.msg);
+    } catch (error) {
+      console.log('this si ', error);
+      setIfetching(false);
+      Toast.show('Something went wrong');
     }
   };
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      {isFetching || isFetching2 ? <Loader /> : null}
+      {isFetching || isFetching2 || isFetching3 ? <Loader /> : null}
       <ScrollView contentContainerStyle={{}}>
         <DiamondViewModal
           visi={ViewDiamondModal}
@@ -587,9 +586,9 @@ const AddProducts = () => {
               color="#032e63"
               uncheckedColor="#474747"
               status={
-                inputs.radioPriceCalculator == 1 ? 'checked' : 'unchecked'
+                inputs.radioPriceCalculator == 0 ? 'checked' : 'unchecked'
               }
-              onPress={() => handleInputs('radioPriceCalculator', 1)}
+              onPress={() => handleInputs('radioPriceCalculator', 0)}
             />
             <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>
               Break Up Pricing
@@ -600,9 +599,9 @@ const AddProducts = () => {
                 color="#032e63"
                 uncheckedColor="#474747"
                 status={
-                  inputs.radioPriceCalculator == 0 ? 'checked' : 'unchecked'
+                  inputs.radioPriceCalculator == 1 ? 'checked' : 'unchecked'
                 }
-                onPress={() => handleInputs('radioPriceCalculator', 0)}
+                onPress={() => handleInputs('radioPriceCalculator', 1)}
               />
             </View>
 
@@ -636,11 +635,13 @@ const AddProducts = () => {
                   placeholder="Product/item type"
                   value={inputs.ItemName}
                   onChange={item => {
-                    handleInputs('ItemName', item?.Value);
+                    handleInputs('ItemName', item.Value);
+                    handleInputs('ItemType', item.Id);
+                    console.log(item);
                     dispatch({
-                      type: 'get_item_list_request',
+                      type: 'get_item_field_list_request',
                       url: 'getItemFields',
-                      itemSrNo: item.SrNo,
+                      itemSrNo: item.Id,
                     });
                   }}
                 />
@@ -670,6 +671,24 @@ const AddProducts = () => {
               />
             </View>
           </View>
+          {inputs.Status == 'Catalog' ? (
+            <View style={styles.mrt}>
+              <Text style={styles.text}>Estimate Delivery Days</Text>
+              <View>
+                <TextInput
+                  style={[
+                    styles.dropdown,
+                    {borderWidth: 1, borderColor: '#979998'},
+                  ]}
+                  placeholder="Delivery Days"
+                  value={inputs.DeliveryDays}
+                  onChangeText={input => {
+                    handleInputs('DeliveryDays', input);
+                  }}
+                />
+              </View>
+            </View>
+          ) : null}
           <View style={styles.mrt}>
             <Text style={styles.text}>ProductSku</Text>
             <View>
@@ -682,6 +701,7 @@ const AddProducts = () => {
                 value={inputs.ProductSku}
                 onChangeText={input => {
                   handleInputs('ProductSku', input);
+                  handleInputs('hdnProductSku', input);
                 }}
               />
             </View>
@@ -875,149 +895,174 @@ const AddProducts = () => {
             </View>
           </View>
         </View>
-        <View style={{marginHorizontal: wp(3), marginTop: wp(5)}}>
-          <Text
-            style={{
-              fontSize: wp(4.5),
-              fontWeight: '800',
-              color: '#000',
-            }}>
-            Dimensions
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: wp(1),
-            }}>
-            <View style={{width: '45%'}}>
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderRadius: wp(2),
-                  height: hp(5.5),
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  overflow: 'hidden',
-                  paddingLeft: wp(4),
-                }}>
-                <TextInput
-                  placeholder="Width"
-                  style={{
-                    fontSize: wp(4.5),
-                    fontWeight: '700',
-                  }}
-                />
+        {itemField?.lblDimension == 1 ? (
+          <View style={{marginHorizontal: wp(3), marginTop: wp(5)}}>
+            <Text
+              style={{
+                fontSize: wp(4.5),
+                fontWeight: '800',
+                color: '#000',
+              }}>
+              Dimensions
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: wp(1),
+              }}>
+              <View style={{width: '45%'}}>
                 <View
                   style={{
-                    borderLeftWidth: 1,
-                    width: '30%',
-                    height: '100%',
-                    backgroundColor: 'lightgrey',
+                    borderWidth: 1,
+                    borderRadius: wp(2),
+                    height: hp(5.5),
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    overflow: 'hidden',
+                    paddingLeft: wp(4),
                   }}>
-                  <Text style={{color: 'black', fontWeight: '700'}}>mm</Text>
+                  <TextInput
+                    placeholder="Width"
+                    editable={itemField?.divWidth == 1 ? true : false}
+                    style={{fontSize: wp(4.5), fontWeight: '700', flex: 1}}
+                    value={inputs.txtProductWidth}
+                    onChangeText={input =>
+                      handleInputs('txtProductWidth', input)
+                    }
+                  />
+                  <View
+                    style={{
+                      borderLeftWidth: 1,
+                      width: '30%',
+                      height: '100%',
+                      backgroundColor: 'lightgrey',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Text style={{color: 'black', fontWeight: '700'}}>
+                      {inputs.lblwidthUnit}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={{width: '45%'}}>
+                <View
+                  style={{
+                    borderWidth: 1,
+                    borderRadius: wp(2),
+                    height: hp(5.5),
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    overflow: 'hidden',
+                    paddingLeft: wp(4),
+                  }}>
+                  <TextInput
+                    placeholder="Height"
+                    editable={itemField?.divHeight == 1 ? true : false}
+                    style={{fontSize: wp(4.5), fontWeight: '700', flex: 1}}
+                    value={inputs.txtProductHeight}
+                    onChangeText={input =>
+                      handleInputs('txtProductHeight', input)
+                    }
+                  />
+                  <View
+                    style={{
+                      borderLeftWidth: 1,
+                      width: '30%',
+                      height: '100%',
+                      backgroundColor: 'lightgrey',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Text style={{color: 'black', fontWeight: '700'}}>
+                      {inputs.lblheightUnit}
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
-            <View style={{width: '45%'}}>
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderRadius: wp(2),
-                  height: hp(5.5),
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  overflow: 'hidden',
-                  paddingLeft: wp(4),
-                }}>
-                <TextInput
-                  placeholder="Height"
-                  style={{fontSize: wp(4.5), fontWeight: '700'}}
-                />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: wp(3),
+              }}>
+              <View style={{width: '45%'}}>
                 <View
                   style={{
-                    borderLeftWidth: 1,
-                    width: '30%',
-                    height: '100%',
-                    backgroundColor: 'lightgrey',
+                    borderWidth: 1,
+                    borderRadius: wp(2),
+                    height: hp(5.5),
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    overflow: 'hidden',
+                    paddingLeft: wp(4.5),
                   }}>
-                  <Text style={{color: 'black', fontWeight: '700'}}>mm</Text>
+                  <TextInput
+                    placeholder="Thikness"
+                    editable={itemField?.divBreadth == 1 ? true : false}
+                    style={{fontSize: wp(4.5), fontWeight: '700', flex: 1}}
+                    value={inputs.txtProductBreadth}
+                    onChangeText={input =>
+                      handleInputs('txtProductBreadth', input)
+                    }
+                  />
+                  <View
+                    style={{
+                      borderLeftWidth: 1,
+                      width: '30%',
+                      height: '100%',
+                      backgroundColor: 'lightgrey',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Text style={{color: 'black', fontWeight: '700'}}>
+                      {inputs.lblBreadthUnit}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={{width: '45%'}}>
+                <View
+                  style={{
+                    borderWidth: 1,
+                    borderRadius: wp(2),
+                    height: hp(5.5),
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    overflow: 'hidden',
+                    paddingLeft: wp(4),
+                  }}>
+                  <TextInput
+                    editable={itemField?.divSize == 1 ? true : false}
+                    value={inputs.txtSize}
+                    placeholder="Size"
+                    onChangeText={input => handleInputs('txtSize', input)}
+                    style={{fontSize: wp(4.5), fontWeight: '700', flex: 1}}
+                  />
+                  <View
+                    style={{
+                      borderLeftWidth: 1,
+                      width: '30%',
+                      height: '100%',
+                      backgroundColor: 'lightgrey',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Text style={{color: 'black', fontWeight: '700'}}>
+                      {inputs.lblSizeUnit}
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: wp(3),
-            }}>
-            <View style={{width: '45%'}}>
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderRadius: wp(2),
-                  height: hp(5.5),
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  overflow: 'hidden',
-                  paddingLeft: wp(4.5),
-                }}>
-                <TextInput
-                  placeholder="Thikness"
-                  style={{fontSize: wp(4.5), fontWeight: '700'}}
-                />
-                <View
-                  style={{
-                    borderLeftWidth: 1,
-                    width: '30%',
-                    height: '100%',
-                    backgroundColor: 'lightgrey',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Text style={{color: 'black', fontWeight: '700'}}>{''}</Text>
-                </View>
-              </View>
-            </View>
-            <View style={{width: '45%'}}>
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderRadius: wp(2),
-                  height: hp(5.5),
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  overflow: 'hidden',
-                  paddingLeft: wp(4),
-                }}>
-                <TextInput
-                  placeholder="Size"
-                  style={{fontSize: wp(4.5), fontWeight: '700'}}
-                />
-                <View
-                  style={{
-                    borderLeftWidth: 1,
-                    width: '30%',
-                    height: '100%',
-                    backgroundColor: 'lightgrey',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Text style={{color: 'black', fontWeight: '700'}}>{''}</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
+        ) : null}
         <View
           style={{
             flexDirection: 'row',
@@ -1266,7 +1311,7 @@ const AddProducts = () => {
           </Text>
         </View>
         <View style={{marginVertical: 20}}>
-          {inputs.radioPriceCalculator ? (
+          {inputs.radioPriceCalculator == 0 ? (
             <>
               <View style={styles.mrt}>
                 <Text
@@ -1314,12 +1359,14 @@ const AddProducts = () => {
         </View>
 
         <View style={[styles.mrt, {marginTop: wp(-5)}]}>
-          {inputs.radioPriceCalculator ? (
+          {inputs.radioPriceCalculator == 0 ? (
             <>
               <Text
                 style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
                 {' '}
-                Wastage % between 0-100
+                {inputs.radioIsWastage == 1
+                  ? 'Wastage % between 0-100'
+                  : 'Amount in Rs.'}
               </Text>
 
               <View
@@ -1336,7 +1383,11 @@ const AddProducts = () => {
                   onChangeText={input => {
                     handleInputs('txtLabourCharges', input);
                   }}
-                  placeholder="Wastage % between 0-100"
+                  placeholder={
+                    inputs.radioIsWastage
+                      ? 'Wastage % between 0-100'
+                      : 'Amount in Rs.'
+                  }
                 />
               </View>
             </>
@@ -1347,7 +1398,7 @@ const AddProducts = () => {
           <View style={{marginTop: wp(3)}}>
             <Text style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
               {' '}
-              {inputs.radioPriceCalculator
+              {inputs.radioPriceCalculator == 0
                 ? 'Chargeable amount for Product RS'
                 : 'Specify MRP pricing '}
             </Text>
@@ -1361,9 +1412,20 @@ const AddProducts = () => {
                 marginHorizontal: wp(3),
               }}>
               <TextInput
-                editable={inputs.radioPriceCalculator == 1 ? false : true}
-                value={inputs.txtProductCharges}
-                onChangeText={input => handleInputs('txtProductCharges', input)}
+                editable={inputs.radioPriceCalculator == 1 ? true : false}
+                value={
+                  inputs.radioPriceCalculator == 0
+                    ? inputs.txtProductCharges
+                    : inputs.txtMrp
+                }
+                onChangeText={input =>
+                  handleInputs(
+                    inputs.radioPriceCalculator == 0
+                      ? 'txtProductCharges'
+                      : 'txtMrp',
+                    input,
+                  )
+                }
                 placeholder={'0.00'}
               />
             </View>
@@ -1476,7 +1538,7 @@ const AddProducts = () => {
                     alignSelf: 'center',
                     marginHorizontal: wp(1),
                   }}
-                  source={{uri: item}}
+                  source={{uri: item.uri}}
                 />
               )}
             />
@@ -1495,10 +1557,7 @@ const AddProducts = () => {
           <FlatList
             data={productType?.category}
             renderItem={({item}) => (
-              <TouchableOpacity
-                activeOpacity={1}
-                onPress={() => handleCategorysub(item.SrNo)}
-                style={{marginVertical: 5}}>
+              <TouchableOpacity activeOpacity={1} style={{marginVertical: 5}}>
                 <View
                   style={{
                     marginHorizontal: 20,
@@ -1595,17 +1654,17 @@ const AddProducts = () => {
                   <CheckBox
                     onChange={async () => {
                       console.log(item.SrNo);
-                      if (inputs.chk_c.includes(item.SrNo)) {
-                        const res = inputs.chk_c.filter(
+                      if (inputs.chk_sc.includes(item.SrNo)) {
+                        const res = inputs.chk_sc.filter(
                           items => items != item.SrNo,
                         );
 
-                        handleInputs('chk_c', res);
+                        handleInputs('chk_sc', res);
                       } else {
-                        handleInputs('chk_c', [...inputs.chk_c, item.SrNo]);
+                        handleInputs('chk_sc', [...inputs.chk_sc, item.SrNo]);
                       }
                     }}
-                    value={inputs.chk_c.includes(item.SrNo) ? true : false}
+                    value={inputs.chk_sc.includes(item.SrNo) ? true : false}
                   />
                   <Text
                     style={{
@@ -1625,7 +1684,7 @@ const AddProducts = () => {
         <View style={{marginHorizontal: 20, marginTop: 15}}>
           <TouchableOpacity
             onPress={() => {
-              something();
+              handleOnSubmit();
             }}
             style={{
               height: 40,
@@ -1635,7 +1694,7 @@ const AddProducts = () => {
               backgroundColor: '#032e63',
             }}>
             <Text style={{fontSize: 18, color: 'white', fontWeight: '600'}}>
-              Update Product
+              Add Product
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
