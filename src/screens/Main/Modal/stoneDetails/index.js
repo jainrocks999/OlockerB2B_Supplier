@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -34,6 +34,10 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     StoneWtUnit: '',
     ChargAmt: '',
     StoneName: '',
+    isAdd: 1,
+    hProductSrNo: '',
+    hStonesSrNo: '',
+    current_session_id: '',
   });
   const stoneDetails = productType?.stoneDetails?.map(item => {
     return {label: item.Value, value: item.Value};
@@ -42,19 +46,48 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     setInputs(prev => ({...prev, [text]: input}));
   };
 
-  const handleOnSubmit = async () => {
-    const user_id = await AsyncStorage.getItem('user_id');
-    dispatch({
-      type: 'add_stone_request',
-      url: 'addStone',
-      data: {
-        ...inputs,
-        BreakUp: isBrekup == 0 ? 1 : 0,
-        hProductSrNo: user_id,
-        hStonesSrNo: '',
+  useEffect(() => {
+    setInputs({
+      StoneWt: '',
+      StoneWtUnit: '',
+      ChargAmt: '',
+      StoneName: '',
+      isAdd: 1,
+      hProductSrNo: '',
+      hStonesSrNo: '',
+      current_session_id: session,
+    });
+  }, [stoneData]);
+  const handleOnSubmit = async (isEdit, item) => {
+    if (isEdit) {
+      setInputs({
+        ChargAmt: item.StoneChargeableAmount,
+        StoneWtUnit: item.UnitStoneWt,
+        StoneWt: item.StoneWt,
+        StoneName: item.StoneName,
         isAdd: 1,
-        current_session_id: session,
-      },
+        hStonesSrNo: item.SrNo,
+      });
+    } else {
+      const user_id = await AsyncStorage.getItem('user_id');
+      dispatch({
+        type: 'add_stone_request',
+        url: 'addStone',
+        data: {
+          ...inputs,
+          BreakUp: isBrekup == 0 ? 1 : 0,
+          current_session_id: isEdit ? item.Session : session,
+        },
+      });
+    }
+  };
+  const handleOnDelete = (SrNo, sessions) => {
+    dispatch({
+      type: 'remove_stone_request',
+      url: 'removeStone',
+      StoneId: SrNo,
+      current_session_id: sessions,
+      BreakUp: isBrekup == 0 ? 1 : 0,
     });
   };
 
@@ -94,12 +127,17 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                           borderRadius: wp(2),
                           elevation: 5,
                         }}>
-                        <View style={styles.editdelete}>
-                          <MaterialCommunityIcons
-                            name="pencil"
-                            size={wp(4.5)}
-                            color={'black'}
-                          />
+                        <View style={[styles.editdelete, {zIndex: 1}]}>
+                          <TouchableOpacity
+                            onPress={() => {
+                              handleOnSubmit(true, item);
+                            }}>
+                            <MaterialCommunityIcons
+                              name="pencil"
+                              size={wp(4.5)}
+                              color={'black'}
+                            />
+                          </TouchableOpacity>
                           <Text
                             style={[
                               styles.cardTitle,
@@ -112,11 +150,16 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                             ]}>
                             |
                           </Text>
-                          <MaterialCommunityIcons
-                            name="delete"
-                            size={wp(4.5)}
-                            color={'black'}
-                          />
+                          <TouchableOpacity
+                            onPress={() =>
+                              handleOnDelete(item.SrNo, item.Session)
+                            }>
+                            <MaterialCommunityIcons
+                              name="delete"
+                              size={wp(4.5)}
+                              color={'black'}
+                            />
+                          </TouchableOpacity>
                         </View>
                         <View style={styles.cartItem}>
                           <Text style={[styles.cardTitle, {color: 'black'}]}>
@@ -293,7 +336,7 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
               />
             </View>
             <TouchableOpacity
-              onPress={() => handleOnSubmit()}
+              onPress={() => handleOnSubmit(false)}
               style={styles.buttonOpen}>
               <Text
                 style={{color: 'white', fontSize: wp(4.5), fontWeight: 'bold'}}>

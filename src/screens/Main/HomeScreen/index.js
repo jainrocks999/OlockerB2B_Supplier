@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,16 +13,16 @@ import {
   BackHandler,
 } from 'react-native';
 import Carousel from 'react-native-banner-carousel';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Header from '../../../components/CustomHeader';
 import styles from './styles';
 import Toast from 'react-native-simple-toast';
 import Loader from '../../../components/Loader';
-import { FlatListSlider } from 'react-native-flatlist-slider';
+import {FlatListSlider} from 'react-native-flatlist-slider';
 import Banner from '../../../components/Banner';
 import ImagePath from '../../../components/ImagePath';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Catalogue from '../../../Redux/Reducer/Catalogue';
 let backPress = 0;
 const HomeScreen = () => {
@@ -51,18 +51,15 @@ const HomeScreen = () => {
           },
           style: 'cancel',
         },
-        { text: 'ok', onPress: () => LogoutApp() },
+        {text: 'ok', onPress: () => LogoutApp()},
       ],
-      { cancelable: false },
+      {cancelable: false},
     );
   };
 
   const LogoutApp = async () => {
     await AsyncStorage.setItem('loginToken', '');
-
     navigation.navigate('Login');
-    const Token = await AsyncStorage.getItem('loginToken');
-    //  // console.log('Logout time TOken  print ....', Token);
   };
 
   const dispatch = useDispatch();
@@ -163,8 +160,6 @@ const HomeScreen = () => {
   };
 
   const handleMyCatalogue = async () => {
-
-    // console.log('Catalogue');
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
       type: 'My_Product_Request',
@@ -175,12 +170,13 @@ const HomeScreen = () => {
       search: '',
       navigation,
     });
-    //  navigation.navigate('MyCatalogueCopy')
   };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{flex: 1}}>
       <ScrollView style={styles.scroll}>
-        {isFetching || isFetching1 || fetching || isFetching3 ? <Loader /> : null}
+        {isFetching || isFetching1 || fetching || isFetching3 ? (
+          <Loader />
+        ) : null}
         <ImageBackground
           style={styles.imgback}
           source={require('../../../assets/Image/1.png')}>
@@ -193,22 +189,22 @@ const HomeScreen = () => {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                style={{ marginLeft: 15 }}
+                style={{marginLeft: 15}}
                 onPress={() => handleWishList()}>
                 <Image
                   style={styles.img2}
                   source={require('../../../assets/Image/dil.png')}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => Logout()}>
+              {/* <TouchableOpacity onPress={() => Logout()}>
                 <Image
                   style={styles.img3}
                   source={require('../../../assets/Image/menu-icon.png')}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
-          <View style={{ paddingHorizontal: 10 }}>
+          <View style={{paddingHorizontal: 10}}>
             <Text style={styles.text1}>Welcome to MyJeweller</Text>
             <Text style={styles.text2}>{'Onestop solution\nfor you'}</Text>
           </View>
@@ -222,7 +218,7 @@ const HomeScreen = () => {
               marginVertical: 0,
               paddingHorizontal: 30,
             }}
-            indicatorContainerStyle={{ position: 'absolute', bottom: 10 }}
+            indicatorContainerStyle={{position: 'absolute', bottom: 10}}
             indicatorActiveColor={'#032e63'}
             indicatorInActiveColor={'#ffffff'}
             indicatorActiveWidth={5}
@@ -255,9 +251,9 @@ const HomeScreen = () => {
             showsHorizontalScrollIndicator={false}
             horizontal={true}
             data={selector1}
-            style={{ marginTop: 7 }}
-            renderItem={({ item }) => (
-              <View style={{ width: win.width * 0.37, alignItems: 'center' }}>
+            style={{marginTop: 7}}
+            renderItem={({item}) => (
+              <View style={{width: win.width * 0.37, alignItems: 'center'}}>
                 <TouchableOpacity
                   onPress={() => supplierprofile(item.SupplierSrNo)}
                   style={[styles.cardview]}>
@@ -270,7 +266,7 @@ const HomeScreen = () => {
                     }}
                     source={
                       item.Logo
-                        ? { uri: `${item.Logo}` }
+                        ? {uri: `${item.Logo}`}
                         : require('../../../assets/Image/Not.jpeg')
                     }
                   />
@@ -298,9 +294,10 @@ const HomeScreen = () => {
             }}>
             <TouchableOpacity
               onPress={() => handleMyCatalogue()}
-              style={{ alignItems: 'center', width: '45%' }}>
-              <Image resizeMode='contain'
-                style={{ width: '100%', height: 150 }}
+              style={{alignItems: 'center', width: '45%'}}>
+              <Image
+                resizeMode="contain"
+                style={{width: '100%', height: 150}}
                 source={require('../../../assets/Image/services.png')}
               />
               <Text style={styles.textc}>{'Catalogue'}</Text>
@@ -308,11 +305,12 @@ const HomeScreen = () => {
 
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('SearchRetailer')
+                navigation.navigate('SearchRetailer');
               }}
-              style={{ alignItems: 'center', width: '45%' }}>
-              <Image resizeMode='contain'
-                style={{ width: '100%', height: 150 }}
+              style={{alignItems: 'center', width: '45%'}}>
+              <Image
+                resizeMode="contain"
+                style={{width: '100%', height: 150}}
                 source={require('../../../assets/Image/partner.png')}
               />
               <Text style={styles.textc}>{'My Network'}</Text>
@@ -328,7 +326,7 @@ const HomeScreen = () => {
             }}>
             <TouchableOpacity
               onPress={() => navigation.navigate('OfferTemplate')}
-              style={{ alignItems: 'center', width: '45%' }}>
+              style={{alignItems: 'center', width: '45%'}}>
               <View
                 style={{
                   width: 150,
@@ -337,7 +335,7 @@ const HomeScreen = () => {
                   borderRadius: 75,
                 }}>
                 <Image
-                  style={{ width: '100%', height: 150, resizeMode: 'center' }}
+                  style={{width: '100%', height: 150, resizeMode: 'center'}}
                   source={require('../../../assets/supplierImage/person.png')}
                 />
               </View>
@@ -345,10 +343,8 @@ const HomeScreen = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('AddSupplierProdcut')
-              }
-              style={{ alignItems: 'center', width: '45%' }}>
+              onPress={() => navigation.navigate('AddSupplierProdcut')}
+              style={{alignItems: 'center', width: '45%'}}>
               <View
                 style={{
                   width: 150,
@@ -357,14 +353,14 @@ const HomeScreen = () => {
                   borderRadius: 75,
                 }}>
                 <Image
-                  style={{ width: '100%', height: 150, resizeMode: 'center' }}
+                  style={{width: '100%', height: 150, resizeMode: 'center'}}
                   source={require('../../../assets/supplierImage/person.png')}
                 />
               </View>
               <Text style={styles.textc}>{'App Product'}</Text>
             </TouchableOpacity>
           </View>
-          <View style={{ height: 40 }} />
+          <View style={{height: 40}} />
         </View>
         {/* <View style={styles.bottom}>
             <View style={styles.Gold}>
@@ -457,16 +453,16 @@ var object = {
       id: 1,
       title: 'A',
       data: [
-        { id: '1', name: 'First Name', type: 'text' },
-        { id: '2', name: 'Last Name', type: 'text' },
+        {id: '1', name: 'First Name', type: 'text'},
+        {id: '2', name: 'Last Name', type: 'text'},
       ],
     },
     {
       id: 2,
       title: 'B',
       data: [
-        { id: '1', name: 'Twitter', type: 'text' },
-        { id: '2', name: 'Twitter follower', type: 'number' },
+        {id: '1', name: 'Twitter', type: 'text'},
+        {id: '2', name: 'Twitter follower', type: 'number'},
       ],
     },
   ],

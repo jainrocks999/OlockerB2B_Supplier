@@ -136,8 +136,6 @@ const Loyalty = () => {
   const [status, setStatus] = useState('Select Status');
   const [visiable, setVisible] = useState(false);
   const manageOption = val => {
-    console.log('this is render', val);
-
     setStatus(val);
     setVisible(false);
   };

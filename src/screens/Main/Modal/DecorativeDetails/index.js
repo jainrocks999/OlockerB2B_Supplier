@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -29,6 +29,8 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     DecoWtUnit: '',
     ChargAmt: '',
     DecoItemName: '',
+    hDecorationSrNo: '',
+    hProductSrNo: '',
   });
   //decItemDetails
   const decItemDetails = productType?.decItemDetails?.map(item => {
@@ -41,20 +43,46 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   //decorativeData
   const decorativeData = useSelector(state => state.Catalogue?.decorativeData);
   const isFetching = useSelector(state => state.Catalogue?.isFetching);
-
-  const handleOnSubmit = async () => {
-    const user_id = await AsyncStorage.getItem('user_id');
+  useEffect(() => {
+    setInputs({
+      DecoWt: '',
+      DecoWtUnit: '',
+      ChargAmt: '',
+      DecoItemName: '',
+      hDecorationSrNo: '',
+      hProductSrNo: '',
+    });
+  }, [decorativeData]);
+  const handleOnSubmit = async (isEdit, item) => {
+    if (isEdit) {
+      setInputs({
+        DecoWt: item?.DecorativeItemWt,
+        DecoWtUnit: item?.UnitDecoItemWt,
+        DecoItemName: item?.DecorativeItemName,
+        ChargAmt: item?.DecorativeChargeableAmount,
+        hDecorationSrNo: item.SrNo,
+      });
+    } else {
+      const user_id = await AsyncStorage.getItem('user_id');
+      dispatch({
+        type: 'add_decItem_request',
+        url: 'addDecorative',
+        data: {
+          ...inputs,
+          isAdd: 1,
+          current_session_id: session,
+          BreakUp: isBrekup == 1 ? 0 : 1,
+        },
+      });
+    }
+  };
+  const handleOndelete = (SrNo, sessions) => {
     dispatch({
-      type: 'add_decItem_request',
-      url: 'addDecorative',
-      data: {
-        ...inputs,
-        hProductSrNo: user_id,
-        isAdd: 1,
-        hDecorationSrNo: '',
-        current_session_id: session,
-        BreakUp: isBrekup == 1 ? 0 : 1,
-      },
+      type: 'remove_decorative_request',
+      url: 'removeDecorative',
+      DecorativeId: SrNo,
+      BreakUp: isBrekup == 0 ? 1 : 0,
+      current_session_id: sessions,
     });
   };
 
@@ -95,12 +123,17 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                           borderRadius: wp(2),
                           elevation: 5,
                         }}>
-                        <View style={styles.editdelete}>
-                          <MaterialCommunityIcons
-                            name="pencil"
-                            size={wp(4.5)}
-                            color={'black'}
-                          />
+                        <View style={[styles.editdelete, {zIndex: 1}]}>
+                          <TouchableOpacity
+                            onPress={() => {
+                              handleOnSubmit(true, item);
+                            }}>
+                            <MaterialCommunityIcons
+                              name="pencil"
+                              size={wp(4.5)}
+                              color={'black'}
+                            />
+                          </TouchableOpacity>
                           <Text
                             style={[
                               styles.cardTitle,
@@ -113,11 +146,16 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                             ]}>
                             |
                           </Text>
-                          <MaterialCommunityIcons
-                            name="delete"
-                            size={wp(4.5)}
-                            color={'black'}
-                          />
+                          <TouchableOpacity
+                            onPress={() => {
+                              handleOndelete(item.SrNo, item.Session);
+                            }}>
+                            <MaterialCommunityIcons
+                              name="delete"
+                              size={wp(4.5)}
+                              color={'black'}
+                            />
+                          </TouchableOpacity>
                         </View>
                         <View style={styles.cartItem}>
                           <Text style={[styles.cardTitle, {color: 'black'}]}>
@@ -291,7 +329,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
               />
             </View>
             <TouchableOpacity
-              onPress={() => handleOnSubmit()}
+              onPress={() => handleOnSubmit(false)}
               style={styles.buttonOpen}>
               <Text
                 style={{color: 'white', fontSize: wp(4.5), fontWeight: 'bold'}}>

@@ -111,7 +111,50 @@ export default (state = initialstate, action) => {
       return {...state, isFetching: false};
     case 'create_product_error':
       return {...state, isFetching: false};
-
+    case 'delete_metal_request':
+      return {...state, isFetching: true};
+    case 'delete_metal_success': {
+      let newdata = state.metalData.result?.filter(
+        item => item.SrNo != action.payload,
+      );
+      return {...state, isFetching: false, metalData: {result: newdata}};
+    }
+    case 'delete_metal_error':
+      return {...state, isFetching: false};
+    case 'diamond_delete_requet':
+      return {...state, isFetching: true};
+    case 'diamond_delete_success':
+      return {
+        ...state,
+        isFetching: false,
+        diamondData: state.diamondData.filter(
+          item => item.SrNo != action.payload,
+        ),
+      };
+    case 'diamond_delete_error':
+      return {...state, isFetching: false};
+    case 'remove_stone_request':
+      return {...state, isFetching: true};
+    case 'remove_stone_success':
+      return {
+        ...state,
+        isFetching: false,
+        stoneData: state.stoneData.filter(item => item.SrNo != action.payload),
+      };
+    case 'remove_stone_error':
+      return {...state, isFetching: false};
+    case 'remove_decorative_request':
+      return {...state, isFetching: true};
+    case 'remove_decorative_success':
+      return {
+        ...state,
+        isFetching: false,
+        decorativeData: state.decorativeData.filter(
+          item => item.SrNo != action.payload,
+        ),
+      };
+    case 'remove_decorative_error':
+      return {...state, isFetching: false};
     default:
       return state;
   }

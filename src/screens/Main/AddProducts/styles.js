@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -29,7 +29,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-
   },
   textItem: {
     flex: 1,
@@ -101,8 +100,6 @@ export default StyleSheet.create({
     height: wp(5.5),
   },
 
-
-
   container: {
     width: '100%',
     backgroundColor: '#032e63',
@@ -111,21 +108,19 @@ export default StyleSheet.create({
     // paddingHorizontal: 12,
     flexDirection: 'row',
     paddingVertical: wp(3),
-    paddingHorizontal: wp(3)
-
+    paddingHorizontal: wp(3),
   },
   text: {
-    color: 'white',
     fontSize: wp(4),
     fontWeight: '700',
+    color: 'white',
   },
   headertouch: {
     flexDirection: 'row',
     width: wp(30),
     // borderWidth: 1,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
-
 
   row: {
     backgroundColor: '#032e63',
@@ -134,40 +129,38 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#ccc',
     paddingVertical: 10,
-    width: '100%'
+    width: '100%',
   },
   Subrow: {
-
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 2,
     borderColor: '#032e63',
     borderColor: '#ccc',
     paddingVertical: 10,
-    height: 60
+    height: 60,
   },
   cell: {
     color: 'white',
     flex: 1,
     textAlign: 'center',
-    fontWeight: '600'
+    fontWeight: '600',
   },
   Subcell: {
     color: '#000',
     flex: 1,
     textAlign: 'center',
-    fontWeight: '700'
+    fontWeight: '700',
   },
-  mrt:
-    { marginHorizontal: wp(3), marginTop: wp(3.5) },
+  mrt: {marginHorizontal: wp(3), marginTop: wp(3.5)},
   text: {
     fontSize: wp(4),
     marginLeft: wp(1),
     fontWeight: '700',
-    color: '#000'
+    color: '#000',
   },
   btn: {
-    borderWidth: wp(.5),
+    borderWidth: wp(0.5),
     borderColor: '#032e63',
 
     width: '49%',
@@ -176,6 +169,5 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  txt2: { fontSize: wp(4), fontWeight: '600', color: '#032e63' }
-
+  txt2: {fontSize: wp(4), fontWeight: '600', color: '#032e63'},
 });

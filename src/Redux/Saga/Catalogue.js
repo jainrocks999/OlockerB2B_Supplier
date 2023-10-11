@@ -155,7 +155,7 @@ function* getOlockerProductList(action) {
 function* addmetal(action) {
   try {
     let data = new FormData();
-    console.log('this sis gross wirew', action.data.GrossWt);
+    console.log('this is action', action);
     data.append('GrossWt', action.data.GrossWt);
     data.append('MetalPurity', action.data.MetalPurity);
     data.append('MetalTypes', action.data.MetalTypes);
@@ -164,9 +164,9 @@ function* addmetal(action) {
     data.append('hMetalWt', action.data.hMetalWt);
     data.append('hProductSrNo', action.data.hProductSrNo);
     data.append('current_session_id', action.data.current_session_id);
-    data.append('isAdd', action.data.isAdds);
+    data.append('isAdd', action.data.isAdd);
     const res = yield call(Api.fetchDataByPOST, action.url, data);
-    console.log('this is res from saga for metal', JSON.stringify(res));
+
     if (res.status) {
       yield put({
         type: 'add_metal_list_success',
@@ -204,6 +204,7 @@ function* addDiamond(action) {
     data.append('isAdd', action.data.isAdd);
     data.append('current_session_id', action.data.current_session_id);
     const res = yield call(Api.fetchDataByPOST, action.url, data);
+
     if (res.status) {
       yield put({
         type: 'add_dimon_success',
@@ -237,6 +238,7 @@ function* addStone(action) {
     data.append('isAdd', action.data.isAdd);
     data.append('current_session_id', action.data.current_session_id);
     const res = yield call(Api.fetchDataByPOST, action.url, data);
+    console.log(JSON.stringify(res));
     if (res.success) {
       yield put({
         type: 'add_stone_success',
@@ -345,6 +347,32 @@ function* getItemFields(action) {
     Toast.show('Something went wrong while getting fields.');
   }
 }
+function* removeMetal(action) {
+  try {
+    const data = {
+      MetalId: action.SrNo,
+      current_session_id: action.session,
+    };
+    const res = yield call(Api.fetchDataByGET1, action.url, data);
+    if (res.status && res.success) {
+      yield put({
+        type: 'delete_metal_success',
+        payload: action.SrNo,
+      });
+    } else {
+      yield put({
+        type: 'delete_metal_error',
+      });
+    }
+    Toast.show(res.msg);
+  } catch (error) {
+    console.log(error);
+    yield put({
+      type: 'delete_metal_error',
+    });
+    Toast.show('Something went wrong');
+  }
+}
 function* createProduct(action) {
   try {
     console.log('caleed');
@@ -374,6 +402,87 @@ function* createProduct(action) {
     Toast.show('Somenthing went wrong');
   }
 }
+function* removeDiamond(action) {
+  try {
+    const data = {
+      DiamondId: action.DiamondId,
+      current_session_id: action.current_session_id,
+      BreakUp: action.BreakUp,
+    };
+
+    const res = yield call(Api.fetchDataByGET1, action.url, data);
+
+    if (res.success || res.status) {
+      yield put({
+        type: 'diamond_delete_success',
+        payload: action.DiamondId,
+      });
+    } else {
+      yield put({
+        type: 'diamond_delete_error',
+      });
+    }
+    Toast.show(res.msg);
+  } catch (error) {
+    console.log(error);
+    yield put({
+      type: 'diamond_delete_error',
+    });
+  }
+}
+function* removeStone(action) {
+  try {
+    const data = {
+      StoneId: action.StoneId,
+      BreakUp: action.BreakUp,
+      current_session_id: action.current_session_id,
+    };
+    const res = yield call(Api.fetchDataByGET1, action.url, data);
+    if (res.success || res.status) {
+      yield put({
+        type: 'remove_stone_success',
+        payload: action.StoneId,
+      });
+    } else {
+      yield put({
+        type: 'remove_stone_error',
+      });
+    }
+    Toast.show(res.msg);
+  } catch (error) {
+    yield put({
+      type: 'remove_stone_error',
+    });
+    Toast.show('Something went wrong');
+  }
+}
+function* removeDecorative(action) {
+  try {
+    const data = {
+      DecorativeId: action.DecorativeId,
+      BreakUp: action.BreakUp,
+      current_session_id: action.current_session_id,
+    };
+    const res = yield call(Api.fetchDataByGET1, action.url, data);
+    if (res.success || res.status) {
+      yield put({
+        type: 'remove_decorative_success',
+        payload: action.DecorativeId,
+      });
+    } else {
+      yield put({
+        type: 'remove_decorative_error',
+      });
+    }
+    Toast.show(res.msg);
+  } catch (error) {
+    console.log(error);
+    yield put({
+      type: 'remove_decorative_error',
+    });
+    Toast.show('Something went wrong');
+  }
+}
 export default function* citySaga() {
   yield takeEvery('Get_Catalogue_Request', getCatalogue);
   yield takeEvery('My_Product_Request', getProducts);
@@ -387,4 +496,8 @@ export default function* citySaga() {
   yield takeEvery('verify_product_wieght_request', verifyWt);
   yield takeEvery('get_item_field_list_request', getItemFields);
   yield takeEvery('create_product_request', createProduct);
+  yield takeEvery('delete_metal_request', removeMetal);
+  yield takeEvery('diamond_delete_requet', removeDiamond);
+  yield takeEvery('remove_stone_request', removeStone);
+  yield takeEvery('remove_decorative_request', removeDecorative);
 }

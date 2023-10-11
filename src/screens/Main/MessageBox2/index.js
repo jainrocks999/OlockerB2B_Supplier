@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+import {Dropdown} from 'react-native-element-dropdown';
 import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -18,15 +18,15 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Loader from '../../../components/Loader';
-import { TextInput } from 'react-native';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import {TextInput} from 'react-native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 const MessageBox2 = () => {
   const navigation = useNavigation();
   const selector = useSelector(state => state.Chat.patnerContact);
-  console.log(JSON.stringify(selector))
+
   const isFetching = useSelector(state => state.Chat.isFetching);
   const isFoucse = useIsFocused();
   useEffect(() => {
@@ -44,13 +44,12 @@ const MessageBox2 = () => {
     });
   };
 
-
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       {isFetching ? <Loader /> : null}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
               delayPressIn={0}
               onPress={() => navigation.goBack()}>
@@ -59,11 +58,11 @@ const MessageBox2 = () => {
                 source={require('../../../assets/L.png')}
               />
             </TouchableOpacity>
-            <Text style={[styles.text, { marginLeft: 15 }]}>Message Box</Text>
+            <Text style={[styles.text, {marginLeft: 15}]}>Message Box</Text>
           </View>
           <View style={styles.headertouch}>
             <TouchableOpacity
-              style={{ marginLeft: 15 }}
+              style={{marginLeft: 15}}
               onPress={() => handleWishList()}>
               <Image
                 style={styles.img2}
@@ -80,17 +79,17 @@ const MessageBox2 = () => {
           </View>
         </View>
 
-        <View style={{ height: 80, marginTop: 15 }}>
+        <View style={{height: 80, marginTop: 15}}>
           {
             <FlatList
               data={selector}
               horizontal
               showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => (
+              renderItem={({item}) => (
                 <View>
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate('ChatScreen', { item: item });
+                      navigation.navigate('ChatScreen', {item: item});
                     }}
                     style={{
                       height: 60,
@@ -102,7 +101,7 @@ const MessageBox2 = () => {
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                    <Text style={{ fontSize: 22, fontWeight: '700' }}>
+                    <Text style={{fontSize: 22, fontWeight: '700'}}>
                       {item.conatct_name[0]}
                     </Text>
                     <View
@@ -123,9 +122,9 @@ const MessageBox2 = () => {
             />
           }
         </View>
-        <View style={[styles.searchbar, { marginTop: 20 }]}>
-          <TextInput placeholder="Search Business" style={{ fontSize: 18 }} />
-          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <View style={[styles.searchbar, {marginTop: 20}]}>
+          <TextInput placeholder="Search Business" style={{fontSize: 18}} />
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
             <Feather name="search" size={30} />
           </View>
         </View>
@@ -133,10 +132,10 @@ const MessageBox2 = () => {
           <FlatList
             data={selector}
             showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('ChatScreen', { item: item });
+                  navigation.navigate('ChatScreen', {item: item});
                 }}
                 style={styles.Usercard}>
                 <View
@@ -159,13 +158,13 @@ const MessageBox2 = () => {
                     marginLeft: 10,
                   }}>
                   <Text
-                    style={{ fontSize: 18, fontWeight: '800', color: '#000' }}>
+                    style={{fontSize: 18, fontWeight: '800', color: '#000'}}>
                     {item.conatct_name}
                   </Text>
                   <Text>{item.updated_at?.substring(0, 19)}</Text>
                 </View>
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                  <Text style={{ fontWeight: '800' }}>Now</Text>
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={{fontWeight: '800'}}>Now</Text>
                   <View
                     style={{
                       backgroundColor: '#4eaefc',
@@ -182,7 +181,7 @@ const MessageBox2 = () => {
           />
         </View>
 
-        <View style={{ height: 30 }} />
+        <View style={{height: 30}} />
       </ScrollView>
     </View>
   );

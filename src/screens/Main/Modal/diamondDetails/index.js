@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -27,8 +27,6 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const isFetching = useSelector(state => state.Catalogue?.isFetching);
 
   const dispatch = useDispatch();
-
-  const [value, setValue] = useState(null);
   const [inputs, setInputs] = useState({
     Diamondwt: '',
     ChargAmt: '',
@@ -36,7 +34,22 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     DiamondName: '',
     DiamondShape: '',
     DiamondQuality: '',
+    hProductSrNo: '',
+    hDiamondSrNo: '',
   });
+
+  useEffect(() => {
+    setInputs({
+      Diamondwt: '',
+      ChargAmt: '',
+      DiamondWtUnit: '',
+      DiamondName: '',
+      DiamondShape: '',
+      DiamondQuality: '',
+      hDiamondSrNo: '',
+      hProductSrNo: '',
+    });
+  }, [diamondData]);
 
   const handleInputs = (text, input) => {
     setInputs(prev => ({...prev, [text]: input}));
@@ -52,19 +65,40 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     return {label: item.Value, value: item.Value};
   });
 
-  const handleOnSubmit = async () => {
-    const user_id = await AsyncStorage.getItem('user_id');
+  const handleOnSubmit = async (isEdit, item) => {
+    if (isEdit) {
+      setInputs({
+        Diamondwt: item?.StoneWt,
+        DiamondWtUnit: item?.UnitStoneWt,
+        DiamondName: item?.StoneName,
+        ChargAmt: item?.StoneChargeableAmount,
+        DiamondShape: item?.StoneShape,
+        DiamondQuality: item?.StoneQuality,
+        hDiamondSrNo: item.SrNo,
+      });
+    } else {
+      const user_id = await AsyncStorage.getItem('user_id');
+      dispatch({
+        type: 'add_dimon_request',
+        url: 'addDiamond',
+        data: {
+          ...inputs,
+          current_session_id: session,
+          isAdd: 1,
+
+          BreakUp: isBrekup == 0 ? 1 : 0,
+        },
+      });
+    }
+  };
+
+  const handleOnRemove = (SrNo, session) => {
     dispatch({
-      type: 'add_dimon_request',
-      url: 'addDiamond',
-      data: {
-        ...inputs,
-        current_session_id: session,
-        isAdd: 1,
-        hProductSrNo: user_id,
-        BreakUp: isBrekup == 0 ? 1 : 0,
-        hDiamondSrNo: '',
-      },
+      type: 'diamond_delete_requet',
+      url: 'removeDiamond',
+      DiamondId: SrNo,
+      BreakUp: isBrekup === 1 ? 0 : 1,
+      current_session_id: session,
     });
   };
 
@@ -105,12 +139,17 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                           borderRadius: wp(2),
                           elevation: 5,
                         }}>
-                        <View style={styles.editdelete}>
-                          <MaterialCommunityIcons
-                            name="pencil"
-                            size={wp(4.5)}
-                            color={'black'}
-                          />
+                        <View style={[styles.editdelete, {zIndex: 1}]}>
+                          <TouchableOpacity
+                            onPress={() => {
+                              handleOnSubmit(true, item);
+                            }}>
+                            <MaterialCommunityIcons
+                              name="pencil"
+                              size={wp(4.5)}
+                              color={'black'}
+                            />
+                          </TouchableOpacity>
                           <Text
                             style={[
                               styles.cardTitle,
@@ -123,11 +162,16 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                             ]}>
                             |
                           </Text>
-                          <MaterialCommunityIcons
-                            name="delete"
-                            size={wp(4.5)}
-                            color={'black'}
-                          />
+                          <TouchableOpacity
+                            onPress={() =>
+                              handleOnRemove(item.SrNo, item.Session)
+                            }>
+                            <MaterialCommunityIcons
+                              name="delete"
+                              size={wp(4.5)}
+                              color={'black'}
+                            />
+                          </TouchableOpacity>
                         </View>
                         <View style={[styles.cartItem, {marginTop: wp(5)}]}>
                           <Text style={[styles.cardTitle, {color: 'black'}]}>
@@ -413,7 +457,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
             </View>
 
             <TouchableOpacity
-              onPress={() => handleOnSubmit()}
+              onPress={() => handleOnSubmit(false)}
               style={styles.buttonOpen}>
               <Text
                 style={{color: 'white', fontSize: wp(4.5), fontWeight: 'bold'}}>

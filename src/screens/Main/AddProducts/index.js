@@ -195,7 +195,7 @@ const AddProducts = () => {
     diamondData?.length > 0 ? addDiamondData() : null;
   }, [diamondData]);
   useEffect(() => {
-    metalData?.result.length > 0 ? addMetalData() : null;
+    metalData?.result?.length > 0 ? addMetalData() : null;
   }, [metalData]);
   useEffect(() => {
     decorativeData?.length > 0 ? addDecorativeData() : null;
@@ -493,7 +493,9 @@ const AddProducts = () => {
                 source={require('../../../assets/L.png')}
               />
             </TouchableOpacity>
-            <Text style={[styles.text]}>SUPPLIER ADD PRODUCT</Text>
+            <Text style={[styles.text, {color: 'white'}]}>
+              SUPPLIER ADD PRODUCT
+            </Text>
           </View>
           <View style={styles.headertouch}>
             <TouchableOpacity onPress={() => navigation.navigate('Message')}>

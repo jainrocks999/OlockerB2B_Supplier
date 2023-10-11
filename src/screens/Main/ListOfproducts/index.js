@@ -19,27 +19,31 @@ import {
 } from 'react-native-responsive-screen';
 import {TextInput} from 'react-native';
 import CategoryViewModal from '../Modal/categoryList';
-import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
-import { Item } from 'react-native-paper/lib/typescript/components/List/List';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {Item} from 'react-native-paper/lib/typescript/components/List/List';
 
 const ListOfproducts = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [ViewModal, setViewModal] = useState(false);
   const [value, setValue] = useState(null);
-  const [modalData,setModalData] = useState('')
-const navigation = useNavigation()
-const selector = useSelector(state => state.Catalogue.Products);
+  const [modalData, setModalData] = useState('');
+  const navigation = useNavigation();
+  const selector = useSelector(state => state.Catalogue.Products);
 
-  const setModalDetails =(details)=>{
-    setModalData(details)
-    setViewModal(true)
-  }
-  
+  const setModalDetails = details => {
+    setModalData(details);
+    setViewModal(true);
+  };
+
   return (
-    <View style={{flex: 1,backgroundColor:'white'}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView contentContainerStyle={{}}>
-        <CategoryViewModal  visi={ViewModal} close={() => setViewModal(false)} data={modalData}/>
+        <CategoryViewModal
+          visi={ViewModal}
+          close={() => setViewModal(false)}
+          data={modalData}
+        />
         <View style={styles.container}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
@@ -85,12 +89,10 @@ const selector = useSelector(state => state.Catalogue.Products);
           </View>
         </View>
 
-        
         <TouchableOpacity
-
-        onPress={()=>{
-            navigation.navigate('ChooseSupplierProduct')
-        }}
+          onPress={() => {
+            navigation.navigate('ChooseSupplierProduct');
+          }}
           style={{
             backgroundColor: '#032E63',
             alignItems: 'center',
@@ -98,7 +100,6 @@ const selector = useSelector(state => state.Catalogue.Products);
             marginHorizontal: 10,
             height: 50,
             borderRadius: 20,
-            
           }}>
           <Text style={{color: 'white', fontSize: 18, fontWeight: '600'}}>
             Add Product
@@ -129,24 +130,25 @@ const selector = useSelector(state => state.Catalogue.Products);
                   backgroundColor: '#fff',
                   borderRadius: 10,
                   paddingHorizontal: 10,
-                  paddingVertical:5,
-                  paddingBottom:10
+                  paddingVertical: 5,
+                  paddingBottom: 10,
                 }}>
                 <View
                   style={{
                     padding: 0,
                     height: hp('3%'),
-                    backgroundColor:'#7fb582',
+                    backgroundColor: '#7fb582',
                     borderWidth: 0,
                     marginTop: 0,
-                    borderRadius:10,
-                    borderBottomStartRadius:0,
-                    marginVertical:5,
-                    borderTopEndRadius:0,
-                    borderBottomEndRadius:20,
-                    alignContent:'center',paddingLeft:5
+                    borderRadius: 10,
+                    borderBottomStartRadius: 0,
+                    marginVertical: 5,
+                    borderTopEndRadius: 0,
+                    borderBottomEndRadius: 20,
+                    alignContent: 'center',
+                    paddingLeft: 5,
                   }}>
-          <Text style={{color:'#fff'}}>Gross wt {item.grossWt}</Text>
+                  <Text style={{color: '#fff'}}>Gross wt {item.grossWt}</Text>
                 </View>
                 <Image
                   style={{height: 144, width: '100%', borderRadius: 10}}
@@ -157,10 +159,10 @@ const selector = useSelector(state => state.Catalogue.Products);
                     style={{
                       fontFamily: 'Roboto-Medium',
                       fontSize: 14,
-                      
+
                       color: '#666666',
                     }}>
-                 Product Name : {item.productTypeName}
+                    Product Name : {item.productTypeName}
                   </Text>
                   <Text
                     style={{
@@ -168,7 +170,7 @@ const selector = useSelector(state => state.Catalogue.Products);
                       fontSize: 14,
                       color: '#666666',
                     }}>
-                   ProductSku : {item.productSku}
+                    ProductSku : {item.productSku}
                   </Text>
                   <Text
                     style={{
@@ -176,19 +178,28 @@ const selector = useSelector(state => state.Catalogue.Products);
                       fontSize: 14,
                       color: '#666666',
                     }}>
-                   Price : {item.productPrice}
+                    Price : {item.productPrice}
                   </Text>
                 </View>
               </View>
             )}
           />
         </View>
-        <View style={{marginVertical:40,alignItems:'center',
-       
-        justifyContent:'center'}}>
-          <TouchableOpacity style={{backgroundColor:'#032e63',
-          paddingHorizontal:15,paddingVertical:10,borderRadius:20}}>
-            <Text style={{color:'white'}}>See all</Text>
+        <View
+          style={{
+            marginVertical: 40,
+            alignItems: 'center',
+
+            justifyContent: 'center',
+          }}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#032e63',
+              paddingHorizontal: 15,
+              paddingVertical: 10,
+              borderRadius: 20,
+            }}>
+            <Text style={{color: 'white'}}>See all</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -212,8 +223,6 @@ const selector = useSelector(state => state.Catalogue.Products);
   );
 };
 export default ListOfproducts;
-
-
 
 const Offer = [
   {

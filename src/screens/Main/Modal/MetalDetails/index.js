@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -27,36 +27,74 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const session = useSelector(state => state.Home?.session);
   const isFetching = useSelector(state => state.Catalogue?.isFetching);
   const metalData = useSelector(state => state.Catalogue?.metalData);
+  const totalWiegt = useSelector(state => state.Catalogue?.totalWiegt);
   const [inputs, setInputs] = useState({
     GrossWt: '',
     MetalPurity: '',
     MetalTypes: '',
     MetalWt: '',
     MetalWtUnit: '',
+    session: '',
+    hProductSrNo: '',
+    hMetalWt: '',
+    isAdd: 1,
   });
-
+  useEffect(() => {
+    setInputs({
+      GrossWt: '',
+      MetalPurity: '',
+      MetalTypes: '',
+      MetalWt: '',
+      MetalWtUnit: '',
+      current_session_id: session,
+      hProductSrNo: '',
+      isAdd: 1,
+      hMetalWt: '',
+    });
+  }, [metalData]);
   const handleInputs = (type, input) => {
     setInputs(prev => ({...prev, [type]: input}));
   };
 
-  const handleOnSubmit = async () => {
-    const user_id = await AsyncStorage.getItem('user_id');
-    dispatch({
-      type: 'add_metal_list_request',
-      url: 'addmetal',
-      data: {
-        ...inputs,
-        hMetalWt: '',
-        hProductSrNo: user_id,
+  const handleOnSubmit = async (isEdit, item) => {
+    if (isEdit === 'edit') {
+      setInputs({
+        GrossWt: totalWiegt,
+        MetalPurity: item.MetalPurity,
+        MetalTypes: item.MetalType,
+        MetalWt: item.MetalWt,
+        MetalWtUnit: item.UnitMetalWt,
+        current_session_id: item.Session,
+        hProductSrNo: '',
         isAdd: 1,
-        current_session_id: session,
-      },
-    });
+        hMetalWt: item.SrNo,
+      });
+    } else {
+      dispatch({
+        type: 'add_metal_list_request',
+        url: 'addmetal',
+        data: {
+          ...inputs,
+          current_session_id:
+            isEdit != 'edit' || inputs.isAdd == 1 ? session : item.Session,
+        },
+      });
+    }
   };
 
   const metaltype = productType?.MetalTypes.map(item => {
     return {value: item.Value, label: item.Value};
   });
+
+  const handleOnDelete = (SrNo, session) => {
+    dispatch({
+      type: 'delete_metal_request',
+      url: 'removeMetal',
+      session,
+      SrNo,
+    });
+    // console.log(SrNo, session);
+  };
 
   return (
     <View style={styles.container}>
@@ -96,12 +134,15 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                           borderRadius: wp(2),
                           elevation: 5,
                         }}>
-                        <View style={styles.editdelete}>
-                          <MaterialCommunityIcons
-                            name="pencil"
-                            size={wp(4.5)}
-                            color={'black'}
-                          />
+                        <View style={[styles.editdelete, {zIndex: 1}]}>
+                          <TouchableOpacity
+                            onPress={() => handleOnSubmit('edit', item)}>
+                            <MaterialCommunityIcons
+                              name="pencil"
+                              size={wp(4.5)}
+                              color={'black'}
+                            />
+                          </TouchableOpacity>
                           <Text
                             style={[
                               styles.cardTitle,
@@ -114,11 +155,16 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                             ]}>
                             |
                           </Text>
-                          <MaterialCommunityIcons
-                            name="delete"
-                            size={wp(4.5)}
-                            color={'black'}
-                          />
+                          <TouchableOpacity
+                            onPress={() =>
+                              handleOnDelete(item?.SrNo, item?.Session)
+                            }>
+                            <MaterialCommunityIcons
+                              name="delete"
+                              size={wp(4.5)}
+                              color={'black'}
+                            />
+                          </TouchableOpacity>
                         </View>
                         <View style={styles.cartItem}>
                           <Text style={[styles.cardTitle, {color: 'black'}]}>
@@ -336,7 +382,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
               />
             </View>
             <TouchableOpacity
-              onPress={() => handleOnSubmit()}
+              onPress={() => handleOnSubmit('')}
               style={styles.buttonOpen}>
               <Text
                 style={{color: 'white', fontSize: wp(4.5), fontWeight: 'bold'}}>
