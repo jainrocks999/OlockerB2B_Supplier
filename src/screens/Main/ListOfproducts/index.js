@@ -20,17 +20,32 @@ import {
 import {TextInput} from 'react-native';
 import CategoryViewModal from '../Modal/categoryList';
 import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Item} from 'react-native-paper/lib/typescript/components/List/List';
 import Loading from '../../../components/Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ListOfproducts = () => {
   const [ViewModal, setViewModal] = useState(false);
+  const dispatch = useDispatch();
 
   const [modalData, setModalData] = useState('');
   const navigation = useNavigation();
   const selector = useSelector(state => state.Catalogue.Products);
   const isFetching = useSelector(state => state.Catalogue.isFetching);
+  const handleMyCatalogue = async btn => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'My_Product_Request',
+      url: '/getProductList',
+      user_id: user_id,
+      start: 0,
+      length: 80,
+      search: '',
+      navigation,
+      btn,
+    });
+  };
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       {isFetching ? <Loading /> : null}
@@ -50,9 +65,7 @@ const ListOfproducts = () => {
                 source={require('../../../assets/L.png')}
               />
             </TouchableOpacity>
-            <Text style={[styles.text, {marginLeft: 15}]}>
-              List Of Products
-            </Text>
+            <Text style={[styles.text, {marginLeft: 15}]}>List Of Product</Text>
           </View>
           <View style={styles.headertouch}>
             <TouchableOpacity onPress={() => navigation.navigate('Message')}>
@@ -189,6 +202,7 @@ const ListOfproducts = () => {
             justifyContent: 'center',
           }}>
           <TouchableOpacity
+            onPress={() => handleMyCatalogue('see')}
             style={{
               backgroundColor: '#032e63',
               paddingHorizontal: 15,

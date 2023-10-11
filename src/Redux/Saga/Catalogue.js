@@ -45,7 +45,12 @@ function* getProducts(action) {
         payload: response,
       });
       // action.navigation.navigate('MyCatalogue')
-      action.navigation.navigate('MyCatalogueCopy');
+      if (action.btn === 'cat') {
+        action.navigation.navigate('MyCatalogueCopy'); //OfferTemplate
+      } else if (action.btn === 'see') {
+      } else {
+        action.navigation.navigate('AddSupplierProdcut');
+      }
     } else {
       yield put({
         type: 'My_Product_Error',

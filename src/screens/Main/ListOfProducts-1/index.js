@@ -19,25 +19,29 @@ import {
 } from 'react-native-responsive-screen';
 import {TextInput} from 'react-native';
 import CategoryViewModal from '../Modal/categoryList';
-import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 const ListOfProduct = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [ViewModal, setViewModal] = useState(false);
   const [value, setValue] = useState(null);
-  const [modalData,setModalData] = useState('')
-  const [SearctTxt,setSearctTxt] = useState('')
-const navigation = useNavigation()
-const selector = useSelector(state => state.Catalogue.Products);
-  const setModalDetails =(details)=>{
-    setModalData(details)
-    setViewModal(true)
-  }
+  const [modalData, setModalData] = useState('');
+  const [SearctTxt, setSearctTxt] = useState('');
+  const navigation = useNavigation();
+  const selector = useSelector(state => state.Catalogue.Products);
+  const setModalDetails = details => {
+    setModalData(details);
+    setViewModal(true);
+  };
   return (
-    <View style={{flex: 1,backgroundColor:'white'}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView contentContainerStyle={{}}>
-        <CategoryViewModal  visi={ViewModal} close={() => setViewModal(false)} data={modalData}/>
+        <CategoryViewModal
+          visi={ViewModal}
+          close={() => setViewModal(false)}
+          data={modalData}
+        />
         <View style={styles.container}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
@@ -78,12 +82,17 @@ const selector = useSelector(state => state.Catalogue.Products);
 
         <View style={[styles.searchbar, {marginTop: 20}]}>
           <TextInput
-          value={SearctTxt}
-          onChangeText={txt=>setSearctTxt(txt)}
-          placeholder="Search" style={{fontSize: 18,width:'90%'}}  />
-          <View style={{alignItems: 'center',
-          
-          justifyContent: 'center'}}>
+            value={SearctTxt}
+            onChangeText={txt => setSearctTxt(txt)}
+            placeholder="Search"
+            style={{fontSize: 18, width: '90%'}}
+          />
+          <View
+            style={{
+              alignItems: 'center',
+
+              justifyContent: 'center',
+            }}>
             <Feather name="search" size={30} />
           </View>
         </View>
@@ -103,7 +112,7 @@ const selector = useSelector(state => state.Catalogue.Products);
             style={styles.dropdown}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
-           itemTextStyle={styles.itemTxt}
+            itemTextStyle={styles.itemTxt}
             data={DropData}
             maxHeight={250}
             labelField="label"
@@ -113,7 +122,6 @@ const selector = useSelector(state => state.Catalogue.Products);
             onChange={item => {
               setValue(item.value);
             }}
-           
           />
         </View>
         <TouchableOpacity
@@ -130,7 +138,7 @@ const selector = useSelector(state => state.Catalogue.Products);
             Excel
           </Text>
         </TouchableOpacity>
-       
+
         <View
           style={{
             alignItems: 'center',
@@ -155,24 +163,25 @@ const selector = useSelector(state => state.Catalogue.Products);
                   backgroundColor: '#fff',
                   borderRadius: 10,
                   paddingHorizontal: 10,
-                  paddingVertical:5,
-                  paddingBottom:10
+                  paddingVertical: 5,
+                  paddingBottom: 10,
                 }}>
                 <View
                   style={{
                     padding: 0,
                     height: hp('3%'),
-                    backgroundColor:'#7fb582',
+                    backgroundColor: '#7fb582',
                     borderWidth: 0,
                     marginTop: 0,
-                    borderRadius:10,
-                    borderBottomStartRadius:0,
-                    marginVertical:5,
-                    borderTopEndRadius:0,
-                    borderBottomEndRadius:20,
-                    alignContent:'center',paddingLeft:5
+                    borderRadius: 10,
+                    borderBottomStartRadius: 0,
+                    marginVertical: 5,
+                    borderTopEndRadius: 0,
+                    borderBottomEndRadius: 20,
+                    alignContent: 'center',
+                    paddingLeft: 5,
                   }}>
-          <Text style={{color:'#fff'}}>Gross wt {item.grossWt}</Text>
+                  <Text style={{color: '#fff'}}>Gross wt {item.grossWt}</Text>
                 </View>
                 <Image
                   style={{height: 144, width: '100%', borderRadius: 10}}
@@ -183,10 +192,10 @@ const selector = useSelector(state => state.Catalogue.Products);
                     style={{
                       fontFamily: 'Roboto-Medium',
                       fontSize: 14,
-                      
+
                       color: '#666666',
                     }}>
-                 Product Name : {item.productTypeName}
+                    Product Name : {item.productTypeName}
                   </Text>
                   <Text
                     style={{
@@ -194,7 +203,7 @@ const selector = useSelector(state => state.Catalogue.Products);
                       fontSize: 14,
                       color: '#666666',
                     }}>
-                   ProductSku : {item.productSku}
+                    ProductSku : {item.productSku}
                   </Text>
                   <Text
                     style={{
@@ -202,19 +211,28 @@ const selector = useSelector(state => state.Catalogue.Products);
                       fontSize: 14,
                       color: '#666666',
                     }}>
-                   Price : {item.productPrice}
+                    Price : {item.productPrice}
                   </Text>
                 </View>
               </View>
             )}
           />
         </View>
-        <View style={{marginVertical:40,alignItems:'center',
-       
-        justifyContent:'center'}}>
-          <TouchableOpacity style={{backgroundColor:'#032e63',
-          paddingHorizontal:15,paddingVertical:10,borderRadius:20}}>
-            <Text style={{color:'white'}}>See all</Text>
+        <View
+          style={{
+            marginVertical: 40,
+            alignItems: 'center',
+
+            justifyContent: 'center',
+          }}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#032e63',
+              paddingHorizontal: 15,
+              paddingVertical: 10,
+              borderRadius: 20,
+            }}>
+            <Text style={{color: 'white'}}>See all</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -244,7 +262,6 @@ const DropData = [
   {label: '25', value: '2'},
   {label: '50', value: '3'},
   {label: '100', value: '4'},
-
 ];
 
 const Offer = [

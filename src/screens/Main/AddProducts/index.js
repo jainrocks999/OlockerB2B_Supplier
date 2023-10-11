@@ -647,7 +647,7 @@ const AddProducts = () => {
                   labelField="Value"
                   valueField="Id"
                   placeholder="Product/item type"
-                  value={inputs.ItemName}
+                  value={inputs.ItemName.toString()}
                   onChange={item => {
                     handleInputs('ItemName', item.Value);
                     handleInputs('ItemType', item.Id);

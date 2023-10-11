@@ -152,7 +152,7 @@ const RetailerRequestList = () => {
 
                   }}>
                   <View>
-                    {console.log(item)}
+                   
                     <Text
                       style={{
                         fontWeight: '500',

@@ -51,7 +51,7 @@ const SearchRetailer = () => {
 
   const getDetails = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
-    console.log('fkfkffkfkf', city)
+   
     if (city != '' || state != '' || search != '') {
       dispatch({
         type: 'Search_Retailer_Request',

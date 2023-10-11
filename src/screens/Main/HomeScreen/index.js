@@ -160,7 +160,7 @@ const HomeScreen = () => {
     });
   };
 
-  const handleMyCatalogue = async () => {
+  const handleMyCatalogue = async btn => {
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
       type: 'My_Product_Request',
@@ -170,6 +170,7 @@ const HomeScreen = () => {
       length: 10,
       search: '',
       navigation,
+      btn,
     });
   };
   return (
@@ -294,7 +295,7 @@ const HomeScreen = () => {
               paddingVertical: 10,
             }}>
             <TouchableOpacity
-              onPress={() => handleMyCatalogue()}
+              onPress={() => handleMyCatalogue('cat')}
               style={{alignItems: 'center', width: '45%'}}>
               <Image
                 resizeMode="contain"
@@ -344,7 +345,7 @@ const HomeScreen = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => navigation.navigate('AddSupplierProdcut')}
+              onPress={() => handleMyCatalogue('')}
               style={{alignItems: 'center', width: '45%'}}>
               <View
                 style={{
