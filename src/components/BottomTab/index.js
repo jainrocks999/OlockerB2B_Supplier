@@ -82,14 +82,6 @@ const BottomTab = () => {
         onPress={() => navigation.navigate('KnowledgeCenter')}>
         {renderKnowledge()}
       </TouchableOpacity>
-
-      {/* <TouchableOpacity
-        style={styles.bottomTabContainer}
-        onPress={() => {
-          navigation.navigate('Trending');
-        }}>
-        {renderTrending()}
-      </TouchableOpacity> */}
     </View>
   );
 };

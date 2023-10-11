@@ -15,13 +15,12 @@ import RootApp from './src/navigation';
 import StatusBar from './src/components/StatusBar';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
-// LogBox.ignoreLogs(['Warning: ...']);
-// LogBox.ignoreAllLogs();
+LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreAllLogs();
 
 const App = () => {
   return (
     <Fragment>
-      {/* <SafeAreaView style={{backgroundColor:Platform.OS=='ios'?'#032e63':'#fff'}}/> */}
       <GestureHandlerRootView style={{flex: 1}}>
         <SafeAreaView
           style={{
