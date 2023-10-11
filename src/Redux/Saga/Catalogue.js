@@ -31,7 +31,6 @@ function* getCatalogue(action) {
 }
 
 function* getProducts(action) {
-  // console.log(action);
   try {
     const data = {
       userid: action.user_id,
@@ -56,6 +55,7 @@ function* getProducts(action) {
     yield put({
       type: 'My_Product_Error',
     });
+    console.log(error);
   }
 }
 

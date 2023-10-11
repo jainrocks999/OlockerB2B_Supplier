@@ -1,4 +1,4 @@
-import React, {Fragment,  useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import {
   View,
   Text,
@@ -15,8 +15,8 @@ import RootApp from './src/navigation';
 import StatusBar from './src/components/StatusBar';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
-LogBox.ignoreLogs(['Warning: ...']);
-LogBox.ignoreAllLogs();
+// LogBox.ignoreLogs(['Warning: ...']);
+// LogBox.ignoreAllLogs();
 
 const App = () => {
   return (

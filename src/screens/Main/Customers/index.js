@@ -451,11 +451,11 @@ const HomeScreen = () => {
           <View
             style={{
               alignItems: 'center',
-              justifyContent:'space-around',
+              justifyContent: 'space-around',
               marginTop: 10,
-              alignSelf:'flex-end',
-              flexDirection:'row',
-              width:'65%'
+              alignSelf: 'flex-end',
+              flexDirection: 'row',
+              width: '65%',
             }}>
             <TouchableOpacity
               // onPress={()=>addToNetwork()}

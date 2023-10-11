@@ -69,7 +69,6 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         hStonesSrNo: item.SrNo,
       });
     } else {
-      const user_id = await AsyncStorage.getItem('user_id');
       dispatch({
         type: 'add_stone_request',
         url: 'addStone',
@@ -115,7 +114,7 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 <FlatList
                   data={stoneData}
                   scrollEnabled={false}
-                  renderItem={({item, index}) => {
+                  renderItem={({item}) => {
                     return (
                       <View
                         style={{

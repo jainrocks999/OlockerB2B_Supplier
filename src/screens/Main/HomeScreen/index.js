@@ -32,6 +32,7 @@ const HomeScreen = () => {
   const isFetching3 = useSelector(state => state.Home.isFetching);
   const selector1 = useSelector(state => state.Home.NetworkList);
   const bannerList = useSelector(state => state.Home.BannerList);
+  const isFetching4 = useSelector(state => state.State.BannerList);
   const fetching = useSelector(state => state.Home.isFetching);
   // // console.log('this is network data daaa', bannerList);
   const win = Dimensions.get('window');
@@ -174,7 +175,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView style={styles.scroll}>
-        {isFetching || isFetching1 || fetching || isFetching3 ? (
+        {isFetching || isFetching1 || fetching || isFetching3 || isFetching4 ? (
           <Loader />
         ) : null}
         <ImageBackground

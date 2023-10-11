@@ -22,22 +22,18 @@ import CategoryViewModal from '../Modal/categoryList';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {Item} from 'react-native-paper/lib/typescript/components/List/List';
+import Loading from '../../../components/Loader';
 
 const ListOfproducts = () => {
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [ViewModal, setViewModal] = useState(false);
-  const [value, setValue] = useState(null);
+
   const [modalData, setModalData] = useState('');
   const navigation = useNavigation();
   const selector = useSelector(state => state.Catalogue.Products);
-
-  const setModalDetails = details => {
-    setModalData(details);
-    setViewModal(true);
-  };
-
+  const isFetching = useSelector(state => state.Catalogue.isFetching);
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
+      {isFetching ? <Loading /> : null}
       <ScrollView contentContainerStyle={{}}>
         <CategoryViewModal
           visi={ViewModal}
@@ -211,7 +207,6 @@ const ListOfproducts = () => {
           bottom: 15,
           alignItems: 'center',
           justifyContent: 'center',
-
           borderRadius: 40,
           right: 25,
           height: hp(9),

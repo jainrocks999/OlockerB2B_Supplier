@@ -187,6 +187,7 @@ const AddProducts = () => {
     ItemType: '',
     hdnProductSku: '',
     hdnProductType: '',
+    rbCategory: 'Category B',
   });
   useEffect(() => {
     stoneData?.length > 0 ? addStonedata() : null;
@@ -224,8 +225,12 @@ const AddProducts = () => {
     let stoneSrNo = [];
     let stonesingleWiegt = [];
     await stoneData?.map(item => {
-      stonesingleWiegt.push(item?.StoneWt);
-      stonewt = parseFloat(stonewt) + parseFloat(item?.StoneWt);
+      console.log('thnis is ite,', item);
+
+      let stonewieght =
+        item.UnitStoneWt === 'Cts.' ? item.StoneWt / 5 : item.StoneWt;
+      stonesingleWiegt.push(stonewieght);
+      stonewt = parseFloat(stonewt) + parseFloat(stonewieght);
       StoneChargeableAmount =
         parseFloat(StoneChargeableAmount) +
         parseFloat(item?.StoneChargeableAmount);
@@ -236,12 +241,12 @@ const AddProducts = () => {
     setInputs(prev => ({
       ...prev,
       StoneWt: stonesingleWiegt,
-      StoneWtUnit: StoneWtUnit,
+      StoneWtUnit: ['Gms'],
       StoneName: StoneName,
       StoneChargeableAmount: StoneChargeableAmount,
       StoneGrandTotal: stonewt,
       hStonesSrNo: stoneSrNo,
-      txtVStoneWt: `${stonewt} ${StoneWtUnit[0]}`,
+      txtVStoneWt: `${stonewt} Gms`,
     }));
     calculatePrice();
   };
@@ -256,9 +261,11 @@ const AddProducts = () => {
     let DiamondQuality = [];
     let DiamondGrandTotal = [];
     await diamondData?.map(item => {
+      let dimondWieght =
+        item.UnitStoneWt == 'Cts.' ? item.StoneWt / 5 : item.StoneWt;
       hDiamondSrNo.push(item?.SrNo);
-      diamondWt = parseFloat(diamondWt) + parseFloat(item?.StoneWt);
-      DiamondGrandTotal.push(item?.StoneWt);
+      diamondWt = parseFloat(diamondWt) + parseFloat(dimondWieght);
+      DiamondGrandTotal.push(dimondWieght);
       DiamondWtUnit.push(item?.UnitStoneWt);
       DiamondChargeableAmount =
         parseFloat(DiamondChargeableAmount) +
@@ -272,12 +279,12 @@ const AddProducts = () => {
       DiamondGrandTotal: diamondWt,
       hDiamondSrNo: hDiamondSrNo,
       Diamondwt: DiamondGrandTotal,
-      DiamondWtUnit: DiamondWtUnit,
+      DiamondWtUnit: ['Gms'],
       DiamondChargeableAmount: DiamondChargeableAmount,
       DiamondName: DiamondName,
       DiamondShape: DiamondShape,
       DiamondQuality: DiamondQuality,
-      txtVDiamondWt: `${diamondWt} ${DiamondWtUnit[0]}`,
+      txtVDiamondWt: `${diamondWt} Gms`,
     }));
     calculatePrice();
   };
@@ -290,8 +297,10 @@ const AddProducts = () => {
     let MetalWtGrandTotal = [];
 
     await metalData?.result?.map(item => {
-      hMetalWt = parseFloat(hMetalWt) + parseFloat(item.MetalWt);
-      MetalWtGrandTotal.push(item.MetalWt);
+      let metalweight =
+        item.UnitMetalWt === 'Cts.' ? item.MetalWt / 5 : item.MetalWt;
+      hMetalWt = parseFloat(hMetalWt) + parseFloat(metalweight);
+      MetalWtGrandTotal.push(metalweight);
       MetalWtUnit.push(item.UnitMetalWt);
       Metal_Purity.push(item.MetalPurity);
       MetalTypes.push(item.MetalType);
@@ -302,11 +311,11 @@ const AddProducts = () => {
       MetalWtGrandTotal: hMetalWt,
       GrossWt: totalWiegt,
       MetalWt: MetalWtGrandTotal,
-      MetalWtUnit: MetalWtUnit,
+      MetalWtUnit: ['Gms'],
       Metal_Purity: Metal_Purity,
       MetalTypes: MetalTypes,
       txtVGrossWt: `${totalWiegt} ${MetalWtUnit[0]}`,
-      txtVMetalWt: `${hMetalWt} ${MetalWtUnit[0]}`,
+      txtVMetalWt: `${hMetalWt} Gms`,
       hdnGrossWt: totalWiegt,
     }));
     calculatePrice();
@@ -320,9 +329,13 @@ const AddProducts = () => {
     let DecoWtUnit = [];
     let DecorationGrandTotal = [];
     await decorativeData?.map(item => {
+      let decovwie =
+        item.UnitDecoItemWt === 'Cts.'
+          ? item.DecorativeItemWt / 5
+          : item.DecorativeItemWt;
       hDecorationSrNo.push(item?.SrNo);
-      DecoWt = parseFloat(DecoWt) + parseFloat(item.DecorativeItemWt);
-      DecorationGrandTotal.push(item.DecorativeItemWt);
+      DecoWt = parseFloat(DecoWt) + parseFloat(decovwie);
+      DecorationGrandTotal.push(decovwie);
       DecorativeChargeableAmount =
         parseFloat(DecorativeChargeableAmount) +
         parseFloat(item.DecorativeChargeableAmount);
@@ -336,8 +349,8 @@ const AddProducts = () => {
       DecoWt: DecorationGrandTotal,
       DecorativeChargeableAmount: DecorativeChargeableAmount,
       DecorativeItemName: DecorativeItemName,
-      DecoWtUnit: DecoWtUnit,
-      txtVDecoWt: `${DecoWt} ${DecoWtUnit[0]}`,
+      DecoWtUnit: ['Gms'],
+      txtVDecoWt: `${DecoWt} Gms`,
     }));
     calculatePrice();
   };
@@ -400,7 +413,6 @@ const AddProducts = () => {
       hdnProductPartner: '',
       hdnProductBranch: '',
       hdnImagecount: inputs.ImgUpload.length,
-      rbCategory: 'Category B',
       userid: user_id,
       current_session_id: session,
       IsDefaultSupplier: 1,
@@ -855,21 +867,31 @@ const AddProducts = () => {
               value={'fnff'}
               color="#032e63"
               uncheckedColor="#474747"
-              status="checked"
+              status={
+                inputs.rbCategory == 'Category B' ? 'checked' : 'unchecked'
+              }
+              onPress={() => {
+                handleInputs('rbCategory', 'Category B');
+              }}
             />
             <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>Common</Text>
-            {/* <View style={{ marginLeft: wp(5) }}>
+            <View style={{marginLeft: wp(5)}}>
               <RadioButton
-                value={inputs.Hallmarked}
+                value={inputs.rbCategory}
                 color="#032e63"
                 uncheckedColor="#474747"
-                status={inputs.Hallmarked == 0 ? 'checked' : 'unchecked'}
-                onPress={() => { handleInputs('Hallmarked', 0) }}
-              /></View>
+                status={
+                  inputs.rbCategory == 'Category A' ? 'checked' : 'unchecked'
+                }
+                onPress={() => {
+                  handleInputs('rbCategory', 'Category A');
+                }}
+              />
+            </View>
 
-            <Text style={{ fontSize: wp(3.8), fontWeight: '600' }}>
-              No
-            </Text> */}
+            <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>
+              Exclusive
+            </Text>
           </View>
         </View>
         <View
