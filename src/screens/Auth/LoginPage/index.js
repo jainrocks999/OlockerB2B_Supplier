@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,17 +8,17 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import styles from './styles';
 import axios from 'axios';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-simple-toast';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../components/Loader';
-import { join } from 'redux-saga/effects';
-import { useDispatch, useSelector } from 'react-redux';
+import {join} from 'redux-saga/effects';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -39,7 +39,7 @@ const loginValidationSchema = yup.object().shape({
 const Login = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const isFetching = useSelector(state => state.isFetching);
+  const isFetching = useSelector(state => state.Login.isFetching);
   //  const [fetching, setFetching] = useState(false);
   const pertnerLogin = async values => {
     // console.log('values', values);
@@ -99,7 +99,7 @@ const Login = () => {
     //      // console.log('this is useer response',response.data);
 
     let token = await messaging().getToken();
-    console.log('this is token', token)
+    console.log('this is token', token);
 
     dispatch({
       type: 'User_Login_Request',
@@ -112,7 +112,7 @@ const Login = () => {
   };
   return (
     <Formik
-      initialValues={{ email: '', password: '' }}
+      initialValues={{email: '', password: ''}}
       onSubmit={values => Demo(values)}
       validateOnMount={true}
       validationSchema={loginValidationSchema}>
@@ -128,32 +128,31 @@ const Login = () => {
         <View style={styles.container}>
           {isFetching ? <Loader /> : null}
           <ScrollView>
-
             <KeyboardAwareScrollView
               extraScrollHeight={10}
               enableOnAndroid={true}
               keyboardShouldPersistTaps="handled"
-              contentContainerStyle={{ flex: 1 }}>
+              contentContainerStyle={{flex: 1}}>
               <View style={styles.headerimg}>
                 <Image
-                  style={{ marginTop: 40 }}
+                  style={{marginTop: 40}}
                   source={require('../../../assets/ol.png')}
                 />
               </View>
-              <View style={[styles.card, { marginTop: 20 }]}>
+              <View style={[styles.card, {marginTop: 20}]}>
                 <View style={[styles.view]}>
                   <View style={styles.main}>
                     <Text style={styles.text}>Login</Text>
                   </View>
                   {/* <View style={styles.line} /> */}
-                  <View style={[styles.input, { marginTop: 20 }]}>
-                    <View style={{ height: hp('4%'), width: wp('5%') }}>
+                  <View style={[styles.input, {marginTop: 20}]}>
+                    <View style={{height: hp('4%'), width: wp('5%')}}>
                       <Image
-                        style={{ height: '100%', width: '100%', marginLeft: -2 }}
+                        style={{height: '100%', width: '100%', marginLeft: -2}}
                         source={require('../../../assets/msg.png')}
                       />
                     </View>
-                    <View style={{ width: wp('53%'), marginLeft: 1 }}>
+                    <View style={{width: wp('53%'), marginLeft: 1}}>
                       <TextInput
                         style={styles.input1}
                         placeholder="Enter your Email"
@@ -172,10 +171,10 @@ const Login = () => {
                       <Text style={styles.warn}>{errors.email}</Text>
                     )}
                   </View>
-                  <View style={[styles.input, { marginTop: 10 }]}>
-                    <View style={{ height: hp('4%'), width: wp('5%') }}>
+                  <View style={[styles.input, {marginTop: 10}]}>
+                    <View style={{height: hp('4%'), width: wp('5%')}}>
                       <Image
-                        style={{ height: '100%', width: '100%', marginLeft: -2 }}
+                        style={{height: '100%', width: '100%', marginLeft: -2}}
                         source={require('../../../assets/lock1.png')} // source={require('../../../assets/msg.png')}
                       />
                     </View>
@@ -183,7 +182,7 @@ const Login = () => {
               style={styles.image}
               source={require('../../../assets/lock1.png')}
             /> */}
-                    <View style={{ width: wp('53%'), marginLeft: 1 }}>
+                    <View style={{width: wp('53%'), marginLeft: 1}}>
                       <TextInput
                         style={styles.input1}
                         placeholder="Enter your Password"
@@ -193,7 +192,7 @@ const Login = () => {
                         value={values.password}
                         keyboardType={'default'}
                         secureTextEntry={true}
-                      // returnKeyType="done"
+                        // returnKeyType="done"
                       />
                     </View>
                   </View>
@@ -202,7 +201,7 @@ const Login = () => {
                       <Text style={styles.warn}>{errors.password}</Text>
                     )}
                   </View>
-                  <View style={{ paddingHorizontal: 20 }}>
+                  <View style={{paddingHorizontal: 20}}>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => {
@@ -210,16 +209,16 @@ const Login = () => {
                         // pertnerLogin();
                         handleSubmit();
                       }}>
-                      <Text style={{ color: '#474747' }}>Login</Text>
+                      <Text style={{color: '#474747'}}>Login</Text>
                     </TouchableOpacity>
                   </View>
-                  <View style={{ height: 40 }} />
+                  <View style={{height: 40}} />
                   {/* <Image
             style={{marginTop: 10, marginBottom: -20}}
             source={require('../../../assets/oloc.png')}
           /> */}
                 </View>
-                <View style={{ alignItems: 'center' }}>
+                <View style={{alignItems: 'center'}}>
                   <View style={styles.bottom}>
                     <Text
                       style={{

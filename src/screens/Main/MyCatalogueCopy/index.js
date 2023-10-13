@@ -166,18 +166,23 @@ const MyCatalogueCopy = () => {
           </Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
-            style={{height: 24, width: 28}}
-            source={require('../../../assets/Fo.png')}
-          />
-          <Image
-            style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
-            source={require('../../../assets/Image/dil.png')}
-          />
-          <Image
+          <TouchableOpacity onPress={() => navigation.navigate('Message')}>
+            <Image
+              style={{height: 24, width: 28}}
+              source={require('../../../assets/Fo.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('FavouriteList')}>
+            <Image
+              style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
+              source={require('../../../assets/Image/dil.png')}
+            />
+          </TouchableOpacity>
+          {/* <Image
             style={{height: 24, width: 28, tintColor: '#fff', marginLeft: 15}}
             source={require('../../../assets/supplierImage/more.png')}
-          />
+          /> */}
         </View>
       </View>
       <ScrollView style={{flex: 1}}>
@@ -271,7 +276,7 @@ const MyCatalogueCopy = () => {
           <View
             style={{alignItems: 'center', paddingVertical: 10, marginTop: 40}}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('addMore')}
+              //  onPress={() => navigation.navigate('addMore')}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  Alert,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import styles from './styles';
@@ -44,6 +45,20 @@ const ListOfproducts = () => {
       search: '',
       navigation,
       btn,
+    });
+    dispatch({
+      type: 'is_product_edit',
+      payload: true,
+    });
+  };
+  const proctDetail = async item => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'product_detail_request',
+      url: 'productDetails',
+      productId: item.productId,
+      supplierSrNo: user_id,
+      navigation,
     });
   };
   return (
@@ -100,6 +115,11 @@ const ListOfproducts = () => {
 
         <TouchableOpacity
           onPress={() => {
+            dispatch({
+              type: 'edit_product_success',
+              payload: '',
+              productEdit: false,
+            });
             navigation.navigate('ChooseSupplierProduct');
           }}
           style={{
@@ -127,7 +147,10 @@ const ListOfproducts = () => {
             numColumns={2}
             // contentContainerStyle={{justifyContent:'center',}}
             renderItem={({item, index}) => (
-              <View
+              <TouchableOpacity
+                onPress={() => {
+                  proctDetail(item);
+                }}
                 style={{
                   width: '46%',
                   margin: 7,
@@ -139,8 +162,9 @@ const ListOfproducts = () => {
                   backgroundColor: '#fff',
                   borderRadius: 10,
                   paddingHorizontal: 10,
-                  paddingVertical: 5,
+                  paddingVertical: wp(3),
                   paddingBottom: 10,
+                  paddingLeft: 8,
                 }}>
                 <View
                   style={{
@@ -190,7 +214,7 @@ const ListOfproducts = () => {
                     Price : {item.productPrice}
                   </Text>
                 </View>
-              </View>
+              </TouchableOpacity>
             )}
           />
         </View>

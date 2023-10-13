@@ -24,8 +24,8 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const productType = useSelector(state => state.Home?.productTypeList);
   const session = useSelector(state => state.Home?.session);
   const diamondData = useSelector(state => state.Catalogue?.diamondData);
+  const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
   const isFetching = useSelector(state => state.Catalogue?.isFetching);
-
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     Diamondwt: '',
@@ -85,6 +85,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
           ...inputs,
           current_session_id: session,
           isAdd: 1,
+          hProductSrNo: hProductSrNo ? hProductSrNo : '',
 
           BreakUp: isBrekup == 0 ? 1 : 0,
         },

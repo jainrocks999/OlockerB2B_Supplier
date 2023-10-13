@@ -53,6 +53,70 @@ const AddProducts = () => {
   const diamondData = useSelector(state => state.Catalogue?.diamondData);
   const itemField = useSelector(state => state.Catalogue?.itemField);
   const msg = useSelector(state => state.Catalogue?.msg);
+  const editProduct = useSelector(state => state.Catalogue?.editProduct);
+  const productEdit = useSelector(state => state.Catalogue?.productEdit);
+  console.log('thi si editprod', editProduct);
+  const products = editProduct?.products;
+  const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
+  console.log('this iss product editt', editProduct);
+  const getImage = () => {
+    //https://olocker.co${item?.ImageLocation}/${item?.ImageName}
+    const imageArr =
+      editProduct?.productdetails?.productimages?.length > 0
+        ? editProduct?.productdetails?.productimages?.map(item => {
+            return {
+              uri: `https://olocker.co/uploads/product/${item?.ImageName}`,
+              type: 'image/jpg',
+              name: item.ImageName,
+            };
+          })
+        : [
+            {
+              uri: 'https://thumbs.dreamstime.com/b/diamond-ring-rose-resting-pink-flower-45235273.jpg?w=768',
+              name: 'diamond-ring-rose-resting-pink-flower-45235273.jpg',
+              type: 'image/jpg',
+            },
+          ];
+    return imageArr;
+  };
+  console.log('thjis si prorr', productEdit);
+  useEffect(() => {
+    productEdit ? setEditData() : null;
+  }, [editProduct]);
+  const setEditData = () => {
+    console.log('cocccrrr,called');
+    setInputs(prev => ({
+      ...prev,
+      radioInventoryPreInsured: products?.isPreInsured,
+      IsBestSeller: products?.isBestSeller == '1' ? true : false,
+      ItemName: products?.ItemName,
+      Status: products?.ProductStatus,
+      ProductSku: products?.ProductSku,
+      StyleID: products?.StyleID,
+      Hallmarked: products?.isHallmarked,
+      Gender: products?.Gender,
+      rbCategory: products?.CategoryType,
+      MetalWtGrandTotal: editProduct?.productMetalGrandTotal,
+      DiamondGrandTotal: editProduct?.productDiamondGrandTotal,
+      StoneGrandTotal: editProduct?.productStoneGrandTotal,
+      DecorationGrandTotal: editProduct?.productDecoGrandTotal,
+      GrossWt: products?.GrossWt,
+      txtMrp: products?.ProductsPrice,
+      isProductCertd: products?.isProductCertified,
+      ImgUpload: getImage(),
+      chk_sc: editProduct?.productdetails?.productsubcat,
+      txtProductWidth: products?.Width,
+      txtProductBreadth: products?.Breadth,
+      txtProductHeight: products?.Height,
+      txtSize: products?.AddProducts?.Size,
+      ItemType: editProduct?.products?.ItemType,
+    }));
+    dispatch({
+      type: 'get_item_field_list_request',
+      url: 'getItemFields',
+      itemSrNo: editProduct?.products?.ItemType,
+    });
+  };
 
   useEffect(() => {
     productTypeList();
@@ -89,7 +153,7 @@ const AddProducts = () => {
             height: 40,
             flexDirection: 'row',
             alignItems: 'center',
-            borderWidth: 2,
+            borderWidth: 2, //34345
             paddingLeft: 5,
             width: '100%',
           }}>
@@ -97,7 +161,7 @@ const AddProducts = () => {
             onChange={() => {
               handleCategory(item.SrNo);
             }}
-            value={inputs.chk_sc.includes(item.SrNo) ? true : false}
+            value={inputs.chk_sc?.includes(item.SrNo) ? true : false}
           />
           <Text
             style={{
@@ -378,16 +442,7 @@ const AddProducts = () => {
       const res = await DocumentPicker.pickSingle({
         type: [DocumentPicker.types.images],
       });
-      //  console.log(res);
-      //  {
-      //     uri: photo,
-      //     name: photo1.substring(photo1.lastIndexOf('/') + 1),
-      //     type: Photo2,
-      //   }
-
-      const res2 = RNFetchBlob.fs.createFile(res.uri);
-      // console.log('thisiisi', res2);
-
+      console.log(res);
       setInputs(prev => ({
         ...prev,
         ImgUpload: [
@@ -409,7 +464,7 @@ const AddProducts = () => {
     let data = {
       ...inputs,
       hdnIsMrp: inputs.radioPriceCalculator,
-      hProductSrNo: 0,
+      hProductSrNo: hProductSrNo ? hProductSrNo : '',
       hdnProductPartner: '',
       hdnProductBranch: '',
       hdnImagecount: inputs.ImgUpload.length,
@@ -435,12 +490,13 @@ const AddProducts = () => {
     });
     // console.log(inputs.ImgUpload);
     // });
-    //  console.log(JSON.stringify(data2));
+    console.log('this is data', JSON.stringify(data2));
+    console.log(JSON.stringify(data.hProductSrNo));
     //  console.log(inputs.txtMrp);
-    fetchDataByPOST('', data2);
+    fetchDataByPOST(data2);
   };
   const [isFetching3, setIfetching] = useState(false);
-  const fetchDataByPOST = async (url, params) => {
+  const fetchDataByPOST = async params => {
     setIfetching(true);
     const Token = await AsyncStorage.getItem('loginToken');
     const config = {
@@ -455,7 +511,7 @@ const AddProducts = () => {
         params,
         config,
       );
-
+      console.log('thissississisi', JSON.stringify(response));
       setIfetching(false);
       Toast.show(response.data.msg);
     } catch (error) {
@@ -506,7 +562,9 @@ const AddProducts = () => {
               />
             </TouchableOpacity>
             <Text style={[styles.text, {color: 'white'}]}>
-              SUPPLIER ADD PRODUCT
+              {!productEdit
+                ? 'SUPPLIER ADD PRODUCT'
+                : 'SUPPLIER UPDATE PRODUCT'}
             </Text>
           </View>
           <View style={styles.headertouch}>
@@ -646,8 +704,10 @@ const AddProducts = () => {
                   maxHeight={250}
                   labelField="Value"
                   valueField="Id"
-                  placeholder="Product/item type"
-                  value={inputs.ItemName.toString()}
+                  placeholder={
+                    inputs.ItemName ? inputs.ItemName : 'Product/item type'
+                  }
+                  value={inputs.ItemName}
                   onChange={item => {
                     handleInputs('ItemName', item.Value);
                     handleInputs('ItemType', item.Id);
@@ -905,8 +965,9 @@ const AddProducts = () => {
             <View>
               <CheckBox
                 value={inputs.IsBestSeller}
-                onChange={() =>
-                  handleInputs('IsBestSeller', !inputs.IsBestSeller)
+                onChange={
+                  () => handleInputs('IsBestSeller', !inputs.IsBestSeller)
+                  //  console.log(inputs.IsBestSeller)
                 }
                 tintColors={{true: '#032e63', false: '#032e63'}}
               />
@@ -1160,9 +1221,7 @@ const AddProducts = () => {
                   editable={false}
                   placeholder={
                     inputs.DecorationGrandTotal
-                      ? inputs.DecorationGrandTotal.toString() +
-                        ' ' +
-                        inputs.DecoWtUnit[inputs.DecoWtUnit.length - 1]
+                      ? inputs.DecorationGrandTotal.toString() + ' ' + 'Gms'
                       : 'Decorative Wt.'
                   }
                   style={{fontSize: wp(4), fontWeight: '700'}}
@@ -1177,7 +1236,7 @@ const AddProducts = () => {
                     fontWeight: '500',
                     color: '#032e63',
                   }}>
-                  Gross Wt.
+                  Gross Wt
                 </Text>
               </View>
               <View
@@ -1190,7 +1249,13 @@ const AddProducts = () => {
                 }}>
                 <TextInput
                   editable={false}
-                  placeholder={totalWiegt ? totalWiegt : 'Gross Wt.'}
+                  placeholder={
+                    totalWiegt
+                      ? totalWiegt
+                      : inputs.GrossWt
+                      ? inputs.GrossWt
+                      : 'Gross Wt.'
+                  }
                   style={{fontSize: wp(4), fontWeight: '700'}}
                 />
               </View>
@@ -1219,9 +1284,7 @@ const AddProducts = () => {
                 <TextInput
                   placeholder={
                     inputs.MetalWtGrandTotal
-                      ? inputs.MetalWtGrandTotal.toString() +
-                        ' ' +
-                        inputs.MetalWtUnit[inputs.MetalWtUnit.length - 1]
+                      ? inputs.MetalWtGrandTotal.toString() + ' ' + 'Gms'
                       : 'Metal Wt.'
                   }
                   editable={false}
@@ -1251,10 +1314,8 @@ const AddProducts = () => {
                 <TextInput
                   editable={false}
                   placeholder={
-                    inputs.Diamondwt
-                      ? inputs.DiamondGrandTotal +
-                        ' ' +
-                        inputs.DiamondWtUnit[inputs.DiamondWtUnit.length - 1]
+                    inputs.DiamondGrandTotal
+                      ? inputs.DiamondGrandTotal + ' ' + 'Gms'
                       : 'Diamond Wt.'
                   }
                   style={{fontSize: wp(4), fontWeight: '700'}}
@@ -1286,9 +1347,7 @@ const AddProducts = () => {
                   editable={false}
                   placeholder={
                     inputs.StoneGrandTotal
-                      ? inputs.StoneGrandTotal +
-                        ' ' +
-                        inputs.StoneWtUnit[inputs.StoneWtUnit.length - 1]
+                      ? inputs.StoneGrandTotal + ' ' + 'Gms'
                       : 'Stone Wt.'
                   }
                   style={{fontSize: wp(4), fontWeight: '700'}}
@@ -1482,14 +1541,14 @@ const AddProducts = () => {
                 maxHeight={250}
                 labelField="label"
                 valueField="value"
-                placeholder="Select item"
+                placeholder={inputs.isProductCertd == '1' ? 'Yes' : 'No'}
                 value={inputs.isProductCertd}
                 onChange={item => {
                   handleInputs('isProductCertd', item.value);
                 }}
               />
             </View>
-            {inputs?.isProductCertd ? (
+            {inputs?.isProductCertd == '1' ? (
               <>
                 <Text
                   style={{
@@ -1555,15 +1614,20 @@ const AddProducts = () => {
               keyExtractor={(item, index) => index}
               horizontal={true}
               renderItem={({item, index}) => (
-                <Image
-                  style={{
-                    height: hp(15),
-                    width: wp(30),
-                    alignSelf: 'center',
-                    marginHorizontal: wp(1),
-                  }}
-                  source={{uri: item.uri}}
-                />
+                <View>
+                  <Image
+                    style={{
+                      height: hp(15),
+                      width: wp(30),
+                      alignSelf: 'center',
+                      marginHorizontal: wp(1),
+                    }}
+                    source={{
+                      uri: item.uri,
+                    }}
+                  />
+                  {console.log('this is itme', item)}
+                </View>
               )}
             />
           </View>
@@ -1688,7 +1752,7 @@ const AddProducts = () => {
                         handleInputs('chk_sc', [...inputs.chk_sc, item.SrNo]);
                       }
                     }}
-                    value={inputs.chk_sc.includes(item.SrNo) ? true : false}
+                    value={inputs.chk_sc?.includes(item.SrNo) ? true : false}
                   />
                   <Text
                     style={{
@@ -1718,7 +1782,7 @@ const AddProducts = () => {
               backgroundColor: '#032e63',
             }}>
             <Text style={{fontSize: 18, color: 'white', fontWeight: '600'}}>
-              Add Product
+              {!productEdit ? 'Add Product' : 'Update Product'}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity

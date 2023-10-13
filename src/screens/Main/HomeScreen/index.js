@@ -36,6 +36,7 @@ const HomeScreen = () => {
   const fetching = useSelector(state => state.Home.isFetching);
   // // console.log('this is network data daaa', bannerList);
   const win = Dimensions.get('window');
+  console.log('this is bannner list', bannerList);
 
   const date = new Date();
   let ToDAY = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;

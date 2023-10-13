@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,17 +10,17 @@ import {
 import styles from './styles';
 import Feather from 'react-native-vector-icons/Feather';
 import Loader from '../../../components/Loader';
-import { Table, TableWrapper, Row } from 'react-native-table-component';
+import {Table, TableWrapper, Row} from 'react-native-table-component';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 import AssignCategory from '../Modal/assigncategoryModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CheckBox from '@react-native-community/checkbox';
-const ListOfRetailer = ({ route }) => {
+const ListOfRetailer = ({route}) => {
   const navigation = useNavigation();
 
   const isFetching = useSelector(state => state.Home.isFetching);
@@ -28,53 +28,60 @@ const ListOfRetailer = ({ route }) => {
   const AssiGnModal = useSelector(state => state.Supplier.AssiGnModal);
   const [AssignModal, setAssignModal] = useState(false);
   const [data, setData] = useState(false);
-  const data2 = useSelector(state => state.Home.data2)
-
+  const data2 = useSelector(state => state.Home.data2);
 
   const sendData = item => {
     setData(item);
     setAssignModal(true);
   };
   useEffect(() => {
-    setAssignModal(false)
-  }, [AssiGnModal])
+    setAssignModal(false);
+  }, [AssiGnModal]);
   const dispatch = useDispatch();
 
-  const addPatnerTonetwork = async (id) => {
+  const addPatnerTonetwork = async id => {
     const user_id = await AsyncStorage.getItem('user_id');
 
     dispatch({
       type: 'Addnetwork_toPatner_Request',
       userId: user_id,
       id: id,
-
     });
-
   };
-  const [check, setCheck] = useState([])
-  const handleOnCheck = (SrNo) => {
-    console.log(SrNo)
+  const [check, setCheck] = useState([]);
+  const handleOnCheck = SrNo => {
+    console.log(SrNo);
     if (check.includes(SrNo)) {
-      let formateindex = check.filter((item, index) => item != SrNo)
-      setCheck(formateindex)
+      let formateindex = check.filter((item, index) => item != SrNo);
+      setCheck(formateindex);
     } else {
-      setCheck([...check, SrNo])
+      setCheck([...check, SrNo]);
     }
-  }
+  };
   const onAddToNetwork = async () => {
-    check.map(item => console.log(item))
-    const userId = await AsyncStorage.getItem('user_id')
+    check.map(item => console.log(item));
+    const userId = await AsyncStorage.getItem('user_id');
     dispatch({
       type: 'add_partner_to_network_request',
       url: 'addtoNetwork',
       id: check,
       userId,
-      data2
-    })
-  }
-
+      data2,
+    });
+  };
+  const removeRetailer = async pSrNo => {
+    console.log(pSrNo);
+    const userId = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'remove_retailer_from_network',
+      url: 'removeSuppliertest',
+      SupplierSrNo: userId,
+      PartnerSrNo: pSrNo,
+      data2,
+    });
+  };
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       {isFetching ? <Loader /> : null}
       <AssignCategory
         visi={AssignModal}
@@ -95,8 +102,7 @@ const ListOfRetailer = ({ route }) => {
         <View>
           <FlatList
             data={selector?.requestlist}
-
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <View
                 style={{
                   shadowColor: '#000',
@@ -114,7 +120,7 @@ const ListOfRetailer = ({ route }) => {
                   borderRadius: wp(3),
                   marginHorizontal: 5,
                   paddingHorizontal: wp(2),
-                  paddingVertical: wp(2)
+                  paddingVertical: wp(2),
                 }}>
                 <View>
                   <Text
@@ -146,34 +152,43 @@ const ListOfRetailer = ({ route }) => {
                         marginRight: 10,
                       }}>
                       City :
-                      <Text style={{ fontWeight: '400' }}> {item.CityName} </Text>
+                      <Text style={{fontWeight: '400'}}> {item.CityName} </Text>
                     </Text>
-                    <Text style={{ fontSize: wp(4.5), fontWeight: '700' }}>
+                    <Text style={{fontSize: wp(4.5), fontWeight: '700'}}>
                       State :
-                      <Text style={{ fontWeight: '400' }}>
+                      <Text style={{fontWeight: '400'}}>
                         {' '}
                         {item.StateName}{' '}
                       </Text>
                     </Text>
                   </View>
-                  <View style={{ marginLeft: 10, marginTop: 5 }}>
-                    <Text style={{ fontSize: wp(4.5), fontWeight: '700' }}>
+                  <View style={{marginLeft: 10, marginTop: 5}}>
+                    <Text style={{fontSize: wp(4.5), fontWeight: '700'}}>
                       Assign Category :
-                      <Text style={{ width: '60%' }}> {item.CategoryType}</Text>
+                      <Text style={{width: '60%'}}> {item.CategoryType}</Text>
                     </Text>
                   </View>
-                  <View style={{ marginLeft: 10, flexDirection: 'row', marginTop: 5 }}>
-                    <Text style={{ fontSize: wp(4.5), fontWeight: '700' }}>
+                  <View
+                    style={{
+                      marginLeft: 10,
+                      flexDirection: 'row',
+                      marginTop: 5,
+                    }}>
+                    <Text style={{fontSize: wp(4.5), fontWeight: '700'}}>
                       IsShowInRetailerApp :
-                      <Text style={{ width: '60%', fontWeight: '400' }}>
+                      <Text style={{width: '60%', fontWeight: '400'}}>
                         {' '}
                         {item.IsShowInRetailerApp}
                       </Text>
                     </Text>
                     <Text
-                      style={{ fontSize: wp(4.5), fontWeight: '700', marginLeft: 10 }}>
+                      style={{
+                        fontSize: wp(4.5),
+                        fontWeight: '700',
+                        marginLeft: 10,
+                      }}>
                       Status :
-                      <Text style={{ width: '60%', fontWeight: '400' }}>
+                      <Text style={{width: '60%', fontWeight: '400'}}>
                         {' '}
                         {item.Status}
                       </Text>
@@ -185,9 +200,8 @@ const ListOfRetailer = ({ route }) => {
                       marginLeft: 10,
                       marginTop: 5,
                       alignItems: 'center',
-
                     }}>
-                    <Text style={{ fontSize: wp(4.5), fontWeight: '700' }}>
+                    <Text style={{fontSize: wp(4.5), fontWeight: '700'}}>
                       Action :{' '}
                     </Text>
 
@@ -198,7 +212,7 @@ const ListOfRetailer = ({ route }) => {
                         width: '60%',
                       }}>
                       <TouchableOpacity
-                        style={{ width: '80%', marginLeft: 10 }}
+                        style={{width: '80%', marginLeft: 10}}
                         onPress={() => {
                           sendData(item);
                         }}>
@@ -207,7 +221,7 @@ const ListOfRetailer = ({ route }) => {
                             color: 'blue',
                             fontWeight: '700',
                             fontSize: wp(4),
-                            textAlign: 'center'
+                            textAlign: 'center',
                           }}>
                           Update Status & Assign Category
                         </Text>
@@ -220,7 +234,11 @@ const ListOfRetailer = ({ route }) => {
                         }}>
                         |
                       </Text>
-                      <TouchableOpacity style={{ width: '60%', marginLeft: 10 }}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          removeRetailer(item.SrNo);
+                        }}
+                        style={{width: '60%', marginLeft: 10}}>
                         <Text
                           style={{
                             fontSize: wp(4.5),
@@ -240,10 +258,10 @@ const ListOfRetailer = ({ route }) => {
       </View>
       <View contentContainerStyle={{}}>
         <View
-          style={{ height: hp(5), justifyContent: 'center', marginTop: hp(3) }}>
+          style={{height: hp(5), justifyContent: 'center', marginTop: hp(3)}}>
           <TouchableOpacity
             onPress={() => {
-              onAddToNetwork()
+              onAddToNetwork();
             }}
             style={{
               marginLeft: 10,
@@ -256,27 +274,28 @@ const ListOfRetailer = ({ route }) => {
               width: wp(42),
               height: hp(6),
             }}>
-            <Text style={{ fontSize: 16, fontWeight: '700', color: 'white' }}>
+            <Text style={{fontSize: 16, fontWeight: '700', color: 'white'}}>
               Add To Network
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{ marginTop: '5%', flex: 1 }}>
-          <View style={{ flex: 1 }}>
+        <View style={{marginTop: '5%', flex: 1}}>
+          <View style={{flex: 1}}>
             <FlatList
               data={selector?.searchpartner}
-
-              renderItem={({ item, index }) => (
+              renderItem={({item, index}) => (
                 <TouchableOpacity
                   onPress={() => {
                     // navigation.navigate('PatnerProfile')
-                    'clal'
+                    'clal';
                   }}
                   style={styles.list}>
                   <View style={{}}>
-
-                    <View style={{ flexDirection: 'row' }}>
-                      <CheckBox value={check.includes(item.SrNo)} onChange={() => handleOnCheck(item.SrNo)} />
+                    <View style={{flexDirection: 'row'}}>
+                      <CheckBox
+                        value={check.includes(item.SrNo)}
+                        onChange={() => handleOnCheck(item.SrNo)}
+                      />
                       <Text
                         style={{
                           width: '100%',
@@ -293,7 +312,7 @@ const ListOfRetailer = ({ route }) => {
                         fontWeight: '400',
                         fontSize: 18,
                         marginLeft: 10,
-                        marginTop: 5
+                        marginTop: 5,
                       }}>
                       {item.BillingContactEmail}
                     </Text>
@@ -310,12 +329,14 @@ const ListOfRetailer = ({ route }) => {
                           fontWeight: '700',
                           marginRight: 10,
                         }}>
-                        City :  <Text style={{ fontWeight: '400' }}>
+                        City :{' '}
+                        <Text style={{fontWeight: '400'}}>
                           {item.city_name}{' '}
                         </Text>
                       </Text>
-                      <Text style={{ fontSize: 16, fontWeight: '700' }}>
-                        State : <Text style={{ fontWeight: '400' }}>
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                        State :{' '}
+                        <Text style={{fontWeight: '400'}}>
                           {item.state_name}{' '}
                         </Text>
                       </Text>

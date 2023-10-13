@@ -89,11 +89,15 @@ function HomeScreen1() {
       <Stack1.Screen name="OfferList" component={OfferList} />
       <Stack1.Screen name="ListOfProduct" component={ListOfProduct} />
       <Stack1.Screen name="AddSupplierProdcut" component={AddSupplierProdcut} />
-      <Stack1.Screen name="ChooseSupplierProduct" component={ChooseSupplierProduct} />
+      <Stack1.Screen
+        name="ChooseSupplierProduct"
+        component={ChooseSupplierProduct}
+      />
       <Stack1.Screen name="myNetworkBtn" component={myNetworkBtn} />
       <Stack1.Screen name="addMore" component={addMore} />
       <Stack1.Screen name="AddProductTooffer" component={AddProductTooffer} />
       <Stack2.Screen name="PatnerProfile" component={PatnerProfile} />
+      <Stack2.Screen name="FavouriteList" component={FavouriteList} />
     </Stack1.Navigator>
   );
 }
@@ -132,7 +136,6 @@ function MyNetwork1() {
       <Stack2.Screen name="PartnerProfile" component={PartnerProfile} />
       <Stack2.Screen name="PendingRequest" component={PendingRequest} />
       <Stack2.Screen name="SentRequest" component={SentRequest} />
-  
     </Stack2.Navigator>
   );
 }
@@ -191,9 +194,8 @@ function Bottom() {
       <Tab.Screen
         name="Message1"
         component={ChatStack}
-       
         options={{
-          tabBarHideOnKeyboard:true,
+          tabBarHideOnKeyboard: true,
           tabBarIcon: ({focused}) => {
             return (
               <Image
@@ -264,28 +266,22 @@ function Navigate() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="RegisterPage" component={Register} />
         <Stack.Screen name="Message" component={ChatStack} />
-   
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 export default Navigate;
 
-
-export  const ChatStack  =()=> {
- 
+export const ChatStack = () => {
   return (
-  
-      <Stack.Navigator
-        initialRouteName="MessageScreen"
-        screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Contact" component={MessageBox2} />
-        <Stack.Screen name="ChatScreen" component={ChatScreen} />
-       
-      </Stack.Navigator>
-
+    <Stack.Navigator
+      initialRouteName="MessageScreen"
+      screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Contact" component={MessageBox2} />
+      <Stack.Screen name="ChatScreen" component={ChatScreen} />
+    </Stack.Navigator>
   );
-}
+};
 
 // const Stack = createNativeStackNavigator();
 // function Navigate() {

@@ -8,7 +8,7 @@ import {
   Image,
   Dimensions,
   Share,
-  Alert
+  Alert,
 } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import Header from '../../../components/CustomHeader';
@@ -32,7 +32,7 @@ const FavouriteList = () => {
   const win = Dimensions.get('window');
   const isFocuse = useIsFocused();
   const selector = useSelector(state => state.Home.getWishList);
-console.log(selector);
+  console.log(selector);
   useEffect(() => {
     RetailerRequest();
   }, [isFocuse]);
@@ -79,7 +79,6 @@ console.log(selector);
       if (response.status) {
         RetailerRequest();
         Toast.show('The product has been Removed to your wishlist', Toast.LONG);
-       
       } else {
         alert('Item Not Remove This Time');
       }

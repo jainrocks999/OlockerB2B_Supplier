@@ -24,8 +24,8 @@
 //       onPress={() => onPress(item)}>
 //       <View style={[styles.imageContainer, styles.shadow]}>
 //         <Image
-//           style={[styles.videoPreview, 
-//             active ? {height:240,width:240,borderRadius:120} : 
+//           style={[styles.videoPreview,
+//             active ? {height:240,width:240,borderRadius:120} :
 //             {height: 120,width:120,borderRadius:60}
 //         ]}
 //           source={{uri: item[imageKey]}}
@@ -96,10 +96,10 @@
 //       >
 //       <View style={[styles.imageContainer]}>
 //         <Image
-//       //    style={[styles.videoPreview, 
+//       //    style={[styles.videoPreview,
 //       //     active ? {height: 180,width:300,borderRadius:15}:
-//       //      {height:100,width:300,borderRadius:15} 
-         
+//       //      {height:100,width:300,borderRadius:15}
+
 //       // ]}
 //           style={{height:180,width:300,borderRadius:15}}
 //           source={{uri: item[imageKey]}}
@@ -111,7 +111,7 @@
 // };
 // export default Preview
 // const styles = StyleSheet.create({
-  
+
 //   imageContainer: {
 //     justifyContent: 'center',
 //     alignItems: 'center',
@@ -131,7 +131,7 @@
 //     }),
 //   },
 // });
-// 
+//
 
 import React from 'react';
 import {
@@ -141,45 +141,41 @@ import {
   Image,
   StyleSheet,
   Platform,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 
-const Preview = ({
-  style,
-  item,
-  imageKey,
-  onPress,
-  index,
-  active,
-  local,
-}) => {
+const Preview = ({style, item, imageKey, onPress, index, active, local}) => {
   const BannerWidth = (Dimensions.get('window').width * 15) / 18;
   const BannerHeight = 180;
   return (
-      <View style={{alignItems:'center',justifyContent:'center',borderRadius:15}}>
-    <TouchableOpacity
+    <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 15,
+      }}>
+      <TouchableOpacity
       // onPress={() => onPress(item)}
       >
-      <View style={[styles.imageContainer]}>
-        <Image
-          style={{height:190,width:BannerWidth,borderRadius:190}}
-          source={{uri: item[imageKey]}}
-          resizeMode={Platform.OS=='android'?'contain':''}
-        />
-      </View>
-    </TouchableOpacity>
+        <View style={[styles.imageContainer]}>
+          <Image
+            style={{height: 190, width: BannerWidth, borderRadius: 190}}
+            source={{uri: item[imageKey]}}
+            resizeMode={Platform.OS == 'android' ? 'contain' : ''}
+          />
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
-export default Preview
+export default Preview;
 const styles = StyleSheet.create({
-  
   imageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius:15,
-    height:200,
-    width:'100%'
+    borderRadius: 15,
+    height: 200,
+    width: '100%',
   },
   shadow: {
     ...Platform.select({

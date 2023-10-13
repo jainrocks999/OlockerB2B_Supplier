@@ -488,6 +488,65 @@ function* removeDecorative(action) {
     Toast.show('Something went wrong');
   }
 }
+function* editProduct(action) {
+  try {
+    const data = {
+      productId: action.productId,
+      supplierSrNo: action.supplierSrNo,
+    };
+    const res = yield call(Api.fetchDataByGET1, action.url, data);
+
+    console.log('this si res.data', JSON.stringify(res));
+    if (res?.success || res?.status) {
+      console.log('this is called');
+      yield put({
+        type: 'edit_product_success',
+        payload: res.data,
+        productEdit: true,
+      });
+      action.navigation.navigate('ChooseSupplierProduct');
+      Toast.show('edit data get success');
+    } else {
+      yield put({
+        type: 'edit_product_error',
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    yield put({
+      type: 'edit_product_error',
+    });
+  }
+}
+function* productData(action) {
+  try {
+    const data = {
+      productId: action.productId,
+      supplierSrNo: action.supplierSrNo,
+    };
+    const res = yield call(Api.fetchDataByGET1, action.url, data);
+
+    console.log('this si res.data', JSON.stringify(res));
+    if (res?.success || res?.status) {
+      console.log('this is called');
+      yield put({
+        type: 'product_detail_success',
+        payload: res.data,
+      });
+      action.navigation.navigate('SubCategory');
+      Toast.show('datials data get success');
+    } else {
+      yield put({
+        type: 'product_detail_error',
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    yield put({
+      type: 'product_detail_error',
+    });
+  }
+}
 export default function* citySaga() {
   yield takeEvery('Get_Catalogue_Request', getCatalogue);
   yield takeEvery('My_Product_Request', getProducts);
@@ -505,4 +564,6 @@ export default function* citySaga() {
   yield takeEvery('diamond_delete_requet', removeDiamond);
   yield takeEvery('remove_stone_request', removeStone);
   yield takeEvery('remove_decorative_request', removeDecorative);
+  yield takeEvery('edit_product_reqest', editProduct);
+  yield takeEvery('product_detail_request', productData);
 }

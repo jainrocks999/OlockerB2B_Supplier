@@ -36,6 +36,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const decItemDetails = productType?.decItemDetails?.map(item => {
     return {label: item.Value, value: item.Value};
   });
+  const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
   const session = useSelector(state => state.Home?.session);
   const handleInputs = (text, input) => {
     setInputs(prev => ({...prev, [text]: input}));
@@ -61,6 +62,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         DecoItemName: item?.DecorativeItemName,
         ChargAmt: item?.DecorativeChargeableAmount,
         hDecorationSrNo: item.SrNo,
+        hProductSrNo: hProductSrNo ? hProductSrNo : '',
       });
     } else {
       const user_id = await AsyncStorage.getItem('user_id');
@@ -72,6 +74,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
           isAdd: 1,
           current_session_id: session,
           BreakUp: isBrekup == 1 ? 0 : 1,
+          hProductSrNo: hProductSrNo ? hProductSrNo : '',
         },
       });
     }

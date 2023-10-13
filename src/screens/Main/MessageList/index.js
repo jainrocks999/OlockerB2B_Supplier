@@ -91,12 +91,11 @@ const HomeScreen = () => {
       <Header
         source={require('../../../assets/L.png')}
         source2={require('../../../assets/Image/dil.png')}
-        title={'Message Box '}
+        title={'Message Bo '}
         onPress={() => navigation.goBack()}
         onPress2={() => navigation.navigate('FavDetails')}
       />
       <View>
-      
         <View>
           {business == true ? (
             <FlatList

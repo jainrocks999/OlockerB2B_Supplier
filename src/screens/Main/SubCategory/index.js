@@ -8,6 +8,7 @@ import {
   Image,
   Share,
   TextInput,
+  FlatList,
 } from 'react-native';
 import Header from '../../../components/CustomHeader';
 import TabView from '../../../components/StoreButtomTab';
@@ -17,20 +18,35 @@ import Preview from '../../../components/Preview';
 import Banner from '../../../components/Banner';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './styles';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import Loader from '../../../components/Loader';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+
 const SubCategory = ({route}) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const selector = useSelector(state => state.ProductDetail?.detail);
   const selector1 = useSelector(state => state.SupplierProDetail?.detail);
-  const name = route.params.name;
-  const name1 = route.params.name;
-  const Detail = route.params.Details;
+  const productData = useSelector(state => state.Catalogue?.productData);
+  const ima = productData?.productdetails?.productimages;
+
+  const Detail = 'route.params.Details';
   // console.log(
   //   'detailss........................',
   //   Detail ? selector : selector1,
   // );
-
+  const productImage = () => {
+    const img = ima
+      ? ima?.map(item => {
+          return `https://olocker.co/uploads/product/${item?.ImageName}`;
+        })
+      : [];
+    console.log(img);
+    return img;
+  };
   const isFetching = useSelector(state => state.isFetching);
   const [collection, setCollection] = useState(
     Detail ? selector?.ProductSku : selector1?.ProductSku,
@@ -55,6 +71,8 @@ const SubCategory = ({route}) => {
   const [click1, setClick1] = useState(false);
   const [url, setUrl] = useState('');
   const [keyboardStatus, setKeyboardStatus] = useState(undefined);
+  const [fetching, setIsFetching] = useState(false);
+  const [wishlist, setWishList] = useState(false);
 
   const share = async () => {
     await Share.share({
@@ -75,6 +93,86 @@ const SubCategory = ({route}) => {
       setClick1(true);
     }
   };
+  const edtiProduct = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'edit_product_reqest',
+      url: 'productDetails',
+      productId: productData?.products?.SrNo,
+      supplierSrNo: user_id,
+      navigation,
+    });
+  };
+
+  const RemoveWhishList = async (id, liked) => {
+    setIsFetching(true);
+    const user_id = await AsyncStorage.getItem('user_id');
+    const Token = await AsyncStorage.getItem('loginToken');
+    var myHeaders = new Headers();
+    myHeaders.append('Olocker', `Bearer ${Token}`);
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    let response = fetch(
+      `https://olocker.co/api/supplier/removeProductWishlist?productId=${id}&SupplierSrNo=${user_id}&userType=supplier`,
+      requestOptions,
+    )
+      .then(response => response.text())
+      .then(result => {
+        setIsFetching(false);
+
+        setWishList(false);
+        return JSON.parse(result);
+      })
+      .catch(error => {
+        console.log('error', error);
+        setIsFetching(false);
+      });
+
+    return response;
+  };
+
+  const addProductWishList = async item => {
+    setIsFetching(true);
+    const Token = await AsyncStorage.getItem('loginToken');
+    const user_id = await AsyncStorage.getItem('user_id');
+    var myHeaders = new Headers();
+    myHeaders.append('Olocker', `Bearer ${Token}`);
+
+    var formdata = new FormData();
+    formdata.append('checkProduct', item.productId);
+    formdata.append('SupplierSrNo', user_id);
+    formdata.append('userType', 'supplier');
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow',
+    };
+
+    let res = fetch(
+      'https://olocker.co/api/supplier/addProductitemWishlist',
+      requestOptions,
+    )
+      .then(response => response.text())
+      .then(result => {
+        setIsFetching(false);
+
+        setWishList(true);
+        return JSON.parse(result);
+      })
+      .catch(error => {
+        console.log('error', error);
+        setIsFetching(false);
+      });
+
+    return res;
+  };
   return (
     <View style={styles.container}>
       <Header
@@ -90,13 +188,18 @@ const SubCategory = ({route}) => {
         {isFetching ? <Loader /> : null}
         <View style={styles.main}>
           <TouchableOpacity onPress={() => click(click1)}>
-            <View>
+            <TouchableOpacity
+              onPress={() => {
+                !wishlist
+                  ? addProductWishList(productData?.products?.SrNo)
+                  : RemoveWhishList(productData?.products?.SrNo);
+              }}>
               <Image
                 style={{width: 21, height: 18}}
-                tintColor={click1 ? 'red' : '#fff'}
+                tintColor={wishlist ? 'red' : '#fff'}
                 source={require('../../../assets/Image/dil.png')}
               />
-            </View>
+            </TouchableOpacity>
           </TouchableOpacity>
           <View>
             <TouchableOpacity
@@ -111,8 +214,8 @@ const SubCategory = ({route}) => {
           </View>
         </View>
         <View style={{marginTop: 10}}>
-          <FlatListSlider
-            data={images}
+          {/* <FlatListSlider
+            data={productImage()}
             height={200}
             // timer={5000}
             contentContainerStyle={{paddingHorizontal: 30}}
@@ -125,8 +228,36 @@ const SubCategory = ({route}) => {
             width={310}
             autoscroll={false}
             loop={false}
-          />
+          /> */}
           {/* })} */}
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: hp(25),
+            }}>
+            <FlatList
+              data={productImage()}
+              horizontal
+              pagingEnabled
+              renderItem={({item}) => (
+                <View
+                  style={{
+                    height: hp(25),
+                    width: wp(90),
+                    overflow: 'hidden',
+                    borderRadius: wp(8),
+                    marginHorizontal: wp(3.5),
+                    elevation: 5,
+                  }}>
+                  <Image
+                    source={{uri: productImage()[0]}}
+                    style={{height: '100%', width: '100%'}}
+                  />
+                </View>
+              )}
+            />
+          </View>
         </View>
 
         <View style={styles.view}>
@@ -135,9 +266,7 @@ const SubCategory = ({route}) => {
             source={require('../../../assets/Image/rupay.png')}
           />
           <Text style={styles.text}>
-            {Detail
-              ? selector?.ProductsPrice?.substring(0, 8)
-              : selector1?.ProductsPrice?.substring(0, 8)}
+            {productData?.products?.ProductsPrice}
           </Text>
           <Text style={styles.text1}>( Approximate Price )</Text>
         </View>
@@ -156,7 +285,7 @@ const SubCategory = ({route}) => {
               </View>
               {Detail ? (
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('Editproduct')}
+                  onPress={() => edtiProduct()}
                   //  onPress={()=>manageEdit()}
                   style={{alignItems: 'flex-end'}}>
                   <Image
@@ -168,7 +297,9 @@ const SubCategory = ({route}) => {
             </View>
             <View style={{marginLeft: 20, marginTop: 8}}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={styles.cardtext}>{'Name       :      '}</Text>
+                <Text style={styles.cardtext}>
+                  {'Name       :      ' + productData?.products?.ItemName}
+                </Text>
                 <TextInput
                   style={{height: 40, color: '#052a47'}}
                   value={stockNo}
@@ -182,7 +313,9 @@ const SubCategory = ({route}) => {
                   alignItems: 'center',
                   marginTop: -15,
                 }}>
-                <Text style={styles.cardtext}>{'Stock No :      '}</Text>
+                <Text style={styles.cardtext}>
+                  {'Stock No :      ' + +productData?.products?.SrNo}
+                </Text>
                 <TextInput
                   style={{height: 40, color: '#052a47'}}
                   value={collection}

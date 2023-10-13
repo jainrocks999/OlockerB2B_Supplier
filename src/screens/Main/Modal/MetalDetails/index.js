@@ -27,6 +27,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const session = useSelector(state => state.Home?.session);
   const isFetching = useSelector(state => state.Catalogue?.isFetching);
   const metalData = useSelector(state => state.Catalogue?.metalData);
+  const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
   const totalWiegt = useSelector(state => state.Catalogue?.totalWiegt);
   const [inputs, setInputs] = useState({
     GrossWt: '',
@@ -64,8 +65,6 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         MetalTypes: item.MetalType,
         MetalWt: item.MetalWt,
         MetalWtUnit: item.UnitMetalWt,
-        current_session_id: item.Session,
-        hProductSrNo: '',
         isAdd: 1,
         hMetalWt: item.SrNo,
       });
@@ -75,8 +74,8 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         url: 'addmetal',
         data: {
           ...inputs,
-          current_session_id:
-            isEdit != 'edit' || inputs.isAdd == 1 ? session : item.Session,
+          current_session_id: session,
+          hProductSrNo: hProductSrNo ? hProductSrNo : '',
         },
       });
     }
@@ -117,7 +116,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 </Text>
               </View>
             </View>
-            {metalData?.result ? (
+            {metalData?.result?.lenght > 0 ? (
               <View style={{marginTop: wp(3)}}>
                 <FlatList
                   data={metalData?.result}
@@ -172,7 +171,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                           </Text>
 
                           <Text style={[styles.cardTitle, styles.dot]}>:</Text>
-                          <Text style={styles.cardTitle}>{item.MetalWt}</Text>
+                          <Text style={styles.cardTitle}>{item?.MetalWt}</Text>
                         </View>
                         <View style={styles.cartItem}>
                           <Text style={[styles.cardTitle, {color: 'black'}]}>
@@ -181,7 +180,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
 
                           <Text style={[styles.cardTitle, styles.dot]}>:</Text>
                           <Text style={styles.cardTitle}>
-                            {item.UnitMetalWt}
+                            {item?.UnitMetalWt}
                           </Text>
                         </View>
                         <View style={styles.cartItem}>
@@ -189,7 +188,9 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                             Metal Type
                           </Text>
                           <Text style={[styles.cardTitle, styles.dot]}>:</Text>
-                          <Text style={styles.cardTitle}>{item.MetalType}</Text>
+                          <Text style={styles.cardTitle}>
+                            {item?.MetalType}
+                          </Text>
                         </View>
                         <View style={styles.cartItem}>
                           <Text style={[styles.cardTitle, {color: 'black'}]}>
@@ -198,7 +199,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
 
                           <Text style={[styles.cardTitle, styles.dot]}>:</Text>
                           <Text style={styles.cardTitle}>
-                            {item.MetalPurity}
+                            {item?.MetalPurity}
                           </Text>
                         </View>
                       </View>

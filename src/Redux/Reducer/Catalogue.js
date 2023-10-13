@@ -12,6 +12,10 @@ initialstate = {
   totalWiegt: '',
   msg: {},
   itemField: {},
+  editProduct: {},
+  hProductSrNo: '',
+  productEdit: false,
+  productData: {},
 };
 
 export default (state = initialstate, action) => {
@@ -154,6 +158,33 @@ export default (state = initialstate, action) => {
         ),
       };
     case 'remove_decorative_error':
+      return {...state, isFetching: false};
+    case 'remove_decorative_error':
+      return {...state, isFetching: false};
+    case 'edit_product_reqest':
+      return {...state, isFetching: true};
+    case 'edit_product_success':
+      return {
+        ...state,
+        isFetching: false,
+        editProduct: action.payload,
+        diamondData: [action.payload?.productdetails?.pdiamond],
+        decorativeData: [action.payload?.productdetails?.pdecoration],
+        stoneData: [action.payload?.productdetails?.pstones],
+        metalData: {result: [action.payload?.productdetails?.pmetals]},
+        totalWiegt: action.payload?.products?.GrossWt,
+        hProductSrNo: action.payload?.products?.SrNo,
+        productEdit: action.productEdit,
+      };
+    case 'edit_product_error':
+      return {...state, isFetching: false};
+    case 'is_product_edit':
+      return {...state, productEdit: action.payload};
+    case 'product_detail_request':
+      return {...state, isFetching: true};
+    case 'product_detail_success':
+      return {...state, isFetching: false, productData: action.payload};
+    case 'product_detail_error':
       return {...state, isFetching: false};
     default:
       return state;

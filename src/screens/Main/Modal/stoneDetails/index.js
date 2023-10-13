@@ -27,6 +27,7 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const session = useSelector(state => state.Home?.session);
   const stoneData = useSelector(state => state.Catalogue?.stoneData);
   const isFetching = useSelector(state => state.Catalogue.isFetching);
+  const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
 
   const [value, setValue] = useState(null);
   const [inputs, setInputs] = useState({
@@ -75,7 +76,8 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         data: {
           ...inputs,
           BreakUp: isBrekup == 0 ? 1 : 0,
-          current_session_id: isEdit ? item.Session : session,
+          current_session_id: session,
+          hProductSrNo: hProductSrNo ? hProductSrNo : '',
         },
       });
     }

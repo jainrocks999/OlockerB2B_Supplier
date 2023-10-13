@@ -20,12 +20,7 @@ const HomeScreen = () => {
   const [business, setBusiness] = useState(false);
   const [customer, setCustomer] = useState(true);
 
-
-  const manageBusiness = async() => {
-
-
-
-
+  const manageBusiness = async () => {
     setBusiness(true);
     setCustomer(false);
   };
@@ -39,7 +34,7 @@ const HomeScreen = () => {
         source={require('../../../assets/L.png')}
         source2={require('../../../assets/Image/dil.png')}
         source1={require('../../../assets/Fo.png')}
-        title={'Message Box '}
+        title={'Message Bo '}
         onPress={() => navigation.goBack()}
         onPress1={() => navigation.navigate('Message')}
         onPress2={() => navigation.navigate('FavDetails')}
