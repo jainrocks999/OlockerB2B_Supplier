@@ -627,7 +627,6 @@ const AddProducts = () => {
       setIfetching(false);
       Toast.show(response.data.msg);
     } catch (error) {
-      console.log('this si ', error);
       setIfetching(false);
       Toast.show('Something went wrong');
     }
@@ -636,71 +635,69 @@ const AddProducts = () => {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       {isFetching || isFetching2 || isFetching3 ? <Loader /> : null}
-      <ScrollView contentContainerStyle={{}}>
-        <DiamondViewModal
-          visi={ViewDiamondModal}
-          close={() => setViewDiamondModal(false)}
-          isBrekup={inputs.radioPriceCalculator}
-        />
-        <MetalViewModal
-          visi={ViewMetalModal}
-          close={() => setViewMetalModal(false)}
-          isBrekup={inputs.radioPriceCalculator}
-        />
-        <DecorativeViewModal
-          visi={ViewDecorativeModal}
-          close={() => setViewDecorativeModal(false)}
-          isBrekup={inputs.radioPriceCalculator}
-        />
-        <StoneViewModal
-          visi={ViewStoneModal}
-          close={() => setViewStoneModal(false)}
-          isBrekup={inputs.radioPriceCalculator}
-        />
-        <View style={styles.container}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: wp(53),
-              justifyContent: 'space-between',
-            }}>
-            <TouchableOpacity
-              delayPressIn={0}
-              onPress={() => navigation.goBack()}>
-              <Image
-                style={styles.img}
-                source={require('../../../assets/L.png')}
-              />
-            </TouchableOpacity>
-            <Text style={[styles.text, {color: 'white'}]}>
-              {!productEdit
-                ? 'SUPPLIER ADD PRODUCT'
-                : 'SUPPLIER UPDATE PRODUCT'}
-            </Text>
-          </View>
-          <View style={styles.headertouch}>
-            <TouchableOpacity onPress={() => navigation.navigate('Message')}>
-              <Image
-                style={styles.img1}
-                source={require('../../../assets/Fo.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleWishList()}>
-              <Image
-                style={styles.img2}
-                source={require('../../../assets/Image/dil.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => Logout()}>
-              <Image
-                style={styles.img3}
-                source={require('../../../assets/Image/menu-icon.png')}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
 
+      <DiamondViewModal
+        visi={ViewDiamondModal}
+        close={() => setViewDiamondModal(false)}
+        isBrekup={inputs.radioPriceCalculator}
+      />
+      <MetalViewModal
+        visi={ViewMetalModal}
+        close={() => setViewMetalModal(false)}
+        isBrekup={inputs.radioPriceCalculator}
+      />
+      <DecorativeViewModal
+        visi={ViewDecorativeModal}
+        close={() => setViewDecorativeModal(false)}
+        isBrekup={inputs.radioPriceCalculator}
+      />
+      <StoneViewModal
+        visi={ViewStoneModal}
+        close={() => setViewStoneModal(false)}
+        isBrekup={inputs.radioPriceCalculator}
+      />
+      <View style={styles.container}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: wp(53),
+            justifyContent: 'space-between',
+          }}>
+          <TouchableOpacity
+            delayPressIn={0}
+            onPress={() => navigation.goBack()}>
+            <Image
+              style={styles.img}
+              source={require('../../../assets/L.png')}
+            />
+          </TouchableOpacity>
+          <Text style={[styles.text, {color: 'white'}]}>
+            {!productEdit ? 'SUPPLIER ADD PRODUCT' : 'SUPPLIER UPDATE PRODUCT'}
+          </Text>
+        </View>
+        <View style={styles.headertouch}>
+          <TouchableOpacity onPress={() => navigation.navigate('Message')}>
+            <Image
+              style={styles.img1}
+              source={require('../../../assets/Fo.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleWishList()}>
+            <Image
+              style={styles.img2}
+              source={require('../../../assets/Image/dil.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Logout()}>
+            <Image
+              style={styles.img3}
+              source={require('../../../assets/Image/menu-icon.png')}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+      <ScrollView contentContainerStyle={{}}>
         <View style={{marginTop: wp(4), marginHorizontal: wp(3)}}>
           <Text style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
             {' '}
