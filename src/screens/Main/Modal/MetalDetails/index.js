@@ -29,6 +29,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const metalData = useSelector(state => state.Catalogue?.metalData);
   const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
   const totalWiegt = useSelector(state => state.Catalogue?.totalWiegt);
+  console.log('this is raju', metalData.result);
   const [inputs, setInputs] = useState({
     GrossWt: '',
     MetalPurity: '',
@@ -116,7 +117,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 </Text>
               </View>
             </View>
-            {metalData?.result?.lenght > 0 ? (
+            {true ? (
               <View style={{marginTop: wp(3)}}>
                 <FlatList
                   data={metalData?.result}

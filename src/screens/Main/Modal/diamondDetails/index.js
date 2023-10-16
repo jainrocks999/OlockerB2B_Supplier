@@ -165,7 +165,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                           </Text>
                           <TouchableOpacity
                             onPress={() =>
-                              handleOnRemove(item.SrNo, item.Session)
+                              handleOnRemove(item?.SrNo, item?.Session)
                             }>
                             <MaterialCommunityIcons
                               name="delete"
@@ -180,7 +180,9 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                           </Text>
 
                           <Text style={[styles.cardTitle, styles.dot]}>:</Text>
-                          <Text style={styles.cardTitle}>{item.StoneName}</Text>
+                          <Text style={styles.cardTitle}>
+                            {item?.StoneName}
+                          </Text>
                         </View>
                         <View style={styles.cartItem}>
                           <Text style={[styles.cardTitle, {color: 'black'}]}>
@@ -188,7 +190,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                           </Text>
 
                           <Text style={[styles.cardTitle, styles.dot]}>:</Text>
-                          <Text style={styles.cardTitle}>{item.StoneWt}</Text>
+                          <Text style={styles.cardTitle}>{item?.StoneWt}</Text>
                         </View>
                         <View style={styles.cartItem}>
                           <Text style={[styles.cardTitle, {color: 'black'}]}>
@@ -196,7 +198,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                           </Text>
                           <Text style={[styles.cardTitle, styles.dot]}>:</Text>
                           <Text style={styles.cardTitle}>
-                            {item.UnitStoneWt}
+                            {item?.UnitStoneWt}
                           </Text>
                         </View>
                         <View style={styles.cartItem}>
@@ -206,7 +208,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
 
                           <Text style={[styles.cardTitle, styles.dot]}>:</Text>
                           <Text style={styles.cardTitle}>
-                            {item.StoneQuality}
+                            {item?.StoneQuality}
                           </Text>
                         </View>
                         <View style={styles.cartItem}>
@@ -216,7 +218,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
 
                           <Text style={[styles.cardTitle, styles.dot]}>:</Text>
                           <Text style={styles.cardTitle}>
-                            {item.StoneShape}
+                            {item?.StoneShape}
                           </Text>
                         </View>
                         <View style={styles.cartItem}>
@@ -226,7 +228,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
 
                           <Text style={[styles.cardTitle, styles.dot]}>:</Text>
                           <Text style={styles.cardTitle}>
-                            {item.StoneChargeableAmount}
+                            {item?.StoneChargeableAmount}
                           </Text>
                         </View>
                       </View>

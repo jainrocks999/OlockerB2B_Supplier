@@ -167,7 +167,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
 
                           <Text style={[styles.cardTitle, styles.dot]}>:</Text>
                           <Text style={styles.cardTitle}>
-                            {item.DecorativeItemName}
+                            {item?.DecorativeItemName}
                           </Text>
                         </View>
                         <View style={styles.cartItem}>
@@ -177,7 +177,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
 
                           <Text style={[styles.cardTitle, styles.dot]}>:</Text>
                           <Text style={styles.cardTitle}>
-                            {item.DecorativeItemWt}
+                            {item?.DecorativeItemWt}
                           </Text>
                         </View>
                         <View style={styles.cartItem}>
@@ -186,7 +186,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                           </Text>
                           <Text style={[styles.cardTitle, styles.dot]}>:</Text>
                           <Text style={styles.cardTitle}>
-                            {item.UnitDecoItemWt}
+                            {item?.UnitDecoItemWt}
                           </Text>
                         </View>
                         <View style={styles.cartItem}>
@@ -196,7 +196,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
 
                           <Text style={[styles.cardTitle, styles.dot]}>:</Text>
                           <Text style={styles.cardTitle}>
-                            {item.DecorativeChargeableAmount}
+                            {item?.DecorativeChargeableAmount}
                           </Text>
                         </View>
                       </View>

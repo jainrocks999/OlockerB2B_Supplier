@@ -79,12 +79,12 @@ const AddProducts = () => {
           ];
     return imageArr;
   };
-  console.log('thjis si prorr', productEdit);
+  // console.log('cocccrrr,called', products.SrNo);
   useEffect(() => {
     productEdit ? setEditData() : null;
   }, [editProduct]);
   const setEditData = () => {
-    console.log('cocccrrr,called');
+    // console.log('cocccrrr,called', products.SrNo);
     setInputs(prev => ({
       ...prev,
       radioInventoryPreInsured: products?.isPreInsured,
@@ -302,6 +302,7 @@ const AddProducts = () => {
       StoneName.push(item?.StoneName);
       stoneSrNo.push(item?.SrNo);
     });
+
     setInputs(prev => ({
       ...prev,
       StoneWt: stonesingleWiegt,
@@ -338,6 +339,7 @@ const AddProducts = () => {
       DiamondShape.push(item?.StoneShape);
       DiamondQuality.push(item?.StoneQuality);
     });
+    console.log('this sis sotnddndf', DiamondChargeableAmount);
     setInputs(prev => ({
       ...prev,
       DiamondGrandTotal: diamondWt,
@@ -406,6 +408,7 @@ const AddProducts = () => {
       DecorativeItemName.push(item.DecorativeItemName);
       DecoWtUnit.push(item.UnitDecoItemWt);
     });
+
     setInputs(prev => ({
       ...prev,
       hDecorationSrNo: hDecorationSrNo,
@@ -476,23 +479,132 @@ const AddProducts = () => {
 
     let data2 = new FormData();
     await Object.keys(data).map(async (item, index) => {
-      if (item === 'chk_sc') {
-        data[item]?.map((item, index) => {
-          data2.append(`chk_sc[${index}]`, item);
-        });
-      } else if (item == 'ImgUpload') {
-        data[item]?.map((item, index) => {
-          data2.append(`ImgUpload[${index}]`, item);
-        });
-      } else {
-        data2.append(item, data[item]);
+      // if (item === 'chk_sc') {
+      //   data[item]?.map((item, index) => {
+      //     data2.append(`chk_sc[${index}]`, item);
+      //   });
+      // } else if (item == 'ImgUpload') {
+      //   data[item]?.map((item, index) => {
+      //     data2.append(`ImgUpload[${index}]`, item);
+      //   });
+      // } else {
+      //   data2.append(item, data[item]);
+      // }
+      // StoneWt: stonesingleWiegt,
+      // StoneWtUnit: ['Gms'],
+      // StoneName: StoneName,
+      // StoneChargeableAmount: StoneChargeableAmount,
+      // StoneGrandTotal: stonewt,
+      // hStonesSrNo: stoneSrNo,
+      // txtVStoneWt: `${stonewt} Gms`,
+      switch (item) {
+        // case 'hDiamondSrNo':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`hDiamondSrNo[${index}]`, items);
+        //   });
+        //   break;
+        case 'chk_sc':
+          data[item]?.map((items, index) => {
+            data2.append(`chk_sc[${index}]`, items);
+          });
+          break;
+        case 'ImgUpload':
+          data[item]?.map((items, index) => {
+            data2.append(`ImgUpload[${index}]`, items);
+          });
+          break;
+        // case 'DiamondWtUnit':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`DiamondWtUnit[${index}]`, items);
+        //   });
+        // case 'DiamondName':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`DiamondName[${index}]`, items);
+        //   });
+        //   break;
+        // case 'DiamondShape':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`DiamondShape[${index}]`, items);
+        //   });
+        //   break;
+        // case 'DiamondQuality':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`DiamondQuality[${index}]`, items);
+        //   });
+        //   break;
+        // case 'diamondWt':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`diamondWt[${index}]`, items);
+        //   });
+        //   break;
+        // case 'hDecorationSrNo':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`hDecorationSrNo[${index}]`, items);
+        //   });
+        //   break;
+        // case 'DecorativeItemName':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`DecorativeItemName[${index}]`, items);
+        //   });
+        //   break;
+        // case 'DecoWtUnit':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`DecoWtUnit[${index}]`, items);
+        //   });
+        //   break;
+        // case 'DecoWt':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`DecoWt[${index}]`, items);
+        //   });
+        //   break;
+        // // case 'MetalWtUnit':
+        // //   data[item]?.map((items, index) => {
+        // //     data2.append(`MetalWtUnit[${index}]`, items);
+        // //   });
+        // case 'MetalWt':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`MetalWt[${index}]`, items);
+        //   });
+        //   break;
+        // case 'Metal_Purity':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`Metal_Purity[${index}]`, items);
+        //   });
+        //   break;
+        // case 'MetalTypes':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`MetalTypes[${index}]`, items);
+        //   });
+        //   break;
+        // // case 'StoneWtUnit':
+        // //   data[item]?.map((items, index) => {
+        // //     data2.append(`StoneWtUnit[${index}]`, items);
+        // //   });
+        // case 'StoneName':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`StoneName[${index}]`, items);
+        //   });
+        //   break;
+        // case 'stoneSrNo':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`stoneSrNo[${index}]`, items);
+        //   });
+        //   break;
+        // case 'StoneWt':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`StoneWt[${index}]`, items);
+        //   });
+        //   break;
+        // case 'StoneWt':
+        //   data[item]?.map((items, index) => {
+        //     data2.append(`StoneWt[${index}]`, items);
+        //   });
+        //   break;
+        default:
+          data2.append(item, data[item]);
       }
     });
-    // console.log(inputs.ImgUpload);
-    // });
-    console.log('this is data', JSON.stringify(data2));
-    console.log(JSON.stringify(data.hProductSrNo));
-    //  console.log(inputs.txtMrp);
+
     fetchDataByPOST(data2);
   };
   const [isFetching3, setIfetching] = useState(false);

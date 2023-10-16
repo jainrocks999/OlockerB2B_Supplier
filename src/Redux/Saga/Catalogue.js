@@ -171,6 +171,7 @@ function* addmetal(action) {
     data.append('current_session_id', action.data.current_session_id);
     data.append('isAdd', action.data.isAdd);
     const res = yield call(Api.fetchDataByPOST, action.url, data);
+    console.log('this is res', JSON.stringify(res));
 
     if (res.status) {
       yield put({

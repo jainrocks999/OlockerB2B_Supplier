@@ -13,7 +13,6 @@ function* doLogin(action) {
   //   params.append('email', 'issuenotfound.404+1@gmail.com');
   //   params.append('password', '123456');
   //   const response = yield call(Api.fetchDataByPOST, action.url, params);
-
   //   if (!response) {
   //     Toast.show('Please enter  Valid user id & password   ');
   //   } else if (response.status == true) {
@@ -47,13 +46,14 @@ function* WishListRequest(action) {
       userid: action.user_id,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
+    console.log('this siss response', response);
     if (response.status == true) {
       yield put({
         type: 'Get_wishListProduct_Success',
         payload: response.data,
       });
       action.navigation.navigate('FavDetails');
-    
+
       // action.navigation.navigate('MyNetwork1', { screen: 'MyNetwork' })
     } else {
       yield put({
@@ -64,6 +64,7 @@ function* WishListRequest(action) {
     yield put({
       type: 'Get_wishListProduct_Error',
     });
+    console.log('this is error', error);
   }
 }
 
@@ -622,12 +623,7 @@ function* SupplierDetail(action) {
 // WishList Request
 
 export default function* authSaga() {
-  // yield takeEvery('User_Login_Request', doLogin);
   yield takeEvery('Get_wishListProduct_Request', WishListRequest);
-  // yield takeEvery('Supplier_Profile_Request', SupportProfileRequest)
-  // yield takeEvery('State_List_Request',stateList)
-  // yield takeEvery('City_List_Request',cityList)
-
   yield takeEvery('User_collection_Request', getCollection);
   yield takeEvery('User_Gold_Request', getGold);
   yield takeEvery('User_SupplierList_Request', SupplierList);

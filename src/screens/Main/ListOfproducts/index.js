@@ -34,6 +34,7 @@ const ListOfproducts = () => {
   const navigation = useNavigation();
   const selector = useSelector(state => state.Catalogue.Products);
   const isFetching = useSelector(state => state.Catalogue.isFetching);
+  const isFetching2 = useSelector(state => state.Auth.isFetching);
   const handleMyCatalogue = async btn => {
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
@@ -61,9 +62,18 @@ const ListOfproducts = () => {
       navigation,
     });
   };
+  handleWishList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Get_wishListProduct_Request',
+      url: '/wishListItem',
+      user_id: user_id,
+      navigation,
+    });
+  };
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      {isFetching ? <Loading /> : null}
+      {isFetching || isFetching2 ? <Loading /> : null}
       <ScrollView contentContainerStyle={{}}>
         <CategoryViewModal
           visi={ViewModal}
@@ -97,12 +107,12 @@ const ListOfproducts = () => {
                 source={require('../../../assets/Image/dil.png')}
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => Logout()}>
+            {/* <TouchableOpacity onPress={() => Logout()}>
               <Image
                 style={styles.img3}
                 source={require('../../../assets/Image/menu-icon.png')}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
 
