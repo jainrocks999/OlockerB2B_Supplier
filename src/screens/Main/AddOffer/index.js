@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
 import {
   View,
   Text,
@@ -21,11 +21,19 @@ import axios from 'axios';
 import {RadioButton} from 'react-native-paper';
 import CheckBox from '@react-native-community/checkbox';
 import {useDispatch, useSelector} from 'react-redux';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 const AddOffer = () => {
   const navigation = useNavigation();
+  const [show, setShow] = useState({
+    show1: false,
+    show2: false,
+  });
   const [fetching, setFetching] = useState(false);
   const dispatch = useDispatch();
   const [offerType, setOfferType] = useState('');
@@ -45,6 +53,7 @@ const AddOffer = () => {
     //  })
   };
   const [value, setValue] = useState(null);
+  //cons;
   const renderItem = item => {
     return (
       <View style={styles.item}>
@@ -60,6 +69,7 @@ const AddOffer = () => {
       </View>
     );
   };
+  console.log('thiss sis', start);
   return (
     <View style={{flex: 1}}>
       <StatusBar />
@@ -137,8 +147,6 @@ const AddOffer = () => {
             }}
             renderItem={renderItem}
           />
-         
-
         </View>
         <View
           style={{
@@ -148,7 +156,13 @@ const AddOffer = () => {
           }}>
           <View style={{width: '48%'}}>
             <Text style={{color: '#23233C', fontSize: 15}}>Start Date</Text>
-            <View
+            <TouchableOpacity
+              onPress={() =>
+                setShow({
+                  show1: true,
+                  show2: false,
+                })
+              }
               style={{
                 width: '100%',
                 borderWidth: 1,
@@ -157,11 +171,55 @@ const AddOffer = () => {
                 borderRadius: 8,
                 paddingHorizontal: 6,
                 marginTop: 4,
-              }}></View>
+                justifyContent: 'center',
+              }}>
+              {show.show1 ? (
+                <RNDateTimePicker
+                  value={start}
+                  onChange={(val, selecdate) => {
+                    setShow({
+                      show1: false,
+                      show2: false,
+                    });
+                    setStart(selecdate);
+                  }}
+                  mode="datetime"
+                  dateFormat="day month year"
+                  minimumDate={new Date()}
+                  maximumDate={new Date(2300, 12, 31)}
+                  style={{borderWidth: 1, height: 20, width: 40}}
+                />
+              ) : (
+                <Text
+                  style={{
+                    alignSelf: 'center',
+                    fontSize: wp(3.5),
+                    color: 'black',
+                  }}>
+                  {start.getFullYear() +
+                    '-' +
+                    start.getMonth() +
+                    '-' +
+                    start.getDate() +
+                    '  ' +
+                    start.getHours() +
+                    ':' +
+                    start.getMinutes() +
+                    ':' +
+                    start.getSeconds()}
+                </Text>
+              )}
+            </TouchableOpacity>
           </View>
           <View style={{width: '48%'}}>
-            <Text style={{color: '#23233C', fontSize: 15}}>Start Date</Text>
-            <View
+            <Text style={{color: '#23233C', fontSize: 15}}>End Date</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setShow({
+                  show1: false,
+                  show2: true,
+                });
+              }}
               style={{
                 width: '100%',
                 borderWidth: 1,
@@ -170,15 +228,43 @@ const AddOffer = () => {
                 borderRadius: 8,
                 paddingHorizontal: 6,
                 marginTop: 4,
+                justifyContent: 'center',
               }}>
-              <RNDateTimePicker
-                value={start}
-                onChange={val => console.log('this is val', val)}
-                mode="date"
-                minimumDate={new Date()}
-                style={{borderWidth: 1, height: 20, width: 40}}
-              />
-            </View>
+              {show.show2 ? (
+                <RNDateTimePicker
+                  value={end}
+                  onChange={(val, end) => {
+                    setShow({
+                      show1: false,
+                      show2: false,
+                    });
+                    setEnd(end);
+                  }}
+                  mode="date"
+                  minimumDate={new Date()}
+                  style={{borderWidth: 1, height: 20, width: 40}}
+                />
+              ) : (
+                <Text
+                  style={{
+                    alignSelf: 'center',
+                    fontSize: wp(3.5),
+                    color: 'black',
+                  }}>
+                  {end.getFullYear() +
+                    '-' +
+                    end.getMonth() +
+                    '-' +
+                    end.getDate() +
+                    '  ' +
+                    end.getHours() +
+                    ':' +
+                    end.getMinutes() +
+                    ':' +
+                    end.getSeconds()}
+                </Text>
+              )}
+            </TouchableOpacity>
           </View>
         </View>
         <Text
@@ -206,7 +292,6 @@ const AddOffer = () => {
             }}
             renderItem={renderItem}
           />
-         
         </View>
         <Text
           style={{
@@ -230,23 +315,26 @@ const AddOffer = () => {
           }}>
           <TextInput placeholder="Discount Percentage" />
         </View>
-        <View style={{marginTop: 10,flexDirection:'row',
-        marginHorizontal:10,
-        justifyContent:'space-between'}}>
+        <View
+          style={{
+            marginTop: 10,
+            flexDirection: 'row',
+            marginHorizontal: 10,
+            justifyContent: 'space-between',
+          }}>
           <TouchableOpacity
-
-          onPress={()=>{
-            navigation.navigate('AddProductTooffer')
-          }}
+            onPress={() => {
+              navigation.navigate('AddProductTooffer');
+            }}
             style={{
               backgroundColor: '#032e63',
               borderRadius: 20,
               alignItems: 'center',
               height: 40,
-              paddingHorizontal:5,
+              paddingHorizontal: 5,
               justifyContent: 'center',
               marginTop: 15,
-              width:'45%'
+              width: '45%',
             }}>
             <Text
               style={{
@@ -265,7 +353,7 @@ const AddOffer = () => {
               height: 40,
               justifyContent: 'center',
               marginTop: 15,
-              width:'45%'
+              width: '45%',
             }}>
             <Text
               style={{

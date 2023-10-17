@@ -8,9 +8,11 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {useNavigation} from '@react-navigation/native';
 
 export default function AddProductTooffer() {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const navigation = useNavigation();
   return (
     <ScrollView>
       <View style={{flex: 1}}>
@@ -66,8 +68,8 @@ export default function AddProductTooffer() {
               data={Offer}
               renderItem={({item}) => (
                 <View style={styles.Card}>
-                  <View style={{marginHorizontal:10,marginTop:5}}>
-                    <CheckBox/>
+                  <View style={{marginHorizontal: 10, marginTop: 5}}>
+                    <CheckBox />
                   </View>
                   <View style={{padding: 7}}>
                     <Image
@@ -137,7 +139,7 @@ export default function AddProductTooffer() {
                         marginTop: 10,
                         color: '#000',
                       }}>
-                   Stone Wt:-{' '}
+                      Stone Wt:-{' '}
                       <Text
                         style={{
                           fontSize: 16,
@@ -164,7 +166,7 @@ export default function AddProductTooffer() {
                         {item.Price}
                       </Text>
                     </Text>
-                    
+
                     <View
                       style={{
                         alignItems: 'center',
@@ -180,9 +182,7 @@ export default function AddProductTooffer() {
                         }}>
                         Product Name:-{' '}
                       </Text>
-                      <View>
-                        
-                      </View>
+                      <View></View>
                     </View>
                     <Text
                       style={{
@@ -225,13 +225,8 @@ export default function AddProductTooffer() {
                           justifyContent: 'space-between',
 
                           width: '58%',
-                        }}>
-                       
-                       
-                      </View>
+                        }}></View>
                     </View>
-                  
-                  
                   </View>
                 </View>
               )}
@@ -308,7 +303,6 @@ const Offer = [
     MetalWT: 80000,
     StoneWT: 80000,
     Price: '₹4389015.19',
-    
   },
   {
     ProductSku: '10BAI-683',
@@ -318,7 +312,6 @@ const Offer = [
     MetalWT: 80000,
     StoneWT: 80000,
     Price: '₹4389015.19',
-    
   },
   {
     ProductSku: '10BAI-683',
@@ -328,6 +321,5 @@ const Offer = [
     MetalWT: 80000,
     StoneWT: 80000,
     Price: '₹4389015.19',
-    
   },
 ];

@@ -289,7 +289,7 @@ const AddProducts = () => {
     let stoneSrNo = [];
     let stonesingleWiegt = [];
     await stoneData?.map(item => {
-      console.log('thnis is ite,', item);
+      // console.log('thnis is ite,', item);
 
       let stonewieght =
         item.UnitStoneWt === 'Cts.' ? item.StoneWt / 5 : item.StoneWt;
@@ -339,7 +339,7 @@ const AddProducts = () => {
       DiamondShape.push(item?.StoneShape);
       DiamondQuality.push(item?.StoneQuality);
     });
-    console.log('this sis sotnddndf', DiamondChargeableAmount);
+    // console.log('this sis sotnddndf', DiamondChargeableAmount);
     setInputs(prev => ({
       ...prev,
       DiamondGrandTotal: diamondWt,
@@ -582,7 +582,7 @@ const AddProducts = () => {
         // //   });
         // case 'StoneName':
         //   data[item]?.map((items, index) => {
-        //     data2.append(`StoneName[${index}]`, items);
+        // data2.append(`StoneName[${index}]`, items);
         //   });
         //   break;
         // case 'stoneSrNo':
