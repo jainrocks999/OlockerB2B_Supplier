@@ -29,8 +29,8 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     DecoWtUnit: '',
     ChargAmt: '',
     DecoItemName: '',
-    hDecorationSrNo: '',
-    hProductSrNo: '',
+    hDecorationSrNo: 0,
+    hProductSrNo: 0,
   });
   //decItemDetails
   const decItemDetails = productType?.decItemDetails?.map(item => {
@@ -44,14 +44,15 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   //decorativeData
   const decorativeData = useSelector(state => state.Catalogue?.decorativeData);
   const isFetching = useSelector(state => state.Catalogue?.isFetching);
+  const productEdit = useSelector(state => state.Catalogue?.productEdit);
   useEffect(() => {
     setInputs({
       DecoWt: '',
       DecoWtUnit: '',
       ChargAmt: '',
       DecoItemName: '',
-      hDecorationSrNo: '',
-      hProductSrNo: '',
+      hDecorationSrNo: 0,
+      hProductSrNo: 0,
     });
   }, [decorativeData]);
   const handleOnSubmit = async (isEdit, item) => {
@@ -71,10 +72,10 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         url: 'addDecorative',
         data: {
           ...inputs,
-          isAdd: 1,
-          current_session_id: session,
+          isAdd: productEdit ? 0 : 1,
+          current_session_id: productEdit ? '' : session,
           BreakUp: isBrekup == 1 ? 0 : 1,
-          hProductSrNo: hProductSrNo ? hProductSrNo : '',
+          hProductSrNo: productEdit ? hProductSrNo : 0,
         },
       });
     }
@@ -257,7 +258,9 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 search
                 labelField="label"
                 valueField="value"
-                placeholder="Select Unit of Wt."
+                placeholder={
+                  inputs.DecoWtUnit ? inputs.DecoWtUnit : 'Select Unit of Wt.'
+                }
                 value={inputs.DecoWtUnit}
                 onChange={item => {
                   handleInputs('DecoWtUnit', item.value);

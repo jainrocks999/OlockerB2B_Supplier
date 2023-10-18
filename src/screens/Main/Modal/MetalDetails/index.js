@@ -29,7 +29,8 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const metalData = useSelector(state => state.Catalogue?.metalData);
   const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
   const totalWiegt = useSelector(state => state.Catalogue?.totalWiegt);
-  console.log('this is raju', metalData.result);
+  const productEdit = useSelector(state => state.Catalogue?.productEdit);
+  // console.log('this is raju', metalData.result);
   const [inputs, setInputs] = useState({
     GrossWt: '',
     MetalPurity: '',
@@ -37,8 +38,8 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     MetalWt: '',
     MetalWtUnit: '',
     session: '',
-    hProductSrNo: '',
-    hMetalWt: '',
+    hProductSrNo: 0,
+    hMetalWt: 0,
     isAdd: 1,
   });
   useEffect(() => {
@@ -49,9 +50,8 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
       MetalWt: '',
       MetalWtUnit: '',
       current_session_id: session,
-      hProductSrNo: '',
-      isAdd: 1,
-      hMetalWt: '',
+      hProductSrNo: 0,
+      hMetalWt: 0,
     });
   }, [metalData]);
   const handleInputs = (type, input) => {
@@ -66,7 +66,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         MetalTypes: item.MetalType,
         MetalWt: item.MetalWt,
         MetalWtUnit: item.UnitMetalWt,
-        isAdd: 1,
+
         hMetalWt: item.SrNo,
       });
     } else {
@@ -75,8 +75,9 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         url: 'addmetal',
         data: {
           ...inputs,
-          current_session_id: session,
-          hProductSrNo: hProductSrNo ? hProductSrNo : '',
+          current_session_id: productEdit ? '' : session,
+          hProductSrNo: productEdit ? hProductSrNo : 0,
+          isAdd: productEdit ? 0 : 1,
         },
       });
     }

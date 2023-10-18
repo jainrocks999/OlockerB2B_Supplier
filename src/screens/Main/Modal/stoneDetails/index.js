@@ -28,6 +28,7 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const stoneData = useSelector(state => state.Catalogue?.stoneData);
   const isFetching = useSelector(state => state.Catalogue.isFetching);
   const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
+  const productEdit = useSelector(state => state.Catalogue?.productEdit);
 
   const [value, setValue] = useState(null);
   const [inputs, setInputs] = useState({
@@ -36,8 +37,8 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     ChargAmt: '',
     StoneName: '',
     isAdd: 1,
-    hProductSrNo: '',
-    hStonesSrNo: '',
+    hProductSrNo: 0,
+    hStonesSrNo: 0,
     current_session_id: '',
   });
   const stoneDetails = productType?.stoneDetails?.map(item => {
@@ -54,8 +55,8 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
       ChargAmt: '',
       StoneName: '',
       isAdd: 1,
-      hProductSrNo: '',
-      hStonesSrNo: '',
+      hProductSrNo: 0,
+      hStonesSrNo: 0,
       current_session_id: session,
     });
   }, [stoneData]);
@@ -66,7 +67,6 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         StoneWtUnit: item.UnitStoneWt,
         StoneWt: item.StoneWt,
         StoneName: item.StoneName,
-        isAdd: 1,
         hStonesSrNo: item.SrNo,
       });
     } else {
@@ -76,8 +76,9 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         data: {
           ...inputs,
           BreakUp: isBrekup == 0 ? 1 : 0,
-          current_session_id: session,
-          hProductSrNo: hProductSrNo ? hProductSrNo : '',
+          isAdd: productEdit ? 0 : 1,
+          current_session_id: productEdit ? '' : session,
+          hProductSrNo: productEdit ? hProductSrNo : 0,
         },
       });
     }

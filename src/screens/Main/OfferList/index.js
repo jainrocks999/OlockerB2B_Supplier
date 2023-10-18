@@ -83,7 +83,6 @@ const OfferList = () => {
         }
       } catch (error) {
         setFetching(false);
-        // console.log('this isi error', error);
       }
     }
   };

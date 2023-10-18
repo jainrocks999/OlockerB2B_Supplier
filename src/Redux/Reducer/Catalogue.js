@@ -186,6 +186,12 @@ export default (state = initialstate, action) => {
       return {...state, isFetching: false, productData: action.payload};
     case 'product_detail_error':
       return {...state, isFetching: false};
+    case 'product_delete_request':
+      return {...state, isFetching: true};
+    case 'product_delete_success':
+      return {...state, isFetching: false};
+    case 'product_delete_error':
+      return {...state, isFetching: false};
     default:
       return state;
   }

@@ -26,6 +26,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const diamondData = useSelector(state => state.Catalogue?.diamondData);
   const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
   const isFetching = useSelector(state => state.Catalogue?.isFetching);
+  const productEdit = useSelector(state => state.Catalogue?.productEdit);
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     Diamondwt: '',
@@ -34,8 +35,8 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     DiamondName: '',
     DiamondShape: '',
     DiamondQuality: '',
-    hProductSrNo: '',
-    hDiamondSrNo: '',
+    hProductSrNo: 0,
+    hDiamondSrNo: 0,
   });
 
   useEffect(() => {
@@ -46,8 +47,8 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
       DiamondName: '',
       DiamondShape: '',
       DiamondQuality: '',
-      hDiamondSrNo: '',
-      hProductSrNo: '',
+      hDiamondSrNo: 0,
+      hProductSrNo: 0,
     });
   }, [diamondData]);
 
@@ -67,6 +68,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
 
   const handleOnSubmit = async (isEdit, item) => {
     if (isEdit) {
+      console.log(item?.UnitStoneWt);
       setInputs({
         Diamondwt: item?.StoneWt,
         DiamondWtUnit: item?.UnitStoneWt,
@@ -83,10 +85,9 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         url: 'addDiamond',
         data: {
           ...inputs,
-          current_session_id: session,
-          isAdd: 1,
-          hProductSrNo: hProductSrNo ? hProductSrNo : '',
-
+          current_session_id: productEdit ? '' : session,
+          isAdd: productEdit ? 0 : 1,
+          hProductSrNo: productEdit ? hProductSrNo : 0,
           BreakUp: isBrekup == 0 ? 1 : 0,
         },
       });
@@ -289,7 +290,11 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 search
                 labelField="label"
                 valueField="value"
-                placeholder="Select Unit of wt."
+                placeholder={
+                  inputs.DiamondWtUnit
+                    ? inputs.DiamondWtUnit
+                    : 'Select Unit of wt.'
+                }
                 value={inputs.DiamondWtUnit}
                 onChange={item => {
                   handleInputs('DiamondWtUnit', item.value);

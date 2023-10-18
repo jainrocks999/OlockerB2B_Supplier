@@ -548,6 +548,42 @@ function* productData(action) {
     });
   }
 }
+function* deleteProduct(action) {
+  try {
+    console.log('derrree');
+    const data = {
+      productSrNo: action.productSrNo,
+      supplierSrNo: action.supplierSrNo,
+    };
+    // {"success":true,"status":"success","msg":"Successfully, product data has been deleted"}
+    const res = yield call(Api.fetchDataByGET1, action.url, data);
+    if (res.success || res.status) {
+      yield put({
+        type: 'product_delete_success',
+      });
+      yield put({
+        type: 'My_Product_Request',
+        url: '/getProductList',
+        user_id: action.supplierSrNo,
+        start: 0,
+        length: 80,
+        search: '',
+        navigation: action.navigation,
+        btn: '',
+      });
+    } else {
+      yield put({
+        type: 'product_delete_error',
+      });
+    }
+    Toast.show(res.msg);
+  } catch (error) {
+    console.log(error);
+    yield put({
+      type: 'product_delete_error',
+    });
+  }
+}
 export default function* citySaga() {
   yield takeEvery('Get_Catalogue_Request', getCatalogue);
   yield takeEvery('My_Product_Request', getProducts);
@@ -567,4 +603,5 @@ export default function* citySaga() {
   yield takeEvery('remove_decorative_request', removeDecorative);
   yield takeEvery('edit_product_reqest', editProduct);
   yield takeEvery('product_detail_request', productData);
+  yield takeEvery('product_delete_request', deleteProduct);
 }

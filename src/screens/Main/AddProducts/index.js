@@ -191,7 +191,7 @@ const AddProducts = () => {
     ItemName: '',
     Status: 'Live',
     ProductSku: '',
-    StyleID: '',
+    StyleID: 0,
     Hallmarked: 1,
     radioGender: 'Male',
     IsBestSeller: false,
@@ -212,10 +212,10 @@ const AddProducts = () => {
     MetalWtGrandTotal: 0,
     hMetalWt: [],
     GrossWt: 0,
-    MetalTypes: [],
-    Metal_Purity: [],
+    MetalTypes: '',
+    Metal_Purity: '',
     MetalWt: 0,
-    MetalWtUnit: [],
+    MetalWtUnit: '',
     DecorationGrandTotal: 0,
     hDecorationSrNo: [],
     DecoWt: 0,
@@ -234,21 +234,21 @@ const AddProducts = () => {
     lblBreadthUnit: '', //thikness
     lblSizeUnit: '',
     lblheightUnit: '',
-    txtProductWidth: '',
-    txtProductHeight: '',
-    txtProductBreadth: '', //thikness
-    txtSize: '',
+    txtProductWidth: 0,
+    txtProductHeight: 0,
+    txtProductBreadth: 0, //thikness
+    txtSize: 0,
     txtVGrossWt: '',
     txtVMetalWt: '',
     txtVDiamondWt: '',
     txtVStoneWt: '',
     txtVDecoWt: '',
     txtMrp: '',
-    DeliveryDays: '',
+    DeliveryDays: 0,
     hdnGrossWt: '',
     DecoItemName: '',
     submit: 'create product',
-    ItemType: '',
+    ItemType: 0,
     hdnProductSku: '',
     hdnProductType: '',
     rbCategory: 'Category B',
@@ -259,6 +259,7 @@ const AddProducts = () => {
   useEffect(() => {
     diamondData?.length > 0 ? addDiamondData() : null;
   }, [diamondData]);
+  console.log('this iss lengr', metalData?.result?.length);
   useEffect(() => {
     metalData?.result?.length > 0 ? addMetalData() : null;
   }, [metalData]);
@@ -281,6 +282,7 @@ const AddProducts = () => {
       lblheightUnit: itemField?.lblheightUnit,
     }));
   };
+
   const addStonedata = async () => {
     let stonewt = 0;
     let StoneWtUnit = [];
@@ -289,7 +291,7 @@ const AddProducts = () => {
     let stoneSrNo = [];
     let stonesingleWiegt = [];
     await stoneData?.map(item => {
-      // console.log('thnis is ite,', item);
+      console.log('thnis is ite,', item);
 
       let stonewieght =
         item.UnitStoneWt === 'Cts.' ? item.StoneWt / 5 : item.StoneWt;
@@ -311,9 +313,10 @@ const AddProducts = () => {
       StoneChargeableAmount: StoneChargeableAmount,
       StoneGrandTotal: stonewt,
       hStonesSrNo: stoneSrNo,
-      txtVStoneWt: `${stonewt} Gms`,
+      txtVStoneWt: `${stonewt}Gms`,
     }));
     calculatePrice();
+    verifyProduct();
   };
 
   const addDiamondData = async () => {
@@ -350,9 +353,10 @@ const AddProducts = () => {
       DiamondName: DiamondName,
       DiamondShape: DiamondShape,
       DiamondQuality: DiamondQuality,
-      txtVDiamondWt: `${diamondWt} Gms`,
+      txtVDiamondWt: `${diamondWt}Gms`,
     }));
     calculatePrice();
+    verifyProduct();
   };
 
   const addMetalData = async () => {
@@ -377,14 +381,16 @@ const AddProducts = () => {
       MetalWtGrandTotal: hMetalWt,
       GrossWt: totalWiegt,
       MetalWt: MetalWtGrandTotal,
-      MetalWtUnit: ['Gms'],
-      Metal_Purity: Metal_Purity,
-      MetalTypes: MetalTypes,
+      MetalWtUnit: MetalWtUnit[MetalWtUnit.length - 1],
+      Metal_Purity: Metal_Purity[Metal_Purity.length - 1],
+      MetalTypes: MetalTypes[MetalTypes.length - 1],
       txtVGrossWt: `${totalWiegt} ${MetalWtUnit[0]}`,
-      txtVMetalWt: `${hMetalWt} Gms`,
+      txtVMetalWt: `${hMetalWt}Gms`,
       hdnGrossWt: totalWiegt,
     }));
+    console.log('thiss sis metal data', hMetalWt);
     calculatePrice();
+    verifyProduct();
   };
 
   const addDecorativeData = async () => {
@@ -417,9 +423,10 @@ const AddProducts = () => {
       DecorativeChargeableAmount: DecorativeChargeableAmount,
       DecorativeItemName: DecorativeItemName,
       DecoWtUnit: ['Gms'],
-      txtVDecoWt: `${DecoWt} Gms`,
+      txtVDecoWt: `${DecoWt}Gms`,
     }));
     calculatePrice();
+    verifyProduct();
   };
   const calculatePrice = () => {
     inputs.DiamondChargeableAmount;
@@ -467,14 +474,16 @@ const AddProducts = () => {
     let data = {
       ...inputs,
       hdnIsMrp: inputs.radioPriceCalculator,
-      hProductSrNo: hProductSrNo ? hProductSrNo : '',
+      hProductSrNo: productEdit ? hProductSrNo : 0,
       hdnProductPartner: '',
       hdnProductBranch: '',
       hdnImagecount: inputs.ImgUpload.length,
       userid: user_id,
-      current_session_id: session,
+      current_session_id: productEdit ? '' : session,
       IsDefaultSupplier: 1,
       IsBestSeller: inputs.IsBestSeller ? 1 : 0,
+      submit: productEdit ? 'update product' : 'create product',
+      radioPriceCalculator: inputs.radioPriceCalculator.toString(),
     };
 
     let data2 = new FormData();
@@ -604,7 +613,7 @@ const AddProducts = () => {
           data2.append(item, data[item]);
       }
     });
-
+    console.log(JSON.stringify(data2));
     fetchDataByPOST(data2);
   };
   const [isFetching3, setIfetching] = useState(false);
@@ -726,7 +735,7 @@ const AddProducts = () => {
             <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>
               Digital Inventory
             </Text>
-            <View style={{marginLeft: wp(5)}}>
+            {/* <View style={{marginLeft: wp(5)}}>
               <RadioButton
                 value={inputs.radioInventoryPreInsured}
                 color="#032e63"
@@ -740,7 +749,7 @@ const AddProducts = () => {
 
             <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>
               Pre-Insured Jewellery
-            </Text>
+            </Text> */}
           </View>
 
           <View style={styles.mrt}>

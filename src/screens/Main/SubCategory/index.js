@@ -24,6 +24,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import Mat from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SubCategory = ({route}) => {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ const SubCategory = ({route}) => {
   const selector = useSelector(state => state.ProductDetail?.detail);
   const selector1 = useSelector(state => state.SupplierProDetail?.detail);
   const productData = useSelector(state => state.Catalogue?.productData);
+  const isFetching4 = useSelector(state => state.Catalogue?.isFetching);
   const ima = productData?.productdetails?.productimages;
 
   const Detail = 'route.params.Details';
@@ -100,6 +102,16 @@ const SubCategory = ({route}) => {
       url: 'productDetails',
       productId: productData?.products?.SrNo,
       supplierSrNo: user_id,
+      navigation,
+    });
+  };
+  const deleteProduct = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'product_delete_request',
+      productSrNo: productData?.products?.SrNo,
+      supplierSrNo: user_id,
+      url: 'deleteProduct',
       navigation,
     });
   };
@@ -185,7 +197,7 @@ const SubCategory = ({route}) => {
         onPress2={() => navigation.navigate('FavDetails')}
       />
       <ScrollView>
-        {isFetching ? <Loader /> : null}
+        {isFetching || isFetching4 ? <Loader /> : null}
         <View style={styles.main}>
           <TouchableOpacity onPress={() => click(click1)}>
             <TouchableOpacity
@@ -284,15 +296,25 @@ const SubCategory = ({route}) => {
                 </Text>
               </View>
               {Detail ? (
-                <TouchableOpacity
-                  onPress={() => edtiProduct()}
+                <View
                   //  onPress={()=>manageEdit()}
-                  style={{alignItems: 'flex-end'}}>
-                  <Image
-                    style={{width: 20, height: 20}}
-                    source={require('../../../assets/Image/edit.png')}
+                  style={{alignItems: 'flex-end', flexDirection: 'row'}}>
+                  <TouchableOpacity onPress={() => edtiProduct()}>
+                    <Image
+                      style={{width: 20, height: 20}}
+                      source={require('../../../assets/Image/edit.png')}
+                    />
+                  </TouchableOpacity>
+                  <Mat
+                    name="delete"
+                    color="black"
+                    size={wp(6)}
+                    style={{marginLeft: 10}}
+                    onPress={() => {
+                      deleteProduct();
+                    }}
                   />
-                </TouchableOpacity>
+                </View>
               ) : null}
             </View>
             <View style={{marginLeft: 20, marginTop: 8}}>
