@@ -55,10 +55,9 @@ const AddProducts = () => {
   const msg = useSelector(state => state.Catalogue?.msg);
   const editProduct = useSelector(state => state.Catalogue?.editProduct);
   const productEdit = useSelector(state => state.Catalogue?.productEdit);
-  console.log('thi si editprod', editProduct);
   const products = editProduct?.products;
   const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
-  console.log('this iss product editt', editProduct);
+  //console.log('this iss product editt', hProductSrNo);
   const getImage = () => {
     //https://olocker.co${item?.ImageLocation}/${item?.ImageName}
     const imageArr =
@@ -132,15 +131,31 @@ const AddProducts = () => {
   };
   const navigation = useNavigation();
 
-  const verifyProduct = () => {
+  const verifyProduct = (stone, diamondWt, hMetalWt, DecoWt) => {
     dispatch({
       type: 'verify_product_wieght_request',
       url: 'verifyWt',
-      GrossWt: inputs.GrossWt,
-      MetalWtGrandTotal: inputs.MetalWtGrandTotal,
-      DiamondGrandTotal: inputs.DiamondGrandTotal,
-      StoneGrandTotal: inputs.StoneGrandTotal,
-      DecorationGrandTotal: inputs.DecorationGrandTotal,
+      GrossWt: totalWiegt,
+      MetalWtGrandTotal: hMetalWt
+        ? hMetalWt
+        : inputs.MetalWtGrandTotal
+        ? inputs.MetalWtGrandTotal
+        : editProduct?.productMetalGrandTotal,
+      DiamondGrandTotal: diamondWt
+        ? diamondWt
+        : inputs.DiamondGrandTotal
+        ? inputs.DiamondGrandTotal
+        : editProduct?.productDiamondGrandTotal,
+      StoneGrandTotal: stone
+        ? stone
+        : inputs.StoneGrandTotal
+        ? inputs.StoneGrandTotal
+        : editProduct?.productStoneGrandTotal,
+      DecorationGrandTotal: DecoWt
+        ? DecoWt
+        : inputs.DecorationGrandTotal
+        ? inputs.DecorationGrandTotal
+        : editProduct?.productDecoGrandTotal,
     });
   };
 
@@ -198,7 +213,7 @@ const AddProducts = () => {
     StoneWt: '',
     StoneWtUnit: [],
     StoneName: [],
-    StoneChargeableAmount: '',
+    StoneChargeableAmount: 0,
     StoneGrandTotal: 0,
     hStonesSrNo: [],
     DiamondGrandTotal: '',
@@ -222,7 +237,7 @@ const AddProducts = () => {
     DecorativeChargeableAmount: 0,
     DecorativeItemName: [],
     DecoWtUnit: [],
-    txtLabourCharges: '',
+    txtLabourCharges: 0,
     radioIsWastage: 0,
     txtProductCharges: '',
     isProductCertd: 0,
@@ -315,8 +330,8 @@ const AddProducts = () => {
       hStonesSrNo: stoneSrNo,
       txtVStoneWt: `${stonewt}Gms`,
     }));
-    calculatePrice();
-    verifyProduct();
+
+    verifyProduct(stonewt);
   };
 
   const addDiamondData = async () => {
@@ -355,8 +370,8 @@ const AddProducts = () => {
       DiamondQuality: DiamondQuality,
       txtVDiamondWt: `${diamondWt}Gms`,
     }));
-    calculatePrice();
-    verifyProduct();
+
+    verifyProduct('', diamondWt);
   };
 
   const addMetalData = async () => {
@@ -388,9 +403,9 @@ const AddProducts = () => {
       txtVMetalWt: `${hMetalWt}Gms`,
       hdnGrossWt: totalWiegt,
     }));
-    console.log('thiss sis metal data', hMetalWt);
-    calculatePrice();
-    verifyProduct();
+    //  console.log('thiss sis metal data', hMetalWt);
+
+    verifyProduct('', '', hMetalWt);
   };
 
   const addDecorativeData = async () => {
@@ -425,14 +440,17 @@ const AddProducts = () => {
       DecoWtUnit: ['Gms'],
       txtVDecoWt: `${DecoWt}Gms`,
     }));
-    calculatePrice();
-    verifyProduct();
-  };
-  const calculatePrice = () => {
-    inputs.DiamondChargeableAmount;
-    inputs.DecorativeChargeableAmount;
-    inputs.StoneChargeableAmount;
 
+    verifyProduct('', '', '', DecoWt);
+  };
+  useEffect(() => {
+    inputs.radioPriceCalculator == 0 ? calculatePrice() : null;
+  }, [
+    inputs.DiamondChargeableAmount,
+    inputs.StoneChargeableAmount,
+    inputs.DecorativeChargeableAmount,
+  ]);
+  const calculatePrice = () => {
     const res =
       parseFloat(
         inputs.DiamondChargeableAmount > 0
@@ -619,6 +637,7 @@ const AddProducts = () => {
   const [isFetching3, setIfetching] = useState(false);
   const fetchDataByPOST = async params => {
     setIfetching(true);
+    const user_id = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
     const config = {
       headers: {
@@ -634,10 +653,26 @@ const AddProducts = () => {
       );
       console.log('thissississisi', JSON.stringify(response));
       setIfetching(false);
+      if (response.data.status) {
+        dispatch({
+          type: 'My_Product_Request',
+          url: '/getProductList',
+          user_id: user_id,
+          start: 0,
+          length: 10,
+          search: '',
+          navigation: navigation,
+          btn: '',
+          isDlete: true,
+          isEdit: editProduct,
+          count: editProduct ? 2 : 1,
+        });
+      }
       Toast.show(response.data.msg);
     } catch (error) {
+      console.log('this iss eer', error);
       setIfetching(false);
-      Toast.show('Something went wrong');
+      Toast.show('something went wrong');
     }
   };
 
@@ -807,7 +842,9 @@ const AddProducts = () => {
         }
         <View>
           <View style={styles.mrt}>
-            <Text style={styles.text}>Item Name</Text>
+            <Text style={styles.text}>
+              Item Name <Text style={{color: 'red'}}>*</Text>
+            </Text>
             <View>
               {productType?.productType && (
                 <Dropdown
@@ -841,7 +878,9 @@ const AddProducts = () => {
             </View>
           </View>
           <View style={styles.mrt}>
-            <Text style={styles.text}>Status</Text>
+            <Text style={styles.text}>
+              Status <Text style={{color: 'red'}}>*</Text>
+            </Text>
             <View>
               <Dropdown
                 style={[

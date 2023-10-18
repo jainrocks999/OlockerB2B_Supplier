@@ -34,7 +34,7 @@ const SubCategory = ({route}) => {
   const productData = useSelector(state => state.Catalogue?.productData);
   const isFetching4 = useSelector(state => state.Catalogue?.isFetching);
   const ima = productData?.productdetails?.productimages;
-
+  console.log('this is product data', JSON.stringify(productData));
   const Detail = 'route.params.Details';
   // console.log(
   //   'detailss........................',
@@ -336,7 +336,7 @@ const SubCategory = ({route}) => {
                   marginTop: -15,
                 }}>
                 <Text style={styles.cardtext}>
-                  {'Stock No :      ' + +productData?.products?.SrNo}
+                  {'Stock No :      ' + productData?.products?.SrNo}
                 </Text>
                 <TextInput
                   style={{height: 40, color: '#052a47'}}
@@ -352,7 +352,9 @@ const SubCategory = ({route}) => {
                   alignItems: 'center',
                   marginTop: -15,
                 }}>
-                <Text style={styles.cardtext}>{'Metal        :     '}</Text>
+                <Text style={styles.cardtext}>
+                  {'Metal        :     ' + productData?.products?.ItemDesc}
+                </Text>
 
                 <TextInput
                   style={{height: 40, color: '#052a47'}}

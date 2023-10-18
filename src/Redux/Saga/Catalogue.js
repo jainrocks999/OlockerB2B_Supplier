@@ -49,7 +49,13 @@ function* getProducts(action) {
         action.navigation.navigate('MyCatalogueCopy'); //OfferTemplate
       } else if (action.btn === 'see') {
       } else {
-        action.navigation.navigate('AddSupplierProdcut');
+        if (action?.isDlete) {
+          action.navigation.pop(1);
+        } else if (action?.isEdit) {
+          action.navigation.pop(action?.count);
+        } else {
+          action.navigation.navigate('AddSupplierProdcut');
+        }
       }
     } else {
       yield put({
@@ -566,10 +572,11 @@ function* deleteProduct(action) {
         url: '/getProductList',
         user_id: action.supplierSrNo,
         start: 0,
-        length: 80,
+        length: 10,
         search: '',
         navigation: action.navigation,
         btn: '',
+        isDlete: true,
       });
     } else {
       yield put({
