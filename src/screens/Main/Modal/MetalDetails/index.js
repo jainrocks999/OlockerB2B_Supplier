@@ -87,14 +87,16 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     return {value: item.Value, label: item.Value};
   });
 
-  const handleOnDelete = (SrNo, session) => {
+  const handleOnDelete = (SrNo, session, item) => {
     dispatch({
       type: 'delete_metal_request',
       url: 'removeMetal',
-      session,
-      SrNo,
+      current_session_id: productEdit ? 0 : session,
+      MetalId: SrNo,
+      hProductSrNo: productEdit ? hProductSrNo : 0,
     });
-    // console.log(SrNo, session);
+    console.log(SrNo, session);
+    console.log(item);
   };
 
   return (
@@ -118,7 +120,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 </Text>
               </View>
             </View>
-            {true ? (
+            {metalData.result[0] != undefined ? (
               <View style={{marginTop: wp(3)}}>
                 <FlatList
                   data={metalData?.result}
@@ -158,7 +160,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                           </Text>
                           <TouchableOpacity
                             onPress={() =>
-                              handleOnDelete(item?.SrNo, item?.Session)
+                              handleOnDelete(item?.SrNo, item?.Session, item)
                             }>
                             <MaterialCommunityIcons
                               name="delete"

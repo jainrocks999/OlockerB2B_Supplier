@@ -86,7 +86,8 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
       url: 'removeDecorative',
       DecorativeId: SrNo,
       BreakUp: isBrekup == 0 ? 1 : 0,
-      current_session_id: sessions,
+      current_session_id:productEdit?0: sessions,
+      hProductSrNo:productEdit?hProductSrNo:0
     });
   };
 
@@ -110,7 +111,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 </Text>
               </View>
             </View>
-            {decItemDetails ? (
+            {decorativeData[0] != undefined ? (
               <View style={{marginTop: wp(3)}}>
                 <FlatList
                   data={decorativeData}

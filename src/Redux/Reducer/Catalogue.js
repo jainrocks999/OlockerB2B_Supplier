@@ -16,6 +16,12 @@ initialstate = {
   hProductSrNo: '',
   productEdit: false,
   productData: {},
+  datadelete: {
+    decorative: false,
+    stone: false,
+    metal: false,
+    diamond: false,
+  },
 };
 
 export default (state = initialstate, action) => {
@@ -118,10 +124,21 @@ export default (state = initialstate, action) => {
     case 'delete_metal_request':
       return {...state, isFetching: true};
     case 'delete_metal_success': {
+      console.log('this is playload', action.payload);
       let newdata = state.metalData.result?.filter(
         item => item.SrNo != action.payload,
       );
-      return {...state, isFetching: false, metalData: {result: newdata}};
+      return {
+        ...state,
+        isFetching: false,
+        metalData: {result: newdata},
+        datadelete: {
+          decorative: false,
+          stone: false,
+          metal: true,
+          diamond: false,
+        },
+      };
     }
     case 'delete_metal_error':
       return {...state, isFetching: false};
@@ -134,6 +151,12 @@ export default (state = initialstate, action) => {
         diamondData: state.diamondData.filter(
           item => item.SrNo != action.payload,
         ),
+        datadelete: {
+          decorative: false,
+          stone: false,
+          metal: false,
+          diamond: true,
+        },
       };
     case 'diamond_delete_error':
       return {...state, isFetching: false};
@@ -144,6 +167,12 @@ export default (state = initialstate, action) => {
         ...state,
         isFetching: false,
         stoneData: state.stoneData.filter(item => item.SrNo != action.payload),
+        datadelete: {
+          decorative: false,
+          stone: true,
+          metal: false,
+          diamond: false,
+        },
       };
     case 'remove_stone_error':
       return {...state, isFetching: false};
@@ -156,11 +185,16 @@ export default (state = initialstate, action) => {
         decorativeData: state.decorativeData.filter(
           item => item.SrNo != action.payload,
         ),
+        datadelete: {
+          decorative: true,
+          stone: false,
+          metal: false,
+          diamond: false,
+        },
       };
     case 'remove_decorative_error':
       return {...state, isFetching: false};
-    case 'remove_decorative_error':
-      return {...state, isFetching: false};
+
     case 'edit_product_reqest':
       return {...state, isFetching: true};
     case 'edit_product_success':

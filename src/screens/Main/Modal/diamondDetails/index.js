@@ -27,6 +27,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
   const isFetching = useSelector(state => state.Catalogue?.isFetching);
   const productEdit = useSelector(state => state.Catalogue?.productEdit);
+  console.log(diamondData);
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     Diamondwt: '',
@@ -100,7 +101,8 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
       url: 'removeDiamond',
       DiamondId: SrNo,
       BreakUp: isBrekup === 1 ? 0 : 1,
-      current_session_id: session,
+      current_session_id: productEdit ? 0 : session,
+      hProductSrNo: productEdit ? hProductSrNo : 0,
     });
   };
 
@@ -124,7 +126,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
               </View>
             </View>
 
-            {diamondData ? (
+            {diamondData[0] != undefined ? (
               <View style={{marginTop: wp(3)}}>
                 <FlatList
                   data={diamondData}

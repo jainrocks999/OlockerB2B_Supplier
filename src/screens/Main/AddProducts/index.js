@@ -35,8 +35,6 @@ import RNFetchBlob from 'rn-fetch-blob';
 import Toast from 'react-native-simple-toast';
 
 const AddProducts = () => {
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
-  const [value, setValue] = useState(null);
   const [ViewMetalModal, setViewMetalModal] = useState(false);
   const [ViewStoneModal, setViewStoneModal] = useState(false);
   const [ViewDiamondModal, setViewDiamondModal] = useState(false);
@@ -57,9 +55,76 @@ const AddProducts = () => {
   const productEdit = useSelector(state => state.Catalogue?.productEdit);
   const products = editProduct?.products;
   const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
-  //console.log('this iss product editt', hProductSrNo);
+  const datadelete = useSelector(state => state.Catalogue?.datadelete);
+  const [inputs, setInputs] = useState({
+    radioInventoryPreInsured: 0,
+    radioPriceCalculator: 1,
+    ItemName: '',
+    Status: 'Live',
+    ProductSku: '',
+    StyleID: 0,
+    Hallmarked: 1,
+    radioGender: 'Male',
+    IsBestSeller: false,
+    StoneWt: '',
+    StoneWtUnit: [],
+    StoneName: [],
+    StoneChargeableAmount: 0,
+    StoneGrandTotal: 0,
+    hStonesSrNo: [],
+    DiamondGrandTotal: '',
+    hDiamondSrNo: [],
+    Diamondwt: 0,
+    DiamondWtUnit: [],
+    DiamondChargeableAmount: 0,
+    DiamondShape: [],
+    DiamondQuality: [],
+    DiamondName: [],
+    MetalWtGrandTotal: 0,
+    hMetalWt: [],
+    GrossWt: 0,
+    MetalTypes: '',
+    Metal_Purity: '',
+    MetalWt: 0,
+    MetalWtUnit: '',
+    DecorationGrandTotal: 0,
+    hDecorationSrNo: [],
+    DecoWt: 0,
+    DecorativeChargeableAmount: 0,
+    DecorativeItemName: [],
+    DecoWtUnit: [],
+    txtLabourCharges: 0,
+    radioIsWastage: 0,
+    txtProductCharges: 0,
+    isProductCertd: 0,
+    ProductCertifiedBy: '',
+    ImgUpload: '',
+    chk_sc: [],
+    hdnImagecount: 0,
+    lblwidthUnit: '',
+    lblBreadthUnit: '',
+    lblSizeUnit: '',
+    lblheightUnit: '',
+    txtProductWidth: 0,
+    txtProductHeight: 0,
+    txtProductBreadth: 0,
+    txtSize: 0,
+    txtVGrossWt: '',
+    txtVMetalWt: '',
+    txtVDiamondWt: '',
+    txtVStoneWt: '',
+    txtVDecoWt: '',
+    txtMrp: '',
+    DeliveryDays: 0,
+    hdnGrossWt: '',
+    DecoItemName: '',
+    submit: 'create product',
+    ItemType: 0,
+    hdnProductSku: '',
+    hdnProductType: '',
+    rbCategory: 'Category B',
+  });
   const getImage = () => {
-    //https://olocker.co${item?.ImageLocation}/${item?.ImageName}
     const imageArr =
       editProduct?.productdetails?.productimages?.length > 0
         ? editProduct?.productdetails?.productimages?.map(item => {
@@ -78,14 +143,23 @@ const AddProducts = () => {
           ];
     return imageArr;
   };
-  // console.log('cocccrrr,called', products.SrNo);
+  const [prevlabour, setPrevLabour] = useState();
+  useEffect(() => {
+    if (inputs.radioIsWastage == 1) {
+      setPrevLabour(inputs.txtLabourCharges);
+      setInputs(prev => ({...prev, txtLabourCharges: 0}));
+    } else {
+      setInputs(prev => ({...prev, txtLabourCharges: prevlabour}));
+    }
+  }, [inputs.radioIsWastage]);
+
   useEffect(() => {
     productEdit ? setEditData() : null;
   }, [editProduct]);
   const setEditData = () => {
-    // console.log('cocccrrr,called', products.SrNo);
     setInputs(prev => ({
       ...prev,
+      txtProductCharges: products?.ProductCharges,
       radioInventoryPreInsured: products?.isPreInsured,
       IsBestSeller: products?.isBestSeller == '1' ? true : false,
       ItemName: products?.ItemName,
@@ -109,6 +183,8 @@ const AddProducts = () => {
       txtProductHeight: products?.Height,
       txtSize: products?.AddProducts?.Size,
       ItemType: editProduct?.products?.ItemType,
+      radioPriceCalculator: products?.isMrpBasis,
+      txtLabourCharges: products?.LabourCharges,
     }));
     dispatch({
       type: 'get_item_field_list_request',
@@ -130,32 +206,25 @@ const AddProducts = () => {
     });
   };
   const navigation = useNavigation();
+  useEffect(() => {
+    verifyProduct();
+  }, [
+    totalWiegt,
+    inputs.MetalWtGrandTotal,
+    inputs.DiamondGrandTotal,
+    inputs.StoneGrandTotal,
+    inputs.DecorationGrandTotal,
+  ]);
 
   const verifyProduct = (stone, diamondWt, hMetalWt, DecoWt) => {
     dispatch({
       type: 'verify_product_wieght_request',
       url: 'verifyWt',
       GrossWt: totalWiegt,
-      MetalWtGrandTotal: hMetalWt
-        ? hMetalWt
-        : inputs.MetalWtGrandTotal
-        ? inputs.MetalWtGrandTotal
-        : editProduct?.productMetalGrandTotal,
-      DiamondGrandTotal: diamondWt
-        ? diamondWt
-        : inputs.DiamondGrandTotal
-        ? inputs.DiamondGrandTotal
-        : editProduct?.productDiamondGrandTotal,
-      StoneGrandTotal: stone
-        ? stone
-        : inputs.StoneGrandTotal
-        ? inputs.StoneGrandTotal
-        : editProduct?.productStoneGrandTotal,
-      DecorationGrandTotal: DecoWt
-        ? DecoWt
-        : inputs.DecorationGrandTotal
-        ? inputs.DecorationGrandTotal
-        : editProduct?.productDecoGrandTotal,
+      MetalWtGrandTotal: inputs.MetalWtGrandTotal,
+      DiamondGrandTotal: inputs.DiamondGrandTotal,
+      StoneGrandTotal: inputs.StoneGrandTotal,
+      DecorationGrandTotal: inputs.DecorationGrandTotal,
     });
   };
 
@@ -200,86 +269,23 @@ const AddProducts = () => {
     }
   };
 
-  const [inputs, setInputs] = useState({
-    radioInventoryPreInsured: 0,
-    radioPriceCalculator: 1,
-    ItemName: '',
-    Status: 'Live',
-    ProductSku: '',
-    StyleID: 0,
-    Hallmarked: 1,
-    radioGender: 'Male',
-    IsBestSeller: false,
-    StoneWt: '',
-    StoneWtUnit: [],
-    StoneName: [],
-    StoneChargeableAmount: 0,
-    StoneGrandTotal: 0,
-    hStonesSrNo: [],
-    DiamondGrandTotal: '',
-    hDiamondSrNo: [],
-    Diamondwt: 0,
-    DiamondWtUnit: [],
-    DiamondChargeableAmount: 0,
-    DiamondShape: [],
-    DiamondQuality: [],
-    DiamondName: [],
-    MetalWtGrandTotal: 0,
-    hMetalWt: [],
-    GrossWt: 0,
-    MetalTypes: '',
-    Metal_Purity: '',
-    MetalWt: 0,
-    MetalWtUnit: '',
-    DecorationGrandTotal: 0,
-    hDecorationSrNo: [],
-    DecoWt: 0,
-    DecorativeChargeableAmount: 0,
-    DecorativeItemName: [],
-    DecoWtUnit: [],
-    txtLabourCharges: 0,
-    radioIsWastage: 0,
-    txtProductCharges: '',
-    isProductCertd: 0,
-    ProductCertifiedBy: '',
-    ImgUpload: '',
-    chk_sc: [],
-    hdnImagecount: 0,
-    lblwidthUnit: '', //bacha hai
-    lblBreadthUnit: '', //thikness
-    lblSizeUnit: '',
-    lblheightUnit: '',
-    txtProductWidth: 0,
-    txtProductHeight: 0,
-    txtProductBreadth: 0, //thikness
-    txtSize: 0,
-    txtVGrossWt: '',
-    txtVMetalWt: '',
-    txtVDiamondWt: '',
-    txtVStoneWt: '',
-    txtVDecoWt: '',
-    txtMrp: '',
-    DeliveryDays: 0,
-    hdnGrossWt: '',
-    DecoItemName: '',
-    submit: 'create product',
-    ItemType: 0,
-    hdnProductSku: '',
-    hdnProductType: '',
-    rbCategory: 'Category B',
-  });
+  console.log('this is delelr', datadelete);
   useEffect(() => {
-    stoneData?.length > 0 ? addStonedata() : null;
+    stoneData[0] != undefined || datadelete.stone ? addStonedata() : null;
   }, [stoneData]);
   useEffect(() => {
-    diamondData?.length > 0 ? addDiamondData() : null;
+    diamondData[0] != undefined || datadelete.diamond ? addDiamondData() : null;
   }, [diamondData]);
-  console.log('this iss lengr', metalData?.result?.length);
+
   useEffect(() => {
-    metalData?.result?.length > 0 ? addMetalData() : null;
+    metalData.result[0] != undefined || datadelete.metal
+      ? addMetalData()
+      : null;
   }, [metalData]);
   useEffect(() => {
-    decorativeData?.length > 0 ? addDecorativeData() : null;
+    decorativeData[0] != undefined || datadelete.decorative
+      ? addDecorativeData()
+      : null;
   }, [decorativeData]);
   const handleInputs = async (params, input) => {
     setInputs(prev => ({...prev, [params]: input}));
@@ -306,8 +312,6 @@ const AddProducts = () => {
     let stoneSrNo = [];
     let stonesingleWiegt = [];
     await stoneData?.map(item => {
-      console.log('thnis is ite,', item);
-
       let stonewieght =
         item.UnitStoneWt === 'Cts.' ? item.StoneWt / 5 : item.StoneWt;
       stonesingleWiegt.push(stonewieght);
@@ -331,7 +335,29 @@ const AddProducts = () => {
       txtVStoneWt: `${stonewt}Gms`,
     }));
 
-    verifyProduct(stonewt);
+    getProductPrice();
+  };
+  const getProductPrice = async () => {
+    const data = {
+      current_session_id: productEdit ? 0 : session,
+      IsWastage: inputs.radioIsWastage,
+      LabourCharges: inputs.txtLabourCharges,
+      hProductSrNo: productEdit ? hProductSrNo : 0,
+    };
+    const Token = await AsyncStorage.getItem('loginToken');
+    try {
+      const response = await axios({
+        method: 'GET',
+        url: Constants.MainUrl + 'getProductsPrice',
+        params: data,
+        headers: {
+          Olocker: `Bearer ${Token}`,
+        },
+      });
+      handleInputs('txtProductCharges', response.data.amount);
+    } catch (error) {
+      throw error;
+    }
   };
 
   const addDiamondData = async () => {
@@ -371,8 +397,11 @@ const AddProducts = () => {
       txtVDiamondWt: `${diamondWt}Gms`,
     }));
 
-    verifyProduct('', diamondWt);
+    getProductPrice();
   };
+  useEffect(() => {
+    getProductPrice();
+  }, [inputs.txtLabourCharges, inputs.radioIsWastage]);
 
   const addMetalData = async () => {
     let hMetalWt = 0;
@@ -405,7 +434,7 @@ const AddProducts = () => {
     }));
     //  console.log('thiss sis metal data', hMetalWt);
 
-    verifyProduct('', '', hMetalWt);
+    getProductPrice();
   };
 
   const addDecorativeData = async () => {
@@ -441,15 +470,15 @@ const AddProducts = () => {
       txtVDecoWt: `${DecoWt}Gms`,
     }));
 
-    verifyProduct('', '', '', DecoWt);
+    getProductPrice();
   };
-  useEffect(() => {
-    inputs.radioPriceCalculator == 0 ? calculatePrice() : null;
-  }, [
-    inputs.DiamondChargeableAmount,
-    inputs.StoneChargeableAmount,
-    inputs.DecorativeChargeableAmount,
-  ]);
+  // useEffect(() => {
+  //   inputs.radioPriceCalculator == 0 ? calculatePrice() : null;
+  // }, [
+  //   inputs.DiamondChargeableAmount,
+  //   inputs.StoneChargeableAmount,
+  //   inputs.DecorativeChargeableAmount,
+  // ]);
   const calculatePrice = () => {
     const res =
       parseFloat(
@@ -470,7 +499,7 @@ const AddProducts = () => {
       const res = await DocumentPicker.pickSingle({
         type: [DocumentPicker.types.images],
       });
-      console.log(res);
+
       setInputs(prev => ({
         ...prev,
         ImgUpload: [
@@ -631,7 +660,7 @@ const AddProducts = () => {
           data2.append(item, data[item]);
       }
     });
-    console.log(JSON.stringify(data2));
+
     fetchDataByPOST(data2);
   };
   const [isFetching3, setIfetching] = useState(false);
@@ -651,7 +680,7 @@ const AddProducts = () => {
         params,
         config,
       );
-      console.log('thissississisi', JSON.stringify(response));
+
       setIfetching(false);
       if (response.data.status) {
         dispatch({
@@ -767,7 +796,7 @@ const AddProducts = () => {
               }
               onPress={() => handleInputs('radioInventoryPreInsured', 0)}
             />
-            <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>
+            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
               Digital Inventory
             </Text>
             {/* <View style={{marginLeft: wp(5)}}>
@@ -815,7 +844,7 @@ const AddProducts = () => {
               }
               onPress={() => handleInputs('radioPriceCalculator', 0)}
             />
-            <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>
+            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
               Break Up Pricing
             </Text>
             <View style={{marginLeft: wp(5)}}>
@@ -830,7 +859,7 @@ const AddProducts = () => {
               />
             </View>
 
-            <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>
+            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
               MRP Pricing
             </Text>
           </View>
@@ -866,7 +895,7 @@ const AddProducts = () => {
                   onChange={item => {
                     handleInputs('ItemName', item.Value);
                     handleInputs('ItemType', item.Id);
-                    console.log(item);
+
                     dispatch({
                       type: 'get_item_field_list_request',
                       url: 'getItemFields',
@@ -909,13 +938,14 @@ const AddProducts = () => {
                 <TextInput
                   style={[
                     styles.dropdown,
-                    {borderWidth: 1, borderColor: '#979998'},
+                    {borderWidth: 1, borderColor: '#979998', color: 'black'},
                   ]}
                   placeholder="Delivery Days"
                   value={inputs.DeliveryDays}
                   onChangeText={input => {
                     handleInputs('DeliveryDays', input);
                   }}
+                  placeholderTextColor={'grey'}
                 />
               </View>
             </View>
@@ -926,9 +956,10 @@ const AddProducts = () => {
               <TextInput
                 style={[
                   styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
+                  {borderWidth: 1, borderColor: '#979998', color: 'black'},
                 ]}
                 placeholder="Optional"
+                placeholderTextColor={'grey'}
                 value={inputs.ProductSku}
                 onChangeText={input => {
                   handleInputs('ProductSku', input);
@@ -943,9 +974,10 @@ const AddProducts = () => {
               <TextInput
                 style={[
                   styles.dropdown,
-                  {borderWidth: 1, borderColor: '#979998'},
+                  {borderWidth: 1, borderColor: '#979998', color: 'black'},
                 ]}
                 placeholder="Style Id"
+                placeholderTextColor={'grey'}
                 value={inputs.StyleID}
                 onChangeText={input => handleInputs('StyleID', input)}
               />
@@ -978,7 +1010,9 @@ const AddProducts = () => {
                 handleInputs('Hallmarked', 1);
               }}
             />
-            <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>Yes</Text>
+            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+              Yes
+            </Text>
             <View style={{marginLeft: wp(5)}}>
               <RadioButton
                 value={inputs.Hallmarked}
@@ -991,7 +1025,9 @@ const AddProducts = () => {
               />
             </View>
 
-            <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>No</Text>
+            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+              No
+            </Text>
           </View>
         </View>
         <View style={styles.mrt}>
@@ -1015,7 +1051,9 @@ const AddProducts = () => {
               status={inputs.radioGender == 'Male' ? 'checked' : 'unchecked'}
               onPress={() => handleInputs('radioGender', 'Male')}
             />
-            <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>Male</Text>
+            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+              Male
+            </Text>
             <View style={{marginLeft: wp(5)}}>
               <RadioButton
                 value={inputs.radioGender}
@@ -1028,7 +1066,9 @@ const AddProducts = () => {
               />
             </View>
 
-            <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>Female</Text>
+            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+              Female
+            </Text>
             <View style={{marginLeft: wp(5)}}>
               <RadioButton
                 value={inputs.radioGender}
@@ -1039,7 +1079,9 @@ const AddProducts = () => {
               />
             </View>
 
-            <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>Kids</Text>
+            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+              Kids
+            </Text>
           </View>
         </View>
         {/* <View
@@ -1067,7 +1109,13 @@ const AddProducts = () => {
           </View>
         </View> */}
         <View style={[styles.mrt, {marginTop: wp(4)}]}>
-          <Text style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
+          <Text
+            style={{
+              fontSize: wp(4.5),
+              fontWeight: '800',
+              color: '#000',
+              color: 'grey',
+            }}>
             {' '}
             Assign Category
           </Text>
@@ -1091,7 +1139,9 @@ const AddProducts = () => {
                 handleInputs('rbCategory', 'Category B');
               }}
             />
-            <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>Common</Text>
+            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+              Common
+            </Text>
             <View style={{marginLeft: wp(5)}}>
               <RadioButton
                 value={inputs.rbCategory}
@@ -1106,7 +1156,7 @@ const AddProducts = () => {
               />
             </View>
 
-            <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>
+            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
               Exclusive
             </Text>
           </View>
@@ -1168,7 +1218,13 @@ const AddProducts = () => {
                   <TextInput
                     placeholder="Width"
                     editable={itemField?.divWidth == 1 ? true : false}
-                    style={{fontSize: wp(4.5), fontWeight: '700', flex: 1}}
+                    style={{
+                      fontSize: wp(4.5),
+                      fontWeight: '700',
+                      flex: 1,
+                      color: 'black',
+                    }}
+                    placeholderTextColor={'grey'}
                     value={inputs.txtProductWidth}
                     onChangeText={input =>
                       handleInputs('txtProductWidth', input)
@@ -1206,6 +1262,7 @@ const AddProducts = () => {
                     editable={itemField?.divHeight == 1 ? true : false}
                     style={{fontSize: wp(4.5), fontWeight: '700', flex: 1}}
                     value={inputs.txtProductHeight}
+                    placeholderTextColor={'grey'}
                     onChangeText={input =>
                       handleInputs('txtProductHeight', input)
                     }
@@ -1247,7 +1304,13 @@ const AddProducts = () => {
                   <TextInput
                     placeholder="Thikness"
                     editable={itemField?.divBreadth == 1 ? true : false}
-                    style={{fontSize: wp(4.5), fontWeight: '700', flex: 1}}
+                    style={{
+                      fontSize: wp(4.5),
+                      fontWeight: '700',
+                      flex: 1,
+                      color: 'black',
+                    }}
+                    placeholderTextColor={'grey'}
                     value={inputs.txtProductBreadth}
                     onChangeText={input =>
                       handleInputs('txtProductBreadth', input)
@@ -1285,7 +1348,13 @@ const AddProducts = () => {
                     value={inputs.txtSize}
                     placeholder="Size"
                     onChangeText={input => handleInputs('txtSize', input)}
-                    style={{fontSize: wp(4.5), fontWeight: '700', flex: 1}}
+                    style={{
+                      fontSize: wp(4.5),
+                      fontWeight: '700',
+                      flex: 1,
+                      color: 'black',
+                    }}
+                    placeholderTextColor={'grey'}
                   />
                   <View
                     style={{
@@ -1381,7 +1450,13 @@ const AddProducts = () => {
                       ? inputs.DecorationGrandTotal.toString() + ' ' + 'Gms'
                       : 'Decorative Wt.'
                   }
-                  style={{fontSize: wp(4), fontWeight: '700'}}
+                  style={{
+                    fontSize: wp(4),
+                    fontWeight: '500',
+                    flex: 1,
+                    color: 'black',
+                  }}
+                  placeholderTextColor={'grey'}
                 />
               </View>
             </View>
@@ -1413,7 +1488,13 @@ const AddProducts = () => {
                       ? inputs.GrossWt
                       : 'Gross Wt.'
                   }
-                  style={{fontSize: wp(4), fontWeight: '700'}}
+                  sstyle={{
+                    fontSize: wp(4),
+                    fontWeight: '500',
+                    flex: 1,
+                    color: 'black',
+                  }}
+                  placeholderTextColor={'grey'}
                 />
               </View>
             </View>
@@ -1445,7 +1526,13 @@ const AddProducts = () => {
                       : 'Metal Wt.'
                   }
                   editable={false}
-                  style={{fontSize: wp(4), fontWeight: '700'}}
+                  style={{
+                    fontSize: wp(4),
+                    fontWeight: '500',
+                    flex: 1,
+                    color: 'black',
+                  }}
+                  placeholderTextColor={'grey'}
                 />
               </View>
             </View>
@@ -1475,7 +1562,13 @@ const AddProducts = () => {
                       ? inputs.DiamondGrandTotal + ' ' + 'Gms'
                       : 'Diamond Wt.'
                   }
-                  style={{fontSize: wp(4), fontWeight: '700'}}
+                  style={{
+                    fontSize: wp(4),
+                    fontWeight: '500',
+                    flex: 1,
+                    color: 'black',
+                  }}
+                  placeholderTextColor={'grey'}
                 />
               </View>
             </View>
@@ -1507,7 +1600,13 @@ const AddProducts = () => {
                       ? inputs.StoneGrandTotal + ' ' + 'Gms'
                       : 'Stone Wt.'
                   }
-                  style={{fontSize: wp(4), fontWeight: '700'}}
+                  style={{
+                    fontSize: wp(4),
+                    fontWeight: '500',
+                    flex: 1,
+                    color: 'black',
+                  }}
+                  placeholderTextColor={'grey'}
                 />
               </View>
             </View>
@@ -1573,7 +1672,13 @@ const AddProducts = () => {
                   status={inputs.radioIsWastage == 0 ? 'checked' : 'unchecked'}
                   onPress={() => handleInputs('radioIsWastage', 0)}
                 />
-                <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>
+                <Text
+                  style={{
+                    fontSize: wp(3.8),
+                    fontWeight: '600',
+                    color: 'grey',
+                    width: wp(30),
+                  }}>
                   Charges Per Gram Rs
                 </Text>
                 <View style={{marginLeft: wp(2)}}>
@@ -1590,7 +1695,13 @@ const AddProducts = () => {
                   />
                 </View>
 
-                <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>
+                <Text
+                  style={{
+                    fontSize: wp(3.8),
+                    fontWeight: '600',
+                    color: 'grey',
+                    width: wp(30),
+                  }}>
                   Wastage(% of Net Gold wt)
                 </Text>
               </View>
@@ -1628,6 +1739,13 @@ const AddProducts = () => {
                       ? 'Wastage % between 0-100'
                       : 'Amount in Rs.'
                   }
+                  style={{
+                    fontSize: wp(4),
+                    fontWeight: '500',
+                    flex: 1,
+                    color: 'black',
+                  }}
+                  placeholderTextColor={'grey'}
                 />
               </View>
             </>
@@ -1658,6 +1776,13 @@ const AddProducts = () => {
                     ? inputs.txtProductCharges
                     : inputs.txtMrp
                 }
+                style={{
+                  fontSize: wp(4),
+                  fontWeight: '500',
+                  flex: 1,
+                  color: 'black',
+                }}
+                placeholderTextColor={'grey'}
                 onChangeText={input =>
                   handleInputs(
                     inputs.radioPriceCalculator == 0
@@ -1783,7 +1908,6 @@ const AddProducts = () => {
                       uri: item.uri,
                     }}
                   />
-                  {console.log('this is itme', item)}
                 </View>
               )}
             />
@@ -1860,9 +1984,7 @@ const AddProducts = () => {
                       fontWeight: '700',
                       color: '#000',
                     }}
-                    onChange={item => {
-                      console.log(item);
-                    }}
+                    onChange={item => {}}
                   />
                 </View>
               </TouchableOpacity>
@@ -1898,7 +2020,6 @@ const AddProducts = () => {
                   }}>
                   <CheckBox
                     onChange={async () => {
-                      console.log(item.SrNo);
                       if (inputs.chk_sc.includes(item.SrNo)) {
                         const res = inputs.chk_sc.filter(
                           items => items != item.SrNo,

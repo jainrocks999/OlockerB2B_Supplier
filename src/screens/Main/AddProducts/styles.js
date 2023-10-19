@@ -35,14 +35,17 @@ export default StyleSheet.create({
     fontSize: 16,
   },
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: wp(4.5),
+    color: 'black',
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: wp(4.5),
+    color: 'black',
   },
   iconStyle: {
     width: 20,
     height: 20,
+    color: 'grey',
   },
   inputSearchStyle: {
     height: 40,

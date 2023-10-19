@@ -362,14 +362,15 @@ function* getItemFields(action) {
 function* removeMetal(action) {
   try {
     const data = {
-      MetalId: action.SrNo,
-      current_session_id: action.session,
+      MetalId: action.MetalId,
+      current_session_id: action.current_session_id,
+      hProductSrNo: action.hProductSrNo,
     };
     const res = yield call(Api.fetchDataByGET1, action.url, data);
-    if (res.status && res.success) {
+    if (res.status || res.success) {
       yield put({
         type: 'delete_metal_success',
-        payload: action.SrNo,
+        payload: action.MetalId,
       });
     } else {
       yield put({
@@ -420,6 +421,7 @@ function* removeDiamond(action) {
       DiamondId: action.DiamondId,
       current_session_id: action.current_session_id,
       BreakUp: action.BreakUp,
+      hProductSrNo: action.hProductSrNo,
     };
 
     const res = yield call(Api.fetchDataByGET1, action.url, data);
@@ -448,6 +450,7 @@ function* removeStone(action) {
       StoneId: action.StoneId,
       BreakUp: action.BreakUp,
       current_session_id: action.current_session_id,
+      hProductSrNo: action.hProductSrNo,
     };
     const res = yield call(Api.fetchDataByGET1, action.url, data);
     if (res.success || res.status) {
@@ -466,6 +469,7 @@ function* removeStone(action) {
       type: 'remove_stone_error',
     });
     Toast.show('Something went wrong');
+    console.log('thoiss osso', error);
   }
 }
 function* removeDecorative(action) {
@@ -474,6 +478,7 @@ function* removeDecorative(action) {
       DecorativeId: action.DecorativeId,
       BreakUp: action.BreakUp,
       current_session_id: action.current_session_id,
+      hProductSrNo: action.hProductSrNo,
     };
     const res = yield call(Api.fetchDataByGET1, action.url, data);
     if (res.success || res.status) {
@@ -591,6 +596,18 @@ function* deleteProduct(action) {
     });
   }
 }
+function* getProductsPrice(action) {
+  try {
+    const data = {
+      current_session_id: action.current_session_id,
+      IsWastage: action.IsWastage,
+      LabourCharges: action.LabourCharges,
+      hProductSrNo: action.hProductSrNo,
+    };
+    const res = yield call(Api.fetchDataByGET1, action.url, data);
+    console.log('this is resssdjf', JSON.stringify(res));
+  } catch (error) {}
+}
 export default function* citySaga() {
   yield takeEvery('Get_Catalogue_Request', getCatalogue);
   yield takeEvery('My_Product_Request', getProducts);
@@ -611,4 +628,5 @@ export default function* citySaga() {
   yield takeEvery('edit_product_reqest', editProduct);
   yield takeEvery('product_detail_request', productData);
   yield takeEvery('product_delete_request', deleteProduct);
+  yield takeEvery('get_product_price_request', getProductsPrice);
 }

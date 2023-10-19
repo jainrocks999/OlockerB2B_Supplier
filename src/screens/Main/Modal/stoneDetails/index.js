@@ -88,8 +88,9 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
       type: 'remove_stone_request',
       url: 'removeStone',
       StoneId: SrNo,
-      current_session_id: sessions,
+      current_session_id: productEdit ? 0 : sessions,
       BreakUp: isBrekup == 0 ? 1 : 0,
+      hProductSrNo: productEdit ? hProductSrNo : 0,
     });
   };
 
@@ -112,7 +113,7 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 </Text>
               </View>
             </View>
-            {stoneData ? (
+            {stoneData[0] != undefined ? (
               <View style={{marginTop: wp(3)}}>
                 <FlatList
                   data={stoneData}
