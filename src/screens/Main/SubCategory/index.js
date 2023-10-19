@@ -46,7 +46,7 @@ const SubCategory = ({route}) => {
           return `https://olocker.co/uploads/product/${item?.ImageName}`;
         })
       : [];
-    console.log(img);
+    console.log('this is image', img);
     return img;
   };
   const isFetching = useSelector(state => state.isFetching);
@@ -263,7 +263,7 @@ const SubCategory = ({route}) => {
                     elevation: 5,
                   }}>
                   <Image
-                    source={{uri: productImage()[0]}}
+                    source={{uri: item}}
                     style={{height: '100%', width: '100%'}}
                   />
                 </View>

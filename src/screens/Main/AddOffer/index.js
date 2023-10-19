@@ -52,8 +52,18 @@ const AddOffer = () => {
     //   navigation
     //  })
   };
+  console.log();
   const [value, setValue] = useState(null);
   //cons;
+  handleWishList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Get_wishListProduct_Request',
+      url: '/wishListItem',
+      user_id: user_id,
+      navigation,
+    });
+  };
   const renderItem = item => {
     return (
       <View style={styles.item}>
@@ -96,7 +106,7 @@ const AddOffer = () => {
           <Text
             style={{
               color: '#fff',
-              fontSize: 16,
+              fontSize: wp(4.5),
               fontFamily: 'Roboto-Medium',
               marginLeft: 14,
             }}>
@@ -104,25 +114,27 @@ const AddOffer = () => {
           </Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
-            style={{height: 24, width: 28}}
-            source={require('../../../assets/Fo.png')}
-          />
-          <Image
-            style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
-            source={require('../../../assets/Image/dil.png')}
-          />
-          <Image
-            style={{height: 24, width: 28, tintColor: '#fff', marginLeft: 15}}
-            source={require('../../../assets/supplierImage/more.png')}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate('Message')}>
+            <Image
+              style={styles.img1}
+              source={require('../../../assets/Fo.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{marginLeft: 15}}
+            onPress={() => handleWishList()}>
+            <Image
+              style={styles.img2}
+              source={require('../../../assets/Image/dil.png')}
+            />
+          </TouchableOpacity>
         </View>
       </View>
       <ScrollView contentContainerStyle={{padding: 12}}>
         <Text
           style={{
             color: '#030303',
-            fontSize: 15,
+            fontSize: wp(4.5),
             fontFamily: 'Roboto-Medium',
             borderBottomWidth: 1,
             alignSelf: 'flex-start',
@@ -151,11 +163,13 @@ const AddOffer = () => {
         <View
           style={{
             flexDirection: 'row',
-            marginTop: 15,
+            marginTop: hp(1),
             justifyContent: 'space-between',
           }}>
           <View style={{width: '48%'}}>
-            <Text style={{color: '#23233C', fontSize: 15}}>Start Date</Text>
+            <Text style={{color: '#23233C', fontSize: wp(4.5)}}>
+              Start Date
+            </Text>
             <TouchableOpacity
               onPress={() =>
                 setShow({
@@ -166,7 +180,7 @@ const AddOffer = () => {
               style={{
                 width: '100%',
                 borderWidth: 1,
-                height: 40,
+                height: hp(6),
                 alignItems: 'center',
                 borderRadius: 8,
                 paddingHorizontal: 6,
@@ -183,7 +197,7 @@ const AddOffer = () => {
                     });
                     setStart(selecdate);
                   }}
-                  mode="datetime"
+                  //mode="datetime"
                   dateFormat="day month year"
                   minimumDate={new Date()}
                   maximumDate={new Date(2300, 12, 31)}
@@ -196,17 +210,19 @@ const AddOffer = () => {
                     fontSize: wp(3.5),
                     color: 'black',
                   }}>
-                  {start.getFullYear() +
-                    '-' +
-                    start.getMonth() +
-                    '-' +
-                    start.getDate() +
-                    '  ' +
-                    start.getHours() +
-                    ':' +
-                    start.getMinutes() +
-                    ':' +
-                    start.getSeconds()}
+                  {start != ''
+                    ? start?.getFullYear() +
+                      '-' +
+                      start?.getMonth() +
+                      '-' +
+                      start?.getDate() +
+                      '  ' +
+                      start?.getHours() +
+                      ':' +
+                      start?.getMinutes() +
+                      ':' +
+                      start?.getSeconds()
+                    : 'select start date'}
                 </Text>
               )}
             </TouchableOpacity>
@@ -223,7 +239,7 @@ const AddOffer = () => {
               style={{
                 width: '100%',
                 borderWidth: 1,
-                height: 40,
+                height: hp(6),
                 alignItems: 'center',
                 borderRadius: 8,
                 paddingHorizontal: 6,
@@ -240,7 +256,7 @@ const AddOffer = () => {
                     });
                     setEnd(end);
                   }}
-                  mode="date"
+                  mode="datetime"
                   minimumDate={new Date()}
                   style={{borderWidth: 1, height: 20, width: 40}}
                 />
@@ -251,17 +267,19 @@ const AddOffer = () => {
                     fontSize: wp(3.5),
                     color: 'black',
                   }}>
-                  {end.getFullYear() +
-                    '-' +
-                    end.getMonth() +
-                    '-' +
-                    end.getDate() +
-                    '  ' +
-                    end.getHours() +
-                    ':' +
-                    end.getMinutes() +
-                    ':' +
-                    end.getSeconds()}
+                  {end != ''
+                    ? end?.getFullYear() +
+                      '-' +
+                      end?.getMonth() +
+                      '-' +
+                      end?.getDate() +
+                      '  ' +
+                      end?.getHours() +
+                      ':' +
+                      end?.getMinutes() +
+                      ':' +
+                      end?.getSeconds()
+                    : 'select end date'}
                 </Text>
               )}
             </TouchableOpacity>
@@ -269,9 +287,10 @@ const AddOffer = () => {
         </View>
         <Text
           style={{
-            marginTop: 10,
+            marginTop: hp(1.5),
             color: '#030303',
             fontFamily: 'Roboto-Medium',
+            fontSize: wp(4),
           }}>
           Deal Type
         </Text>
@@ -298,6 +317,7 @@ const AddOffer = () => {
             marginTop: 10,
             color: '#030303',
             fontFamily: 'Roboto-Medium',
+            fontSize: wp(4),
           }}>
           Discount Percentage
         </Text>
@@ -305,7 +325,7 @@ const AddOffer = () => {
           style={{
             width: '100%',
             borderWidth: 1,
-            height: 40,
+            height: hp(6),
             borderRadius: 8,
             paddingHorizontal: 6,
             flexDirection: 'row',
@@ -313,7 +333,11 @@ const AddOffer = () => {
             alignItems: 'center',
             marginTop: 4,
           }}>
-          <TextInput placeholder="Discount Percentage" />
+          <TextInput
+            style={{fontSize: wp(4), color: 'black'}}
+            placeholderTextColor={'grey'}
+            placeholder="Discount Percentage"
+          />
         </View>
         <View
           style={{
@@ -328,19 +352,20 @@ const AddOffer = () => {
             }}
             style={{
               backgroundColor: '#032e63',
-              borderRadius: 20,
+              borderRadius: wp(4.5),
               alignItems: 'center',
-              height: 40,
+              height: hp(6),
               paddingHorizontal: 5,
               justifyContent: 'center',
               marginTop: 15,
-              width: '45%',
+              width: '47%',
             }}>
             <Text
               style={{
                 color: '#fff',
                 fontFamily: 'Roboto-Medium',
-                fontSize: 14,
+                fontSize: wp(4),
+                textAlign: 'center',
               }}>
               Add Products to Offers
             </Text>
@@ -348,18 +373,20 @@ const AddOffer = () => {
           <TouchableOpacity
             style={{
               backgroundColor: '#032e63',
-              borderRadius: 20,
+              borderRadius: wp(4.5),
               alignItems: 'center',
-              height: 40,
+              height: hp(6),
+              paddingHorizontal: 5,
               justifyContent: 'center',
               marginTop: 15,
-              width: '45%',
+              width: '47%',
             }}>
             <Text
               style={{
                 color: '#fff',
                 fontFamily: 'Roboto-Medium',
-                fontSize: 14,
+                fontSize: wp(4),
+                textAlign: 'center',
               }}>
               Add Customer to Offers
             </Text>
@@ -370,9 +397,9 @@ const AddOffer = () => {
           <TouchableOpacity
             style={{
               borderColor: '#032e63',
-              borderRadius: 20,
+              borderRadius: wp(5),
               alignItems: 'center',
-              height: 40,
+              height: hp(6),
               justifyContent: 'center',
               marginTop: 15,
               borderWidth: 1,
@@ -381,7 +408,7 @@ const AddOffer = () => {
               style={{
                 color: '#032e63',
                 fontFamily: 'Roboto-Medium',
-                fontSize: 15,
+                fontSize: wp(4),
               }}>
               Choose file
             </Text>
@@ -398,9 +425,9 @@ const AddOffer = () => {
             onPress={() => manageOfferList()}
             style={{
               backgroundColor: '#032e63',
-              borderRadius: 20,
+              borderRadius: wp(5),
               alignItems: 'center',
-              height: 40,
+              height: hp(6),
               justifyContent: 'center',
               marginTop: 15,
               width: '48%',
@@ -409,7 +436,7 @@ const AddOffer = () => {
               style={{
                 color: '#fff',
                 fontFamily: 'Roboto-Medium',
-                fontSize: 15,
+                fontSize: wp(4),
               }}>
               Add
             </Text>
@@ -417,9 +444,9 @@ const AddOffer = () => {
           <TouchableOpacity
             style={{
               backgroundColor: '#032e63',
-              borderRadius: 20,
+              borderRadius: wp(5),
               alignItems: 'center',
-              height: 40,
+              height: hp(6),
               justifyContent: 'center',
               marginTop: 15,
               width: '48%',
@@ -428,7 +455,7 @@ const AddOffer = () => {
               style={{
                 color: '#fff',
                 fontFamily: 'Roboto-Medium',
-                fontSize: 15,
+                fontSize: wp(4),
               }}>
               Reset
             </Text>

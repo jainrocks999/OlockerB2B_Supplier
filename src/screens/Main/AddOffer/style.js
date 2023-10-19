@@ -7,7 +7,7 @@ import {
 export default StyleSheet.create({
   dropdown: {
     marginVertical: 10,
-    height: 45,
+    height: hp(6),
     backgroundColor: 'white',
     borderRadius: 5,
     padding: 12,
@@ -32,20 +32,20 @@ export default StyleSheet.create({
   },
   textItem: {
     flex: 1,
-    fontSize: 16,
+    fontSize: wp(4.5),
   },
   placeholderStyle: {
-    fontSize: wp(4.8),
+    fontSize: wp(4.5),
     color: 'grey',
   },
   selectedTextStyle: {
-    fontSize: wp(4.8),
-    color: 'grey',
+    fontSize: wp(4.5),
+    color: 'black',
   },
   iconStyle: {
     width: 20,
     height: 20,
-    color: 'grey',
+    color: 'black',
   },
   inputSearchStyle: {
     height: 40,

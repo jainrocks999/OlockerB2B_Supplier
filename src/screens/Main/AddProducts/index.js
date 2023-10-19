@@ -123,6 +123,7 @@ const AddProducts = () => {
     hdnProductSku: '',
     hdnProductType: '',
     rbCategory: 'Category B',
+    chk_c: [],
   });
   const getImage = () => {
     const imageArr =
@@ -185,6 +186,7 @@ const AddProducts = () => {
       ItemType: editProduct?.products?.ItemType,
       radioPriceCalculator: products?.isMrpBasis,
       txtLabourCharges: products?.LabourCharges,
+      chk_c: editProduct?.getcollection,
     }));
     dispatch({
       type: 'get_item_field_list_request',
@@ -206,27 +208,6 @@ const AddProducts = () => {
     });
   };
   const navigation = useNavigation();
-  useEffect(() => {
-    verifyProduct();
-  }, [
-    totalWiegt,
-    inputs.MetalWtGrandTotal,
-    inputs.DiamondGrandTotal,
-    inputs.StoneGrandTotal,
-    inputs.DecorationGrandTotal,
-  ]);
-
-  const verifyProduct = (stone, diamondWt, hMetalWt, DecoWt) => {
-    dispatch({
-      type: 'verify_product_wieght_request',
-      url: 'verifyWt',
-      GrossWt: totalWiegt,
-      MetalWtGrandTotal: inputs.MetalWtGrandTotal,
-      DiamondGrandTotal: inputs.DiamondGrandTotal,
-      StoneGrandTotal: inputs.StoneGrandTotal,
-      DecorationGrandTotal: inputs.DecorationGrandTotal,
-    });
-  };
 
   const renderItem = item => {
     return (
@@ -262,28 +243,29 @@ const AddProducts = () => {
   };
   const handleCategory = SrNo => {
     if (inputs.chk_sc.includes(SrNo)) {
-      let res = inputs.chk_sc.filter(item => item != SrNo);
+      let res = inputs?.chk_sc.filter(item => item != SrNo);
       handleInputs('chk_sc', res);
     } else {
       handleInputs('chk_sc', [...inputs.chk_sc, SrNo]);
     }
   };
 
-  console.log('this is delelr', datadelete);
   useEffect(() => {
-    stoneData[0] != undefined || datadelete.stone ? addStonedata() : null;
+    stoneData[0] != undefined || datadelete?.stone ? addStonedata() : null;
   }, [stoneData]);
   useEffect(() => {
-    diamondData[0] != undefined || datadelete.diamond ? addDiamondData() : null;
+    diamondData[0] != undefined || datadelete?.diamond
+      ? addDiamondData()
+      : null;
   }, [diamondData]);
 
   useEffect(() => {
-    metalData.result[0] != undefined || datadelete.metal
+    metalData.result[0] != undefined || datadelete?.metal
       ? addMetalData()
       : null;
   }, [metalData]);
   useEffect(() => {
-    decorativeData[0] != undefined || datadelete.decorative
+    decorativeData[0] != undefined || datadelete?.decorative
       ? addDecorativeData()
       : null;
   }, [decorativeData]);
@@ -313,7 +295,7 @@ const AddProducts = () => {
     let stonesingleWiegt = [];
     await stoneData?.map(item => {
       let stonewieght =
-        item.UnitStoneWt === 'Cts.' ? item.StoneWt / 5 : item.StoneWt;
+        item?.UnitStoneWt === 'Cts.' ? item.StoneWt / 5 : item.StoneWt;
       stonesingleWiegt.push(stonewieght);
       stonewt = parseFloat(stonewt) + parseFloat(stonewieght);
       StoneChargeableAmount =
@@ -322,8 +304,8 @@ const AddProducts = () => {
       StoneWtUnit.push(item?.UnitStoneWt);
       StoneName.push(item?.StoneName);
       stoneSrNo.push(item?.SrNo);
+      console.log(item);
     });
-
     setInputs(prev => ({
       ...prev,
       StoneWt: stonesingleWiegt,
@@ -336,7 +318,87 @@ const AddProducts = () => {
     }));
 
     getProductPrice();
+    verifyProduct();
   };
+  useEffect(() => {});
+  const verifyProduct = async () => {
+    try {
+      let stonewt = 0;
+      let dimondwt = 0;
+      let decorativewt = 0;
+      let metalwt = 0;
+      stoneData?.map(item => {
+        let stonewieght =
+          item?.UnitStoneWt === 'Cts.' ? item?.StoneWt / 5 : item?.StoneWt;
+        stonewt = parseFloat(stonewt) + parseFloat(stonewieght);
+      });
+      diamondData.map(item => {
+        let dimondWieght =
+          item?.UnitStoneWt == 'Cts.' ? item?.StoneWt / 5 : item?.StoneWt;
+        dimondwt = parseFloat(dimondwt) + parseFloat(dimondWieght);
+        // console.log(item);
+      });
+      decorativeData?.map(item => {
+        let decovwie =
+          item?.UnitDecoItemWt === 'Cts.'
+            ? item?.DecorativeItemWt / 5
+            : item?.DecorativeItemWt;
+        decorativewt = parseFloat(decorativewt) + parseFloat(decovwie);
+      });
+      metalData.result?.map(item => {
+        let metalweight =
+          item?.UnitMetalWt === 'Cts.' ? item?.MetalWt / 5 : item?.MetalWt;
+        metalwt = parseFloat(metalwt) + parseFloat(metalweight);
+      });
+      // diamondData?.map(item => {
+      //   let dimondWieght =
+      //     item?.UnitStoneWt == 'Cts.' ? item?.StoneWt / 5 : item?.StoneWt;
+      //   console.log('this item', dimondWieght);
+      //   dimondwt = parseFloat(dimondwt) + parseFloat(dimondWieght);
+      // });
+      console.log('this is metalwr', dimondwt, stonewt, decorativewt, metalwt);
+      dispatch({
+        type: 'verify_product_wieght_request',
+        url: 'verifyWt',
+        GrossWt: totalWiegt,
+        MetalWtGrandTotal: metalwt,
+        // metal != 0
+        //   ? metal
+        //   : inputs.MetalWtGrandTotal
+        //   ? inputs.MetalWtGrandTotal
+        //   : productEdit
+        //   ? editProduct?.productMetalGrandTotal
+        //   : 0,
+        DiamondGrandTotal: dimondwt,
+        // diamon != 0
+        //   ? diamon
+        //   : inputs.DiamondGrandTotal
+        //   ? inputs.DiamondGrandTotal
+        //   : productEdit
+        //   ? inputs.DiamondGrandTotal
+        //   : 0,
+        StoneGrandTotal: stonewt,
+        // stone != 0
+        //   ? stone
+        //   : inputs.StoneGrandTotal
+        //   ? inputs.StoneGrandTotal
+        //   : productEdit?.productStoneGrandTotal
+        //   ? editProduct?.productStoneGrandTotal
+        //   : 0,
+        DecorationGrandTotal: decorativewt,
+        // dec != 0
+        //   ? dec
+        //   : inputs.DecorationGrandTotal
+        //   ? inputs.DecorationGrandTotal
+        //   : productEdit
+        //   ? editProduct?.productDecoGrandTotal
+        //   : 0,
+      });
+    } catch (error) {
+      console.log('this is errp', error);
+    }
+  };
+
   const getProductPrice = async () => {
     const data = {
       current_session_id: productEdit ? 0 : session,
@@ -354,7 +416,9 @@ const AddProducts = () => {
           Olocker: `Bearer ${Token}`,
         },
       });
-      handleInputs('txtProductCharges', response.data.amount);
+      editProduct
+        ? handleInputs('txtProductCharges', response.data.amount)
+        : null;
     } catch (error) {
       throw error;
     }
@@ -383,6 +447,7 @@ const AddProducts = () => {
       DiamondShape.push(item?.StoneShape);
       DiamondQuality.push(item?.StoneQuality);
     });
+
     // console.log('this sis sotnddndf', DiamondChargeableAmount);
     setInputs(prev => ({
       ...prev,
@@ -398,6 +463,7 @@ const AddProducts = () => {
     }));
 
     getProductPrice();
+    verifyProduct();
   };
   useEffect(() => {
     getProductPrice();
@@ -435,6 +501,7 @@ const AddProducts = () => {
     //  console.log('thiss sis metal data', hMetalWt);
 
     getProductPrice();
+    verifyProduct();
   };
 
   const addDecorativeData = async () => {
@@ -471,14 +538,9 @@ const AddProducts = () => {
     }));
 
     getProductPrice();
+    verifyProduct();
   };
-  // useEffect(() => {
-  //   inputs.radioPriceCalculator == 0 ? calculatePrice() : null;
-  // }, [
-  //   inputs.DiamondChargeableAmount,
-  //   inputs.StoneChargeableAmount,
-  //   inputs.DecorativeChargeableAmount,
-  // ]);
+
   const calculatePrice = () => {
     const res =
       parseFloat(
@@ -514,7 +576,7 @@ const AddProducts = () => {
       }
     }
   };
-
+  console.log('this is edidproduct', JSON.stringify(editProduct));
   const handleOnSubmit = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
 
@@ -535,30 +597,7 @@ const AddProducts = () => {
 
     let data2 = new FormData();
     await Object.keys(data).map(async (item, index) => {
-      // if (item === 'chk_sc') {
-      //   data[item]?.map((item, index) => {
-      //     data2.append(`chk_sc[${index}]`, item);
-      //   });
-      // } else if (item == 'ImgUpload') {
-      //   data[item]?.map((item, index) => {
-      //     data2.append(`ImgUpload[${index}]`, item);
-      //   });
-      // } else {
-      //   data2.append(item, data[item]);
-      // }
-      // StoneWt: stonesingleWiegt,
-      // StoneWtUnit: ['Gms'],
-      // StoneName: StoneName,
-      // StoneChargeableAmount: StoneChargeableAmount,
-      // StoneGrandTotal: stonewt,
-      // hStonesSrNo: stoneSrNo,
-      // txtVStoneWt: `${stonewt} Gms`,
       switch (item) {
-        // case 'hDiamondSrNo':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`hDiamondSrNo[${index}]`, items);
-        //   });
-        //   break;
         case 'chk_sc':
           data[item]?.map((items, index) => {
             data2.append(`chk_sc[${index}]`, items);
@@ -569,93 +608,17 @@ const AddProducts = () => {
             data2.append(`ImgUpload[${index}]`, items);
           });
           break;
-        // case 'DiamondWtUnit':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`DiamondWtUnit[${index}]`, items);
-        //   });
-        // case 'DiamondName':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`DiamondName[${index}]`, items);
-        //   });
-        //   break;
-        // case 'DiamondShape':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`DiamondShape[${index}]`, items);
-        //   });
-        //   break;
-        // case 'DiamondQuality':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`DiamondQuality[${index}]`, items);
-        //   });
-        //   break;
-        // case 'diamondWt':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`diamondWt[${index}]`, items);
-        //   });
-        //   break;
-        // case 'hDecorationSrNo':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`hDecorationSrNo[${index}]`, items);
-        //   });
-        //   break;
-        // case 'DecorativeItemName':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`DecorativeItemName[${index}]`, items);
-        //   });
-        //   break;
-        // case 'DecoWtUnit':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`DecoWtUnit[${index}]`, items);
-        //   });
-        //   break;
-        // case 'DecoWt':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`DecoWt[${index}]`, items);
-        //   });
-        //   break;
-        // // case 'MetalWtUnit':
-        // //   data[item]?.map((items, index) => {
-        // //     data2.append(`MetalWtUnit[${index}]`, items);
-        // //   });
-        // case 'MetalWt':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`MetalWt[${index}]`, items);
-        //   });
-        //   break;
-        // case 'Metal_Purity':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`Metal_Purity[${index}]`, items);
-        //   });
-        //   break;
-        // case 'MetalTypes':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`MetalTypes[${index}]`, items);
-        //   });
-        //   break;
-        // // case 'StoneWtUnit':
-        // //   data[item]?.map((items, index) => {
-        // //     data2.append(`StoneWtUnit[${index}]`, items);
-        // //   });
-        // case 'StoneName':
-        //   data[item]?.map((items, index) => {
-        // data2.append(`StoneName[${index}]`, items);
-        //   });
-        //   break;
-        // case 'stoneSrNo':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`stoneSrNo[${index}]`, items);
-        //   });
-        //   break;
-        // case 'StoneWt':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`StoneWt[${index}]`, items);
-        //   });
-        //   break;
-        // case 'StoneWt':
-        //   data[item]?.map((items, index) => {
-        //     data2.append(`StoneWt[${index}]`, items);
-        //   });
-        //   break;
+        case 'chk_c':
+          if (inputs.chk_c.length > 0) {
+            data[item]?.map((items, index) => {
+              data2.append(`chk_c[${index}]`, items);
+            });
+          } else {
+            data2.append(`chk_c[]`, '');
+          }
+
+          break;
+
         default:
           data2.append(item, data[item]);
       }
@@ -680,7 +643,7 @@ const AddProducts = () => {
         params,
         config,
       );
-
+      console.log('this is response data', JSON.stringify(response.data));
       setIfetching(false);
       if (response.data.status) {
         dispatch({
@@ -2020,17 +1983,18 @@ const AddProducts = () => {
                   }}>
                   <CheckBox
                     onChange={async () => {
-                      if (inputs.chk_sc.includes(item.SrNo)) {
-                        const res = inputs.chk_sc.filter(
+                      if (inputs.chk_c.includes(item.SrNo)) {
+                        console.log();
+                        const res = inputs.chk_c.filter(
                           items => items != item.SrNo,
                         );
 
-                        handleInputs('chk_sc', res);
+                        handleInputs('chk_c', res);
                       } else {
-                        handleInputs('chk_sc', [...inputs.chk_sc, item.SrNo]);
+                        handleInputs('chk_c', [...inputs.chk_c, item.SrNo]);
                       }
                     }}
-                    value={inputs.chk_sc?.includes(item.SrNo) ? true : false}
+                    value={inputs.chk_c?.includes(item.SrNo) ? true : false}
                   />
                   <Text
                     style={{

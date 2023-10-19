@@ -55,7 +55,7 @@ function* networkList(action) {
 function* productTypeList(action) {
   try {
     const data = {
-      userId: action.userId,
+      userid: action.userId,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
 

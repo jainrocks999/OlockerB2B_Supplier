@@ -86,8 +86,8 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
       url: 'removeDecorative',
       DecorativeId: SrNo,
       BreakUp: isBrekup == 0 ? 1 : 0,
-      current_session_id:productEdit?0: sessions,
-      hProductSrNo:productEdit?hProductSrNo:0
+      current_session_id: productEdit ? 0 : sessions,
+      hProductSrNo: productEdit ? hProductSrNo : 0,
     });
   };
 
