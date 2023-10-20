@@ -34,7 +34,7 @@ const MyCatalogue = () => {
         url: `https://olocker.co/api/supplier//removeCollection?SrNo=${item.SrNo}`,
       });
       // console.log('thissi is rresponse', response.data);
-      if (response.data.status == 'success') {
+      if (response.data.status) {
         setFetching(false);
         // console.log('thissi is rresponse1', response.data.status);
         dispatch({

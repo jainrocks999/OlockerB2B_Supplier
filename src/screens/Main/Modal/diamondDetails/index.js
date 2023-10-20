@@ -106,6 +106,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     });
   };
 
+
   return (
     <View style={styles.container}>
       <Modal animationType="fade" transparent visible={visi}>

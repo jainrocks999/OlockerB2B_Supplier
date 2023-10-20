@@ -576,7 +576,7 @@ const AddProducts = () => {
       }
     }
   };
-  console.log('this is edidproduct', JSON.stringify(editProduct));
+
   const handleOnSubmit = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
 
@@ -614,7 +614,7 @@ const AddProducts = () => {
               data2.append(`chk_c[${index}]`, items);
             });
           } else {
-            data2.append(`chk_c[]`, '');
+            //data2.append(`chk_c[]`, '');
           }
 
           break;
@@ -623,8 +623,8 @@ const AddProducts = () => {
           data2.append(item, data[item]);
       }
     });
-
-    fetchDataByPOST(data2);
+    console.log(JSON.stringify(data2));
+    // fetchDataByPOST(data2);
   };
   const [isFetching3, setIfetching] = useState(false);
   const fetchDataByPOST = async params => {

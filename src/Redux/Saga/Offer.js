@@ -12,9 +12,9 @@ function* offerList(action) {
       userid: action.userid,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-    // // console.log('this is user response',response.status);
+    //  console.log('this is user response', JSON.stringify(response));
 
-    if (response.status == 'success') {
+    if (response.status || response.success) {
       yield put({
         type: 'Template_Detail_Success',
         payload: response.data,
@@ -40,7 +40,7 @@ function* offerTempList(action) {
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
     // // console.log('this is user response',response);
-    if (response.status == 'success') {
+    if (response.status) {
       yield put({
         type: 'Add_Offer_Success',
         payload: response.data,
@@ -60,14 +60,14 @@ function* offerTempList(action) {
 
 function* offerListData(action) {
   try {
-    console.log('thi si calledd');
+    // console.log('thi si calledd');
     const data = {
       userid: action.userid,
       start: 0,
       length: 80,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-    
+
     if (response.status) {
       yield put({
         type: 'Offer_List_Success',

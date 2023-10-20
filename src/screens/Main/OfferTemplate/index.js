@@ -31,6 +31,7 @@ const OfferTemplate = () => {
   const [description, setDescription] = useState('');
   const selector = useSelector(state => state.Offer.OfferList);
   const isFetching = useSelector(state => state.Offer.isFetching);
+  //console.log('this is ofeer templet', selector);
 
   useEffect(() => {
     (async () => {
@@ -64,7 +65,7 @@ const OfferTemplate = () => {
           },
           url: 'https://olocker.co/api/supplier//addOfferTemplate',
         });
-        if (response.data.status == 'success') {
+        if (response.data.status) {
           setFetching(false);
           Toast.show(response.data.msg);
           dispatch({
@@ -88,9 +89,7 @@ const OfferTemplate = () => {
     const user_id = await AsyncStorage.getItem('user_id');
     try {
       setFetching(true);
-      // const data= new FormData()
-      // data.append('userid',template)
-      // data.append('id',description)
+
       const data = {
         userid: user_id,
         id: item.Id,
@@ -104,7 +103,7 @@ const OfferTemplate = () => {
         },
         url: 'https://olocker.co/api/supplier//deleteOfferTemplate',
       });
-      if (response.data.status == 'success') {
+      if (response.data.status) {
         setFetching(false);
         Toast.show(response.data.msg);
         dispatch({

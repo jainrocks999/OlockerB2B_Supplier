@@ -700,7 +700,7 @@ const EditCollection = ({route}) => {
         url: 'https://olocker.co/api/supplier//postCreateCollection',
       });
       // console.log('thissi is rresponse',response.data);
-      if (response.data.status == 'success') {
+      if (response.data.status ) {
         setFetching(false)
         dispatch({
           type: 'Get_Catalogue_Request',

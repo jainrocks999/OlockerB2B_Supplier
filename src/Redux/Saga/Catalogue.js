@@ -76,7 +76,7 @@ function* getCollectionDetails(action) {
       SrNo: action.collectionSrNo,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-    if (response.status == 'success') {
+    if (response.status) {
       yield put({
         type: 'Collection_Detail_Success',
         payload: response.data,
@@ -110,7 +110,7 @@ function* getSelfProductList(action) {
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
     // console.log('this is user response',response);
-    if (response.status == 'success') {
+    if (response.status) {
       yield put({
         type: 'Self_Product_Success',
         payload: response.data,
@@ -145,7 +145,7 @@ function* getOlockerProductList(action) {
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
     // console.log('this is user response',response);
-    if (response.status == 'success') {
+    if (response.status) {
       yield put({
         type: 'Olocker_Product_Success',
         payload: response.data,

@@ -308,7 +308,7 @@ const EditSupplierProfile = ({route}) => {
             url: 'https://olocker.co/api/supplier//updateProfile',
           });
           // console.log('this is iresponae',response);
-          if (response.data.status == 'success') {
+          if (response.data.status ) {
             setFetching(false)
             Toast.show(response.data.msg)
           } else {

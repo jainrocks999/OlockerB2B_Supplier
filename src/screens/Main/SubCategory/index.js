@@ -34,19 +34,15 @@ const SubCategory = ({route}) => {
   const productData = useSelector(state => state.Catalogue?.productData);
   const isFetching4 = useSelector(state => state.Catalogue?.isFetching);
   const ima = productData?.productdetails?.productimages;
-  console.log('this is product data', JSON.stringify(productData));
   const Detail = 'route.params.Details';
-  // console.log(
-  //   'detailss........................',
-  //   Detail ? selector : selector1,
-  // );
+
   const productImage = () => {
     const img = ima
       ? ima?.map(item => {
           return `https://olocker.co/uploads/product/${item?.ImageName}`;
         })
       : [];
-    console.log('this is image', img);
+
     return img;
   };
   const isFetching = useSelector(state => state.isFetching);

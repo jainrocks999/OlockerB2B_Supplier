@@ -69,7 +69,7 @@ const OfferList = () => {
           },
           url: 'https://olocker.co/api/supplier//addOfferTemplate',
         });
-        if (response.data.status == 'success') {
+        if (response.data.status ) {
           setFetching(false);
           Toast.show(response.data.msg);
           dispatch({
@@ -108,7 +108,7 @@ const OfferList = () => {
         },
         url: 'https://olocker.co/api/supplier//deleteOfferTemplate',
       });
-      if (response.data.status == 'success') {
+      if (response.data.status ) {
         setFetching(false);
         Toast.show(response.data.msg);
         dispatch({
