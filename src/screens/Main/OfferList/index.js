@@ -69,7 +69,7 @@ const OfferList = () => {
           },
           url: 'https://olocker.co/api/supplier//addOfferTemplate',
         });
-        if (response.data.status ) {
+        if (response.data.status) {
           setFetching(false);
           Toast.show(response.data.msg);
           dispatch({
@@ -108,7 +108,7 @@ const OfferList = () => {
         },
         url: 'https://olocker.co/api/supplier//deleteOfferTemplate',
       });
-      if (response.data.status ) {
+      if (response.data.status) {
         setFetching(false);
         Toast.show(response.data.msg);
         dispatch({
@@ -359,7 +359,7 @@ const OfferList = () => {
             <Text
               style={{
                 color: '#030303',
-                fontSize: wp(5),
+                fontSize: wp(4),
                 fontFamily: 'Roboto-Medium',
                 borderBottomWidth: 1,
                 borderStyle: 'dashed',
@@ -374,9 +374,12 @@ const OfferList = () => {
               style={{marginTop: 10}}
               renderItem={({item}) => (
                 <View style={styles.some}>
+                  {console.log(
+                    `https://olocker.co${OfferListData?.ImageUrl}${item.ImageName}`,
+                  )}
                   <Image
                     source={{
-                      uri: `https://olocker.co${item.ImageUrl}${item.ImageName}`,
+                      uri: `https://olocker.co${OfferListData?.ImageUrl}${item.ImageName}`,
                     }}
                     style={styles.img}
                   />
@@ -421,7 +424,9 @@ const OfferList = () => {
                           color: 'grey',
                           fontWeight: '600',
                         }}>
-                        {getSomedata(item?.OfferType)?.value}
+                        {item?.OfferType
+                          ? item?.OfferType.substring(0, 20)
+                          : ''}
                       </Text>
                     </View>
                     <View style={{flexDirection: 'row', marginTop: wp(1)}}>
@@ -561,7 +566,7 @@ const OfferList = () => {
                           color: 'grey',
                           fontWeight: '600',
                         }}>
-                        {getSomedata(item?.OfferType)?.GroupName}
+                        {item?.DealType ? item.DealType?.substring(0, 30) : ''}
                       </Text>
                     </View>
                   </View>

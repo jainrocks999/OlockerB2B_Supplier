@@ -66,7 +66,7 @@ const MyCatalogue = () => {
     });
   };
 
-  const addProduct = () => {
+  const addProduct = item => {
     // dispatch({
     //   type: 'Olocker_Product_Request',
     //   url: '/getSelfProductList',
@@ -81,22 +81,33 @@ const MyCatalogue = () => {
     //   limit:'10',
     //   navigation
     //  })
-    dispatch({
-      type: 'Self_Product_Request',
-      url: '/getSelfProductList',
-      search_key: '',
-      fromPrice: '',
-      toPrice: '',
-      minWeight: '',
-      maxWeight: '',
-      SupplierId: '',
-      userCollectionType: 'btnPartner',
-      start: '0',
-      limit: '10',
-      navigation,
-    });
-  };
 
+    // search_key:
+    // fromPrice:
+    // toPrice:
+    // minWeight:
+    // maxWeight:
+    // SupplierId:
+    // userCollectionType:btnOlocker
+    // start:0
+    // limit:10
+
+    // dispatch({
+    //   type: 'Self_Product_Request',
+    //   url: '/getSelfProductList',
+    //   search_key: '',
+    //   fromPrice: '',
+    //   toPrice: '',
+    //   minWeight: '',
+    //   maxWeight: '',
+    //   SupplierId: '',
+    //   userCollectionType: 'btnPartner',
+    //   start: '0',
+    //   limit: '10',
+    //   navigation,
+    // });
+    navigation.navigate('Addproduct', {no: item.SrNo});
+  };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       {fetching || isFetching ? <Loader /> : null}
@@ -270,7 +281,7 @@ const MyCatalogue = () => {
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => addProduct()}
+                    onPress={() => addProduct(item)}
                     style={{
                       width: '100%',
                       height: 30,

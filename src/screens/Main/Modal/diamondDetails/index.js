@@ -86,7 +86,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         url: 'addDiamond',
         data: {
           ...inputs,
-          current_session_id: productEdit ? '' : session,
+          current_session_id: productEdit ? 0 : session,
           isAdd: productEdit ? 0 : 1,
           hProductSrNo: productEdit ? hProductSrNo : 0,
           BreakUp: isBrekup == 0 ? 1 : 0,

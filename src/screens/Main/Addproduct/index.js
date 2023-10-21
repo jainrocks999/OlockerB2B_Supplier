@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -26,11 +26,12 @@ import RNPickerSelect from 'react-native-picker-select';
 import MultiSelect from 'react-native-multiple-select';
 
 const pushData = [];
-const Addproduct = () => {
+const Addproduct = ({route}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const collectionList = useSelector(state => state.Catalogue.Catalogue);
   const selector = useSelector(state => state.Catalogue.SelfCreatedProduct);
+  //console.log('this is selector', JSON.stringify(route.params.no));
   const isFetching = useSelector(state => state.Catalogue.isFetching);
   const selector1 = useSelector(state => state.Catalogue.OlockerCreatedProduct);
   const [fetching, setFetching] = useState(false);
@@ -45,23 +46,27 @@ const Addproduct = () => {
   const [selected, setSelected] = useState([]);
   const refRBSheet = useRef();
   const [product, setProduct] = useState('');
-  // useEffect(()=>{
-  //   dispatch({
-  //     type: 'Self_Product_Request',
-  //     url: '/getSelfProductList',
-  //     search_key: '',
-  //     fromPrice:'',
-  //     toPrice:'',
-  //     minWeight:'',
-  //     maxWeight:'',
-  //     SupplierId:'',
-  //     userCollectionType:'btnPartner',
-  //     start:'0',
-  //     limit:'10',
-  //     navigation
-  //    })
-  // },[])
-
+  const [change, setChange] = useState(false);
+  const number = route.params.no;
+  useEffect(() => {
+    dispatch({
+      type: 'Self_Product_Request',
+      url: !change ? '/getSelfProductList' : '/getOlockerProductList',
+      search_key: '',
+      fromPrice: '',
+      toPrice: '',
+      minWeight: '',
+      maxWeight: '',
+      SupplierId: '',
+      userCollectionType: !change ? 'btnPartner' : 'btnOlocker',
+      start: '0',
+      limit: '10',
+      //  navigation,
+    });
+  }, []);
+  useEffect(() => {
+    resetClick();
+  }, [selector]);
   const resetClick = () => {
     setSearch('');
     setMinPrice('');
@@ -69,11 +74,36 @@ const Addproduct = () => {
     setMinWeight('');
     setMaxWeight('');
   };
+  const manageApis = () => {
+    dispatch({
+      type: 'Self_Product_Request',
+      url: !change ? '/getSelfProductList' : '/getOlockerProductList',
+      search_key: search,
+      fromPrice: minPrice,
+      toPrice: maxPrice,
+      minWeight: minWeight,
+      maxWeight: maxWeight,
+      SupplierId: '',
+      userCollectionType: !change ? 'btnPartner' : 'btnOlocker',
+      start: '0',
+      limit: '10',
+      //  navigation,
+    });
+
+    // search_key: search,
+    // fromPrice: minPrice,
+    // toPrice: maxPrice,
+    // minWeight: minWeight,
+    // maxWeight: maxWeight,
+
+    setChange(!change);
+  };
 
   const manageChange = () => {
-    setSelf(true);
-    setOlocker(false);
-    setSelected([]);
+    // setSelf(true);
+    // setOlocker(false);
+    // setSelected([]);
+    manageApis();
   };
   const manageChange1 = () => {
     setSelf(false);
@@ -158,14 +188,7 @@ const Addproduct = () => {
       try {
         setFetching(true);
         const data = new FormData();
-        data.append(
-          'collectionId',
-          olocker == true
-            ? selector1[0].collectionId
-            : self == true
-            ? selector[0].collectionId
-            : '',
-        );
+        data.append('collectionId', number);
         data.append('productId', selected);
 
         const response = await axios({
@@ -411,7 +434,7 @@ const Addproduct = () => {
                   color: self == true ? '#fff' : '#032e63',
                   fontFamily: 'Roboto-Medium',
                 }}>
-                Self Created Product
+                {change ? 'Self Created Product' : 'Olocker Library Product'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -556,7 +579,7 @@ const Addproduct = () => {
           </View>
           <View>
             <TouchableOpacity
-              onPress={() => handleOnpress()}
+              onPress={() => manageApis()}
               style={{
                 width: '100%',
                 borderWidth: 1,

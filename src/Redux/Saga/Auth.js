@@ -43,14 +43,15 @@ function* WishListRequest(action) {
   // // console.log('this is action detail', action.user_id);
   try {
     const data = {
-      userid: action.user_id,
+      userId: action.user_id,
+      userType: 'supplier',
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
     console.log('this siss response', response);
     if (response.status == true) {
       yield put({
         type: 'Get_wishListProduct_Success',
-        payload: response.data,
+        payload: response,
       });
       action.navigation.navigate('FavDetails');
 

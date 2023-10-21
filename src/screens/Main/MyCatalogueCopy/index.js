@@ -55,13 +55,25 @@ const MyCatalogueCopy = () => {
   };
 
   const manageWishList = async (item, index) => {
-    if (liked.includes(index)) {
-      let like = liked.filter(elem => elem != index);
-      const res = await RemoveWhishList(item.productId, like);
-      Toast.show(res.msg);
+    const user_id = await AsyncStorage.getItem('user_id');
+    let res;
+    if (index) {
+      res = await RemoveWhishList(item.productId);
     } else {
-      const res = await addProductWishList(item);
-      Toast.show(res.msg);
+      res = await addProductWishList(item.productId);
+    }
+    console.log('this is res', res);
+    if (res.status) {
+      dispatch({
+        type: 'My_Product_Request',
+        url: '/getProductList',
+        user_id: user_id,
+        start: 0,
+        length: 10,
+        search: '',
+        //navigation,
+        btn: '',
+      });
     }
   };
 
@@ -85,7 +97,7 @@ const MyCatalogueCopy = () => {
       .then(response => response.text())
       .then(result => {
         setIsFetching(false);
-        setLiked(liked);
+
         return JSON.parse(result);
       })
       .catch(error => {
@@ -97,6 +109,7 @@ const MyCatalogueCopy = () => {
   };
 
   const addProductWishList = async item => {
+    console.log('this is celld');
     setIsFetching(true);
     const Token = await AsyncStorage.getItem('loginToken');
     const user_id = await AsyncStorage.getItem('user_id');
@@ -104,7 +117,7 @@ const MyCatalogueCopy = () => {
     myHeaders.append('Olocker', `Bearer ${Token}`);
 
     var formdata = new FormData();
-    formdata.append('checkProduct', item.productId);
+    formdata.append('checkProduct', item);
     formdata.append('SupplierSrNo', user_id);
     formdata.append('userType', 'supplier');
 
@@ -366,69 +379,71 @@ const MyCatalogueCopy = () => {
             style={{width: '96%'}}
             numColumns={2}
             // contentContainerStyle={{justifyContent:'center',}}
-            renderItem={({item, index}) => (
-              <View
-                style={{
-                  width: '46%',
-                  margin: 7,
-                  shadowColor: '#000',
-                  shadowOffset: {width: 0, height: 2},
-                  shadowOpacity: 0.2,
-                  shadowRadius: 5,
-                  elevation: 5,
-                  backgroundColor: '#fff',
-                  borderRadius: 10,
-                  padding: 10,
-                }}>
+            renderItem={({item, index}) => {
+              return (
                 <View
                   style={{
-                    padding: 0,
-                    height: hp('5%'),
-                    width: '18%',
-                    borderWidth: 0,
-                    marginTop: 0,
+                    width: '46%',
+                    margin: 7,
+                    shadowColor: '#000',
+                    shadowOffset: {width: 0, height: 2},
+                    shadowOpacity: 0.2,
+                    shadowRadius: 5,
+                    elevation: 5,
+                    backgroundColor: '#fff',
+                    borderRadius: 10,
+                    padding: 10,
                   }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      manageWishList(item, item.SrNo);
-                    }}
-                    // onPress={() => click(click1)}
-                  >
-                    <Image
-                      style={{
-                        height: hp('2.4%'),
-                        width: wp('5.8%'),
-                        marginLeft: 5,
-                        marginVertical: 5,
-                        marginTop: 2,
-                        tintColor: liked.includes(item.SrNo) ? 'red' : 'grey',
-                      }}
-                      source={require('../../../assets/Image/dil.png')}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <Image
-                  style={{height: 144, width: '100%', borderRadius: 10}}
-                  source={{uri: item.images}}
-                />
-                <View style={{marginTop: 10}}>
-                  <Text
+                  <View
                     style={{
-                      fontFamily: 'Roboto-Medium',
-                      fontSize: 14,
-                      color: '#030303',
+                      padding: 0,
+                      height: hp('5%'),
+                      width: '18%',
+                      borderWidth: 0,
+                      marginTop: 0,
                     }}>
-                    {item.productTypeName}
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: 'Roboto-Medium',
-                      fontSize: 14,
-                      color: '#666666',
-                    }}></Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        manageWishList(item, item.is_exist);
+                      }}
+                      // onPress={() => click(click1)}
+                    >
+                      <Image
+                        style={{
+                          height: hp('2.4%'),
+                          width: wp('5.8%'),
+                          marginLeft: 5,
+                          marginVertical: 5,
+                          marginTop: 2,
+                          tintColor: item?.is_exist ? 'red' : 'grey',
+                        }}
+                        source={require('../../../assets/Image/dil.png')}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <Image
+                    style={{height: 144, width: '100%', borderRadius: 10}}
+                    source={{uri: item.images}}
+                  />
+                  <View style={{marginTop: 10}}>
+                    <Text
+                      style={{
+                        fontFamily: 'Roboto-Medium',
+                        fontSize: 14,
+                        color: '#030303',
+                      }}>
+                      {item.productTypeName}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Roboto-Medium',
+                        fontSize: 14,
+                        color: '#666666',
+                      }}></Text>
+                  </View>
                 </View>
-              </View>
-            )}
+              );
+            }}
           />
         </View>
       </ScrollView>

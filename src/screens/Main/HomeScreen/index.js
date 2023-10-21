@@ -155,7 +155,7 @@ const HomeScreen = () => {
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
       type: 'Get_wishListProduct_Request',
-      url: '/wishListItem',
+      url: '/wishListProduct',
       user_id: user_id,
       navigation,
     });

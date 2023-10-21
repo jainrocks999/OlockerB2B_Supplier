@@ -77,7 +77,7 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
           ...inputs,
           BreakUp: isBrekup == 0 ? 1 : 0,
           isAdd: productEdit ? 0 : 1,
-          current_session_id: productEdit ? '' : session,
+          current_session_id: productEdit ? 0 : session,
           hProductSrNo: productEdit ? hProductSrNo : 0,
         },
       });

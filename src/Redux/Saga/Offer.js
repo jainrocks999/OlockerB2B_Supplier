@@ -62,12 +62,12 @@ function* offerListData(action) {
   try {
     // console.log('thi si calledd');
     const data = {
-      userid: action.userid,
+      SupplierSrNo: action.userid,
       start: 0,
       length: 80,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-
+    console.log('this is response', JSON.stringify(response));
     if (response.status) {
       yield put({
         type: 'Offer_List_Success',

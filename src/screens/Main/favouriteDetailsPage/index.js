@@ -112,7 +112,7 @@ const FavouriteList = () => {
               <View style={styles.cardview}>
                 <View
                   style={{
-                    height: hp('100%'),
+                    height: '100%',
                     width: wp('45%'),
                     maxHeight: hp('25%'),
                     borderWidth: 0,
@@ -152,7 +152,7 @@ const FavouriteList = () => {
 
                     <TouchableOpacity
                       onPress={() => {
-                        RemoveWhishList(item.SrNo);
+                        RemoveWhishList(item?.SrNo);
                       }}
                       style={{marginLeft: 2}}>
                       <MaterialCommunityIcons name="delete" size={30} />
@@ -188,7 +188,7 @@ const FavouriteList = () => {
                     }}>
                     <Text style={styles.cardbottomtext}>ProductID:-</Text>
                     <Text style={{fontWeight: '500', width: '50%'}}>
-                      {item.ProductSku.substring(0, 10)}
+                      {item?.ProductSku?.substring(0, 10)}
                     </Text>
                   </View>
                   <View

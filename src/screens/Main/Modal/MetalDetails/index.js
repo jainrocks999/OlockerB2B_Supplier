@@ -86,7 +86,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         url: 'addmetal',
         data: {
           ...inputs,
-          current_session_id: productEdit ? '' : session,
+          current_session_id: productEdit ? 0 : session,
           hProductSrNo: productEdit ? hProductSrNo : 0,
           isAdd: productEdit ? 0 : 1,
         },

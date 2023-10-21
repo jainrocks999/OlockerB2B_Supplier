@@ -74,7 +74,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         data: {
           ...inputs,
           isAdd: productEdit ? 0 : 1,
-          current_session_id: productEdit ? '' : session,
+          current_session_id: productEdit ? 0 : session,
           BreakUp: isBrekup == 1 ? 0 : 1,
           hProductSrNo: productEdit ? hProductSrNo : 0,
         },

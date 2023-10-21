@@ -179,10 +179,10 @@ const OfferTemplate = () => {
             style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
             source={require('../../../assets/Image/dil.png')}
           />
-          <Image
+          {/* <Image
             style={{height: 24, width: 28, tintColor: '#fff', marginLeft: 15}}
             source={require('../../../assets/supplierImage/more.png')}
-          />
+          /> */}
         </View>
       </View>
       <ScrollView>

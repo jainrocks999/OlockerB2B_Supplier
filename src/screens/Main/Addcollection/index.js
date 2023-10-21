@@ -46,9 +46,18 @@ const Addcollection = () => {
     } else if (photo == '') {
       Toast.show('Please select banner image');
     } else {
+      console.log(photoName);
       try {
         setFetching(true);
         const data = new FormData();
+
+        // userId:13
+        // Name:testing case wwwwwwww
+        // Title:testing case three
+        // Description:testing case three
+        // IsActive:1
+        //SrNo:153
+
         data.append('userId', user_id);
         data.append('Name', name);
         data.append('Title', tag);
@@ -56,25 +65,27 @@ const Addcollection = () => {
         data.append('Description', description);
         data.append('ImageName', {
           uri: photo,
-          name: photoName.substring(photoName.lastIndexOf('/') + 1),
+          name: photoName,
           type: photoType,
         });
 
-        data.append('hidden_image', {
-          uri: photo,
-          name: photoName.substring(photoName.lastIndexOf('/') + 1),
-          type: photoType,
-        });
+        data.append('hidden_image', '');
         const response = await axios({
           method: 'POST',
-          data,
+          data: data,
           headers: {
             'content-type': 'multipart/form-data',
             Olocker: `Bearer ${Token}`,
           },
           url: 'https://olocker.co/api/supplier//postCreateCollection',
         });
-
+        console.log(JSON.stringify(response.data));
+        const rresponse = {
+          data: {
+            status: true,
+            msg: 'your are chutiys',
+          },
+        };
         if (response.data.status) {
           setFetching(false);
           dispatch({
@@ -91,7 +102,7 @@ const Addcollection = () => {
         }
       } catch (error) {
         setFetching(false);
-        // console.log('this isi error',error);
+        console.log('this isi error', error);
       }
     }
   };
