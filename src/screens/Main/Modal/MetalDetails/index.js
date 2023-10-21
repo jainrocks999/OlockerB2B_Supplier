@@ -41,7 +41,18 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     hProductSrNo: 0,
     hMetalWt: 0,
     isAdd: 1,
+    current_session_id: productEdit ? 0 : session,
   });
+  //   Raju Virendra check it param
+  // current_session_id:1697872810743
+  // GrossWt:20
+  // MetalPurity:995
+  // MetalTypes:Gold
+  // MetalWt:20
+  // MetalWtUnit:Gms.
+  // hProductSrNo:0
+  // isAdd:1
+  // hMetalWt:0
   useEffect(() => {
     setInputs({
       GrossWt: '',
@@ -49,7 +60,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
       MetalTypes: '',
       MetalWt: '',
       MetalWtUnit: '',
-      current_session_id: session,
+      current_session_id: productEdit ? 0 : session,
       hProductSrNo: 0,
       hMetalWt: 0,
     });
@@ -403,7 +414,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
 export default MetalViewModal;
 const DropData = [
   {label: 'Cts.', value: 'Cts.'},
-  {label: 'Gms', value: 'Gms'},
+  {label: 'Gms.', value: 'Gms.'},
 ];
 // const metaltype = [
 //   {

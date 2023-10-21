@@ -483,5 +483,5 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
 export default DiamondViewModal;
 const DropData = [
   {label: 'Cts.', value: 'Cts.'},
-  {label: 'Gms', value: 'Gms'},
+  {label: 'Gms.', value: 'Gms.'},
 ];

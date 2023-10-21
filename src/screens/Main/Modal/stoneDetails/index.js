@@ -357,5 +357,5 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
 export default StoneViewModal;
 const DropData = [
   {label: 'Cts.', value: 'Cts.'},
-  {label: 'Gms', value: 'Gms'},
+  {label: 'Gms.', value: 'Gms.'},
 ];

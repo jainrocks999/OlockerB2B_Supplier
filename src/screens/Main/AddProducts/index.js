@@ -126,6 +126,7 @@ const AddProducts = () => {
     rbCategory: 'Category B',
     chk_c: [],
   });
+  console.log('this is sessession', session);
   const getImage = () => {
     const imageArr =
       editProduct?.productdetails?.productimages?.length > 0
@@ -209,7 +210,8 @@ const AddProducts = () => {
       userId: Number(user_id),
     });
   };
-  const navigation = useNavigation();
+
+  navigation = useNavigation();
 
   const renderItem = item => {
     return (
