@@ -64,7 +64,7 @@ function* WishListRequest(action) {
     yield put({
       type: 'Get_wishListProduct_Error',
     });
-    console.log('this is error', error);
+    console.log('this is error rrr', error);
   }
 }
 

@@ -106,7 +106,6 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     });
   };
 
-
   return (
     <View style={styles.container}>
       <Modal animationType="fade" transparent visible={visi}>
@@ -127,7 +126,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
               </View>
             </View>
 
-            {diamondData[0] != undefined ? (
+            {diamondData?.length > 0 ? (
               <View style={{marginTop: wp(3)}}>
                 <FlatList
                   data={diamondData}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+import {Dropdown} from 'react-native-element-dropdown';
 import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -17,10 +17,10 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { Table, TableWrapper, Row } from 'react-native-table-component';
-import { TextInput } from 'react-native';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import {Table, TableWrapper, Row} from 'react-native-table-component';
+import {TextInput} from 'react-native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AssignCategory from '../Modal/assigncategoryModal';
 
@@ -31,15 +31,14 @@ const RetailerRequestList = () => {
   const isFetching = useSelector(state => state.Home.isFetching);
   const [AssignModal, setAssignModal] = useState(false);
   const [data, setData] = useState(false);
-  const AssiGnModal = useSelector(state => state.Supplier.AssiGnModal)
+  const AssiGnModal = useSelector(state => state.Supplier.AssiGnModal);
   useEffect(() => {
-    setAssignModal(false)
-  }, [AssiGnModal])
+    setAssignModal(false);
+  }, [AssiGnModal]);
   const sendData = item => {
     setData(item);
     setAssignModal(true);
   };
-
 
   const selector = useSelector(state => state.Home.RetailerRequestList);
 
@@ -77,7 +76,7 @@ const RetailerRequestList = () => {
     );
   };
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       {isFetching ? <Loader /> : null}
       <AssignCategory
         visi={AssignModal}
@@ -86,14 +85,14 @@ const RetailerRequestList = () => {
       />
       <ScrollView contentContainerStyle={{}}>
         <View style={styles.searchbar}>
-          <TextInput placeholder="Search" style={{ fontSize: 18 }} />
-          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <TextInput placeholder="Search" style={{fontSize: 18}} />
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
             <Feather name="search" size={wp(6)} />
           </View>
         </View>
 
-        <View style={{ marginHorizontal: 10 }}>
-          <Text style={{ fontSize: wp(5), fontWeight: '600', color: '#000' }}>
+        <View style={{marginHorizontal: 10}}>
+          <Text style={{fontSize: wp(5), fontWeight: '600', color: '#000'}}>
             Show
           </Text>
 
@@ -130,7 +129,7 @@ const RetailerRequestList = () => {
           <View>
             <FlatList
               data={selector}
-              renderItem={({ item }) => (
+              renderItem={({item}) => (
                 <View
                   style={{
                     shadowColor: '#000',
@@ -146,24 +145,23 @@ const RetailerRequestList = () => {
                     flexDirection: 'row',
                     alignItems: 'center',
                     borderRadius: 10,
-                    marginHorizontal: 5,
+                    marginHorizontal: wp(3),
                     paddingVertical: wp(2),
-                    paddingLeft: wp(2)
-
+                    //  paddingLeft: wp(2),
                   }}>
                   <View>
-                   
                     <Text
                       style={{
                         fontWeight: '500',
-                        fontSize: wp(4.5),
+                        fontSize: wp(4),
                         marginLeft: 10,
+                        color: 'black',
                       }}>
                       CompanyName :
                       <Text
                         style={{
-                          fontWeight: '500',
-                          fontSize: wp(4.5),
+                          fontSize: wp(4),
+                          fontWeight: '400',
                         }}>
                         {' '}
                         {item.CompanyName}
@@ -177,39 +175,68 @@ const RetailerRequestList = () => {
                       }}>
                       <Text
                         style={{
-                          fontSize: wp(4.5),
+                          fontSize: wp(4),
                           fontWeight: '700',
                           marginRight: 10,
+                          color: 'black',
                         }}>
                         City :
-                        <Text style={{ fontWeight: '400' }}> {item.city_name} </Text>
+                        <Text style={{fontWeight: '400'}}>
+                          {' '}
+                          {item.city_name}{' '}
+                        </Text>
                       </Text>
-                      <Text style={{ fontSize: wp(4.5), fontWeight: '700' }}>
+                      <Text
+                        style={{
+                          fontSize: wp(4),
+                          fontWeight: '700',
+                          color: 'black',
+                        }}>
                         State :
-                        <Text style={{ fontWeight: '400' }}>
+                        <Text style={{fontWeight: '400'}}>
                           {' '}
                           {item.state_name}{' '}
                         </Text>
                       </Text>
                     </View>
-                    <View style={{ marginLeft: 10, marginTop: 5 }}>
-                      <Text style={{ fontSize: wp(4.5), fontWeight: '700' }}>
+                    <View style={{marginLeft: 10, marginTop: 5}}>
+                      <Text
+                        style={{
+                          fontSize: wp(4),
+                          fontWeight: '700',
+                          color: 'black',
+                        }}>
                         Assign Category :
-                        <Text style={{ width: '60%' }}> {item.CategoryType}</Text>
+                        <Text style={{width: '60%'}}> {item.CategoryType}</Text>
                       </Text>
                     </View>
-                    <View style={{ marginLeft: 10, flexDirection: 'row', marginTop: 5 }}>
-                      <Text style={{ fontSize: wp(4.5), fontWeight: '700' }}>
+                    <View
+                      style={{
+                        marginLeft: 10,
+                        flexDirection: 'row',
+                        marginTop: 5,
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: wp(4),
+                          fontWeight: '700',
+                          color: 'black',
+                        }}>
                         IsShowInRetailerApp :
-                        <Text style={{ width: '60%', fontWeight: '400' }}>
+                        <Text style={{width: '60%', fontWeight: '400'}}>
                           {' '}
                           {item.IsShowInRetailerApp}
                         </Text>
                       </Text>
                       <Text
-                        style={{ fontSize: wp(4.5), fontWeight: '700', marginLeft: 10 }}>
+                        style={{
+                          fontSize: wp(4),
+                          fontWeight: '700',
+                          marginLeft: 10,
+                          color: 'black',
+                        }}>
                         Status :
-                        <Text style={{ width: '60%', fontWeight: '400' }}>
+                        <Text style={{width: '60%', fontWeight: '400'}}>
                           {' '}
                           {item.Status}
                         </Text>
@@ -221,7 +248,12 @@ const RetailerRequestList = () => {
                         marginLeft: 10,
                         marginTop: 5,
                       }}>
-                      <Text style={{ fontSize: wp(4.5), fontWeight: '700' }}>
+                      <Text
+                        style={{
+                          fontSize: wp(4),
+                          fontWeight: '700',
+                          color: 'black',
+                        }}>
                         Action :{' '}
                       </Text>
 
@@ -232,7 +264,7 @@ const RetailerRequestList = () => {
                           width: '60%',
                         }}>
                         <TouchableOpacity
-                          style={{ width: '80%', marginLeft: 10 }}
+                          style={{width: '80%', marginLeft: 10}}
                           onPress={() => {
                             sendData(item);
                           }}>
@@ -252,7 +284,8 @@ const RetailerRequestList = () => {
                           }}>
                           |
                         </Text>
-                        <TouchableOpacity style={{ width: '60%', marginLeft: 10 }}>
+                        <TouchableOpacity
+                          style={{width: '60%', marginLeft: 10}}>
                           <Text
                             style={{
                               fontSize: wp(4.5),
@@ -269,7 +302,6 @@ const RetailerRequestList = () => {
               )}
             />
           </View>
-
         </View>
 
         <View
@@ -288,13 +320,13 @@ const RetailerRequestList = () => {
               borderColor: '#032E63',
               backgroundColor: '#032E63',
             }}>
-            <Text style={{ color: 'white' }}>Prev</Text>
+            <Text style={{color: 'white'}}>Prev</Text>
           </TouchableOpacity>
           <View style={{}}>
             <FlatList
               data={page}
               horizontal
-              renderItem={({ item }) => (
+              renderItem={({item}) => (
                 <View
                   style={{
                     height: 40,
@@ -305,7 +337,7 @@ const RetailerRequestList = () => {
                     marginHorizontal: 5,
                     borderRadius: 20,
                   }}>
-                  <Text style={{ color: 'white' }}>{item.number}</Text>
+                  <Text style={{color: 'white'}}>{item.number}</Text>
                 </View>
               )}
             />
@@ -319,7 +351,7 @@ const RetailerRequestList = () => {
               borderColor: '#032E63',
               backgroundColor: '#032E63',
             }}>
-            <Text style={{ color: 'white' }}>Next</Text>
+            <Text style={{color: 'white'}}>Next</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -345,12 +377,11 @@ const RetailerRequestList = () => {
 export default RetailerRequestList;
 
 const DropData = [
-  { label: '10', value: '1' },
-  { label: '25', value: '2' },
-  { label: '50', value: '3' },
-  { label: '75', value: '4' },
-  { label: '100', value: '5' },
-
+  {label: '10', value: '1'},
+  {label: '25', value: '2'},
+  {label: '50', value: '3'},
+  {label: '75', value: '4'},
+  {label: '100', value: '5'},
 ];
 
 const page = [
@@ -370,4 +401,3 @@ const page = [
     number: '5',
   },
 ];
-

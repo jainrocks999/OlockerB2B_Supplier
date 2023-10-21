@@ -120,7 +120,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 </Text>
               </View>
             </View>
-            {metalData.result[0] != undefined ? (
+            {metalData.result?.length > 0 != undefined ? (
               <View style={{marginTop: wp(3)}}>
                 <FlatList
                   data={metalData?.result}

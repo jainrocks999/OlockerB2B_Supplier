@@ -113,7 +113,7 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 </Text>
               </View>
             </View>
-            {stoneData[0] != undefined ? (
+            {stoneData?.length > 0 != undefined ? (
               <View style={{marginTop: wp(3)}}>
                 <FlatList
                   data={stoneData}

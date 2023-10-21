@@ -95,7 +95,7 @@ const SubCategory = ({route}) => {
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
       type: 'edit_product_reqest',
-      url: 'productDetails',
+      url: 'editProduct',
       productId: productData?.products?.SrNo,
       supplierSrNo: user_id,
       navigation,

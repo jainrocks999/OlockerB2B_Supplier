@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -15,18 +15,17 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 
 import RetailerRequestList from '../RetailerRequestList';
 import MyNetworkList from '../MyNetworkList';
 import ListOfRetailer from '../ListofRetailer';
 import InviteRetailerList from '../InviteRetailerList';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function myNetworkBtn({ route }) {
-
-  const { data } = route.params;
+export default function myNetworkBtn({route}) {
+  const {data} = route.params;
 
   const [listofRetailer, setListOfRetailer] = useState(false);
   const [myNetwork, setmyNetwork] = useState(false);
@@ -37,29 +36,20 @@ export default function myNetworkBtn({ route }) {
   const isFocuse = useIsFocused();
 
   useEffect(() => {
-    checkScreen()
-  }, [])
-
-
+    checkScreen();
+  }, []);
 
   const checkScreen = () => {
-
-
     if (data === 'invite') {
-      setShowinviteRetailer()
+      setShowinviteRetailer();
+    } else if (data === 'List') {
+      setShowRetailerList();
+    } else if (data === 'Network') {
+      setShowmyNetwork();
+    } else if (data === 'Request') {
+      setShowRetailerRequest();
     }
-    else if (data === 'List') {
-      setShowRetailerList()
-    }
-    else if (data === 'Network') {
-      setShowmyNetwork()
-
-    }
-    else if (data === 'Request') {
-      setShowRetailerRequest()
-    }
-
-  }
+  };
 
   const setShowRetailerList = () => {
     setHeadText('List Of Retailer');
@@ -92,9 +82,9 @@ export default function myNetworkBtn({ route }) {
   const navigation = useNavigation();
   return (
     <ScrollView>
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <View style={styles.container}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
               delayPressIn={0}
               onPress={() => navigation.goBack()}>
@@ -103,7 +93,7 @@ export default function myNetworkBtn({ route }) {
                 source={require('../../../assets/L.png')}
               />
             </TouchableOpacity>
-            <Text style={[styles.text, { marginLeft: 15 }]}>{headText}</Text>
+            <Text style={[styles.text, {marginLeft: 15}]}>{headText}</Text>
           </View>
           <View style={styles.headertouch}>
             <TouchableOpacity onPress={() => navigation.navigate('Message')}>
@@ -113,7 +103,7 @@ export default function myNetworkBtn({ route }) {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              style={{ marginLeft: 15 }}
+              style={{marginLeft: 15}}
               onPress={() => handleWishList()}>
               <Image
                 style={styles.img2}
@@ -207,7 +197,7 @@ export default function myNetworkBtn({ route }) {
                   fontSize: wp(4),
                   fontWeight: '700',
                   color: retailerRequestList ? '#000' : 'white',
-                  textAlign: 'center'
+                  textAlign: 'center',
                 }}>
                 Retailer Request List
               </Text>

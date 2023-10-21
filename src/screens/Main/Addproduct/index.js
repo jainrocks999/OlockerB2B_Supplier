@@ -210,7 +210,7 @@ const Addproduct = () => {
         },
         url: 'https://olocker.co/api/supplier//deleteCollectionProduct',
       });
-      // console.log('thissi is rresponse', response);
+
       if (response.data.status) {
         setFetching(false);
         Toast.show(response.data.msg);

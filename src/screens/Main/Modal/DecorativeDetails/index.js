@@ -43,6 +43,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   };
   //decorativeData
   const decorativeData = useSelector(state => state.Catalogue?.decorativeData);
+  console.log('this iss decorative data', JSON.stringify(decorativeData));
   const isFetching = useSelector(state => state.Catalogue?.isFetching);
   const productEdit = useSelector(state => state.Catalogue?.productEdit);
   useEffect(() => {
@@ -111,7 +112,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 </Text>
               </View>
             </View>
-            {decorativeData[0] != undefined ? (
+            {decorativeData?.length > 0 != undefined ? (
               <View style={{marginTop: wp(3)}}>
                 <FlatList
                   data={decorativeData}

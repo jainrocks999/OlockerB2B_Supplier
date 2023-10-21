@@ -22,6 +22,10 @@ import {RadioButton} from 'react-native-paper';
 import CheckBox from '@react-native-community/checkbox';
 import {useDispatch, useSelector} from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
 const OfferTemplate = () => {
   const navigation = useNavigation();
@@ -40,6 +44,7 @@ const OfferTemplate = () => {
         type: 'Template_Detail_Request',
         url: '/getOfferTemplate',
         userid: user_id,
+        page: 'home',
       });
     })();
   }, []);
@@ -328,10 +333,10 @@ const OfferTemplate = () => {
                   shadowRadius: 5,
                   elevation: 5,
                   backgroundColor: '#fff',
-                  minHeight: 100,
+                  minHeight: wp(4.5),
                   width: '99%',
                   paddingHorizontal: 15,
-                  paddingVertical: 10,
+                  paddingVertical: 8,
                   marginHorizontal: 1,
                   borderRadius: 10,
                 }}>
@@ -345,7 +350,7 @@ const OfferTemplate = () => {
                     style={{
                       color: '#030303',
                       fontFamily: 'Roboto-Medium',
-                      fontSize: 15,
+                      fontSize: wp(4.5),
                     }}>
                     {item.label}
                   </Text>

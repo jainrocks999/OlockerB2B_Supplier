@@ -53,6 +53,7 @@ const AddProducts = () => {
   const msg = useSelector(state => state.Catalogue?.msg);
   const editProduct = useSelector(state => state.Catalogue?.editProduct);
   const productEdit = useSelector(state => state.Catalogue?.productEdit);
+  console.log('this is edidprodct', JSON.stringify(editProduct));
   const products = editProduct?.products;
   const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
   const datadelete = useSelector(state => state.Catalogue?.datadelete);
@@ -187,6 +188,7 @@ const AddProducts = () => {
       radioPriceCalculator: products?.isMrpBasis,
       txtLabourCharges: products?.LabourCharges,
       chk_c: editProduct?.getcollection,
+      DeliveryDays: products?.EstimateDeliveryDays,
     }));
     dispatch({
       type: 'get_item_field_list_request',
@@ -251,21 +253,23 @@ const AddProducts = () => {
   };
 
   useEffect(() => {
-    stoneData[0] != undefined || datadelete?.stone ? addStonedata() : null;
+    stoneData?.length > 0 != undefined || datadelete?.stone
+      ? addStonedata()
+      : null;
   }, [stoneData]);
   useEffect(() => {
-    diamondData[0] != undefined || datadelete?.diamond
+    diamondData?.length > 0 != undefined || datadelete?.diamond
       ? addDiamondData()
       : null;
   }, [diamondData]);
 
   useEffect(() => {
-    metalData.result[0] != undefined || datadelete?.metal
+    metalData.result?.length > 0 != undefined || datadelete?.metal
       ? addMetalData()
       : null;
   }, [metalData]);
   useEffect(() => {
-    decorativeData[0] != undefined || datadelete?.decorative
+    decorativeData?.length > 0 != undefined || datadelete?.decorative
       ? addDecorativeData()
       : null;
   }, [decorativeData]);
@@ -320,83 +324,57 @@ const AddProducts = () => {
     getProductPrice();
     verifyProduct();
   };
-  useEffect(() => {});
+
   const verifyProduct = async () => {
-    try {
-      let stonewt = 0;
-      let dimondwt = 0;
-      let decorativewt = 0;
-      let metalwt = 0;
-      stoneData?.map(item => {
-        let stonewieght =
-          item?.UnitStoneWt === 'Cts.' ? item?.StoneWt / 5 : item?.StoneWt;
-        stonewt = parseFloat(stonewt) + parseFloat(stonewieght);
-      });
-      diamondData.map(item => {
-        let dimondWieght =
-          item?.UnitStoneWt == 'Cts.' ? item?.StoneWt / 5 : item?.StoneWt;
-        dimondwt = parseFloat(dimondwt) + parseFloat(dimondWieght);
-        // console.log(item);
-      });
-      decorativeData?.map(item => {
-        let decovwie =
-          item?.UnitDecoItemWt === 'Cts.'
-            ? item?.DecorativeItemWt / 5
-            : item?.DecorativeItemWt;
-        decorativewt = parseFloat(decorativewt) + parseFloat(decovwie);
-      });
-      metalData.result?.map(item => {
-        let metalweight =
-          item?.UnitMetalWt === 'Cts.' ? item?.MetalWt / 5 : item?.MetalWt;
-        metalwt = parseFloat(metalwt) + parseFloat(metalweight);
-      });
-      // diamondData?.map(item => {
-      //   let dimondWieght =
-      //     item?.UnitStoneWt == 'Cts.' ? item?.StoneWt / 5 : item?.StoneWt;
-      //   console.log('this item', dimondWieght);
-      //   dimondwt = parseFloat(dimondwt) + parseFloat(dimondWieght);
-      // });
-      console.log('this is metalwr', dimondwt, stonewt, decorativewt, metalwt);
-      dispatch({
-        type: 'verify_product_wieght_request',
-        url: 'verifyWt',
-        GrossWt: totalWiegt,
-        MetalWtGrandTotal: metalwt,
-        // metal != 0
-        //   ? metal
-        //   : inputs.MetalWtGrandTotal
-        //   ? inputs.MetalWtGrandTotal
-        //   : productEdit
-        //   ? editProduct?.productMetalGrandTotal
-        //   : 0,
-        DiamondGrandTotal: dimondwt,
-        // diamon != 0
-        //   ? diamon
-        //   : inputs.DiamondGrandTotal
-        //   ? inputs.DiamondGrandTotal
-        //   : productEdit
-        //   ? inputs.DiamondGrandTotal
-        //   : 0,
-        StoneGrandTotal: stonewt,
-        // stone != 0
-        //   ? stone
-        //   : inputs.StoneGrandTotal
-        //   ? inputs.StoneGrandTotal
-        //   : productEdit?.productStoneGrandTotal
-        //   ? editProduct?.productStoneGrandTotal
-        //   : 0,
-        DecorationGrandTotal: decorativewt,
-        // dec != 0
-        //   ? dec
-        //   : inputs.DecorationGrandTotal
-        //   ? inputs.DecorationGrandTotal
-        //   : productEdit
-        //   ? editProduct?.productDecoGrandTotal
-        //   : 0,
-      });
-    } catch (error) {
-      console.log('this is errp', error);
-    }
+    let stonewt = 0;
+    let dimondwt = 0;
+    let decorativewt = 0;
+    let metalwt = 0;
+    stoneData?.length > 0
+      ? stoneData?.map(item => {
+          let stonewieght =
+            item?.UnitStoneWt === 'Cts.' ? item?.StoneWt / 5 : item?.StoneWt;
+          stonewt = parseFloat(stonewt) + parseFloat(stonewieght);
+        })
+      : null;
+    diamondData?.length > 0
+      ? diamondData.map(item => {
+          let dimondWieght =
+            item?.UnitStoneWt == 'Cts.' ? item?.StoneWt / 5 : item?.StoneWt;
+          dimondwt = parseFloat(dimondwt) + parseFloat(dimondWieght);
+          // console.log(item);
+        })
+      : null;
+    decorativeData?.length > 0
+      ? decorativeData?.map(item => {
+          let decovwie =
+            item?.UnitDecoItemWt === 'Cts.'
+              ? item?.DecorativeItemWt / 5
+              : item?.DecorativeItemWt;
+          decorativewt = parseFloat(decorativewt) + parseFloat(decovwie);
+        })
+      : null;
+    metalData?.result?.length > 0
+      ? metalData.result?.map(item => {
+          let metalweight =
+            item?.UnitMetalWt === 'Cts.' ? item?.MetalWt / 5 : item?.MetalWt;
+          metalwt = parseFloat(metalwt) + parseFloat(metalweight);
+        })
+      : null;
+
+    console.log('this is metalwr', dimondwt, stonewt, decorativewt, metalwt);
+    dispatch({
+      type: 'verify_product_wieght_request',
+      url: 'verifyWt',
+      GrossWt: totalWiegt,
+      MetalWtGrandTotal: metalwt,
+
+      DiamondGrandTotal: dimondwt,
+
+      StoneGrandTotal: stonewt,
+
+      DecorationGrandTotal: decorativewt,
+    });
   };
 
   const getProductPrice = async () => {
@@ -416,9 +394,8 @@ const AddProducts = () => {
           Olocker: `Bearer ${Token}`,
         },
       });
-      editProduct
-        ? handleInputs('txtProductCharges', response.data.amount)
-        : null;
+
+      handleInputs('txtProductCharges', response.data.amount);
     } catch (error) {
       throw error;
     }
@@ -624,7 +601,7 @@ const AddProducts = () => {
       }
     });
     console.log(JSON.stringify(data2));
-    // fetchDataByPOST(data2);
+    fetchDataByPOST(data2);
   };
   const [isFetching3, setIfetching] = useState(false);
   const fetchDataByPOST = async params => {
@@ -643,6 +620,7 @@ const AddProducts = () => {
         params,
         config,
       );
+
       console.log('this is response data', JSON.stringify(response.data));
       setIfetching(false);
       if (response.data.status) {
@@ -725,12 +703,12 @@ const AddProducts = () => {
               source={require('../../../assets/Image/dil.png')}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Logout()}>
+          {/* <TouchableOpacity onPress={() => Logout()}>
             <Image
               style={styles.img3}
               source={require('../../../assets/Image/menu-icon.png')}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
       <ScrollView contentContainerStyle={{}}>

@@ -120,7 +120,7 @@ export default StyleSheet.create({
   },
   headertouch: {
     flexDirection: 'row',
-    width: wp(30),
+    width: wp(20),
     // borderWidth: 1,
     justifyContent: 'space-between',
   },

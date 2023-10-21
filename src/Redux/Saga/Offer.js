@@ -19,7 +19,7 @@ function* offerList(action) {
         type: 'Template_Detail_Success',
         payload: response.data,
       });
-      action.navigation.navigate('OfferTemplate');
+      if (action.page != 'home') action.navigation.navigate('OfferTemplate');
     } else {
       yield put({
         type: 'Template_Detail_Error',
