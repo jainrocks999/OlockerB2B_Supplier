@@ -144,6 +144,14 @@ const OfferList = () => {
 
     return obj;
   };
+  const deleteOffer = item => {
+    dispatch({
+      type: 'offer_list_request',
+      url: 'removeOffer',
+      productSrNo: '',
+    });
+    console.log(item);
+  };
   const handleOfferList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
 
@@ -395,9 +403,16 @@ const OfferList = () => {
                         justifyContent: 'space-between',
                         position: 'absolute',
                         right: wp(1),
+                        zIndex: 1,
                       }}>
                       <MaterialCommunityIcons name="pencil" size={wp(5.5)} />
-                      <MaterialCommunityIcons name="delete" size={wp(5.5)} />
+                      <MaterialCommunityIcons
+                        onPress={() => {
+                          deleteOffer(item);
+                        }}
+                        name="delete"
+                        size={wp(5.5)}
+                      />
                     </View>
                     <View style={{flexDirection: 'row'}}>
                       <Text
