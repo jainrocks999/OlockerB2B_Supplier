@@ -338,7 +338,6 @@ const OfferList = () => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate('AddOffer')}
               style={{
                 borderWidth: 1,
                 width: '48%',
