@@ -132,7 +132,7 @@ const SearchRetailer = () => {
             }}>
             <TextInput
               placeholder="Enter Retailer Name"
-              style={{paddingLeft: 10}}
+              style={{paddingLeft: 10, color: 'black'}}
               placeholderTextColor={'#787676'}
               value={search}
               onChangeText={val => setSearch(val)}
@@ -162,6 +162,7 @@ const SearchRetailer = () => {
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
                 data={stateList1?.satates}
+                itemTextStyle={{color: 'grey'}}
                 inputSearchStyle={{
                   borderRadius: 10,
                   backgroundColor: '#f0f0f0',
@@ -201,6 +202,7 @@ const SearchRetailer = () => {
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
                 data={cityList ? cityList : []}
+                itemTextStyle={{color: 'grey'}}
                 maxHeight={250}
                 labelField="label"
                 valueField="value"

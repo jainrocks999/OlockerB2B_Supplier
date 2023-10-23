@@ -115,8 +115,6 @@ function* getSelfProductList(action) {
         type: 'Self_Product_Success',
         payload: response.data,
       });
-
-      action.navigation.navigate('Addproduct');
     } else {
       yield put({
         type: 'Self_Product_Error',
@@ -508,7 +506,6 @@ function* editProduct(action) {
     };
     const res = yield call(Api.fetchDataByGET1, action.url, data);
 
-    console.log('this si res.data', JSON.stringify(res));
     if (res?.success || res?.status) {
       console.log('this is called');
       yield put({
@@ -538,7 +535,6 @@ function* productData(action) {
     };
     const res = yield call(Api.fetchDataByGET1, action.url, data);
 
-    console.log('this si res.data', JSON.stringify(res));
     if (res?.success || res?.status) {
       console.log('this is called');
       yield put({

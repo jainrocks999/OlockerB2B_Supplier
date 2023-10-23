@@ -187,7 +187,8 @@ const FavouriteList = () => {
                       justifyContent: 'space-between',
                     }}>
                     <Text style={styles.cardbottomtext}>ProductID:-</Text>
-                    <Text style={{fontWeight: '500', width: '50%'}}>
+                    <Text
+                      style={{fontWeight: '500', width: '50%', color: 'grey'}}>
                       {item?.ProductSku?.substring(0, 10)}
                     </Text>
                   </View>
@@ -199,7 +200,8 @@ const FavouriteList = () => {
                       justifyContent: 'space-between',
                     }}>
                     <Text style={styles.cardbottomtext}>Product Name:-</Text>
-                    <Text style={{fontWeight: '500', width: '50%'}}>
+                    <Text
+                      style={{fontWeight: '500', width: '50%', color: 'grey'}}>
                       {' '}
                       {item.ItemName}
                     </Text>
@@ -212,7 +214,8 @@ const FavouriteList = () => {
                       justifyContent: 'space-between',
                     }}>
                     <Text style={styles.cardbottomtext}>Product Price:-</Text>
-                    <Text style={{fontWeight: '500', width: '50%'}}>
+                    <Text
+                      style={{fontWeight: '500', width: '50%', color: 'grey'}}>
                       {' '}
                       {item.ProductsPrice?.substring(0, 8)}
                     </Text>

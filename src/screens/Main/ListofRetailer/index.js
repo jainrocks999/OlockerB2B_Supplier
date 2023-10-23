@@ -126,14 +126,16 @@ const ListOfRetailer = ({route}) => {
                   <Text
                     style={{
                       fontWeight: '500',
-                      fontSize: wp(4.5),
+                      fontSize: wp(4.2),
                       marginLeft: 10,
+                      color: 'black',
                     }}>
                     CompanyName :
                     <Text
                       style={{
                         fontWeight: '500',
-                        fontSize: wp(4.5),
+                        fontSize: wp(4.2),
+                        color: 'grey',
                       }}>
                       {' '}
                       {item.CompanyName}
@@ -147,25 +149,42 @@ const ListOfRetailer = ({route}) => {
                     }}>
                     <Text
                       style={{
-                        fontSize: wp(4.5),
-                        fontWeight: '700',
+                        fontSize: wp(4.2),
+                        fontWeight: '500',
                         marginRight: 10,
+                        color: 'black',
                       }}>
                       City :
-                      <Text style={{fontWeight: '400'}}> {item.CityName} </Text>
+                      <Text style={{fontWeight: '400', color: 'grey'}}>
+                        {' '}
+                        {item.CityName}{' '}
+                      </Text>
                     </Text>
-                    <Text style={{fontSize: wp(4.5), fontWeight: '700'}}>
+                    <Text
+                      style={{
+                        fontSize: wp(4.2),
+                        fontWeight: '500',
+                        color: 'black',
+                      }}>
                       State :
-                      <Text style={{fontWeight: '400'}}>
+                      <Text style={{fontWeight: '400', color: 'grey'}}>
                         {' '}
                         {item.StateName}{' '}
                       </Text>
                     </Text>
                   </View>
                   <View style={{marginLeft: 10, marginTop: 5}}>
-                    <Text style={{fontSize: wp(4.5), fontWeight: '700'}}>
+                    <Text
+                      style={{
+                        fontWeight: '500',
+                        color: 'black',
+                        fontSize: wp(4.2),
+                      }}>
                       Assign Category :
-                      <Text style={{width: '60%'}}> {item.CategoryType}</Text>
+                      <Text style={{width: '60%', color: 'grey'}}>
+                        {' '}
+                        {item.CategoryType}
+                      </Text>
                     </Text>
                   </View>
                   <View
@@ -174,21 +193,37 @@ const ListOfRetailer = ({route}) => {
                       flexDirection: 'row',
                       marginTop: 5,
                     }}>
-                    <Text style={{fontSize: wp(4.5), fontWeight: '700'}}>
+                    <Text
+                      style={{
+                        fontSize: wp(4.2),
+                        fontWeight: '500',
+                        color: 'black',
+                      }}>
                       IsShowInRetailerApp :
-                      <Text style={{width: '60%', fontWeight: '400'}}>
+                      <Text
+                        style={{
+                          width: '60%',
+                          fontWeight: '400',
+                          color: 'grey',
+                        }}>
                         {' '}
                         {item.IsShowInRetailerApp}
                       </Text>
                     </Text>
                     <Text
                       style={{
-                        fontSize: wp(4.5),
-                        fontWeight: '700',
+                        fontSize: wp(4.2),
+                        fontWeight: '500',
                         marginLeft: 10,
+                        color: 'black',
                       }}>
                       Status :
-                      <Text style={{width: '60%', fontWeight: '400'}}>
+                      <Text
+                        style={{
+                          width: '60%',
+                          fontWeight: '400',
+                          color: 'grey',
+                        }}>
                         {' '}
                         {item.Status}
                       </Text>
@@ -201,7 +236,12 @@ const ListOfRetailer = ({route}) => {
                       marginTop: 5,
                       alignItems: 'center',
                     }}>
-                    <Text style={{fontSize: wp(4.5), fontWeight: '700'}}>
+                    <Text
+                      style={{
+                        fontSize: wp(4.2),
+                        fontWeight: '500',
+                        color: 'black',
+                      }}>
                       Action :{' '}
                     </Text>
 
@@ -209,7 +249,7 @@ const ListOfRetailer = ({route}) => {
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
-                        width: '60%',
+                        width: '45%',
                       }}>
                       <TouchableOpacity
                         style={{width: '80%', marginLeft: 10}}
@@ -241,7 +281,7 @@ const ListOfRetailer = ({route}) => {
                         style={{width: '60%', marginLeft: 10}}>
                         <Text
                           style={{
-                            fontSize: wp(4.5),
+                            fontSize: wp(4.2),
                             color: 'blue',
                             fontWeight: '700',
                           }}>

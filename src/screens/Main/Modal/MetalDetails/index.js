@@ -233,7 +233,9 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   onChangeText={input => {
                     handleInputs('GrossWt', input);
                   }}
+                  placeholderTextColor={'grey'}
                   placeholder="Gross Wt gms"
+                  style={{color: 'black'}}
                 />
               </View>
               <Text style={[styles.buttonClose, {marginLeft: wp(1)}]}>
@@ -254,16 +256,18 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   height: 40,
                   paddingLeft: wp(1),
                 }}
+                itemTextStyle={{color: 'grey'}}
                 placeholderStyle={{
                   color: '#474747',
                   width: '100%',
                   alignSelf: 'center',
+                  fontSize: wp(4),
                   // fontFamily: 'Acephimere'
                 }}
                 selectedTextStyle={{
                   color: '#474747',
                   width: '100%',
-                  fontSize: 14,
+                  fontSize: wp(4),
                   marginBottom: -1,
                   fontFamily: 'Acephimere',
                 }}
@@ -304,16 +308,18 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   height: 40,
                   // marginTop: 5
                 }}
+                itemTextStyle={{color: 'grey'}}
                 placeholderStyle={{
                   color: '#474747',
                   width: '100%',
                   alignSelf: 'center',
                   // fontFamily: 'Acephimere'
+                  fontSize: wp(4),
                 }}
                 selectedTextStyle={{
                   color: '#474747',
                   width: '100%',
-                  fontSize: 14,
+                  fontSize: wp(4),
                   marginBottom: -1,
                   fontFamily: 'Acephimere',
                 }}
@@ -345,6 +351,8 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 value={inputs.MetalWt}
                 onChangeText={input => handleInputs('MetalWt', input)}
                 placeholder="Net Wt gms"
+                style={{color: 'black'}}
+                placeholderTextColor={'grey'}
               />
             </View>
             <Text style={[styles.buttonClose, {marginLeft: wp(3)}]}>
@@ -369,11 +377,13 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   width: '100%',
                   alignSelf: 'center',
                   // fontFamily: 'Acephimere'
+                  fontSize: wp(4),
                 }}
+                itemTextStyle={{color: 'grey'}}
                 selectedTextStyle={{
                   color: '#474747',
                   width: '100%',
-                  fontSize: 14,
+                  fontSize: wp(4),
                   marginBottom: -1,
                   fontFamily: 'Acephimere',
                 }}

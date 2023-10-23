@@ -71,12 +71,12 @@ const ListOfProduct = () => {
                 source={require('../../../assets/Image/dil.png')}
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => Logout()}>
+            {/* <TouchableOpacity onPress={() => Logout()}>
               <Image
                 style={styles.img3}
                 source={require('../../../assets/Image/menu-icon.png')}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
 
@@ -85,7 +85,8 @@ const ListOfProduct = () => {
             value={SearctTxt}
             onChangeText={txt => setSearctTxt(txt)}
             placeholder="Search"
-            style={{fontSize: 18, width: '90%'}}
+            style={{fontSize: 18, width: '90%', color: 'black'}}
+            placeholderTextColor={'grey'}
           />
           <View
             style={{
@@ -93,7 +94,7 @@ const ListOfProduct = () => {
 
               justifyContent: 'center',
             }}>
-            <Feather name="search" size={30} />
+            <Feather name="search" size={30} color={'grey'} />
           </View>
         </View>
 

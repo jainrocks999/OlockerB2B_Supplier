@@ -117,9 +117,13 @@ const ListOfproducts = () => {
         </View>
 
         <View style={[styles.searchbar, {marginTop: 20}]}>
-          <TextInput placeholder="Search" style={{fontSize: 18}} />
+          <TextInput
+            placeholder="Search"
+            placeholderTextColor={'grey'}
+            style={{fontSize: 18, color: 'black'}}
+          />
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
-            <Feather name="search" size={30} />
+            <Feather name="search" size={30} color={'grey'} />
           </View>
         </View>
 

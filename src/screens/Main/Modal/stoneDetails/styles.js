@@ -140,11 +140,12 @@ export default StyleSheet.create({
   },
   cardTitle: {
     fontSize: wp(4),
-    width: '65%',
+    width: '64%',
     marginTop: wp(1),
+    color: 'grey',
   },
   dot: {
-    width: '20%',
+    width: '7%',
     color: 'grey',
     fontSize: wp(4),
     fontWeight: 'bold',

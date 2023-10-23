@@ -498,8 +498,9 @@ const Addproduct = ({route}) => {
                 }}>
                 <TextInput
                   placeholder="Min"
-                  style={{height: 40, paddingLeft: 10}}
+                  style={{height: 40, paddingLeft: 10, color: 'black'}}
                   keyboardType="number-pad"
+                  placeholderTextColor={'grey'}
                   value={minPrice}
                   onChangeText={val => setMinPrice(val)}
                 />
@@ -517,8 +518,9 @@ const Addproduct = ({route}) => {
                 }}>
                 <TextInput
                   placeholder="Max"
-                  style={{height: 40, paddingLeft: 10}}
+                  style={{height: 40, paddingLeft: 10, color: 'black'}}
                   keyboardType="number-pad"
+                  placeholderTextColor={'grey'}
                   value={maxPrice}
                   onChangeText={val => setMaxPrice(val)}
                 />
@@ -550,8 +552,9 @@ const Addproduct = ({route}) => {
                 }}>
                 <TextInput
                   placeholder="Min"
-                  style={{height: 40, paddingLeft: 10}}
+                  style={{height: 40, paddingLeft: 10, color: 'black'}}
                   keyboardType="number-pad"
+                  placeholderTextColor={'grey'}
                   value={minWeight}
                   onChangeText={val => setMinWeight(val)}
                 />
@@ -569,8 +572,9 @@ const Addproduct = ({route}) => {
                 }}>
                 <TextInput
                   placeholder="Max"
-                  style={{height: 40, paddingLeft: 10}}
+                  style={{height: 40, paddingLeft: 10, color: 'black'}}
                   keyboardType="number-pad"
+                  placeholderTextColor={'grey'}
                   value={maxWeight}
                   onChangeText={val => setMaxWeight(val)}
                 />

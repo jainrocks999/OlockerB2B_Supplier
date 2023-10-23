@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useMemo} from 'react';
+import React, {useState, useCallback, useMemo, useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
 import styles from './style';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -27,6 +27,7 @@ import {
 } from 'react-native-responsive-screen';
 
 import RNDateTimePicker from '@react-native-community/datetimepicker';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const AddOffer = () => {
   const navigation = useNavigation();
@@ -34,6 +35,8 @@ const AddOffer = () => {
     show1: false,
     show2: false,
   });
+  const focused = useIsFocused();
+
   const [fetching, setFetching] = useState(false);
   const dispatch = useDispatch();
   const [offerType, setOfferType] = useState('');
@@ -41,7 +44,11 @@ const AddOffer = () => {
   const [end, setEnd] = useState(new Date());
   const selector = useSelector(state => state.Offer.OfferTempList);
   const isFetching = useSelector(state => state.Offer.isFetching);
-
+  const offerTypeList = useSelector(state => state.Offer.offerTypeList);
+  console.log('this is offettypeliust', offerTypeList);
+  useEffect(() => {
+    getOffertypeList();
+  }, [focused]);
   const manageOfferList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
 
@@ -67,8 +74,8 @@ const AddOffer = () => {
   const renderItem = item => {
     return (
       <View style={styles.item}>
-        <Text style={styles.textItem}>{item.label}</Text>
-        {item.value === value && (
+        <Text style={styles.textItem}>{item.Value}</Text>
+        {item.Value === value && (
           <AntDesign
             style={styles.icon}
             color="black"
@@ -79,7 +86,15 @@ const AddOffer = () => {
       </View>
     );
   };
-  console.log('thiss sis', start);
+  const getOffertypeList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    const data = {userid: user_id};
+    dispatch({
+      type: 'get_offer_type_list_request',
+      url: 'getOfferTypeList',
+      data,
+    });
+  };
   return (
     <View style={{flex: 1}}>
       <StatusBar />
@@ -148,14 +163,15 @@ const AddOffer = () => {
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             iconStyle={styles.iconStyle}
-            data={DropData}
+            data={offerTypeList?.offertype}
+            itemTextStyle={{color: 'grey'}}
             maxHeight={250}
-            labelField="label"
-            valueField="value"
+            labelField="Value"
+            valueField="Id"
             placeholder="Select Offer type"
             value={value}
             onChange={item => {
-              setValue(item.value);
+              setValue(item.Id);
             }}
             renderItem={renderItem}
           />

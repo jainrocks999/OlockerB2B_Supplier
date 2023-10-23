@@ -101,7 +101,8 @@ const MessageBox2 = () => {
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                    <Text style={{fontSize: 22, fontWeight: '700'}}>
+                    <Text
+                      style={{fontSize: 22, fontWeight: '700', color: 'grey'}}>
                       {item.conatct_name[0]}
                     </Text>
                     <View
@@ -123,9 +124,13 @@ const MessageBox2 = () => {
           }
         </View>
         <View style={[styles.searchbar, {marginTop: 20}]}>
-          <TextInput placeholder="Search Business" style={{fontSize: 18}} />
+          <TextInput
+            placeholder="Search Business"
+            style={{fontSize: 18, color: 'black'}}
+            placeholderTextColor={'grey'}
+          />
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
-            <Feather name="search" size={30} />
+            <Feather name="search" size={30} color={'grey'} />
           </View>
         </View>
         <View>
@@ -149,7 +154,7 @@ const MessageBox2 = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                  <Text> {item.conatct_name[0]}</Text>
+                  <Text style={{color: 'grey'}}> {item.conatct_name[0]}</Text>
                 </View>
                 <View
                   style={{
@@ -161,10 +166,12 @@ const MessageBox2 = () => {
                     style={{fontSize: 18, fontWeight: '800', color: '#000'}}>
                     {item.conatct_name}
                   </Text>
-                  <Text>{item.updated_at?.substring(0, 19)}</Text>
+                  <Text style={{color: 'grey'}}>
+                    {item.updated_at?.substring(0, 19)}
+                  </Text>
                 </View>
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Text style={{fontWeight: '800'}}>Now</Text>
+                  <Text style={{fontWeight: '800', color: 'grey'}}>Now</Text>
                   <View
                     style={{
                       backgroundColor: '#4eaefc',

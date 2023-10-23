@@ -36,7 +36,6 @@ const HomeScreen = () => {
   const fetching = useSelector(state => state.Home.isFetching);
   // // console.log('this is network data daaa', bannerList);
   const win = Dimensions.get('window');
-  console.log('this is bannner list', bannerList);
 
   const date = new Date();
   let ToDAY = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
@@ -279,6 +278,7 @@ const HomeScreen = () => {
                     textAlign: 'center',
                     width: '90%',
                     fontFamily: 'Acephimere',
+                    color: 'grey',
                   }}>
                   {item.CompanyName}
                 </Text>

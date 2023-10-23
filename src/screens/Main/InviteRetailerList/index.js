@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -18,7 +18,7 @@ import {
 import {TextInput} from 'react-native';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {Table, TableWrapper, Row} from 'react-native-table-component';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Feather from 'react-native-vector-icons/Feather';
 const InviteRetailerList = () => {
@@ -42,11 +42,9 @@ const InviteRetailerList = () => {
   const isFocuse = useIsFocused();
   useEffect(() => {
     RetailerReques();
-    
   }, [isFocuse]);
 
- 
-console.log(selector);
+  console.log(selector);
   const dispatch = useDispatch();
 
   const RetailerReques = async () => {
@@ -62,81 +60,100 @@ console.log(selector);
 
   return (
     <View style={{flex: 1}}>
-       {isFetching ? <Loader /> : null}
+      {isFetching ? <Loader /> : null}
       <View contentContainerStyle={{}}>
-     
-
-
         <View style={{}}>
-          <Text style={{fontSize:22,fontWeight:'800',color:'#032E63',marginLeft:10,marginVertical:10}}>Invite Retailers List</Text>
+          <Text
+            style={{
+              fontSize: 22,
+              fontWeight: '800',
+              color: '#032E63',
+              marginLeft: 10,
+              marginVertical: 10,
+            }}>
+            Invite Retailers List
+          </Text>
           <View style={{marginTop: '5%'}}>
-          <View>
-            <FlatList
-              data={selector}
-              renderItem={({item}) => (
-                <View style={styles.list}>
-                  <View style={{}}>
-                    <Text
-                      style={{
-                        width: '60%',
-                        fontWeight: '600',
-                        fontSize: 18,
-                        
-                      }}>
-                      {item.RetailerName}
-                
-                    </Text>
-<Text>{item.EmailId}</Text>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                      
-                        marginTop: 5,
-                      }}>
+            <View>
+              <FlatList
+                data={selector}
+                renderItem={({item}) => (
+                  <View style={styles.list}>
+                    <View style={{}}>
                       <Text
                         style={{
-                          fontSize: 16,
-                          fontWeight: '700',
-                          marginRight: 10,
+                          width: '60%',
+                          fontWeight: '600',
+                          fontSize: 18,
+                          color: 'grey',
                         }}>
-                        City :  <Text style={{fontWeight: '400',}}>
-                          {item.Location}{' '}
-                        </Text>
+                        {item.RetailerName}
                       </Text>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                      Contact Number :  <Text style={{fontWeight: '400'}}>
-                          {item.ContactNumber}{' '}
-                        </Text>
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                      
-                        marginTop: 5,
-                      }}>
-                      <Text
+                      <Text style={{color: 'grey'}}>{item.EmailId}</Text>
+                      <View
                         style={{
-                          fontSize: 16,
-                          fontWeight: '700',
-                          marginRight: 10,
+                          flexDirection: 'row',
+
+                          marginTop: 5,
                         }}>
-                        Category Type :   <Text style={{fontWeight: '400'}}>
-                          {item.CategoryType}{' '}
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            fontWeight: '700',
+                            marginRight: 10,
+                            color: 'black',
+                          }}>
+                          City :{' '}
+                          <Text style={{fontWeight: '400', color: 'grey'}}>
+                            {item.Location}{' '}
+                          </Text>
                         </Text>
-                      </Text>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
-                      Contact Name :  <Text style={{fontWeight: '400'}}>
-                          {item.ContactPersonFirstName}{' '}
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            fontWeight: '700',
+                            color: 'black',
+                          }}>
+                          Contact Number :{' '}
+                          <Text style={{fontWeight: '400', color: 'grey'}}>
+                            {item.ContactNumber}{' '}
+                          </Text>
                         </Text>
-                      </Text>
+                      </View>
+                      <View
+                        style={{
+                          marginTop: 5,
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            fontWeight: '700',
+                            marginRight: 10,
+                            color: 'black',
+                          }}>
+                          Category Type :{' '}
+                          <Text style={{fontWeight: '400', color: 'grey'}}>
+                            {item.CategoryType}{' '}
+                          </Text>
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            fontWeight: '700',
+                            color: 'black',
+                          }}>
+                          Contact Name :{' '}
+                          <Text style={{fontWeight: '400', color: 'grey'}}>
+                            {item.ContactPersonFirstName}{' '}
+                          </Text>
+                        </Text>
+                      </View>
                     </View>
                   </View>
-                 
-                </View>
-              )}
-            />
+                )}
+              />
+            </View>
           </View>
-        </View>
         </View>
       </View>
 
@@ -161,11 +178,33 @@ console.log(selector);
 export default InviteRetailerList;
 
 const data = [
-  ['01', 'tested', 'supplierTest@gmail.com', 'Indore', 'Category B', 'teste', '123456789'],
-  ['01', 'tested', 'supplierTest@gmail.com', 'Indore', 'Category B', 'teste', '123456789'],
-  ['01', 'tested', 'supplierTest@gmail.com', 'Indore', 'Category B', 'teste', '123456789'],
- 
-
+  [
+    '01',
+    'tested',
+    'supplierTest@gmail.com',
+    'Indore',
+    'Category B',
+    'teste',
+    '123456789',
+  ],
+  [
+    '01',
+    'tested',
+    'supplierTest@gmail.com',
+    'Indore',
+    'Category B',
+    'teste',
+    '123456789',
+  ],
+  [
+    '01',
+    'tested',
+    'supplierTest@gmail.com',
+    'Indore',
+    'Category B',
+    'teste',
+    '123456789',
+  ],
 ];
 
 const DropData = [

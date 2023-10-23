@@ -143,9 +143,10 @@ export default StyleSheet.create({
     fontSize: wp(4),
     width: '65%',
     marginTop: wp(1),
+    color: 'grey',
   },
   dot: {
-    width: '10%',
+    width: '7%',
     color: 'grey',
     fontSize: wp(4),
     fontWeight: 'bold',

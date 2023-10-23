@@ -86,9 +86,29 @@ function* offerListData(action) {
     });
   }
 }
-
+function* offerTypeList(action) {
+  try {
+    const res = yield call(Api.fetchDataByGET1, action.url, action.data);
+    if (res.status) {
+      yield put({
+        type: 'get_offer_type_list_success',
+        payload: res.data,
+      });
+    } else {
+      yield put({
+        type: 'get_offer_type_list_error',
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    yield put({
+      type: 'get_offer_type_list_error',
+    });
+  }
+}
 export default function* citySaga() {
   yield takeEvery('Template_Detail_Request', offerList);
   yield takeEvery('Add_Offer_Request', offerTempList);
   yield takeEvery('Offer_List_Request', offerListData);
+  yield takeEvery('get_offer_type_list_request', offerTypeList);
 }

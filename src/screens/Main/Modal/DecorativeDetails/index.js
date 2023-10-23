@@ -219,6 +219,8 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                     handleInputs('DecoWt', input);
                   }}
                   placeholder="Stone Wt "
+                  style={{color: 'black', fontSize: wp(4)}}
+                  placeholderTextColor={'grey'}
                 />
               </View>
             </View>
@@ -243,6 +245,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   alignSelf: 'center',
                   fontSize: wp(4),
                 }}
+                itemTextStyle={{color: 'grey'}}
                 selectedTextStyle={{
                   color: '#474747',
                   width: '100%',
@@ -281,6 +284,8 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                     onChangeText={input => {
                       handleInputs('ChargAmt', input);
                     }}
+                    style={{color: 'black', fontSize: wp(4)}}
+                    placeholderTextColor={'grey'}
                     placeholder="Amount in Rs."
                   />
                 </View>
@@ -310,6 +315,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   // fontFamily: 'Acephimere'
                   fontSize: wp(4),
                 }}
+                itemTextStyle={{color: 'grey'}}
                 selectedTextStyle={{
                   color: '#474747',
                   width: '100%',

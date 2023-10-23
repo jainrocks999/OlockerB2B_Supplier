@@ -218,6 +218,8 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                     handleInputs('StoneWt', input);
                   }}
                   placeholder="Stone Wt "
+                  style={{color: 'black', fontSize: wp(4)}}
+                  placeholderTextColor={'grey'}
                 />
               </View>
             </View>
@@ -252,6 +254,7 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   paddingLeft: wp(2),
                 }}
                 // iconStyle={{ tintColor: '#ffff' }}
+                itemTextStyle={{color: 'grey'}}
                 data={DropData}
                 inputSearchStyle={{
                   borderRadius: 10,
@@ -321,6 +324,7 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   paddingLeft: wp(2),
                 }}
                 // iconStyle={{ tintColor: '#ffff' }}
+                itemTextStyle={{color: 'grey'}}
                 data={stoneDetails}
                 inputSearchStyle={{
                   borderRadius: 10,

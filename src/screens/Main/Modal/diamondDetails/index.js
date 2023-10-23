@@ -250,6 +250,8 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   value={inputs.Diamondwt}
                   onChangeText={input => handleInputs('Diamondwt', input)}
                   placeholder="Diamond wt"
+                  style={{color: 'black', fontSize: wp(4)}}
+                  placeholderTextColor={'grey'}
                 />
               </View>
               <Text style={[styles.buttonClose, {marginLeft: wp(1)}]}>
@@ -261,7 +263,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 style={{
                   color: '#032e63',
                   width: '100%',
-                  marginBottom: -1,
+                  // marginBottom: -1,
                   height: 40,
                   // marginTop: 5
                 }}
@@ -280,12 +282,13 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   marginLeft: wp(2),
                 }}
                 // iconStyle={{ tintColor: '#ffff' }}
+
                 data={DropData}
                 inputSearchStyle={{
                   borderRadius: 10,
                   backgroundColor: '#f0f0f0',
                 }}
-                // itemTextStyle={{ fontSize: 15 }}
+                itemTextStyle={{color: 'grey'}}
                 // itemContainerStyle={{ marginBottom: -20, }}
                 searchPlaceholder="search.."
                 maxHeight={250}
@@ -315,6 +318,8 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                       handleInputs('ChargAmt', input);
                     }}
                     placeholder="Amount in Rs."
+                    style={{color: 'black', fontSize: wp(4)}}
+                    placeholderTextColor={'grey'}
                   />
                 </View>
               </>
@@ -335,6 +340,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   height: 40,
                   // marginTop: 5
                 }}
+                itemTextStyle={{color: 'grey'}}
                 placeholderStyle={{
                   color: '#474747',
                   width: '100%',
@@ -392,6 +398,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   // fontFamily: 'Acephimere'
                   fontSize: wp(4),
                 }}
+                itemTextStyle={{color: 'grey'}}
                 selectedTextStyle={{
                   color: '#474747',
                   width: '100%',
@@ -441,6 +448,7 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   alignSelf: 'center',
                   fontSize: wp(4),
                 }}
+                itemTextStyle={{color: 'grey'}}
                 selectedTextStyle={{
                   color: '#474747',
                   width: '100%',

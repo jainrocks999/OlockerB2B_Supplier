@@ -126,7 +126,7 @@ const AddProducts = () => {
     rbCategory: 'Category B',
     chk_c: [],
   });
-  console.log('this is sessession', session);
+
   const getImage = () => {
     const imageArr =
       editProduct?.productdetails?.productimages?.length > 0
@@ -144,6 +144,9 @@ const AddProducts = () => {
               type: 'image/jpg',
             },
           ];
+    const newarr = imageArr?.filter(
+      item => item.name != 'diamond-ring-rose-resting-pink-flower-45235273.jpg',
+    );
     return imageArr;
   };
   const [prevlabour, setPrevLabour] = useState();
@@ -230,6 +233,8 @@ const AddProducts = () => {
             onChange={() => {
               handleCategory(item.SrNo);
             }}
+            tintColors="black"
+            onTintColor="black"
             value={inputs.chk_sc?.includes(item.SrNo) ? true : false}
           />
           <Text
@@ -255,23 +260,17 @@ const AddProducts = () => {
   };
 
   useEffect(() => {
-    stoneData?.length > 0 != undefined || datadelete?.stone
-      ? addStonedata()
-      : null;
+    stoneData?.length > 0 || datadelete?.stone ? addStonedata() : null;
   }, [stoneData]);
   useEffect(() => {
-    diamondData?.length > 0 != undefined || datadelete?.diamond
-      ? addDiamondData()
-      : null;
+    diamondData?.length > 0 || datadelete?.diamond ? addDiamondData() : null;
   }, [diamondData]);
 
   useEffect(() => {
-    metalData.result?.length > 0 != undefined || datadelete?.metal
-      ? addMetalData()
-      : null;
+    metalData.result?.length > 0 || datadelete?.metal ? addMetalData() : null;
   }, [metalData]);
   useEffect(() => {
-    decorativeData?.length > 0 != undefined || datadelete?.decorative
+    decorativeData?.length > 0 || datadelete?.decorative
       ? addDecorativeData()
       : null;
   }, [decorativeData]);
@@ -825,6 +824,7 @@ const AddProducts = () => {
                     {borderWidth: 1, borderColor: '#979998'},
                   ]}
                   placeholderStyle={styles.placeholderStyle}
+                  searchPlaceholder="Search.."
                   selectedTextStyle={styles.selectedTextStyle}
                   iconStyle={styles.iconStyle}
                   data={productType?.productType}
@@ -834,6 +834,16 @@ const AddProducts = () => {
                   placeholder={
                     inputs.ItemName ? inputs.ItemName : 'Product/item type'
                   }
+                  containerStyle={{
+                    // borderWidth: 1,
+                    borderColor: 'grey',
+                  }}
+                  itemTextStyle={{color: 'grey'}}
+                  search
+                  inputSearchStyle={{
+                    borderRadius: 10,
+                    backgroundColor: '#f0f0f0',
+                  }}
                   value={inputs.ItemName}
                   onChange={item => {
                     handleInputs('ItemName', item.Value);
@@ -867,6 +877,7 @@ const AddProducts = () => {
                 labelField="label"
                 valueField="value"
                 placeholder="Live"
+                itemTextStyle={{color: 'grey'}}
                 value={inputs.Status}
                 onChange={item => {
                   handleInputs('Status', item.value);
@@ -1766,6 +1777,7 @@ const AddProducts = () => {
                 maxHeight={250}
                 labelField="label"
                 valueField="value"
+                itemTextStyle={{color: 'grey'}}
                 placeholder={inputs.isProductCertd == '1' ? 'Yes' : 'No'}
                 value={inputs.isProductCertd}
                 onChange={item => {
@@ -1962,6 +1974,8 @@ const AddProducts = () => {
                     alignItems: 'center',
                   }}>
                   <CheckBox
+                    //032e63
+                 
                     onChange={async () => {
                       if (inputs.chk_c.includes(item.SrNo)) {
                         console.log();
