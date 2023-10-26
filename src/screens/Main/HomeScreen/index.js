@@ -24,6 +24,11 @@ import ImagePath from '../../../components/ImagePath';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import Catalogue from '../../../Redux/Reducer/Catalogue';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 let backPress = 0;
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -336,11 +341,14 @@ const HomeScreen = () => {
                   height: 150,
                   backgroundColor: '#032e63',
                   borderRadius: 75,
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}>
-                <Image
+                {/* <Image
                   style={{width: '100%', height: 150, resizeMode: 'center'}}
                   source={require('../../../assets/supplierImage/person.png')}
-                />
+                /> */}
+                <MaterialIcons name="local-offer" color="white" size={wp(18)} />
               </View>
               <Text style={styles.textc}>{'Add Offers'}</Text>
             </TouchableOpacity>

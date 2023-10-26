@@ -41,8 +41,6 @@ const OfferList = () => {
   const [temp, setTemp] = useState();
   const isFocuse = useIsFocused();
 
-  console.log('this is offerlistdata', JSON.stringify(OfferListData));
-
   // useEffect(() => {
   //   handleOfferList();
   // }, [isFocuse]);
@@ -95,10 +93,7 @@ const OfferList = () => {
       // const data= new FormData()
       // data.append('userid',template)
       // data.append('id',description)
-      const data = {
-        userid: user_id,
-        id: item.Id,
-      };
+
       const response = await axios({
         method: 'GET',
         params: data,
@@ -146,11 +141,12 @@ const OfferList = () => {
   };
   const deleteOffer = item => {
     dispatch({
-      type: 'offer_list_request',
+      type: 'remove_offer_list_request',
       url: 'removeOffer',
-      productSrNo: '',
+      offerId: item.Id,
+      page: 'delete',
+      navigation,
     });
-    console.log(item);
   };
   const handleOfferList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
@@ -190,7 +186,17 @@ const OfferList = () => {
         // console.log(error);
       });
   };
-
+  const getOfferDetails = async item => {
+    const userId = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'offer_details_request',
+      url: 'getOfferDetails',
+      userId,
+      offerId: item?.Id,
+      op: 'edit',
+      navigation,
+    });
+  };
   return (
     <View style={{flex: 1}}>
       <StatusBar />
@@ -338,6 +344,14 @@ const OfferList = () => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
+              onPress={() => {
+                dispatch({
+                  type: 'offer_edit_modal_open',
+                  payload1: false,
+                  payload2: false,
+                });
+                navigation?.navigate('AddOffer', {isEdit: false});
+              }}
               style={{
                 borderWidth: 1,
                 width: '48%',
@@ -381,9 +395,6 @@ const OfferList = () => {
               style={{marginTop: 10}}
               renderItem={({item}) => (
                 <View style={styles.some}>
-                  {console.log(
-                    `https://olocker.co${OfferListData?.ImageUrl}${item.ImageName}`,
-                  )}
                   <Image
                     source={{
                       uri: `https://olocker.co${OfferListData?.ImageUrl}${item.ImageName}`,
@@ -404,7 +415,14 @@ const OfferList = () => {
                         right: wp(1),
                         zIndex: 1,
                       }}>
-                      <MaterialCommunityIcons name="pencil" size={wp(5.5)} />
+                      <MaterialCommunityIcons
+                        name="pencil"
+                        size={wp(5.5)}
+                        onPress={() =>
+                          // navigation.navigate('AddOffer', {item, isEdit: true})
+                          getOfferDetails(item)
+                        }
+                      />
                       <MaterialCommunityIcons
                         onPress={() => {
                           deleteOffer(item);

@@ -18,9 +18,10 @@ import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../components/Loader';
 import axios from 'axios';
-import {RadioButton} from 'react-native-paper';
+import {Modal, RadioButton} from 'react-native-paper';
 import CheckBox from '@react-native-community/checkbox';
 import {useDispatch, useSelector} from 'react-redux';
+import DocumentPicker from 'react-native-document-picker';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -29,26 +30,35 @@ import {
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const AddOffer = () => {
+const AddOffer = ({route}) => {
   const navigation = useNavigation();
   const [show, setShow] = useState({
     show1: false,
     show2: false,
   });
+  const [iseSelected, setIsselect] = useState({
+    one: false,
+    two: false,
+  });
+  const previtem = useSelector(state => state.Offer.offerDetail);
+  const isEdit = useSelector(state => state.Offer.isEdit);
+  //console.log('this is previtem', JSON.stringify(previtem));
+  // offerDetail  isEdit
   const focused = useIsFocused();
+  const [productModal, setProductModal] = useState(false);
 
   const [fetching, setFetching] = useState(false);
   const dispatch = useDispatch();
-  const [offerType, setOfferType] = useState('');
-  const [start, setStart] = useState(new Date());
-  const [end, setEnd] = useState(new Date());
   const selector = useSelector(state => state.Offer.OfferTempList);
   const isFetching = useSelector(state => state.Offer.isFetching);
   const offerTypeList = useSelector(state => state.Offer.offerTypeList);
-  console.log('this is offettypeliust', offerTypeList);
+  const offerProudctList = useSelector(
+    state => state.Offer.offerProudctList?.products,
+  );
+
   useEffect(() => {
     getOffertypeList();
-  }, [focused]);
+  }, []);
   const manageOfferList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
 
@@ -59,9 +69,58 @@ const AddOffer = () => {
     //   navigation
     //  })
   };
-  console.log();
-  const [value, setValue] = useState(null);
-  //cons;
+  useEffect(() => {
+    isEdit ? setUpdateData() : null;
+  }, [previtem]);
+  const prevdata = previtem?.offer;
+  const setUpdateData = () => {
+    setInputs(prev => ({
+      ...prev,
+      ddloffertemplate: prevdata?.OfferType,
+      dealtype: prevdata?.DealType,
+      StartDate: prevdata?.StartDate?.toString()?.substring(0, 10),
+      EndDate: prevdata?.EndDate?.toString()?.substring(0, 10),
+      ImageName: {
+        uri: `https://olocker.co${prevdata?.ImageLocation}${prevdata?.ImageName}`,
+        name: prevdata?.ImageName,
+        type: 'image/jpg',
+      },
+    }));
+    setIsselect({
+      one: true,
+      two: true,
+    });
+    handleDealype(prevdata?.DealType, true);
+    let newarr = [];
+    previtem?.offerProduct
+      ? previtem.offerProduct?.map(item => {
+          newarr.push(item.SrNo);
+        })
+      : null;
+    setInputs(prev => ({...prev, hdnselectedvalue: newarr}));
+  };
+
+  const [inputs, setInputs] = useState({
+    ddloffertemplate: '',
+    dealtype: '',
+    txtdiscountper: '',
+    hdnselectedvalue: [],
+    StartDate: new Date(),
+    EndDate: new Date(),
+    txtdiscountamount: '',
+    txtquantity: '',
+    txtdealdescription: '',
+    ImageName: '',
+  });
+  const [visible, setVisble] = useState({
+    one: false,
+    two: false,
+    three: true,
+    four: false,
+    five: false,
+  });
+
+  console.log('this si previtem', JSON.stringify(previtem));
   handleWishList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
@@ -71,11 +130,122 @@ const AddOffer = () => {
       navigation,
     });
   };
+  const createOffer = data => {
+    console.log('called');
+    dispatch({
+      type: 'createOffer_request',
+      data,
+      url: !isEdit ? 'createOffer' : 'updateOffer',
+      navigation,
+    });
+  };
   const renderItem = item => {
     return (
       <View style={styles.item}>
         <Text style={styles.textItem}>{item.Value}</Text>
-        {item.Value === value && (
+        {/* {item.Value === value && (
+          <AntDesign
+            style={styles.icon}
+            color="black"
+            name="Safety"
+            size={20}
+          />
+        )} */}
+      </View>
+    );
+  };
+
+  const setInputs2 = value => {
+    if (visible.one) {
+      setInputs(prev => ({
+        ...prev,
+        txtdiscountper: value,
+        txtquantity: '',
+        txtdiscountamount: '',
+        txtdealdescription: '',
+      }));
+    } else if (visible.two) {
+      setInputs(prev => ({
+        ...prev,
+        txtdiscountamount: value,
+        txtquantity: '',
+        txtdiscountper: '',
+        txtdealdescription: '',
+      }));
+    } else if (visible.three) {
+      setInputs(prev => ({
+        ...prev,
+        txtquantity: value,
+        txtdiscountper: '',
+        txtdiscountamount: '',
+        txtdealdescription: '',
+      }));
+    } else if (visible.four) {
+      setInputs(prev => ({
+        ...prev,
+        txtquantity: value,
+        txtdiscountper: '',
+        txtdiscountamount: '',
+        txtdealdescription: value,
+      }));
+    }
+  };
+  const handleDealype = (value, data) => {
+    console.log(value);
+    let arr = ['1', '6', '7'];
+    let arr2 = ['2', '3', '5'];
+    if (arr.includes(value)) {
+      setVisble({
+        one: true,
+        two: false,
+        three: false,
+        four: false,
+      });
+      setInputs(prev => ({
+        ...prev,
+        txtdiscountper: data ? prevdata.DiscountPer : '',
+      }));
+    } else if (arr2.includes(value)) {
+      setVisble({
+        one: false,
+        two: true,
+        three: false,
+        four: false,
+      });
+      setInputs(prev => ({
+        ...prev,
+        txtdiscountamount: data ? prevdata.DiscountAmt : '',
+      }));
+    } else if (value == '4') {
+      console.log('this is called');
+      setVisble({
+        one: false,
+        two: false,
+        three: true,
+        four: false,
+      });
+      setInputs(prev => ({
+        ...prev,
+        txtquantity: data ? prevdata.DiscountQty : '',
+      }));
+    } else {
+      setVisble({
+        one: false,
+        two: false,
+        three: false,
+        four: true,
+      });
+      setInputs(prev => ({
+        ...prev,
+        txtdealdescription: data ? prevdata.DealDescription : '',
+      }));
+    }
+  };
+  const renderItem2 = item => {
+    return (
+      <View style={styles.item}>
+        <Text style={styles.textItem}>{item.label}</Text>
+        {item.Value === inputs.dealtype && (
           <AntDesign
             style={styles.icon}
             color="black"
@@ -86,6 +256,23 @@ const AddOffer = () => {
       </View>
     );
   };
+  const uploadImage = async () => {
+    try {
+      const res = await DocumentPicker.pickSingle({
+        type: [DocumentPicker.types.images],
+      });
+
+      setInputs(prev => ({
+        ...prev,
+        ImageName: {uri: res.uri, name: res.name, type: res.type},
+      }));
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+      } else {
+        throw err;
+      }
+    }
+  };
   const getOffertypeList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     const data = {userid: user_id};
@@ -95,6 +282,70 @@ const AddOffer = () => {
       data,
     });
   };
+  const [start, setStart] = useState(new Date());
+  const [end, setEnd] = useState(new Date());
+  const offerProductList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'getOfferProductList_request',
+      userId: user_id,
+      url: 'getOfferProductList',
+      start: startpage,
+      limit: endpage,
+    });
+    setProductModal(true);
+    console.log('this is namepage', startpage, endpage);
+  };
+  const handlePage = async num => {
+    setStartPage(num === 1 ? 0 : endpage - 10);
+    setEndpage(startpage + 10);
+    console.log(startpage, endpage);
+  };
+  const [startpage, setStartPage] = useState(0);
+  const [endpage, setEndpage] = useState(10);
+  const handleOnSubmit = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    const new_data = {...inputs, supplierId: user_id, offerid: prevdata?.Id};
+    let data = new FormData();
+    let valid = true;
+    if (inputs.ImageName == '') {
+      Toast.show('Please select image');
+      valid = false;
+    } else if (inputs.ddloffertemplate == '') {
+      Toast.show('please select offer type');
+      valid = false;
+    } else if (inputs.dealtype == '') {
+      Toast.show('please select deal type');
+      valid = false;
+    } else {
+      Object.keys(new_data).map(item => {
+        switch (item) {
+          case 'hdnselectedvalue':
+            inputs[item].map((items, index) => {
+              data.append(`hdnselectedvalue[${index}]`, items);
+            });
+            break;
+          case 'StartDate':
+            data.append(item, inputs.StartDate);
+            break;
+          case 'EndDate':
+            data.append(item, inputs.EndDate);
+            break;
+          case 'offerid':
+            isEdit ? data.append(item, new_data[item]) : null;
+            break;
+          default:
+            data.append(item, new_data[item]);
+        }
+      });
+      console.log(valid);
+      if (valid) {
+        createOffer(data);
+        console.log('this is data', JSON.stringify(data));
+      }
+    }
+  };
+  //  console.log(inputs.EndDate.toLocaleDateString());
   return (
     <View style={{flex: 1}}>
       <StatusBar />
@@ -125,7 +376,7 @@ const AddOffer = () => {
               fontFamily: 'Roboto-Medium',
               marginLeft: 14,
             }}>
-            Add Offers
+            {!isEdit ? 'Add Offer' : 'Update Offer'}
           </Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -157,24 +408,27 @@ const AddOffer = () => {
           }}>
           Offer
         </Text>
+
         <View style={{}}>
-          <Dropdown
-            style={styles.dropdown}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            iconStyle={styles.iconStyle}
-            data={offerTypeList?.offertype}
-            itemTextStyle={{color: 'grey'}}
-            maxHeight={250}
-            labelField="Value"
-            valueField="Id"
-            placeholder="Select Offer type"
-            value={value}
-            onChange={item => {
-              setValue(item.Id);
-            }}
-            renderItem={renderItem}
-          />
+          {offerTypeList?.offertype && (
+            <Dropdown
+              style={styles.dropdown}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              iconStyle={styles.iconStyle}
+              data={offerTypeList?.offertype}
+              itemTextStyle={{color: 'grey'}}
+              maxHeight={250}
+              labelField="Value"
+              valueField="Id"
+              placeholder="Select Offer type"
+              value={inputs.ddloffertemplate}
+              onChange={item => {
+                setInputs(prev => ({...prev, ddloffertemplate: item.Id}));
+              }}
+              renderItem={renderItem}
+            />
+          )}
         </View>
         <View
           style={{
@@ -211,6 +465,18 @@ const AddOffer = () => {
                       show1: false,
                       show2: false,
                     });
+                    setInputs(prev => ({
+                      ...prev,
+                      StartDate:
+                        selecdate?.getFullYear() +
+                        '-' +
+                        (selecdate?.getMonth() + 1)
+                          .toString()
+                          .padStart(2, '0') +
+                        '-' +
+                        selecdate?.getDate().toString().padStart(2, '0'),
+                    }));
+                    setIsselect(prev => ({...prev, one: true}));
                     setStart(selecdate);
                   }}
                   //mode="datetime"
@@ -223,21 +489,12 @@ const AddOffer = () => {
                 <Text
                   style={{
                     alignSelf: 'center',
-                    fontSize: wp(3.5),
-                    color: 'black',
+                    fontSize: wp(4),
+                    color: iseSelected.one ? 'black' : 'grey',
+                    fontWeight: '600',
                   }}>
-                  {start != ''
-                    ? start?.getFullYear() +
-                      '-' +
-                      start?.getMonth() +
-                      '-' +
-                      start?.getDate() +
-                      '  ' +
-                      start?.getHours() +
-                      ':' +
-                      start?.getMinutes() +
-                      ':' +
-                      start?.getSeconds()
+                  {iseSelected.one && inputs.StartDate != ''
+                    ? inputs.StartDate
                     : 'select start date'}
                 </Text>
               )}
@@ -270,6 +527,16 @@ const AddOffer = () => {
                       show1: false,
                       show2: false,
                     });
+                    setInputs(prev => ({
+                      ...prev,
+                      EndDate:
+                        end?.getFullYear() +
+                        '-' +
+                        +(end?.getMonth() + 1).toString().padStart(2, '0') +
+                        '-' +
+                        end?.getDate().toString().padStart(2, '0'),
+                    }));
+                    setIsselect(prev => ({...prev, two: true}));
                     setEnd(end);
                   }}
                   mode="datetime"
@@ -280,21 +547,12 @@ const AddOffer = () => {
                 <Text
                   style={{
                     alignSelf: 'center',
-                    fontSize: wp(3.5),
-                    color: 'black',
+                    fontSize: wp(4),
+                    color: iseSelected.two ? 'black' : 'grey',
+                    fontWeight: '600',
                   }}>
-                  {end != ''
-                    ? end?.getFullYear() +
-                      '-' +
-                      end?.getMonth() +
-                      '-' +
-                      end?.getDate() +
-                      '  ' +
-                      end?.getHours() +
-                      ':' +
-                      end?.getMinutes() +
-                      ':' +
-                      end?.getSeconds()
+                  {iseSelected.two && inputs.EndDate != ''
+                    ? inputs.EndDate
                     : 'select end date'}
                 </Text>
               )}
@@ -321,11 +579,13 @@ const AddOffer = () => {
             labelField="label"
             valueField="value"
             placeholder="Select Offer type"
-            value={value}
+            value={inputs.dealtype}
             onChange={item => {
-              setValue(item.value);
+              console.log(item);
+              setInputs(prev => ({...prev, dealtype: item.value}));
+              handleDealype(item.value);
             }}
-            renderItem={renderItem}
+            renderItem={renderItem2}
           />
         </View>
         <Text
@@ -335,7 +595,13 @@ const AddOffer = () => {
             fontFamily: 'Roboto-Medium',
             fontSize: wp(4),
           }}>
-          Discount Percentage
+          {visible.one
+            ? 'Discount Percentage'
+            : visible.two
+            ? 'Discount Amount'
+            : visible.three
+            ? 'Discount Quanity'
+            : 'Difine deal'}
         </Text>
         <View
           style={{
@@ -352,65 +618,88 @@ const AddOffer = () => {
           <TextInput
             style={{fontSize: wp(4), color: 'black'}}
             placeholderTextColor={'grey'}
-            placeholder="Discount Percentage"
+            value={
+              visible.one
+                ? inputs.txtdiscountper
+                : visible.two
+                ? inputs.txtdiscountamount
+                : visible.three
+                ? inputs.txtquantity
+                : inputs.txtdealdescription
+            }
+            placeholder={
+              visible.one
+                ? 'Discount Percentage'
+                : visible.two
+                ? 'Discount Amount'
+                : visible.three
+                ? 'Discount Quanity'
+                : 'Difine deal'
+            }
+            onChangeText={inputs => {
+              setInputs2(inputs);
+            }}
           />
         </View>
-        <View
-          style={{
-            marginTop: 10,
-            flexDirection: 'row',
-            marginHorizontal: 10,
-            justifyContent: 'space-between',
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('AddProductTooffer');
-            }}
+        {true ? (
+          <View
             style={{
-              backgroundColor: '#032e63',
-              borderRadius: wp(4.5),
-              alignItems: 'center',
-              height: hp(6),
-              paddingHorizontal: 5,
-              justifyContent: 'center',
-              marginTop: 15,
-              width: '47%',
+              marginTop: 10,
+              flexDirection: 'row',
+              marginHorizontal: 10,
+              justifyContent: 'space-between',
             }}>
-            <Text
+            <TouchableOpacity
+              onPress={() => {
+                offerProductList();
+              }}
               style={{
-                color: '#fff',
-                fontFamily: 'Roboto-Medium',
-                fontSize: wp(4),
-                textAlign: 'center',
+                backgroundColor: '#032e63',
+                borderRadius: wp(4.5),
+                alignItems: 'center',
+                height: hp(6),
+                paddingHorizontal: 5,
+                justifyContent: 'center',
+                marginTop: 15,
+                width: '47%',
               }}>
-              Add Products to Offers
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#032e63',
-              borderRadius: wp(4.5),
-              alignItems: 'center',
-              height: hp(6),
-              paddingHorizontal: 5,
-              justifyContent: 'center',
-              marginTop: 15,
-              width: '47%',
-            }}>
-            <Text
+              <Text
+                style={{
+                  color: '#fff',
+                  fontFamily: 'Roboto-Medium',
+                  fontSize: wp(4),
+                  textAlign: 'center',
+                }}>
+                Add Products to Offers
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               style={{
-                color: '#fff',
-                fontFamily: 'Roboto-Medium',
-                fontSize: wp(4),
-                textAlign: 'center',
+                backgroundColor: '#032e63',
+                borderRadius: wp(4.5),
+                alignItems: 'center',
+                height: hp(6),
+                paddingHorizontal: 5,
+                justifyContent: 'center',
+                marginTop: 15,
+                width: '47%',
               }}>
-              Add Customer to Offers
-            </Text>
-          </TouchableOpacity>
-        </View>
+              <Text
+                style={{
+                  color: '#fff',
+                  fontFamily: 'Roboto-Medium',
+                  fontSize: wp(4),
+                  textAlign: 'center',
+                }}>
+                Add Customer to Offers
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
 
         <View style={{marginTop: 10}}>
           <TouchableOpacity
+            onPress={() => uploadImage()}
             style={{
               borderColor: '#032e63',
               borderRadius: wp(5),
@@ -429,6 +718,17 @@ const AddOffer = () => {
               Choose file
             </Text>
           </TouchableOpacity>
+          {inputs.ImageName?.uri && (
+            <Image
+              style={{
+                height: hp(20),
+                width: wp(45),
+                alignSelf: 'center',
+                marginTop: wp(2),
+              }}
+              source={{uri: inputs.ImageName?.uri}}
+            />
+          )}
         </View>
         <View
           style={{
@@ -438,7 +738,7 @@ const AddOffer = () => {
             alignItems: 'center',
           }}>
           <TouchableOpacity
-            onPress={() => manageOfferList()}
+            onPress={() => handleOnSubmit()}
             style={{
               backgroundColor: '#032e63',
               borderRadius: wp(5),
@@ -454,7 +754,7 @@ const AddOffer = () => {
                 fontFamily: 'Roboto-Medium',
                 fontSize: wp(4),
               }}>
-              Add
+              {!isEdit ? 'Add' : 'Update'}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -480,6 +780,268 @@ const AddOffer = () => {
 
         <View style={{height: 50}} />
       </ScrollView>
+      <Modal visible={productModal}>
+        {offerProudctList?.length > 0 ? (
+          <>
+            <TouchableOpacity
+              onPress={() => setProductModal(false)}
+              style={{
+                position: 'absolute',
+                height: hp(6),
+                width: hp(6),
+                backgroundColor: '#032e63',
+                right: wp(10),
+                top: 12,
+                zIndex: 1,
+                borderRadius: hp(6 / 2),
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{fontSize: wp(5.5), fontWeight: 'bold', color: 'white'}}>
+                X
+              </Text>
+            </TouchableOpacity>
+            <ScrollView contentContainerStyle={{paddingBottom: wp(4)}}>
+              <View style={{flex: 1, width: wp(100)}}>
+                <FlatList
+                  data={offerProudctList}
+                  renderItem={({item}) => (
+                    <View style={styles.Card}>
+                      <View style={{marginHorizontal: 10, marginTop: 5}}>
+                        <CheckBox
+                          value={
+                            inputs.hdnselectedvalue.includes(item.SrNo)
+                              ? true
+                              : false
+                          }
+                          onChange={() => {
+                            if (inputs.hdnselectedvalue.includes(item?.SrNo)) {
+                              let newee = hdnselectedvalue.filter(
+                                items => items != item.SrNo,
+                              );
+                              setInputs(prev => ({
+                                ...prev,
+                                hdnselectedvalue: newee,
+                              }));
+                            } else {
+                              setInputs(prev => ({
+                                ...prev,
+                                hdnselectedvalue: [
+                                  ...inputs.hdnselectedvalue,
+                                  item.SrNo,
+                                ],
+                              }));
+                            }
+                          }}
+                        />
+                      </View>
+                      <View style={{padding: 7}}>
+                        <Image
+                          style={{height: hp(20), width: '100%'}}
+                          source={{
+                            uri: `https://olocker.co/uploads/product/${item?.ImageName}`,
+                          }}
+                        />
+                      </View>
+                      <View style={{paddingHorizontal: 20}}>
+                        <Text
+                          style={{
+                            fontSize: wp(4),
+                            fontWeight: '700',
+                            marginTop: 10,
+                            color: '#000',
+                          }}>
+                          Gross Wt:-{' '}
+                          <Text
+                            style={{
+                              fontSize: wp(4),
+                              fontWeight: '700',
+                              color: '#707371',
+                            }}>
+                            {item.GrossWt}
+                          </Text>
+                        </Text>
+
+                        <Text
+                          style={{
+                            fontSize: wp(4),
+                            fontWeight: '700',
+                            marginTop: 3,
+                            color: '#000',
+                          }}>
+                          Metal Wt:-{' '}
+                          <Text
+                            style={{
+                              fontSize: wp(4),
+                              fontWeight: '700',
+                              color: '#707371',
+                            }}>
+                            {item?.MetalWt}
+                          </Text>
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: wp(4),
+                            fontWeight: '600',
+                            marginTop: 3,
+                            color: '#000',
+                          }}>
+                          Unit of MetalWt:-{' '}
+                          <Text
+                            style={{
+                              fontSize: wp(4),
+                              fontWeight: '700',
+                              color: '#707371',
+                            }}>
+                            {item.UnitMetalWt}
+                          </Text>
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: wp(4),
+                            fontWeight: '600',
+                            marginTop: 3,
+                            color: '#000',
+                          }}>
+                          Stone Wt:-{' '}
+                          <Text
+                            style={{
+                              fontSize: wp(4),
+                              fontWeight: '700',
+                              color: '#707371',
+                            }}>
+                            {item.StoneWt}
+                          </Text>
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: wp(4),
+                            fontWeight: '600',
+                            marginTop: 3,
+                            color: '#000',
+                          }}>
+                          Price:-{' '}
+                          <Text
+                            style={{
+                              fontSize: wp(4),
+                              fontWeight: '700',
+                              color: '#707371',
+                            }}>
+                            ₹{item.Price}
+                          </Text>
+                        </Text>
+
+                        <View
+                          style={{
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            marginTop: 3,
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: wp(4),
+                              fontWeight: '600',
+                              color: '#000',
+                            }}>
+                            Product Name:-{' '}
+                          </Text>
+                          <View>
+                            <Text
+                              style={{
+                                fontSize: wp(4),
+                                fontWeight: '600',
+
+                                color: '#707371',
+                              }}>
+                              {item?.ItemName}
+                            </Text>
+                          </View>
+                        </View>
+                        <Text
+                          style={{
+                            fontSize: wp(4),
+                            fontWeight: '600',
+                            marginTop: 3,
+                            color: '#000',
+                          }}>
+                          ProductsSku:-{' '}
+                          <Text
+                            style={{
+                              fontSize: wp(4),
+                              fontWeight: '700',
+                              color: '#707371',
+                            }}>
+                            {item.ProductSku}
+                          </Text>
+                        </Text>
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            marginTop: 3,
+                            alignItems: 'center',
+                          }}>
+                          <View style={{}}>
+                            <Text
+                              style={{
+                                fontSize: wp(4),
+                                fontWeight: '600',
+                                color: '#000',
+                              }}>
+                              Collection Name:
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+
+                              width: '58%',
+                            }}>
+                            <Text
+                              style={{
+                                fontSize: wp(4),
+                                fontWeight: '700',
+                                color: '#707371',
+                              }}>
+                              {item?.Name}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  )}
+                />
+              </View>
+
+              <View style={{alignItems: 'center'}}>
+                <FlatList
+                  data={data}
+                  horizontal
+                  renderItem={({item}) => (
+                    <TouchableOpacity
+                      onPress={() => {
+                        handlePage(item.num);
+                      }}
+                      style={styles.circleBtn}>
+                      <Text
+                        style={{
+                          fontWeight: '800',
+                          fontSize: 18,
+                          color: '#fff',
+                        }}>
+                        {item.num}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                />
+              </View>
+            </ScrollView>
+          </>
+        ) : null}
+      </Modal>
     </View>
   );
 };
@@ -494,4 +1056,51 @@ const DropData = [
   {label: 'Get product on interest free EMIs', value: '6'},
   {label: 'Products on ZERO Making', value: '7'},
   {label: 'Create your deal', value: '8'},
+];
+const Offer = [
+  {
+    ProductSku: '10BAI-683',
+    ProductName: '10BAI-683',
+    CollectionName: 'Lorem Ipsum',
+    GrossWT: 80000,
+    MetalWT: 80000,
+    StoneWT: 80000,
+    Price: '₹4389015.19',
+  },
+  {
+    ProductSku: '10BAI-683',
+    ProductName: '10BAI-683',
+    CollectionName: 'Lorem Ipsum',
+    GrossWT: 80000,
+    MetalWT: 80000,
+    StoneWT: 80000,
+    Price: '₹4389015.19',
+  },
+  {
+    ProductSku: '10BAI-683',
+    ProductName: '10BAI-683',
+    CollectionName: 'Lorem Ipsum',
+    GrossWT: 80000,
+    MetalWT: 80000,
+    StoneWT: 80000,
+    Price: '₹4389015.19',
+  },
+];
+
+const data = [
+  {
+    num: '1',
+  },
+  {
+    num: '2',
+  },
+  {
+    num: '3',
+  },
+  {
+    num: '4',
+  },
+  {
+    num: '5',
+  },
 ];

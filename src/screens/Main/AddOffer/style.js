@@ -55,7 +55,6 @@ export default StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
     marginTop: 10,
-    height: hp(81),
     marginHorizontal: 20,
     shadowColor: '#000',
     backgroundColor: 'white',
@@ -65,7 +64,7 @@ export default StyleSheet.create({
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-
+    paddingVertical: wp(3),
     elevation: 4,
   },
   searchbar: {
@@ -153,5 +152,17 @@ export default StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     fontWeight: '700',
+  },
+  circleBtn: {
+    marginHorizontal: 5,
+    backgroundColor: '#032E63',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 30,
+    width: 30,
+    borderRadius: 15,
+  },
+  txt: {
+    color: '#fff',
   },
 });

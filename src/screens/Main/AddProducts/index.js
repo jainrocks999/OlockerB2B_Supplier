@@ -233,8 +233,8 @@ const AddProducts = () => {
             onChange={() => {
               handleCategory(item.SrNo);
             }}
-            tintColors="black"
             onTintColor="black"
+            tintColors={{true: '#032e63', false: 'black'}}
             value={inputs.chk_sc?.includes(item.SrNo) ? true : false}
           />
           <Text
@@ -395,6 +395,7 @@ const AddProducts = () => {
           Olocker: `Bearer ${Token}`,
         },
       });
+      console.log('this product chargoew', response.data);
 
       handleInputs('txtProductCharges', response.data.amount);
     } catch (error) {
@@ -992,11 +993,8 @@ const AddProducts = () => {
           <View
             style={{
               alignItems: 'center',
-              //justifyContent: 'space-between',
-
               flexDirection: 'row',
               marginHorizontal: wp(3),
-              // borderWidth: 1
             }}>
             <RadioButton
               value={inputs.radioGender}
@@ -1038,30 +1036,7 @@ const AddProducts = () => {
             </Text>
           </View>
         </View>
-        {/* <View
-          style={{ alignSelf: 'center', mrr: wp(3), marginTop: wp(4) }}> */}
-        {/* <View style={{}}>
-          <Text style={{ fontSize: wp(5), marginLeft: wp(-24), fontWeight: '700', color: '#032e63' }}>
-            Assign Category
-          </Text>
-          <View style={{ flexDirection: "row", alignItems: 'center', marginRight: wp(12), marginLeft: wp(-24) }}>
-            <View style={{ marginLeft: wp(5) }}>
-              <RadioButton
-                value={'fnff'}
-                color="#032e63"
-                uncheckedColor="#474747"
-                status='checked'
 
-              // status={checked === 'Gold' ? 'checked' : 'unchecked'}
-              // onPress={() => setChecked('Gold')}
-              /></View>
-
-            <Text style={{ fontSize: wp(3.8), fontWeight: '600' }}>
-              Common
-            </Text>
-            {/* </View> *
-          </View>
-        </View> */}
         <View style={[styles.mrt, {marginTop: wp(4)}]}>
           <Text
             style={{
@@ -1076,11 +1051,8 @@ const AddProducts = () => {
           <View
             style={{
               alignItems: 'center',
-              //justifyContent: 'space-between',
-
               flexDirection: 'row',
               marginHorizontal: wp(3),
-              // borderWidth: 1
             }}>
             <RadioButton
               value={'fnff'}
@@ -1126,9 +1098,8 @@ const AddProducts = () => {
             <View>
               <CheckBox
                 value={inputs.IsBestSeller}
-                onChange={
-                  () => handleInputs('IsBestSeller', !inputs.IsBestSeller)
-                  //  console.log(inputs.IsBestSeller)
+                onChange={() =>
+                  handleInputs('IsBestSeller', !inputs.IsBestSeller)
                 }
                 tintColors={{true: '#032e63', false: '#032e63'}}
               />
@@ -1644,8 +1615,6 @@ const AddProducts = () => {
                       inputs.radioIsWastage == 1 ? 'checked' : 'unchecked'
                     }
                     onPress={() => handleInputs('radioIsWastage', 1)}
-                    // status={checked === 'Gold' ? 'checked' : 'unchecked'}
-                    // onPress={() => setChecked('Gold')}
                   />
                 </View>
 
@@ -1704,9 +1673,7 @@ const AddProducts = () => {
               </View>
             </>
           ) : null}
-          {
-            //Chargeable amount for Product RS
-          }
+
           <View style={{marginTop: wp(3)}}>
             <Text style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
               {' '}
@@ -1749,9 +1716,7 @@ const AddProducts = () => {
               />
             </View>
           </View>
-          {
-            //CERTIFICATION DETAILS
-          }
+
           <View style={{marginTop: wp(6)}}>
             <Text style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
               {' '}
@@ -1841,7 +1806,6 @@ const AddProducts = () => {
           <View
             style={{
               height: hp(17),
-              // borderWidth: 1,
               marginTop: 4,
               alignItems: 'center',
               justifyContent: 'center',
@@ -1974,15 +1938,12 @@ const AddProducts = () => {
                     alignItems: 'center',
                   }}>
                   <CheckBox
-                    //032e63
-                 
+                    tintColors={{true: '#032e63', false: 'black'}}
                     onChange={async () => {
                       if (inputs.chk_c.includes(item.SrNo)) {
-                        console.log();
                         const res = inputs.chk_c.filter(
                           items => items != item.SrNo,
                         );
-
                         handleInputs('chk_c', res);
                       } else {
                         handleInputs('chk_c', [...inputs.chk_c, item.SrNo]);

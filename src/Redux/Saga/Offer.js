@@ -67,13 +67,18 @@ function* offerListData(action) {
       length: 80,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-    console.log('this is response', JSON.stringify(response));
+    console.log('this is responsettttt', JSON.stringify(response));
     if (response.status) {
       yield put({
         type: 'Offer_List_Success',
         payload: response.data,
       });
-      action.navigation.navigate('OfferList');
+      if (action.page == 'add') {
+        action.navigation.pop(1);
+      } else if (action.page == 'delete') {
+      } else {
+        action.navigation.navigate('OfferList');
+      }
     } else {
       yield put({
         type: 'Offer_List_Error',
@@ -106,9 +111,140 @@ function* offerTypeList(action) {
     });
   }
 }
+function* getOfferProductList(action) {
+  try {
+    console.log('this is product');
+    const data = {
+      userId: action.userId,
+      start: action.start,
+      limit: action.limit,
+    };
+    const res = yield call(Api.fetchDataByGET1, action.url, data);
+
+    if (res.status) {
+      yield put({
+        type: 'getOfferProductList_success',
+        payload: res.data,
+      });
+    } else {
+      yield put({
+        type: 'getOfferProductList_error',
+      });
+    }
+  } catch (error) {
+    console.log('this is erro', error);
+    yield put({
+      type: 'getOfferProductList_error',
+    });
+  }
+}
+function* createOffer(action) {
+  const id = yield AsyncStorage.getItem('user_id');
+  console.log(action);
+  try {
+    const res = yield call(Api.fetchDataByPOST, action.url, action.data);
+    if (res.status) {
+      yield put({
+        type: 'createOffer_success',
+      });
+      yield put({
+        type: 'Offer_List_Request',
+        url: '/getOfferList',
+        userid: id,
+        navigation: action.navigation,
+        page: 'add',
+      });
+    } else {
+      yield put({
+        type: 'createOffer_error',
+      });
+    }
+    Toast.show(res.msg);
+  } catch (error) {
+    yield put({
+      type: 'createOffer_error',
+    });
+    console.log(error);
+  }
+}
+function* removeOffer(action) {
+  const id = yield AsyncStorage.getItem('user_id');
+  try {
+    const data = {
+      offerId: action.offerId,
+    };
+    const res = yield call(Api.fetchDataByGET1, action.url, data);
+    if (res.status) {
+      yield put({
+        type: 'remove_offer_list_success',
+      });
+      yield put({
+        type: 'Offer_List_Request',
+        url: '/getOfferList',
+        userid: id,
+        navigation: action?.navigation,
+        page: action.page,
+      });
+    } else {
+      yield put({
+        type: 'remove_offer_list_error',
+      });
+    }
+    Toast.show(res.msg);
+  } catch (error) {
+    yield put({
+      type: 'remove_offer_list_error',
+    });
+    console.log(error);
+  }
+}
+function* getOfferDetails(action) {
+  try {
+    const data = {
+      userId: action.userId,
+      offerId: action.offerId,
+    };
+    const res = yield call(Api.fetchDataByGET1, action.url, data);
+    if (res.status) {
+      yield put({
+        type: 'offer_details_success',
+        payload: res.data,
+      });
+      if (action.op == 'edit') {
+        yield put({
+          type: 'offer_edit_modal_open',
+          payload1: true,
+          payload2: false,
+        });
+        action.navigation.navigate('AddOffer', {isEdit: false});
+      } else {
+        yield pit({
+          type: 'offer_edit_modal_open',
+          payload2: true,
+          payload1: false,
+        });
+      }
+    } else {
+      yield put({
+        type: 'offer_details_error',
+      });
+      Toast.show('something went wrong');
+    }
+  } catch (err) {
+    yield put({
+      type: 'offer_details_error',
+    });
+    Toast.show('Something went wrong');
+    console.log(err);
+  }
+}
 export default function* citySaga() {
   yield takeEvery('Template_Detail_Request', offerList);
   yield takeEvery('Add_Offer_Request', offerTempList);
   yield takeEvery('Offer_List_Request', offerListData);
   yield takeEvery('get_offer_type_list_request', offerTypeList);
+  yield takeEvery('getOfferProductList_request', getOfferProductList);
+  yield takeEvery('createOffer_request', createOffer);
+  yield takeEvery('remove_offer_list_request', removeOffer);
+  yield takeEvery('offer_details_request', getOfferDetails);
 }
