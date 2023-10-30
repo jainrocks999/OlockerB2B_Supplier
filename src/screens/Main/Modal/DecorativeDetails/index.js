@@ -43,7 +43,6 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   };
   //decorativeData
   const decorativeData = useSelector(state => state.Catalogue?.decorativeData);
-  console.log('this iss decorative data', JSON.stringify(decorativeData));
   const isFetching = useSelector(state => state.Catalogue?.isFetching);
   const productEdit = useSelector(state => state.Catalogue?.productEdit);
   useEffect(() => {

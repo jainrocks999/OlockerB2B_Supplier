@@ -122,18 +122,60 @@
 //   },
 // });
 
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 export default StyleSheet.create({
-    tabStyle:{
-        alignItems:'center',
-        justifyContent:'center'
-    },
-    tabContainer:{
-        width:'100%',
-        flexDirection:'row',
-        justifyContent:'space-between',
-        paddingVertical:15,
-        paddingHorizontal:25,
-        backgroundColor:'#fff'
-    }
-})
+  tabStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tabContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    backgroundColor: '#fff',
+  },
+  container: {
+    width: '100%',
+    backgroundColor: '#032e63',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+    paddingVertical: 15,
+  },
+  img: {
+    height: 18,
+    width: 12,
+  },
+  img1: {
+    height: 20,
+    width: 25,
+  },
+  img2: {
+    height: 22,
+    width: 26,
+    tintColor: '#fff',
+  },
+  headertouch: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+  },
+  img3: {
+    width: hp(3.6),
+    height: hp(3.6),
+    marginLeft: 15,
+    tintColor: 'white',
+  },
+  text: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '700',
+  },
+});

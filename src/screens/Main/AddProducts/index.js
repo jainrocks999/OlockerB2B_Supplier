@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  Modal,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import styles from './styles';
@@ -33,7 +34,7 @@ import axios from 'axios';
 import RNFS from 'react-native-fs';
 import RNFetchBlob from 'rn-fetch-blob';
 import Toast from 'react-native-simple-toast';
-
+import {Menu, MenuItem, MenuDivider} from 'react-native-material-menu';
 const AddProducts = () => {
   const [ViewMetalModal, setViewMetalModal] = useState(false);
   const [ViewStoneModal, setViewStoneModal] = useState(false);
@@ -53,7 +54,6 @@ const AddProducts = () => {
   const msg = useSelector(state => state.Catalogue?.msg);
   const editProduct = useSelector(state => state.Catalogue?.editProduct);
   const productEdit = useSelector(state => state.Catalogue?.productEdit);
-  console.log('this is edidprodct', JSON.stringify(editProduct));
   const products = editProduct?.products;
   const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
   const datadelete = useSelector(state => state.Catalogue?.datadelete);
@@ -126,6 +126,8 @@ const AddProducts = () => {
     rbCategory: 'Category B',
     chk_c: [],
   });
+
+  const editDelete = () => {};
 
   const getImage = () => {
     const imageArr =
@@ -202,6 +204,8 @@ const AddProducts = () => {
   };
 
   useEffect(() => {
+    {
+    }
     productTypeList();
   }, [isFocuse]);
   const dispatch = useDispatch();
@@ -537,17 +541,29 @@ const AddProducts = () => {
   };
   const uploadImage = async () => {
     try {
-      const res = await DocumentPicker.pickSingle({
+      const res = await DocumentPicker.pickMultiple({
         type: [DocumentPicker.types.images],
+        allowMultiSelection: true,
       });
 
-      setInputs(prev => ({
-        ...prev,
-        ImgUpload: [
-          ...inputs.ImgUpload,
-          {uri: res.uri, name: res.name, type: res.type},
-        ],
-      }));
+      if (res.length + inputs.ImgUpload.length <= 6) {
+        let arr = [];
+        res.map(item => {
+          let obj = {
+            uri: item.uri,
+            name: item.name,
+            type: item.type,
+          };
+          arr.push(obj);
+        });
+
+        setInputs(prev => ({
+          ...prev,
+          ImgUpload: [...inputs.ImgUpload, ...arr],
+        }));
+      } else {
+        Toast.show('Only 6 Images are allowed');
+      }
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
       } else {
@@ -558,7 +574,6 @@ const AddProducts = () => {
 
   const handleOnSubmit = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
-
     let data = {
       ...inputs,
       hdnIsMrp: inputs.radioPriceCalculator,
@@ -647,6 +662,11 @@ const AddProducts = () => {
       Toast.show('something went wrong');
     }
   };
+  const [visible, setVisible] = useState([]);
+  const handleOnVisible = indexx => {
+    setVisible([indexx]);
+  };
+  //  console.log('this is visible', visible);
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -1816,17 +1836,56 @@ const AddProducts = () => {
               horizontal={true}
               renderItem={({item, index}) => (
                 <View>
-                  <Image
-                    style={{
-                      height: hp(15),
-                      width: wp(30),
-                      alignSelf: 'center',
-                      marginHorizontal: wp(1),
-                    }}
-                    source={{
-                      uri: item.uri,
-                    }}
-                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      handleOnVisible(index);
+                    }}>
+                    <Image
+                      style={{
+                        height: hp(15),
+                        width: wp(30),
+                        alignSelf: 'center',
+                        marginHorizontal: wp(1),
+                      }}
+                      source={{
+                        uri: item.uri,
+                      }}
+                    />
+                  </TouchableOpacity>
+                  <Menu
+                    onRequestClose={() => handleOnVisible(-1)}
+                    visible={visible?.includes(index)}
+                    style={{backgroundColor: 'white'}}>
+                    {/* <MenuItem
+                      style={{
+                        borderBottomWidth: wp(0.1),
+                        height: wp(10),
+                      }}
+                      onPress={() => setDefaultAddress(item.id, index)}>
+                      Set Default
+                    </MenuItem> */}
+                    <MenuItem
+                      style={{
+                        height: wp(10),
+                        // fontSize: 18,
+                      }}
+                      onPress={() => {
+                        alert('thiss iis');
+                      }}>
+                      Edit
+                    </MenuItem>
+                    <MenuItem
+                      style={{
+                        // borderTopWidth: wp(0.1),
+                        // borderBottomWidth: wp(0.1),
+                        height: wp(10),
+                      }}
+                      onPress={() => {
+                        alert('thississ s');
+                      }}>
+                      Delete
+                    </MenuItem>
+                  </Menu>
                 </View>
               )}
             />

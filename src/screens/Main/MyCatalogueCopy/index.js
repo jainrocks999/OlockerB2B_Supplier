@@ -296,7 +296,14 @@ const MyCatalogueCopy = () => {
           <View
             style={{alignItems: 'center', paddingVertical: 10, marginTop: 40}}>
             <TouchableOpacity
-              //  onPress={() => navigation.navigate('addMore')}
+              onPress={() => {
+                dispatch({
+                  type: 'edit_product_success',
+                  payload: '',
+                  productEdit: false,
+                });
+                navigation.navigate('ChooseSupplierProduct');
+              }}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',

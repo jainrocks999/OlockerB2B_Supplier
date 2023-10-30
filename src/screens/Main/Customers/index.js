@@ -223,6 +223,7 @@ import {
   TouchableOpacity,
   Linking,
   Share,
+  Alert,
 } from 'react-native';
 import Header from '../../../components/CustomHeader';
 import {useNavigation} from '@react-navigation/native';
@@ -316,6 +317,37 @@ const HomeScreen = () => {
     });
   };
 
+  const Logout = () => {
+    Alert.alert(
+      'Are you want to logout ?',
+      '',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            cancelable: false;
+          },
+          style: 'cancel',
+        },
+        {text: 'ok', onPress: () => LogoutApp()},
+      ],
+      {cancelable: false},
+    );
+  };
+
+  const LogoutApp = async () => {
+    await AsyncStorage.setItem('loginToken', '');
+    navigation.navigate('Login');
+  };
+  const handleWishList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Get_wishListProduct_Request',
+      url: '/wishListProduct',
+      user_id: user_id,
+      navigation,
+    });
+  };
   useEffect(() => {
     selector?.supplierimagedetails.map(item => {
       if (item.Type == 'Product Image') {
@@ -361,15 +393,41 @@ const HomeScreen = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#f0eeef'}}>
-      <Header
-        source={require('../../../assets/L.png')}
-        source2={require('../../../assets/Image/dil.png')}
-        source1={require('../../../assets/Fo.png')}
-        title={'Supplier Profile '}
-        onPress={() => navigation.goBack()}
-        onPress1={() => navigation.navigate('Message')}
-        onPress2={() => navigation.navigate('FavDetails')}
-      />
+      <View style={styles.container}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableOpacity
+            delayPressIn={0}
+            onPress={() => navigation.goBack()}>
+            <Image
+              style={styles.img}
+              source={require('../../../assets/L.png')}
+            />
+          </TouchableOpacity>
+          <Text style={[styles.text, {marginLeft: 15}]}>Supplier Profile</Text>
+        </View>
+        <View style={styles.headertouch}>
+          <TouchableOpacity onPress={() => navigation.navigate('Message')}>
+            <Image
+              style={styles.img1}
+              source={require('../../../assets/Fo.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{marginLeft: 15}}
+            onPress={() => handleWishList()}>
+            <Image
+              style={styles.img2}
+              source={require('../../../assets/Image/dil.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Logout()}>
+            <Image
+              style={styles.img3}
+              source={require('../../../assets/logout.png')}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
 
       <ScrollView>
         {isFetching || isFetching1 ? <Loader /> : null}

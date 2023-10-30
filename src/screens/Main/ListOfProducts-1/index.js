@@ -20,16 +20,21 @@ import {
 import {TextInput} from 'react-native';
 import CategoryViewModal from '../Modal/categoryList';
 import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loading from '../../../components/Loader';
 
 const ListOfProduct = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const dispatch = useDispatch();
   const [ViewModal, setViewModal] = useState(false);
   const [value, setValue] = useState(null);
   const [modalData, setModalData] = useState('');
   const [SearctTxt, setSearctTxt] = useState('');
   const navigation = useNavigation();
   const selector = useSelector(state => state.Catalogue.Products);
+  const isFetching = useSelector(state => state.Catalogue.isFetching);
+  const isFetching2 = useSelector(state => state.Auth.isFetching);
   const setModalDetails = details => {
     setModalData(details);
     setViewModal(true);
@@ -43,8 +48,20 @@ const ListOfProduct = () => {
       navigation,
     });
   };
+  const proctDetail = async item => {
+    console.log('callrd');
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'product_detail_request',
+      url: 'productDetails',
+      productId: item.productId,
+      supplierSrNo: user_id,
+      navigation,
+    });
+  };
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
+      {isFetching || isFetching2 ? <Loading /> : null}
       <ScrollView contentContainerStyle={{}}>
         <CategoryViewModal
           visi={ViewModal}
@@ -193,37 +210,39 @@ const ListOfProduct = () => {
                   }}>
                   <Text style={{color: '#fff'}}>Gross wt {item.grossWt}</Text>
                 </View>
-                <Image
-                  style={{height: 144, width: '100%', borderRadius: 10}}
-                  source={{uri: item.images}}
-                />
-                <View style={{marginTop: 10}}>
-                  <Text
-                    style={{
-                      fontFamily: 'Roboto-Medium',
-                      fontSize: 14,
+                <TouchableOpacity onPress={() => proctDetail(item)}>
+                  <Image
+                    style={{height: 144, width: '100%', borderRadius: 10}}
+                    source={{uri: item.images}}
+                  />
+                  <View style={{marginTop: 10}}>
+                    <Text
+                      style={{
+                        fontFamily: 'Roboto-Medium',
+                        fontSize: 14,
 
-                      color: '#666666',
-                    }}>
-                    Product Name : {item.productTypeName}
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: 'Roboto-Medium',
-                      fontSize: 14,
-                      color: '#666666',
-                    }}>
-                    ProductSku : {item.productSku}
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: 'Roboto-Medium',
-                      fontSize: 14,
-                      color: '#666666',
-                    }}>
-                    Price : {item.productPrice}
-                  </Text>
-                </View>
+                        color: '#666666',
+                      }}>
+                      Product Name : {item.productTypeName}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Roboto-Medium',
+                        fontSize: 14,
+                        color: '#666666',
+                      }}>
+                      ProductSku : {item.productSku}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Roboto-Medium',
+                        fontSize: 14,
+                        color: '#666666',
+                      }}>
+                      Price : {item.productPrice}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             )}
           />

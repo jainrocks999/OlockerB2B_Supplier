@@ -14,6 +14,7 @@ import Store from './src/Redux/Store';
 import RootApp from './src/navigation';
 import StatusBar from './src/components/StatusBar';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {PaperProvider} from 'react-native-paper';
 
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();

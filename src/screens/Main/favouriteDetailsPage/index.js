@@ -58,6 +58,7 @@ const FavouriteList = () => {
     });
   };
   const RemoveWhishList = async id => {
+    console.log('called');
     const user_id = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
     const data = {
@@ -83,7 +84,8 @@ const FavouriteList = () => {
         alert('Item Not Remove This Time');
       }
     } catch (error) {
-      throw error;
+      //   throw error;
+      console.log(error);
     }
   };
 
@@ -135,7 +137,10 @@ const FavouriteList = () => {
                         borderWidth: 0,
                         marginTop: 0,
                       }}>
-                      <View>
+                      <TouchableOpacity
+                        onPress={() => {
+                          RemoveWhishList(item?.SrNo);
+                        }}>
                         <Image
                           style={{
                             height: hp('2.4%'),
@@ -144,19 +149,20 @@ const FavouriteList = () => {
                             marginVertical: 5,
                             marginTop: 2,
                             tintColor: 'red',
+                            alignSelf: 'flex-end',
                           }}
                           source={require('../../../assets/Image/dil.png')}
                         />
-                      </View>
+                      </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                       onPress={() => {
                         RemoveWhishList(item?.SrNo);
                       }}
                       style={{marginLeft: 2}}>
                       <MaterialCommunityIcons name="delete" size={30} />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                   </View>
 
                   <TouchableOpacity
