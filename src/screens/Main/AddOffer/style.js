@@ -33,6 +33,7 @@ export default StyleSheet.create({
   textItem: {
     flex: 1,
     fontSize: wp(4.5),
+    color: 'grey',
   },
   placeholderStyle: {
     fontSize: wp(4.5),

@@ -41,6 +41,7 @@ const RetailerRequestList = () => {
   };
 
   const selector = useSelector(state => state.Home.RetailerRequestList);
+  const isFetching2 = useSelector(state => state.Auth.isFetching);
 
   const isFocuse = useIsFocused();
   useEffect(() => {
@@ -77,7 +78,7 @@ const RetailerRequestList = () => {
   };
   return (
     <View style={{flex: 1}}>
-      {isFetching ? <Loader /> : null}
+      {isFetching || isFetching2 ? <Loader /> : null}
       <AssignCategory
         visi={AssignModal}
         data={data}
@@ -85,9 +86,13 @@ const RetailerRequestList = () => {
       />
       <ScrollView contentContainerStyle={{}}>
         <View style={styles.searchbar}>
-          <TextInput placeholder="Search" style={{fontSize: 18}} />
+          <TextInput
+            placeholder="Search"
+            style={{fontSize: 18, color: 'black'}}
+            placeholderTextColor={'grey'}
+          />
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
-            <Feather name="search" size={wp(6)} />
+            <Feather name="search" size={wp(6)} color="grey" />
           </View>
         </View>
 
@@ -149,153 +154,88 @@ const RetailerRequestList = () => {
                     paddingVertical: wp(2),
                     //  paddingLeft: wp(2),
                   }}>
-                  <View>
-                    <Text
-                      style={{
-                        fontWeight: '500',
-                        fontSize: wp(4),
-                        marginLeft: 10,
-                        color: 'black',
-                      }}>
-                      CompanyName :
-                      <Text
-                        style={{
-                          fontSize: wp(4),
-                          fontWeight: '400',
-                        }}>
-                        {' '}
+                  <View style={{marginLeft: wp(3)}}>
+                    <View style={{flexDirection: 'row'}}>
+                      {console.log('this is some item', item)}
+                      <Text style={styles.txt1}>CompanyName</Text>
+                      <Text style={styles.txt2}>
+                        {':    '}
                         {item.CompanyName}
                       </Text>
-                    </Text>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        marginHorizontal: 10,
-                        marginTop: 5,
-                      }}>
-                      <Text
-                        style={{
-                          fontSize: wp(4),
-                          fontWeight: '700',
-                          marginRight: 10,
-                          color: 'black',
-                        }}>
-                        City :
-                        <Text style={{fontWeight: '400'}}>
-                          {' '}
-                          {item.city_name}{' '}
-                        </Text>
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: wp(4),
-                          fontWeight: '700',
-                          color: 'black',
-                        }}>
-                        State :
-                        <Text style={{fontWeight: '400'}}>
-                          {' '}
-                          {item.state_name}{' '}
-                        </Text>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text style={styles.txt1}>City</Text>
+                      <Text style={styles.txt2}>
+                        {':     '}
+                        {item.city_name}{' '}
                       </Text>
                     </View>
-                    <View style={{marginLeft: 10, marginTop: 5}}>
-                      <Text
-                        style={{
-                          fontSize: wp(4),
-                          fontWeight: '700',
-                          color: 'black',
-                        }}>
-                        Assign Category :
-                        <Text style={{width: '60%'}}> {item.CategoryType}</Text>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text style={styles.txt1}>State</Text>
+                      <Text style={styles.txt2}>
+                        {':    '}
+                        {item.state_name}{' '}
                       </Text>
                     </View>
-                    <View
-                      style={{
-                        marginLeft: 10,
-                        flexDirection: 'row',
-                        marginTop: 5,
-                      }}>
-                      <Text
-                        style={{
-                          fontSize: wp(4),
-                          fontWeight: '700',
-                          color: 'black',
-                        }}>
-                        IsShowInRetailerApp :
-                        <Text style={{width: '60%', fontWeight: '400'}}>
-                          {' '}
-                          {item.IsShowInRetailerApp}
-                        </Text>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text style={styles.txt1}>Assign Category</Text>
+                      <Text style={styles.txt2}>
+                        {':    '} {item.CategoryType}
                       </Text>
-                      <Text
-                        style={{
-                          fontSize: wp(4),
-                          fontWeight: '700',
-                          marginLeft: 10,
-                          color: 'black',
-                        }}>
-                        Status :
-                        <Text style={{width: '60%', fontWeight: '400'}}>
-                          {' '}
-                          {item.Status}
-                        </Text>
+                    </View>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.txt1}>
+                        Is Product Show in RetailerApp{' '}
+                      </Text>
+                      <Text style={styles.txt2}>
+                        {':    '}
+                        {item.IsShowInRetailerApp == 1 ? 'Yes' : 'No'}
+                      </Text>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text style={styles.txt1}>Status</Text>
+                      <Text style={styles.txt2}>
+                        {':    '}
+                        {item.Status == 1 ? 'Approved' : 'Reject'}
                       </Text>
                     </View>
                     <View
                       style={{
                         flexDirection: 'row',
-                        marginLeft: 10,
-                        marginTop: 5,
+                        alignItems: 'center',
+                        width: '60%',
                       }}>
-                      <Text
-                        style={{
-                          fontSize: wp(4),
-                          fontWeight: '700',
-                          color: 'black',
+                      <TouchableOpacity
+                        style={{width: '80%', marginLeft: 10}}
+                        onPress={() => {
+                          sendData(item);
                         }}>
-                        Action :{' '}
-                      </Text>
-
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          width: '60%',
-                        }}>
-                        <TouchableOpacity
-                          style={{width: '80%', marginLeft: 10}}
-                          onPress={() => {
-                            sendData(item);
-                          }}>
-                          <Text
-                            style={{
-                              color: 'blue',
-                              fontWeight: '700',
-                            }}>
-                            Update Status & Assign Category
-                          </Text>
-                        </TouchableOpacity>
                         <Text
                           style={{
-                            fontSize: wp(6),
-                            color: '#000',
-                            marginHorizontal: 5,
+                            color: 'blue',
+                            fontWeight: '700',
                           }}>
-                          |
+                          Update Status & Assign Category
                         </Text>
-                        <TouchableOpacity
-                          style={{width: '60%', marginLeft: 10}}>
-                          <Text
-                            style={{
-                              fontSize: wp(4.5),
-                              color: 'blue',
-                              fontWeight: '700',
-                            }}>
-                            Remove
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
+                      </TouchableOpacity>
+                      <Text
+                        style={{
+                          fontSize: wp(6),
+                          color: '#000',
+                          marginHorizontal: 5,
+                        }}>
+                        |
+                      </Text>
+                      <TouchableOpacity style={{width: '60%', marginLeft: 10}}>
+                        <Text
+                          style={{
+                            fontSize: wp(4.5),
+                            color: 'blue',
+                            fontWeight: '700',
+                          }}>
+                          Remove
+                        </Text>
+                      </TouchableOpacity>
                     </View>
                   </View>
                 </View>

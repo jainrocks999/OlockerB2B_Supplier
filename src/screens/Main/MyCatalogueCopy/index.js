@@ -107,7 +107,15 @@ const MyCatalogueCopy = () => {
 
     return response;
   };
-
+  const handleWishList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Get_wishListProduct_Request',
+      url: '/wishListProduct',
+      user_id: user_id,
+      navigation,
+    });
+  };
   const addProductWishList = async item => {
     console.log('this is celld');
     setIsFetching(true);
@@ -185,8 +193,7 @@ const MyCatalogueCopy = () => {
               source={require('../../../assets/Fo.png')}
             />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('FavouriteList')}>
+          <TouchableOpacity onPress={() => handleWishList()}>
             <Image
               style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
               source={require('../../../assets/Image/dil.png')}

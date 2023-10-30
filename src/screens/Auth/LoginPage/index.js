@@ -219,7 +219,7 @@ const Login = () => {
           /> */}
                 </View>
                 <View style={{alignItems: 'center'}}>
-                  <View style={styles.bottom}>
+                  {/* <View style={styles.bottom}>
                     <Text
                       style={{
                         fontWeight: '700',
@@ -237,7 +237,7 @@ const Login = () => {
                         {'Create Your Account'}
                       </Text>
                     </TouchableOpacity>
-                  </View>
+                  </View> */}
                 </View>
               </View>
             </KeyboardAwareScrollView>

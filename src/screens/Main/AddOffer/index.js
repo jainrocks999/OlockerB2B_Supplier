@@ -52,6 +52,7 @@ const AddOffer = ({route}) => {
   const selector = useSelector(state => state.Offer.OfferTempList);
   const isFetching = useSelector(state => state.Offer.isFetching);
   const offerTypeList = useSelector(state => state.Offer.offerTypeList);
+  const isFetching2 = useSelector(state => state.Auth.isFetching);
   const offerProudctList = useSelector(
     state => state.Offer.offerProudctList?.products,
   );
@@ -121,15 +122,15 @@ const AddOffer = ({route}) => {
   });
 
   console.log('this si previtem', JSON.stringify(previtem));
-  handleWishList = async () => {
-    const user_id = await AsyncStorage.getItem('user_id');
-    dispatch({
-      type: 'Get_wishListProduct_Request',
-      url: '/wishListItem',
-      user_id: user_id,
-      navigation,
-    });
-  };
+  // handleWishList = async () => {
+  //   const user_id = await AsyncStorage.getItem('user_id');
+  //   dispatch({
+  //     type: 'Get_wishListProduct_Request',
+  //     url: '/wishListItem',
+  //     user_id: user_id,
+  //     navigation,
+  //   });
+  // };
   const createOffer = data => {
     console.log('called');
     dispatch({
@@ -296,6 +297,15 @@ const AddOffer = ({route}) => {
     setProductModal(true);
     console.log('this is namepage', startpage, endpage);
   };
+  const handleWishList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Get_wishListProduct_Request',
+      url: '/wishListProduct',
+      user_id: user_id,
+      navigation,
+    });
+  };
   const handlePage = async num => {
     setStartPage(num === 1 ? 0 : endpage - 10);
     setEndpage(startpage + 10);
@@ -346,10 +356,11 @@ const AddOffer = ({route}) => {
     }
   };
   //  console.log(inputs.EndDate.toLocaleDateString());
+
   return (
     <View style={{flex: 1}}>
       <StatusBar />
-      {fetching || isFetching ? <Loader /> : null}
+      {fetching || isFetching || isFetching2 ? <Loader /> : null}
       <View
         style={{
           backgroundColor: '#032e63',
@@ -580,6 +591,7 @@ const AddOffer = ({route}) => {
             valueField="value"
             placeholder="Select Offer type"
             value={inputs.dealtype}
+            itemTextStyle={{color: 'grey'}}
             onChange={item => {
               console.log(item);
               setInputs(prev => ({...prev, dealtype: item.value}));

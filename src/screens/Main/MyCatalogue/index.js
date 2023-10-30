@@ -108,6 +108,15 @@ const MyCatalogue = () => {
     // });
     navigation.navigate('Addproduct', {no: item.SrNo});
   };
+  const handleWishList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Get_wishListProduct_Request',
+      url: '/wishListProduct',
+      user_id: user_id,
+      navigation,
+    });
+  };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       {fetching || isFetching ? <Loader /> : null}
@@ -141,18 +150,24 @@ const MyCatalogue = () => {
           </Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
-            style={{height: 24, width: 28}}
-            source={require('../../../assets/Fo.png')}
-          />
-          <Image
-            style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
-            source={require('../../../assets/Image/dil.png')}
-          />
-          <Image
+          <TouchableOpacity onPress={() => navigation.navigate('Message')}>
+            <Image
+              style={{height: 20, width: 25}}
+              source={require('../../../assets/Fo.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{marginLeft: 15}}
+            onPress={() => handleWishList()}>
+            <Image
+              style={{height: 22, width: 26, tintColor: '#fff'}}
+              source={require('../../../assets/Image/dil.png')}
+            />
+          </TouchableOpacity>
+          {/* <Image
             style={{height: 24, width: 28, tintColor: '#fff', marginLeft: 15}}
             source={require('../../../assets/supplierImage/more.png')}
-          />
+          /> */}
         </View>
       </View>
       <View style={{paddingHorizontal: 10, paddingVertical: 10}}>

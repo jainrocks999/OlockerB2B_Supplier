@@ -1,15 +1,17 @@
 import React from 'react';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { Platform, StyleSheet } from 'react-native';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+import {Platform, StyleSheet} from 'react-native';
 export default StyleSheet.create({
   txt: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginVertical: 5,
-    marginLeft: 10
+    marginLeft: 10,
   },
-
 
   dropdown: {
     marginVertical: 10,
@@ -35,17 +37,19 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-
   },
   textItem: {
     flex: 1,
     fontSize: 16,
+    color: 'grey',
   },
   placeholderStyle: {
     fontSize: 16,
+    color: 'grey',
   },
   selectedTextStyle: {
     fontSize: 16,
+    color: 'black',
   },
   iconStyle: {
     width: 20,
@@ -72,7 +76,7 @@ export default StyleSheet.create({
     },
     shadowOpacity: 0.57,
     shadowRadius: 15.19,
-    height: hp(6.5)
+    height: hp(6.5),
   },
   img: {
     height: 18,
@@ -92,8 +96,6 @@ export default StyleSheet.create({
     height: 22,
     marginLeft: 15,
   },
-
-
 
   container: {
     width: '100%',
@@ -115,7 +117,6 @@ export default StyleSheet.create({
     justifyContent: 'flex-end',
   },
 
-
   row: {
     backgroundColor: '#032e63',
     flexDirection: 'row',
@@ -123,10 +124,9 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#ccc',
     paddingVertical: 10,
-    width: '100%'
+    width: '100%',
   },
   Subrow: {
-
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 2,
@@ -138,21 +138,38 @@ export default StyleSheet.create({
     color: 'white',
     flex: 1,
     textAlign: 'center',
-    fontWeight: '600'
+    fontWeight: '600',
   },
   Subcell: {
     color: '#000',
     flex: 1,
     textAlign: 'center',
-    fontWeight: '700'
+    fontWeight: '700',
   },
   header: {
-    alignItems: 'center', justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 50,
-    backgroundColor: '#032e63'
+    backgroundColor: '#032e63',
   },
 
-  text: { textAlign: 'center', fontWeight: '100' },
-  dataWrapper: { marginTop: -2 },
-  row: { height: 40 },
+  text: {textAlign: 'center', fontWeight: '100'},
+  dataWrapper: {marginTop: -2},
+  row: {height: 40},
+  txt2: {
+    fontSize: wp(4.5),
+    fontWeight: '600',
+    color: 'grey',
+    marginTop: wp(1),
+    fontFamily: 'Roboto-Medium',
+  },
+  txt1: {
+    fontSize: wp(4.5),
+    fontWeight: '600',
+    //marginRight: 10,
+    fontFamily: 'Roboto-Medium',
+    color: 'black',
+    width: wp(42),
+    marginTop: wp(1),
+  },
 });

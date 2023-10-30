@@ -80,6 +80,18 @@ export default function myNetworkBtn({route}) {
     setinviteRetailer(false);
   };
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const handleWishList = async () => {
+    console.log('called');
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Get_wishListProduct_Request',
+      url: '/wishListProduct',
+      user_id: user_id,
+      navigation,
+    });
+  };
+
   return (
     <ScrollView>
       <View style={{flex: 1}}>
@@ -110,12 +122,12 @@ export default function myNetworkBtn({route}) {
                 source={require('../../../assets/Image/dil.png')}
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => Logout()}>
+            {/* <TouchableOpacity onPress={() => Logout()}>
               <Image
                 style={styles.img3}
                 source={require('../../../assets/Image/menu-icon.png')}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         <View

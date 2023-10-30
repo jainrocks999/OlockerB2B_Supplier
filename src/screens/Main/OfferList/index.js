@@ -9,6 +9,7 @@ import {
   Platform,
   FlatList,
   Dimensions,
+  Modal,
 } from 'react-native';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
@@ -38,6 +39,13 @@ const OfferList = () => {
   const OfferListData = useSelector(state => state.Offer.OfferListData);
 
   const isFetching = useSelector(state => state.Offer.isFetching);
+  const isFetching2 = useSelector(state => state.Auth.isFetching);
+  const modaleOpen = useSelector(state => state.Offer.modaleOpen);
+  const previtem = useSelector(state => state.Offer.offerDetail);
+  const [isModalOpen, setIsModalOpen] = useState(modaleOpen);
+  useEffect(() => {
+    setIsModalOpen(true);
+  }, [modaleOpen]);
   const [temp, setTemp] = useState();
   const isFocuse = useIsFocused();
 
@@ -197,10 +205,19 @@ const OfferList = () => {
       navigation,
     });
   };
+  const handleWishList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Get_wishListProduct_Request',
+      url: '/wishListProduct',
+      user_id: user_id,
+      navigation,
+    });
+  };
   return (
     <View style={{flex: 1}}>
       <StatusBar />
-      {fetching || isFetching ? <Loader /> : null}
+      {fetching || isFetching || isFetching2 ? <Loader /> : null}
       <View
         style={{
           backgroundColor: '#032e63',
@@ -231,18 +248,22 @@ const OfferList = () => {
           </Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
-            style={{height: 24, width: 28}}
-            source={require('../../../assets/Fo.png')}
-          />
-          <Image
-            style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
-            source={require('../../../assets/Image/dil.png')}
-          />
-          <Image
+          <TouchableOpacity onPress={() => navigation.navigate('Message')}>
+            <Image
+              style={{height: 24, width: 28}}
+              source={require('../../../assets/Fo.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleWishList()}>
+            <Image
+              style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
+              source={require('../../../assets/Image/dil.png')}
+            />
+          </TouchableOpacity>
+          {/* <Image
             style={{height: 24, width: 28, tintColor: '#fff', marginLeft: 15}}
             source={require('../../../assets/supplierImage/more.png')}
-          />
+          /> */}
         </View>
       </View>
       <ScrollView>
@@ -395,6 +416,7 @@ const OfferList = () => {
               style={{marginTop: 10}}
               renderItem={({item}) => (
                 <View style={styles.some}>
+                  {console.log('this item', item)}
                   <Image
                     source={{
                       uri: `https://olocker.co${OfferListData?.ImageUrl}${item.ImageName}`,
@@ -418,6 +440,7 @@ const OfferList = () => {
                       <MaterialCommunityIcons
                         name="pencil"
                         size={wp(5.5)}
+                        color="grey"
                         onPress={() =>
                           // navigation.navigate('AddOffer', {item, isEdit: true})
                           getOfferDetails(item)
@@ -428,6 +451,7 @@ const OfferList = () => {
                           deleteOffer(item);
                         }}
                         name="delete"
+                        color="grey"
                         size={wp(5.5)}
                       />
                     </View>
@@ -437,7 +461,7 @@ const OfferList = () => {
                           fontSize: wp(4),
                           color: 'black',
                           fontWeight: '600',
-                          width: wp(25),
+                          width: wp(30),
                         }}>
                         Offer Type
                       </Text>
@@ -467,7 +491,7 @@ const OfferList = () => {
                           fontSize: wp(4),
                           color: 'black',
                           fontWeight: '600',
-                          width: wp(25),
+                          width: wp(30),
                         }}>
                         StartDate
                       </Text>
@@ -495,7 +519,7 @@ const OfferList = () => {
                           fontSize: wp(4),
                           color: 'black',
                           fontWeight: '600',
-                          width: wp(25),
+                          width: wp(30),
                         }}>
                         EndDate
                       </Text>
@@ -523,9 +547,15 @@ const OfferList = () => {
                           fontSize: wp(4),
                           color: 'black',
                           fontWeight: '600',
-                          width: wp(25),
+                          width: wp(30),
                         }}>
-                        DiscountPer
+                        {parseFloat(item?.DiscountAmt) > 0
+                          ? 'DiscountAmt'
+                          : parseFloat(item?.DiscountPer)
+                          ? 'DiscountPer'
+                          : parseInt(item.DiscountQty) > 0
+                          ? 'DiscountQty'
+                          : 'DealDescription'}
                       </Text>
                       <Text
                         style={{
@@ -541,11 +571,18 @@ const OfferList = () => {
                           fontSize: wp(4),
                           color: 'grey',
                           fontWeight: '600',
+                          textAlign: 'center',
                         }}>
-                        {item?.DiscountPer}
+                        {parseFloat(item?.DiscountAmt) > 0
+                          ? item?.DiscountAmt
+                          : parseFloat(item?.DiscountPer)
+                          ? item?.DiscountPer
+                          : parseInt(item.DiscountQty) > 0
+                          ? item.DiscountQty
+                          : item?.DealDescription}
                       </Text>
                     </View>
-                    <View style={{flexDirection: 'row', marginTop: wp(1)}}>
+                    {/* <View style={{flexDirection: 'row', marginTop: wp(1)}}>
                       <Text
                         style={{
                           fontSize: wp(4),
@@ -572,14 +609,14 @@ const OfferList = () => {
                         }}>
                         {item?.DiscountAmt}
                       </Text>
-                    </View>
+                    </View> */}
                     <View style={{flexDirection: 'row', marginTop: wp(1)}}>
                       <Text
                         style={{
                           fontSize: wp(4),
                           color: 'black',
                           fontWeight: '600',
-                          width: wp(25),
+                          width: wp(30),
                         }}>
                         DealType
                       </Text>
@@ -601,12 +638,311 @@ const OfferList = () => {
                         {item?.DealType ? item.DealType?.substring(0, 30) : ''}
                       </Text>
                     </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        width: '65%',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                      }}>
+                      <TouchableOpacity style={styles.cardbtn}>
+                        <Text
+                          style={{
+                            fontSize: wp(4.5),
+                            fontWeight: '600',
+                            color: 'black',
+                          }}>
+                          View
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={[styles.cardbtn, {backgroundColor: '#fd3550'}]}>
+                        <Text
+                          style={{
+                            fontSize: wp(4.5),
+                            fontWeight: '600',
+                            color: 'black',
+                          }}>
+                          Add
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               )}
             />
           </View>
         </View>
+
+        <Modal transparent={true} visible={false}>
+          {false ? (
+            <>
+              <TouchableOpacity
+                onPress={() => setProductModal(false)}
+                style={{
+                  position: 'absolute',
+                  height: hp(6),
+                  width: hp(6),
+                  backgroundColor: '#032e63',
+                  right: wp(10),
+                  top: 12,
+                  zIndex: 1,
+                  borderRadius: hp(6 / 2),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontSize: wp(5.5),
+                    fontWeight: 'bold',
+                    color: 'white',
+                  }}>
+                  X
+                </Text>
+              </TouchableOpacity>
+              <ScrollView contentContainerStyle={{paddingBottom: wp(4)}}>
+                <View style={{flex: 1, width: wp(100)}}>
+                  <FlatList
+                    data={offerProudctList}
+                    renderItem={({item}) => (
+                      <View style={styles.Card}>
+                        <View style={{marginHorizontal: 10, marginTop: 5}}>
+                          <CheckBox
+                            value={
+                              inputs.hdnselectedvalue.includes(item.SrNo)
+                                ? true
+                                : false
+                            }
+                            onChange={() => {
+                              if (
+                                inputs.hdnselectedvalue.includes(item?.SrNo)
+                              ) {
+                                let newee = hdnselectedvalue.filter(
+                                  items => items != item.SrNo,
+                                );
+                                setInputs(prev => ({
+                                  ...prev,
+                                  hdnselectedvalue: newee,
+                                }));
+                              } else {
+                                setInputs(prev => ({
+                                  ...prev,
+                                  hdnselectedvalue: [
+                                    ...inputs.hdnselectedvalue,
+                                    item.SrNo,
+                                  ],
+                                }));
+                              }
+                            }}
+                          />
+                        </View>
+                        <View style={{padding: 7}}>
+                          <Image
+                            style={{height: hp(20), width: '100%'}}
+                            source={{
+                              uri: `https://olocker.co/uploads/product/${item?.ImageName}`,
+                            }}
+                          />
+                        </View>
+                        <View style={{paddingHorizontal: 20}}>
+                          <Text
+                            style={{
+                              fontSize: wp(4),
+                              fontWeight: '700',
+                              marginTop: 10,
+                              color: '#000',
+                            }}>
+                            Gross Wt:-{' '}
+                            <Text
+                              style={{
+                                fontSize: wp(4),
+                                fontWeight: '700',
+                                color: '#707371',
+                              }}>
+                              {item.GrossWt}
+                            </Text>
+                          </Text>
+
+                          <Text
+                            style={{
+                              fontSize: wp(4),
+                              fontWeight: '700',
+                              marginTop: 3,
+                              color: '#000',
+                            }}>
+                            Metal Wt:-{' '}
+                            <Text
+                              style={{
+                                fontSize: wp(4),
+                                fontWeight: '700',
+                                color: '#707371',
+                              }}>
+                              {item?.MetalWt}
+                            </Text>
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: wp(4),
+                              fontWeight: '600',
+                              marginTop: 3,
+                              color: '#000',
+                            }}>
+                            Unit of MetalWt:-{' '}
+                            <Text
+                              style={{
+                                fontSize: wp(4),
+                                fontWeight: '700',
+                                color: '#707371',
+                              }}>
+                              {item.UnitMetalWt}
+                            </Text>
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: wp(4),
+                              fontWeight: '600',
+                              marginTop: 3,
+                              color: '#000',
+                            }}>
+                            Stone Wt:-{' '}
+                            <Text
+                              style={{
+                                fontSize: wp(4),
+                                fontWeight: '700',
+                                color: '#707371',
+                              }}>
+                              {item.StoneWt}
+                            </Text>
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: wp(4),
+                              fontWeight: '600',
+                              marginTop: 3,
+                              color: '#000',
+                            }}>
+                            Price:-{' '}
+                            <Text
+                              style={{
+                                fontSize: wp(4),
+                                fontWeight: '700',
+                                color: '#707371',
+                              }}>
+                              ₹{item.Price}
+                            </Text>
+                          </Text>
+
+                          <View
+                            style={{
+                              alignItems: 'center',
+                              flexDirection: 'row',
+                              marginTop: 3,
+                            }}>
+                            <Text
+                              style={{
+                                fontSize: wp(4),
+                                fontWeight: '600',
+                                color: '#000',
+                              }}>
+                              Product Name:-{' '}
+                            </Text>
+                            <View>
+                              <Text
+                                style={{
+                                  fontSize: wp(4),
+                                  fontWeight: '600',
+
+                                  color: '#707371',
+                                }}>
+                                {item?.ItemName}
+                              </Text>
+                            </View>
+                          </View>
+                          <Text
+                            style={{
+                              fontSize: wp(4),
+                              fontWeight: '600',
+                              marginTop: 3,
+                              color: '#000',
+                            }}>
+                            ProductsSku:-{' '}
+                            <Text
+                              style={{
+                                fontSize: wp(4),
+                                fontWeight: '700',
+                                color: '#707371',
+                              }}>
+                              {item.ProductSku}
+                            </Text>
+                          </Text>
+
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              marginTop: 3,
+                              alignItems: 'center',
+                            }}>
+                            <View style={{}}>
+                              <Text
+                                style={{
+                                  fontSize: wp(4),
+                                  fontWeight: '600',
+                                  color: '#000',
+                                }}>
+                                Collection Name:
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+
+                                width: '58%',
+                              }}>
+                              <Text
+                                style={{
+                                  fontSize: wp(4),
+                                  fontWeight: '700',
+                                  color: '#707371',
+                                }}>
+                                {item?.Name}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                      </View>
+                    )}
+                  />
+                </View>
+
+                <View style={{alignItems: 'center'}}>
+                  <FlatList
+                    data={data}
+                    horizontal
+                    renderItem={({item}) => (
+                      <TouchableOpacity
+                        onPress={() => {
+                          handlePage(item.num);
+                        }}
+                        style={styles.circleBtn}>
+                        <Text
+                          style={{
+                            fontWeight: '800',
+                            fontSize: 18,
+                            color: '#fff',
+                          }}>
+                          {item.num}
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                </View>
+              </ScrollView>
+            </>
+          ) : null}
+        </Modal>
         <View style={{height: 50}} />
       </ScrollView>
     </View>
