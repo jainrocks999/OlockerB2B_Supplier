@@ -37,21 +37,17 @@ const OfferList = () => {
   const [template, setTemplate] = useState('');
   const [description, setDescription] = useState('');
   const OfferListData = useSelector(state => state.Offer.OfferListData);
-
   const isFetching = useSelector(state => state.Offer.isFetching);
   const isFetching2 = useSelector(state => state.Auth.isFetching);
   const modaleOpen = useSelector(state => state.Offer.modaleOpen);
-  const previtem = useSelector(state => state.Offer.offerDetail);
-  const [isModalOpen, setIsModalOpen] = useState(modaleOpen);
+  const detaildata = useSelector(state => state.Offer.offerDetail);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
   useEffect(() => {
-    setIsModalOpen(true);
+    isClicked ? setIsModalOpen(true) : null;
   }, [modaleOpen]);
-  const [temp, setTemp] = useState();
-  const isFocuse = useIsFocused();
 
-  // useEffect(() => {
-  //   handleOfferList();
-  // }, [isFocuse]);
+  const [temp, setTemp] = useState();
 
   const addTemp = async item => {
     const Token = await AsyncStorage.getItem('loginToken');
@@ -139,14 +135,7 @@ const OfferList = () => {
   //     navigation,
   //   });
   // };
-  const getSomedata = id => {
-    let obj = {};
-    OfferListData?.offertemplate?.map(item => {
-      item?.Id == id ? (obj = item) : '';
-    });
 
-    return obj;
-  };
   const deleteOffer = item => {
     dispatch({
       type: 'remove_offer_list_request',
@@ -194,16 +183,18 @@ const OfferList = () => {
         // console.log(error);
       });
   };
-  const getOfferDetails = async item => {
+  const getOfferDetails = async (item, op) => {
     const userId = await AsyncStorage.getItem('user_id');
     dispatch({
       type: 'offer_details_request',
       url: 'getOfferDetails',
       userId,
       offerId: item?.Id,
-      op: 'edit',
+      op: op,
       navigation,
+      some: !modaleOpen,
     });
+    setIsClicked(true);
   };
   const handleWishList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
@@ -214,6 +205,9 @@ const OfferList = () => {
       navigation,
     });
   };
+
+  console.log('this is prevdata', JSON.stringify(detaildata));
+
   return (
     <View style={{flex: 1}}>
       <StatusBar />
@@ -240,7 +234,7 @@ const OfferList = () => {
           <Text
             style={{
               color: '#fff',
-              fontSize: 16,
+              fontSize: 18,
               fontFamily: 'Roboto-Medium',
               marginLeft: 14,
             }}>
@@ -265,6 +259,208 @@ const OfferList = () => {
             source={require('../../../assets/supplierImage/more.png')}
           /> */}
         </View>
+        <Modal visible={isModalOpen} transparent>
+          <View style={{flex: 1}}>
+            <View
+              style={{
+                height: '95%',
+                width: '97%',
+                backgroundColor: 'white',
+                alignSelf: 'center',
+                elevation: 2,
+                borderRadius: 9,
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsModalOpen(false);
+                  setIsClicked(false);
+                }}
+                style={{
+                  position: 'absolute',
+                  height: hp(5),
+                  width: hp(5),
+                  borderRadius: hp(10),
+                  backgroundColor: '#032e63',
+                  alignItems: 'center',
+                  right: wp(6),
+                  top: wp(3),
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontSize: wp(5),
+                    fontWeight: 'bold',
+                    color: 'white',
+                  }}>
+                  X
+                </Text>
+              </TouchableOpacity>
+              <Text
+                style={{
+                  alignSelf: 'center',
+                  marginTop: '3%',
+                  fontWeight: '800',
+                  fontSize: wp(5),
+                  color: 'black',
+                }}>
+                Proudcts
+              </Text>
+              <View style={{marginTop: '10%'}}>
+                {detaildata?.offerProductList?.length > 0 ? (
+                  <FlatList
+                    data={detaildata?.offerProductList}
+                    renderItem={({item, index}) => (
+                      <View
+                        style={[
+                          styles.some,
+                          {
+                            width: '95%',
+                            alignSelf: 'center',
+                            marginVertical: 1,
+                          },
+                        ]}>
+                        <Image
+                          style={{
+                            height: hp(25),
+                            width: '90%',
+                            alignSelf: 'center',
+                            borderRadius: 9,
+                            marginTop: wp(1),
+                          }}
+                          source={{
+                            uri: `https://olocker.co${item?.ImageUrl}${item?.ImageName}`,
+                          }}
+                        />
+                        <View
+                          style={{
+                            marginTop: hp(2),
+                            marginLeft: wp(10),
+                          }}>
+                          <View style={{flexDirection: 'row', width: '100%'}}>
+                            <Text style={[styles.txt, {width: wp(32)}]}>
+                              Product name
+                            </Text>
+                            <Text
+                              style={[styles.txt, {width: 25, color: 'grey'}]}>
+                              :
+                            </Text>
+                            <Text style={[styles.txt, {color: 'grey'}]}>
+                              {item?.ItemName}
+                            </Text>
+                          </View>
+                          <View style={{flexDirection: 'row', width: '100%'}}>
+                            <Text style={[styles.txt, {width: wp(32)}]}>
+                              ProductSKU
+                            </Text>
+                            <Text
+                              style={[styles.txt, {width: 25, color: 'grey'}]}>
+                              :
+                            </Text>
+                            <Text style={[styles.txt, {color: 'grey'}]}>
+                              {item?.ProductSku}
+                            </Text>
+                          </View>
+                          <View style={{flexDirection: 'row', width: '100%'}}>
+                            <Text style={[styles.txt, {width: wp(32)}]}>
+                              Gross Wt
+                            </Text>
+                            <Text
+                              style={[styles.txt, {width: 25, color: 'grey'}]}>
+                              :
+                            </Text>
+                            <Text style={[styles.txt, {color: 'grey'}]}>
+                              {item?.GrossWt}
+                            </Text>
+                          </View>
+                          <View style={{flexDirection: 'row', width: '100%'}}>
+                            <Text style={[styles.txt, {width: wp(32)}]}>
+                              Metal Wt.
+                            </Text>
+                            <Text
+                              style={[styles.txt, {width: 25, color: 'grey'}]}>
+                              :
+                            </Text>
+                            <Text style={[styles.txt, {color: 'grey'}]}>
+                              {item?.MetalWt != null
+                                ? item?.MetalWt + item?.UnitMetalWt != null
+                                  ? item?.UnitMetalWt
+                                  : ''
+                                : ''}
+                            </Text>
+                          </View>
+                          <View style={{flexDirection: 'row', width: '100%'}}>
+                            <Text style={[styles.txt, {width: wp(32)}]}>
+                              Stone Wt.
+                            </Text>
+                            <Text
+                              style={[styles.txt, {width: 25, color: 'grey'}]}>
+                              :
+                            </Text>
+                            <Text style={[styles.txt, {color: 'grey'}]}>
+                              {item?.StoneWt != null
+                                ? item?.StoneWt + item?.UnitStoneWt != null
+                                  ? item?.UnitStoneWt
+                                  : ''
+                                : ''}
+                            </Text>
+                          </View>
+                          <View style={{flexDirection: 'row', width: '100%'}}>
+                            <Text style={[styles.txt, {width: wp(32)}]}>
+                              Price
+                            </Text>
+                            <Text
+                              style={[styles.txt, {width: 25, color: 'grey'}]}>
+                              :
+                            </Text>
+                            <Text style={[styles.txt, {color: 'grey'}]}>
+                              {'₹' + item?.ProductsPrice}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              width: '100%',
+                              marginLeft: wp(-10),
+                            }}>
+                            <TouchableOpacity style={styles.productbtn}>
+                              <Text style={[styles.txt, {color: 'white'}]}>
+                                View
+                              </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                              style={[
+                                styles.productbtn,
+                                {backgroundColor: '#fd3550'},
+                              ]}>
+                              <Text style={[styles.txt, {color: 'white'}]}>
+                                Delete
+                              </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.productbtn}>
+                              <Text style={[styles.txt, {color: 'white'}]}>
+                                Send Message
+                              </Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </View>
+                    )}
+                  />
+                ) : (
+                  <Text
+                    style={{
+                      alignSelf: 'center',
+                      fontSize: wp(5),
+                      fontWeight: '700',
+                      color: 'black',
+                    }}>
+                    Oops no data found!!
+                  </Text>
+                )}
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
       <ScrollView>
         <View style={{paddingHorizontal: 12, marginTop: 10}}>
@@ -416,7 +612,6 @@ const OfferList = () => {
               style={{marginTop: 10}}
               renderItem={({item}) => (
                 <View style={styles.some}>
-                  {console.log('this item', item)}
                   <Image
                     source={{
                       uri: `https://olocker.co${OfferListData?.ImageUrl}${item.ImageName}`,
@@ -443,7 +638,7 @@ const OfferList = () => {
                         color="grey"
                         onPress={() =>
                           // navigation.navigate('AddOffer', {item, isEdit: true})
-                          getOfferDetails(item)
+                          getOfferDetails(item, 'edit')
                         }
                       />
                       <MaterialCommunityIcons
@@ -646,7 +841,9 @@ const OfferList = () => {
                         alignItems: 'center',
                         alignSelf: 'center',
                       }}>
-                      <TouchableOpacity style={styles.cardbtn}>
+                      <TouchableOpacity
+                        onPress={() => getOfferDetails(item, 'view')}
+                        style={styles.cardbtn}>
                         <Text
                           style={{
                             fontSize: wp(4.5),
@@ -675,7 +872,7 @@ const OfferList = () => {
           </View>
         </View>
 
-        <Modal transparent={true} visible={false}>
+        {/* <Modal transparent={true} visible={false}>
           {false ? (
             <>
               <TouchableOpacity
@@ -942,7 +1139,7 @@ const OfferList = () => {
               </ScrollView>
             </>
           ) : null}
-        </Modal>
+        </Modal> */}
         <View style={{height: 50}} />
       </ScrollView>
     </View>

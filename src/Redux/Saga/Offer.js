@@ -218,11 +218,13 @@ function* getOfferDetails(action) {
         });
         action.navigation.navigate('AddOffer', {isEdit: false});
       } else {
-        yield pit({
+        console.log('this is called form my side');
+        yield put({
           type: 'offer_edit_modal_open',
-          payload2: true,
+          payload2: action.some,
           payload1: false,
         });
+        //action.navigation.navigate('OfferDetails', {isEdit: false});
       }
     } else {
       yield put({

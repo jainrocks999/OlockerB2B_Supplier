@@ -33,4 +33,19 @@ export default StyleSheet.create({
     justifyContent: 'center',
     borderRadius: wp(1),
   },
+  txt: {
+    fontSize: wp(4.5),
+    fontWeight: '600',
+    color: 'black',
+  },
+  productbtn: {
+    backgroundColor: '#008cff',
+    marginHorizontal: wp(4),
+    marginTop: 10,
+    paddingHorizontal: wp(2),
+    paddingVertical: wp(1),
+    borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
