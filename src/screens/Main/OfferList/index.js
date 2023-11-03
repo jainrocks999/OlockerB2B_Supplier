@@ -29,6 +29,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import OfferProductModal from '../AddOffer/offerProductModal';
 
 const OfferList = () => {
   const navigation = useNavigation();
@@ -41,8 +42,10 @@ const OfferList = () => {
   const isFetching2 = useSelector(state => state.Auth.isFetching);
   const modaleOpen = useSelector(state => state.Offer.modaleOpen);
   const detaildata = useSelector(state => state.Offer.offerDetail);
+  const modal = useSelector(state => state.Offer.modal);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  const [prevModal, setPrevModal] = useState(false);
   useEffect(() => {
     isClicked ? setIsModalOpen(true) : null;
   }, [modaleOpen]);
@@ -196,6 +199,11 @@ const OfferList = () => {
     });
     setIsClicked(true);
   };
+  const [inputs, setInputs] = useState({
+    productId: [],
+    offerId: '',
+  });
+  const [offerid, setOfferId] = useState('');
   const handleWishList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
@@ -205,12 +213,38 @@ const OfferList = () => {
       navigation,
     });
   };
-
-  console.log('this is prevdata', JSON.stringify(detaildata));
+  console.log('this is madal', modal);
+  useEffect(() => {
+    modal ? setPrevModal(true) : setPrevModal(false);
+  }, [modal]);
+  const offerProductList = async item => {
+    setOfferId(item?.Id);
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'getOfferProductList_request',
+      userId: user_id,
+      url: 'getOfferProductList',
+      start: 0,
+      limit: 10,
+      modal: true,
+    });
+  };
+  const datafromChild = data => {
+    setInputs(prev => ({
+      ...prev,
+      productId: data,
+    }));
+  };
 
   return (
     <View style={{flex: 1}}>
       <StatusBar />
+      <OfferProductModal
+        prevModal={prevModal}
+        snedDataToparent={datafromChild}
+        isformList={true}
+        offerId={offerid}
+      />
       {fetching || isFetching || isFetching2 ? <Loader /> : null}
       <View
         style={{
@@ -854,6 +888,9 @@ const OfferList = () => {
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
+                        onPress={() => {
+                          offerProductList(item);
+                        }}
                         style={[styles.cardbtn, {backgroundColor: '#fd3550'}]}>
                         <Text
                           style={{

@@ -65,17 +65,17 @@ const MessageBox2 = () => {
               style={{marginLeft: 15}}
               onPress={() => handleWishList()}>
               <Image
-                style={styles.img2}
+                style={[styles.img2, {marginRight: wp(3)}]}
                 source={require('../../../assets/Image/dil.png')}
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => Logout()}>
+            {/* <TouchableOpacity onPress={() => Logout()}>
               <Image
                 style={styles.img3}
                 resizeMode="contain"
                 source={require('../../../assets/Image/menu-icon.png')}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
 

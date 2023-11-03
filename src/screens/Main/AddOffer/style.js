@@ -166,4 +166,28 @@ export default StyleSheet.create({
   txt: {
     color: '#fff',
   },
+  cardbtn: {
+    height: hp(4.5),
+    width: wp(20),
+    //borderWidth: 1,
+    marginTop: 15,
+    backgroundColor: '#0dcaf0',
+    shadowColor: 'black',
+    shadowOpacity: 10,
+    shadowRadius: 10,
+    shadowOffset: {height: 6, width: 6},
+    elevation: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: wp(1),
+  },
+  img1: {
+    height: 20,
+    width: 25,
+  },
+  img2: {
+    height: 22,
+    width: 26,
+    tintColor: '#fff',
+  },
 });

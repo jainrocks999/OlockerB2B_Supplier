@@ -1,4 +1,3 @@
-
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -31,7 +30,6 @@ let showroomImage = [];
 let supplierLogo = '';
 let ownerImage = [];
 let goldSpecilization = [];
-2
 
 const PatnerProfile = ({route}) => {
   const navigation = useNavigation();
@@ -228,17 +226,14 @@ const PatnerProfile = ({route}) => {
           </View>
           <View
             style={{
-             
-           
               marginTop: 10,
-              alignSelf:'flex-end',
-              flexDirection:'row',
-              width:'62%'
+              alignSelf: 'flex-end',
+              flexDirection: 'row',
+              width: '62%',
             }}>
-           
             <TouchableOpacity
               // onPress={()=>addToNetwork()}
-              onPress={() => { }}
+              onPress={() => {}}
               style={{
                 backgroundColor: '#ea056c',
                 paddingHorizontal: 20,

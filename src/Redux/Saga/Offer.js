@@ -77,7 +77,7 @@ function* offerListData(action) {
         action.navigation.pop(1);
       } else if (action.page == 'delete') {
       } else {
-        action.navigation.navigate('OfferList');
+        action?.navigation?.navigate('OfferList');
       }
     } else {
       yield put({
@@ -126,16 +126,22 @@ function* getOfferProductList(action) {
         type: 'getOfferProductList_success',
         payload: res.data,
       });
+      yield put({
+        type: 'offfer_product_modal',
+        modal: action.modal,
+      });
     } else {
       yield put({
         type: 'getOfferProductList_error',
       });
     }
+    Toast.show(res.msg);
   } catch (error) {
     console.log('this is erro', error);
     yield put({
       type: 'getOfferProductList_error',
     });
+    Toast.show('Something went wrong');
   }
 }
 function* createOffer(action) {
@@ -240,6 +246,39 @@ function* getOfferDetails(action) {
     console.log(err);
   }
 }
+function* addPorudctOffer(action) {
+  try {
+    const user_id = yield AsyncStorage.getItem('user_id');
+    console.log('this is action', JSON.stringify(action.data));
+    const res = yield call(Api.fetchDataByPOST, action.url, action.data);
+
+    if (res.status) {
+      yield put({
+        type: 'add_product_offer_success',
+      });
+      yield put({
+        type: 'Offer_List_Request',
+        url: '/getOfferList',
+        userid: user_id,
+        navigation: action?.navigation,
+        page: 'pta nhi',
+      });
+      yield put({
+        type: 'offfer_product_modal',
+        modal: false,
+      });
+    } else {
+      yield put({
+        type: 'add_product_offer_error',
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'add_product_offer_error',
+    });
+    console.log('this is error', error);
+  }
+}
 export default function* citySaga() {
   yield takeEvery('Template_Detail_Request', offerList);
   yield takeEvery('Add_Offer_Request', offerTempList);
@@ -249,4 +288,5 @@ export default function* citySaga() {
   yield takeEvery('createOffer_request', createOffer);
   yield takeEvery('remove_offer_list_request', removeOffer);
   yield takeEvery('offer_details_request', getOfferDetails);
+  yield takeEvery('add_product_offer_request', addPorudctOffer);
 }

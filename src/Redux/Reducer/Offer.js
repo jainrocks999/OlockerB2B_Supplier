@@ -8,6 +8,7 @@ initialstate = {
   offerDetail: {},
   isEdit: false,
   modaleOpen: false,
+  modal: false,
 };
 export default (state = initialstate, action) => {
   switch (action.type) {
@@ -62,7 +63,14 @@ export default (state = initialstate, action) => {
     case 'offer_edit_modal_open': {
       return {...state, isEdit: action.payload1, modaleOpen: action.payload2};
     }
-
+    case 'add_product_offer_request':
+      return {...state, isFetching: true};
+    case 'add_product_offer_success':
+      return {...state, isFetching: false};
+    case 'add_product_offer_error':
+      return {...state, isFetching: false};
+    case 'offfer_product_modal':
+      return {...state, modal: action.modal};
     default:
       return state;
   }

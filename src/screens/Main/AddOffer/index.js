@@ -43,30 +43,21 @@ const AddOffer = ({route}) => {
   });
   const previtem = useSelector(state => state.Offer.offerDetail);
   const isEdit = useSelector(state => state.Offer.isEdit);
-  //console.log('this is previtem', JSON.stringify(previtem));
-  // offerDetail  isEdit
-  const focused = useIsFocused();
-
   const [fetching, setFetching] = useState(false);
   const dispatch = useDispatch();
   const selector = useSelector(state => state.Offer.OfferTempList);
   const isFetching = useSelector(state => state.Offer.isFetching);
   const offerTypeList = useSelector(state => state.Offer.offerTypeList);
+  const modal = useSelector(state => state.Offer.modal);
   const isFetching2 = useSelector(state => state.Auth.isFetching);
 
   useEffect(() => {
     getOffertypeList();
   }, []);
-  const manageOfferList = async () => {
-    const user_id = await AsyncStorage.getItem('user_id');
+  // const manageOfferList = async () => {
+  //   const user_id = await AsyncStorage.getItem('user_id');
 
-    // dispatch({
-    //   type: 'Offer_List_Request',
-    //   url: '/getOfferList',
-    //   userid:user_id,
-    //   navigation
-    //  })
-  };
+  // };
   useEffect(() => {
     isEdit ? setUpdateData() : null;
   }, [previtem]);
@@ -98,18 +89,37 @@ const AddOffer = ({route}) => {
     setInputs(prev => ({...prev, hdnselectedvalue: newarr}));
   };
 
-  const [inputs, setInputs] = useState({
+  const [inputs, setInputs] = useState(prev => ({
+    ...prev,
     ddloffertemplate: '',
     dealtype: '',
     txtdiscountper: '',
     hdnselectedvalue: [],
-    StartDate: new Date(),
-    EndDate: new Date(),
+    // StartDate: new Date(),
+    // EndDate: new Date(),
     txtdiscountamount: '',
     txtquantity: '',
     txtdealdescription: '',
     ImageName: '',
-  });
+  }));
+  const resetData = () => {
+    setInputs({
+      ddloffertemplate: '',
+      dealtype: '',
+      txtdiscountper: '',
+      hdnselectedvalue: [],
+      StartDate: new Date(),
+      EndDate: new Date(),
+      txtdiscountamount: '',
+      txtquantity: '',
+      txtdealdescription: '',
+      ImageName: '',
+    });
+    setShow({
+      show1: false,
+      show2: false,
+    });
+  };
   const [visible, setVisble] = useState({
     one: false,
     two: false,
@@ -282,6 +292,9 @@ const AddOffer = ({route}) => {
   };
   const [start, setStart] = useState(new Date());
   const [end, setEnd] = useState(new Date());
+  useEffect(() => {
+    setPrevModal(modal);
+  }, [modal]);
   const offerProductList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
@@ -290,9 +303,8 @@ const AddOffer = ({route}) => {
       url: 'getOfferProductList',
       start: startpage,
       limit: endpage,
+      modal: true,
     });
-    setPrevModal(true);
-    console.log('this is namepage', startpage, endpage);
   };
   const handleWishList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
@@ -777,6 +789,9 @@ const AddOffer = ({route}) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => {
+              resetData();
+            }}
             style={{
               backgroundColor: '#032e63',
               borderRadius: wp(5),

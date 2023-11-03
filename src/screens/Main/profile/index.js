@@ -90,7 +90,7 @@ const Notification = () => {
             margin: 10,
             flexDirection: 'row',
             alignItems: 'center',
-            paddingHorizontal:20
+            paddingHorizontal: 20,
           }}>
           <View
             style={{borderWidth: 2, height: 120, width: 120, borderRadius: 60}}>
@@ -102,8 +102,13 @@ const Notification = () => {
               style={{height: '100%', width: '100%'}}
             />
           </View>
-          <View style={{marginLeft: 20,alignItems:'center',justifyContent:'center'}}>
-            <View style={{marginLeft: 20,justifyContent:'center'}}>
+          <View
+            style={{
+              marginLeft: 20,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <View style={{marginLeft: 20, justifyContent: 'center'}}>
               <Text style={{fontSize: 22, fontWeight: '900', color: '#032e63'}}>
                 Lorem ipusm
               </Text>
@@ -117,8 +122,8 @@ const Notification = () => {
                 backgroundColor: '#032e63',
                 height: 35,
                 borderRadius: 30,
-                marginTop:15,
-               marginLeft:20
+                marginTop: 15,
+                marginLeft: 20,
               }}>
               <Text style={{fontSize: 18, color: 'white', alignSelf: 'center'}}>
                 Edit Profile

@@ -172,7 +172,7 @@ function Bottom() {
           },
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="FavouriteList"
         component={FavouriteList}
         options={{
@@ -190,7 +190,7 @@ function Bottom() {
             );
           },
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Message1"
         component={ChatStack}

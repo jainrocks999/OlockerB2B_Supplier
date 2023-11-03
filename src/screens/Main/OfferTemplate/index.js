@@ -136,6 +136,15 @@ const OfferTemplate = () => {
       navigation,
     });
   };
+  const handleWishList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Get_wishListProduct_Request',
+      url: '/wishListProduct',
+      user_id: user_id,
+      navigation,
+    });
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -171,14 +180,20 @@ const OfferTemplate = () => {
           </Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
-            style={{height: 24, width: 28}}
-            source={require('../../../assets/Fo.png')}
-          />
-          <Image
-            style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
-            source={require('../../../assets/Image/dil.png')}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate('Message')}>
+            <Image
+              style={styles.img1}
+              source={require('../../../assets/Fo.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{marginLeft: 15}}
+            onPress={() => handleWishList()}>
+            <Image
+              style={styles.img2}
+              source={require('../../../assets/Image/dil.png')}
+            />
+          </TouchableOpacity>
           {/* <Image
             style={{height: 24, width: 28, tintColor: '#fff', marginLeft: 15}}
             source={require('../../../assets/supplierImage/more.png')}
@@ -317,7 +332,7 @@ const OfferTemplate = () => {
                 borderStyle: 'dashed',
                 borderColor: '#030303',
               }}>
-              Add Template Detail
+              Offer Templates
             </Text>
           </View>
           <FlatList
