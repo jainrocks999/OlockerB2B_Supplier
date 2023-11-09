@@ -1,0 +1,87 @@
+(
+    [SrNo] => 13
+    [SupplierName] => supplierTest
+    [ContactPersonName] => abhi 
+    [MobileNo] => 7049419271
+    [Address] => indore
+    [StateId] => 1645
+    [CityId] => 21411
+    [Pincode] => 452001
+    [Website] => https://olocker.co/supplier/public/editProfile
+    [SupplierType] => 3
+    [IsAnyBranch] => on
+    [JTyped] => Diamond
+    [JTypeg] => Gold
+    [diamond_purity] => Array
+        (
+            [0] => I-FG
+        )
+
+    [diamondcustom_purity] => 
+    [diamond_specialisation] => Array
+        (
+            [0] => 3
+        )
+
+    [gold_purity] => Array
+        (
+            [0] => 565
+        )
+
+    [goldcustom_purity] => 
+    [gold_specialisation] => Array
+        (
+            [0] => 6
+        )
+
+    [platinumcustom_purity] => 
+    [silvercustom_purity] => 
+    [DiamondQuality] => 2.25
+    [EmailId] => tested@gmail.com
+    [IsActive] => on
+    [IsDefaultSupplier] => on
+    [product_name1] => Test product
+    [hiddenproduct_image1] => undefined
+    [hiddenproduct_id1] => 407
+    [product_name2] => Test product two
+    [hiddenproduct_image2] => undefined
+    [hiddenproduct_id2] => 408
+    [product_name3] => Test product three
+    [hiddenproduct_image3] => undefined
+    [hiddenproduct_id3] => 409
+    [product_name4] => har
+    [hiddenproduct_image4] => 
+    [hiddenproduct_id4] => 428
+    [product_name5] => har two
+    [hiddenproduct_image5] => 
+    [hiddenproduct_id5] => 429
+    [product_name6] => har three
+    [hiddenproduct_image6] => 
+    [hiddenproduct_id6] => 430
+    [aboutus] => indore
+    [NoofEmployee] => 1
+    [owner_name1] => Owner Name First
+    [owner_description1] => First owner name 1
+    [hiddenowner_image1] => 1681726350_8a7f7578010a9145e579.jpg
+    [hiddenowner_id1] => 411
+    [owner_name2] => Owner Name Second
+    [owner_description2] => Second owner description
+    [hiddenowner_image2] => 1681725612_4aecafb684d39fa760a6.jpg
+    [hiddenowner_id2] => 412
+    [`owner_name3`] => Owner Name  Thrid
+    [owner_description3] => Description for owner name  3
+    [hiddenowner_image3] => 1681725612_ed914bbda2624427e942.jpg
+    [hiddenowner_id3] => 413
+    [owner_name4] => First owner name 1
+    [owner_description4] => First owner name 11
+    [hiddenowner_image4] => 1676975010_3aef058a495364fbad9a.jpg
+    [hiddenowner_id4] => 434
+    [owner_name5] => First owner name 2
+    [owner_description5] => First owner name 22
+    [hiddenowner_image5] => 1676975010_40cfc5ba4c1ab4ea287a.jpg
+    [hiddenowner_id5] => 435
+    [owner_name6] => First owner name 13
+    [owner_description6] => First owner name 33
+    [hiddenowner_image6] => 1676975010_5df2b532319a3e4d3a67.jpg
+    [hiddenowner_id6] => 436
+)

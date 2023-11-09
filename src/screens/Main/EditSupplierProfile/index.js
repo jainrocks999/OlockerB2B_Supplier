@@ -12,161 +12,45 @@ import styles from './styles';
 import {RadioButton} from 'react-native-paper';
 import CheckBox from '@react-native-community/checkbox';
 import MultiSelect from 'react-native-multiple-select';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
 import {useDispatch, useSelector} from 'react-redux';
 import Loading from '../../../components/Loader';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Dropdown} from 'react-native-element-dropdown';
+import {Image} from 'react-native';
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
+import {FlatList} from 'react-native';
 let goldSpecilization = [];
 let diamondSpecilization = [];
 let silverSpecilization = [];
 let platinumSpecilization = [];
 const EditSupplierProfile = ({route}) => {
   const navigation = useNavigation();
+  const supplierProfile = useSelector(
+    state => state.Supplier?.SupplierDetail?.data,
+  );
+
   const details = route.params.selector.supplierdetails[0];
   const [fetching, setFetching] = useState(false);
-  const productImage = route.params.productImage;
-  const showroomImage = route.params.showroomImage;
-  const supplierLogo = route.params.supplierLogo;
-  const ownerImage = route.params.ownerImage;
-  // console.log('ownerName1,productImage',productImage,ownerImage);
-  const [supplierName, setSupplierName] = useState(details.SupplierName);
-  const [contactPerson, setContactPerson] = useState(details.ContactPersonName);
-  const [mobile, setMobile] = useState(details.MobileNo);
-  const [address, setAddress] = useState(details.Address);
-  const [state, setState] = useState(details.StateId);
-  const [city, setCity] = useState(details.CityId);
-  const [pincode, setPincode] = useState(details.Pincode);
-  const [website, setWesite] = useState(details.Website);
-  const [quality, setQuality] = useState(details.DiamondQuality);
-  const [manufacturer, setManufacturer] = useState(
-    details.SupplierType == 1 ? 'checked' : 'unchecked',
-  );
-  const [wholeSaler, setWholeSaler] = useState(
-    details.SupplierType == 2 ? 'checked' : 'unchecked',
-  );
-  const [both, setBoth] = useState(
-    details.SupplierType == 3 ? 'checked' : 'unchecked',
-  );
-  const [branch, setBranch] = useState(details.IsAnyBranch == 1 ? true : false);
-  const [gold, setGold] = useState(true);
-  const [diamond, setDiamond] = useState(false);
-  const [platinum, setPlatinum] = useState(false);
-  const [silver, setSilver] = useState(false);
-  const [selected, setSelected] = useState([]);
-  const [selected1, setSelected1] = useState([]);
-  const [selected2, setSelected2] = useState([]);
-  const [selected3, setSelected3] = useState([]);
-  const [selected4, setSelected4] = useState([]);
-  const [selected5, setSelected5] = useState([]);
-  const [selected6, setSelected6] = useState([]);
-  const [selected7, setSelected7] = useState([]);
-  const [isActive, setIsActive] = useState(
-    details.IsActive == 1 ? true : false,
-  );
-  const [isDefault, setIsDefault] = useState(
-    details.IsDefaultSupplier == null || details.IsDefaultSupplier == 0
-      ? false
-      : true,
-  );
-  const [logoName, setLogoName] = useState(supplierLogo);
-  const [logoUri, setLogoUri] = useState('');
-  const [logoType, setLogoType] = useState('');
-  const [productImage1, setProductImage1] = useState(
-    productImage.length > 0 ? productImage[0].ImageName : '',
-  );
-  const [productImage1Uri, setproductImage1Uri] = useState('');
-  const [productImage1Type, setproductImage1Type] = useState('');
-  const [productImage2, setProductImage2] = useState(
-    productImage.length > 1 ? productImage[1].ImageName : '',
-  );
-  const [productImage2Uri, setproductImage2Uri] = useState('');
-  const [productImage2Type, setproductImage2Type] = useState('');
-  const [productImage3, setProductImage3] = useState(
-    productImage.length > 2 ? productImage[2].ImageName : '',
-  );
-  const [productImage3Uri, setproductImage3Uri] = useState('');
-  const [productImage3Type, setproductImage3Type] = useState('');
-  const [productName1, setProductName1] = useState(
-    productImage.length > 0 ? productImage[0].OwnerName : '',
-  );
-  const [productName2, setProductName2] = useState(
-    productImage.length > 1 ? productImage[1].OwnerName : '',
-  );
-  const [productName3, setProductName3] = useState(
-    productImage.length > 2 ? productImage[2].OwnerName : '',
-  );
-  const [about, setAbout] = useState(details.SupplierIntroduction);
-  const [ten, setTen] = useState(
-    details.NoofEmployee == 1 ? 'checked' : 'unchecked',
-  );
-  const [elevan, setElevan] = useState(
-    details.NoofEmployee == 2 ? 'checked' : 'unchecked',
-  );
-  const [twentySix, setTwentySix] = useState(
-    details.NoofEmployee == 3 ? 'checked' : 'unchecked',
-  );
-  const [thirtySix, setThirtySix] = useState(
-    details.NoofEmployee == 4 ? 'checked' : 'unchecked',
-  );
-  const [fifty, setFifty] = useState(
-    details.NoofEmployee == 5 ? 'checked' : 'unchecked',
-  );
-  const [showroom1, setShowroom1] = useState(
-    showroomImage.length > 0 ? showroomImage[0].ImageName : '',
-  );
-  const [showroom1Uri, setshowroom1Uri] = useState('');
-  const [showroom1Type, setshowroom1Type] = useState('');
-  const [showroom2, setShowroom2] = useState(
-    showroomImage.length > 1 ? showroomImage[1].ImageName : '',
-  );
-  const [showroom2Uri, setshowroom2Uri] = useState('');
-  const [showroom2Type, setshowroom2Type] = useState('');
-  const [showroom3, setShowroom3] = useState(
-    showroomImage.length > 2 ? showroomImage[2].ImageName : '',
-  );
-  const [showroom3Uri, setshowroom3Uri] = useState('');
-  const [showroom3Type, setshowroom3Type] = useState('');
-  const [ownerImage1, setOwnerImage1] = useState(
-    ownerImage.length > 0 ? ownerImage[0].ImageName : '',
-  );
-  const [ownerImage1Uri, setownerImage1Uri] = useState('');
-  const [ownerImage1Type, setownerImage1Type] = useState('');
-  const [ownerImage2, setOwnerImage2] = useState(
-    ownerImage.length > 1 ? ownerImage[1].ImageName : '',
-  );
-  const [ownerImage2Uri, setownerImage2Uri] = useState('');
-  const [ownerImage2Type, setownerImage2Type] = useState('');
-  const [ownerImage3, setOwnerImage3] = useState(
-    ownerImage.length > 2 ? ownerImage[2].ImageName : '',
-  );
-  const [ownerImage3Uri, setownerImage3Uri] = useState('');
-  const [ownerImage3Type, setownerImage3Type] = useState('');
-  const [ownerName1, setOwnerName1] = useState(
-    ownerImage.length > 0 ? ownerImage[0].OwnerName : '',
-  );
-  const [ownerName2, setOwnerName2] = useState(
-    ownerImage.length > 1 ? ownerImage[1].OwnerName : '',
-  );
-  const [ownerName3, setOwnerName3] = useState(
-    ownerImage.length > 2 ? ownerImage[2].OwnerName : '',
-  );
-  const [description1, setDescriptiion1] = useState(
-    ownerImage.length > 2 ? ownerImage[0].Description : '',
-  );
-  const [description2, setDescriptiion2] = useState(
-    ownerImage.length > 2 ? ownerImage[1].Description : '',
-  );
-  const [description3, setDescriptiion3] = useState(
-    ownerImage.length > 2 ? ownerImage[2].Description : '',
-  );
-  const [customPurityD, setCustomPurityD] = useState('');
-  const [customPurityG, setCustomPurityG] = useState('');
-  const [customPurityP, setCustomPurityP] = useState('');
-  const [customPurityS, setCustomPurityS] = useState('');
+  const getImages = type => {
+    const newArr = supplierProfile?.supplierimagedetails?.filter(
+      item => item.Type == type,
+    );
 
+    return newArr;
+  };
+  const productImage = getImages('Product Image');
+
+  const showroomImage = getImages('ShowRoom Image');
+  const supplierLogo = route.params.supplierLogo;
+  const ownerImage = getImages('Owner Image');
+  // console.log('ownerName1,productImage',productImage,ownerImage);
+  console.log(JSON.stringify(ownerImage));
   const [customPurityDia, setCustomPurityDia] = useState(false);
   const [customPurityGo, setCustomPurityGo] = useState(false);
   const [customPurityPla, setCustomPurityPla] = useState(false);
@@ -176,7 +60,6 @@ const EditSupplierProfile = ({route}) => {
   const stateList = stateList1?.satates;
   const cityList1 = useSelector(state => state.City.CityList);
   const cityList = cityList1?.cities;
-  const dispatch = useDispatch();
 
   useEffect(() => {
     route.params.selector.specialisation.map(item => {
@@ -216,226 +99,275 @@ const EditSupplierProfile = ({route}) => {
     });
   }, []);
 
-  const validateUser = async () => {
+  const [inputs, setInputs] = useState({
+    SupplierName: details?.SupplierName,
+    ContactPersonName: details?.ContactPersonName,
+    MobileNo: details?.MobileNo,
+    Address: details?.Address,
+    StateId: details?.StateId,
+    CityId: details?.CityId,
+    Pincode: details?.Pincode,
+    Website: details?.Website,
+    SupplierType: details?.SupplierType,
+    IsAnyBranch: details?.IsAnyBranch == 'on' ? true : false,
+    JTyped: '',
+    JTypeg: '',
+    JTypep: '',
+    JTypes: '',
+    diamond_purity: [],
+    diamond_specialisation: [],
+    gold_purity: [],
+    gold_specialisation: [],
+    silver_purity: [],
+    silver_specialisation: [],
+    platinum_specialisation: [],
+    platinum_purity: [],
+    goldcustom_purity: '',
+    diamondcustom_purity: '',
+    platinumcustom_purity: '',
+    silvercustom_purity: '',
+    DiamondQuality: '',
+    IsActive: false,
+    IsDefaultSupplier: false,
+    logo: {
+      name: '',
+      type: '',
+      uri: '',
+    },
+    product_name1: '',
+    product_name2: '',
+    product_name3: '',
+    hiddenproduct_image1: '',
+    hiddenproduct_image2: '',
+    hiddenproduct_image3: '',
+    // product_image3: {
+    //   name: '',
+    //   type: '',
+    //   uri: '',
+    // },
+    aboutus: '',
+    NoofEmployee: 0,
+    showroom_image: [],
+
+    owner_name1: '',
+    owner_description1: '',
+    // owner_image2: {
+    //   name: '',
+    //   type: '',
+    //   uri: '',
+    // },
+    owner_name2: '',
+    owner_description2: '',
+    // owner_image3: {
+    //   name: '',
+    //   type: '',
+    //   uri: '',
+    // },
+    owner_name3: '',
+    owner_description3: '',
+    hiddenowner_image1: '',
+    hiddenowner_id1: 434,
+    owner_description1: '',
+    hiddenowner_image2: '',
+    hiddenowner_id2: 435,
+    owner_description2: '',
+    hiddenowner_image3: '',
+    hiddenowner_id3: 436,
+    owner_description3: '',
+    hiddenproduct_id1: 428,
+    hiddenproduct_id2: 429,
+    hiddenproduct_id3: 430,
+
+    EmailId: 'tested@gmail.com',
+  });
+
+  const handleInputs = (key, value) => {
+    setInputs(prev => ({...prev, [key]: value}));
+  };
+  const handleOnSumit = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
-    // console.log('this is user id',user_id);
-    if (supplierName == '') {
-      Toast.show('Please enter supplier name');
-    } else if (contactPerson == '') {
-      Toast.show('Please enter contact person name');
-    } else if (mobile == '') {
-      Toast.show('Please enter mobile number');
-    } else if (address == '') {
-      Toast.show('Please enter full address');
-    } else if (state == '') {
-      Toast.show('Please select state name');
-    } else if (city == '') {
-      Toast.show('Please select city name');
-    } else {
-      try {
-        setFetching(true);
-        const data = new FormData();
-        data.append('SrNo', user_id);
-        data.append('SupplierName', supplierName);
-        data.append('ContactPersonName', contactPerson);
-        data.append('MobileNo', mobile);
-        data.append('Address', address);
-        data.append('StateId', state);
-        data.append('CityId', city);
-        data.append('Pincode', pincode);
-        data.append('Website', website);
-        data.append(
-          'SupplierType',
-          manufacturer == 'checked'
-            ? 1
-            : wholeSaler == 'checked'
-            ? 2
-            : both == 'checked'
-            ? 3
-            : '',
-        );
-        data.append('IsAnyBranch', branch == true ? 'on' : 'off');
-        data.append('JTyped', diamond == true ? 'Diamond' : '');
-        data.append('JTypeg', gold == true ? 'Gold' : '');
-        data.append('JTypep', platinum == true ? 'Platinum' : '');
-        data.append('JTypes', silver == true ? 'Silver' : '');
-        data.append('diamond_purity[]', selected2);
-        data.append('diamondcustom_purity', customPurityD);
-        data.append('diamond_specialisation[]', selected3);
-        data.append('gold_purity[]', selected);
-        data.append('goldcustom_purity', customPurityG);
-        data.append('gold_specialisation[]', selected1);
-        data.append('platinumcustom_purity', customPurityP);
-        data.append('silvercustom_purity', customPurityS);
-        data.append('DiamondQuality', quality);
-        data.append('EmailId', '');
-        data.append('IsActive', isActive == true ? 'on' : 'off');
-        data.append('IsDefaultSupplier', isDefault == true ? 'on' : 'off');
-        data.append('product_name1', productName1);
-        data.append('hiddenproduct_image1', {
-          uri: productImage1Uri,
-          name: productImage1,
-          type: productImage1Type,
-        });
-        data.append('hiddenproduct_id1', productImage[0]?.SrNo);
-        data.append('product_name2', productName2);
-        data.append('hiddenproduct_image2', {
-          uri: productImage2Uri,
-          name: productImage2,
-          type: productImage2Type,
-        });
-        data.append('hiddenproduct_id2', productImage[1]?.SrNo);
-        data.append('product_name3', productName3);
-        data.append('hiddenproduct_image3', {
-          uri: productImage3Uri,
-          name: productImage3,
-          type: productImage3Type,
-        });
-        data.append('hiddenproduct_id3', productImage[2]?.SrNo);
-        data.append('aboutus', about);
-        data.append(
-          'NoofEmployee',
-          ten == 'checked'
-            ? 1
-            : elevan == 'checked'
-            ? 2
-            : twentySix == 'checked'
-            ? 3
-            : thirtySix == 'checked'
-            ? 5
-            : fifty == 'checked'
-            ? 5
-            : '',
-        );
-        data.append('owner_name1', ownerName1);
-        data.append('owner_description1', description1);
-        data.append('hiddenowner_image1', {
-          uri: ownerImage1Uri,
-          name: ownerImage1,
-          type: ownerImage1Type,
-        });
-        data.append('hiddenowner_id1', ownerImage[0]?.SrNo);
-        data.append('owner_name2', ownerName2);
-        data.append('owner_description2', description2);
-        data.append('hiddenowner_image2', {
-          uri: ownerImage2Uri,
-          name: ownerImage2,
-          type: ownerImage2Type,
-        });
-        data.append('hiddenowner_id2', ownerImage[1]?.SrNo);
-        data.append('owner_name3', ownerName3);
-        data.append('owner_description3', description3);
-        data.append('hiddenowner_image3', {
-          uri: ownerImage3Uri,
-          name: ownerImage3,
-          type: ownerImage3Type,
-        });
-        data.append('hiddenowner_id3', ownerImage[2]?.SrNo);
-        data.append('showroom_image[0]', {
-          uri: showroom1Uri,
-          name: showroom1,
-          type: showroom1Type,
-        });
-        data.append('showroom_image[1]', {
-          uri: showroom2Uri,
-          name: showroom2,
-          type: showroom2Type,
-        });
-        data.append('showroom_image[2]', {
-          uri: showroom3Uri,
-          name: showroom3,
-          type: showroom3Type,
-        });
-        data.append('logo', {
-          uri: logoUri,
-          name: logoName,
-          type: logoType,
-        });
-
-        const response = await axios({
-          method: 'POST',
-          data,
-          headers: {
-            'content-type': 'multipart/form-data',
-            Olocker: `Bearer ${Token}`,
-          },
-          url: 'https://olocker.co/api/supplier//updateProfile',
-        });
-        // console.log('this is iresponae',response);
-        if (response.data.status) {
-          setFetching(false);
-          Toast.show(response.data.msg);
-        } else {
-          setFetching(false);
-          Toast.show(response.data.msg);
-          // console.log('this is iresponae',response);
+    const newdata = {...inputs, SrNo: user_id};
+    let data = new FormData();
+    Object.keys(newdata).map(item => {
+      setFetching(true);
+      switch (item) {
+        case 'logo':
+          data.append(item, newdata[item]);
+          break;
+        case 'SupplierName': {
+          if (newdata[item] == '') {
+            Toast.show('Please enter supplier name');
+            return;
+          }
+          data.append(item, newdata[item]);
+          break;
         }
-      } catch (error) {
-        // // console.log("err->", error.response.data)
+        case 'ContactPersonName': {
+          if (newdata[item] == '') {
+            Toast.show('Please enter contact person name');
+            return;
+          }
+          data.append(item, newdata[item]);
+          break;
+        }
+        case 'Address': {
+          if (newdata[item] == '') {
+            Toast.show('Please enter full address');
+            return;
+          }
+          data.append(item, newdata[item]);
+          break;
+        }
+        case 'MobileNo': {
+          if (newdata[item] == '') {
+            Toast.show('Please enter mobile number');
+            return;
+          }
+          data.append(item, newdata[item]);
+          break;
+        }
+        case 'StateId': {
+          if (newdata[item] == '') {
+            Toast.show('Please select State name');
+            return;
+          }
+          data.append(item, newdata[item]);
+          break;
+        }
+        case 'StateId': {
+          if (newdata[item] == '') {
+            Toast.show('Please select State name');
+            return;
+          }
+          data.append(item, newdata[item]);
+          break;
+        }
+        case 'CityId': {
+          if (newdata[item] == '') {
+            Toast.show('Please select city name');
+            return;
+          }
+          data.append(item, newdata[item]);
+          break;
+        }
+        case 'IsActive':
+          data.append(item, newdata[item] ? 'on' : 'off');
+          break;
+        case 'IsDefaultSupplier':
+          data.append(item, newdata[item] ? 'on' : 'off');
+          break;
+        case 'diamond_purity':
+          newdata[item].map((items, index) => {
+            data.append(`diamond_purity[${index}]`, items);
+          });
+          break;
+        case 'diamond_specialisation':
+          newdata[item].map((items, index) => {
+            data.append(`diamond_specialisation[${index}]`, items);
+          });
+          break;
+        case 'diamondcustom_purity':
+          data.append(`diamondcustom_purity`, newdata[item]);
+          break;
+        case 'gold_purity':
+          newdata[item].map((items, index) => {
+            data.append(`gold_purity[${index}]`, items);
+          });
+          break;
+        case 'silver_purity':
+          newdata[item].map((items, index) => {
+            data.append(`silver_purity[${index}]`, items);
+          });
+          break;
+        case 'platinum_purity':
+          newdata[item].map((items, index) => {
+            data.append(`platinum_purity[${index}]`, items);
+          });
+
+          break;
+        case 'gold_specialisation':
+          newdata[item].map((items, index) => {
+            data.append(`gold_specialisation[${index}]`, items);
+          });
+          break;
+        case 'silver_specialisation':
+          newdata[item].map((items, index) => {
+            data.append(`silver_specialisation[${index}]`, items);
+          });
+          break;
+        case 'platinum_specialisation':
+          newdata[item].map((items, index) => {
+            data.append(`platinum_specialisation[${index}]`, items);
+          });
+          break;
+        case 'showroom_image':
+          newdata[item].map((items, index) => {
+            data.append(`showroom_image[${index}]`, items);
+          });
+          break;
+        case 'JTyped':
+          data.append(item, newdata[item] ? 'Diamond' : '');
+          break;
+        case 'JTypep':
+          data.append(item, newdata[item] ? 'Platinum' : '');
+          break;
+        case 'JTypeg':
+          data.append(item, newdata[item] ? 'Gold' : '');
+          break;
+        case 'JTypes':
+          data.append(item, newdata[item] ? 'Silver' : '');
+          break;
+        case 'IsAnyBranch':
+          data.append(item, newdata[item] ? 'on' : 'off');
+          break;
+
+        default:
+          data.append(item, newdata[item]);
+      }
+    });
+    // validateUser(data);
+    console.log('this is diamond specialization', inputs.product_name1);
+  };
+  const validateUser = async data => {
+    const Token = await AsyncStorage.getItem('loginToken');
+    console.log('called');
+    try {
+      const response = await axios({
+        method: 'POST',
+        data,
+        headers: {
+          'content-type': 'multipart/form-data',
+          Olocker: `Bearer ${Token}`,
+        },
+        url: 'https://olocker.co/api/supplier//updateProfile',
+      });
+      console.log('this is iresponae', response.data);
+      if (response.data.status) {
         setFetching(false);
-        console.log('this is iresponae', error);
+        Toast.show(response.data.msg);
+      } else {
+        setFetching(false);
+        Toast.show(response.data.msg);
+        // console.log('this is iresponae',response);
       }
+    } catch (error) {
+      // // console.log("err->", error.response.data)
+      Toast.show('Something went wrong');
+      setFetching(false);
+      console.log('this is iresponae', error);
     }
   };
 
-  const manageMenu = () => {
-    setManufacturer('checked');
-    setWholeSaler('unchecked');
-    setBoth('unchecked');
-  };
-  const manageWhole = () => {
-    setManufacturer('unchecked');
-    setWholeSaler('checked');
-    setBoth('unchecked');
-  };
-  const manageBoth = () => {
-    setManufacturer('unchecked');
-    setWholeSaler('unchecked');
-    setBoth('checked');
-  };
-  const manageTen = () => {
-    setTen('checked');
-    setElevan('unchecked');
-    setTwentySix('unchecked');
-    setThirtySix('unchecked');
-    setFifty('unchecked');
-  };
-  const manageElevan = () => {
-    setTen('unchecked');
-    setElevan('checked');
-    setTwentySix('unchecked');
-    setThirtySix('unchecked');
-    setFifty('unchecked');
-  };
-  const manageTwentySix = () => {
-    setTen('unchecked');
-    setElevan('unchecked');
-    setTwentySix('checked');
-    setThirtySix('unchecked');
-    setFifty('unchecked');
-  };
-  const manageThirySix = () => {
-    setTen('unchecked');
-    setElevan('unchecked');
-    setTwentySix('unchecked');
-    setThirtySix('checked');
-    setFifty('unchecked');
-  };
-  const manageFifty = () => {
-    setTen('unchecked');
-    setElevan('unchecked');
-    setTwentySix('unchecked');
-    setThirtySix('unchecked');
-    setFifty('checked');
-  };
+  // console.log('thjios isi isisisi', inputs.showroom_image);
 
-  const chooseFile = type => {
+  const handleImageUpload = type => {
     let options = {
-      mediaType: type,
+      mediaType: 'photo',
       maxWidth: 300,
       maxHeight: 550,
       quality: 1,
+      selectionLimit: type == 'showroom_image' ? 3 : 1,
     };
     launchImageLibrary(options, response => {
       if (response.didCancel) {
@@ -447,288 +379,105 @@ const EditSupplierProfile = ({route}) => {
       } else if (response.errorCode == 'others') {
         return;
       }
-      // console.log('this is respponsee valu',response);
-      setLogoName(
-        response.assets[0].fileName.substring(
-          response.assets[0].fileName.lastIndexOf('-') + 1,
-        ),
-      );
-      setLogoUri(response.assets[0].uri);
-      setLogoType(response.assets[0].type);
-    });
-  };
 
-  const uploadProduct1 = type => {
-    let options = {
-      mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
-    };
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        return;
-      } else if (response.errorCode == 'camera_unavailable') {
-        return;
-      } else if (response.errorCode == 'permission') {
-        return;
-      } else if (response.errorCode == 'others') {
-        return;
+      const obj = {
+        name: response?.assets[0]?.fileName?.replace(
+          /^rn_image_picker_lib_temp_/,
+          '',
+        ),
+        type: response?.assets[0]?.type,
+        uri: response.assets[0].uri,
+      };
+      let arr = [];
+
+      switch (type) {
+        case 'logo':
+          handleInputs('logo', obj);
+          break;
+        case 'hiddenproduct_image1':
+          handleInputs('hiddenproduct_image1', obj);
+          break;
+        case 'hiddenproduct_image2':
+          handleInputs('hiddenproduct_image2', obj);
+          break;
+        case 'hiddenproduct_image3':
+          handleInputs('hiddenproduct_image3', obj);
+          break;
+        case 'showroom_image': {
+          response.assets.map(item => {
+            let obj2 = {
+              name: item.fileName?.replace(/^rn_image_picker_lib_temp_/, ''),
+              type: item.type,
+              uri: item.uri,
+            };
+
+            arr.push(obj2);
+            console.log(item);
+          });
+          handleInputs('showroom_image', arr);
+          break;
+        }
+        case 'hiddenowner_image1':
+          handleInputs('hiddenowner_image1', obj);
+          break;
+        case 'hiddenowner_image2':
+          handleInputs('hiddenowner_image2', obj);
+          break;
+        case 'hiddenowner_image3':
+          handleInputs('hiddenowner_image3', obj);
+          break;
+        default:
+          return;
       }
-      setProductImage1(
-        response.assets[0].fileName.substring(
-          response.assets[0].fileName.lastIndexOf('-') + 1,
-        ),
-      );
-      setproductImage1Uri(response.assets[0].uri);
-      setproductImage1Type(response.assets[0].type);
     });
   };
-  const uploadProduct2 = type => {
-    let options = {
-      mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
+
+  const getSpecilization = data => {
+    let arr = [];
+    data?.map((item, index) => {
+      let obj = {id: index.toString(), name: item?.name};
+      arr.push(obj);
+    });
+    return arr;
+  };
+
+  // useEffect(() => {
+  //   setInputs(prev => ({
+  //     ...prev,
+  //     hiddenowner_image1: getOwnerImage(ownerImage[0]),
+  //     hiddenowner_image2: getOwnerImage(ownerImage[1]),
+  //     hiddenowner_image3: getOwnerImage(ownerImage[2]),
+  //   }));
+  // }, [ownerImage]);
+  const getOwnerImage = data => {
+    const obj = {
+      name: data?.ImageName,
+      type: 'image/jpg',
+      uri: `https://olocker.co/uploads/supplier/${data?.ImageName}`,
     };
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        return;
-      } else if (response.errorCode == 'camera_unavailable') {
-        return;
-      } else if (response.errorCode == 'permission') {
-        return;
-      } else if (response.errorCode == 'others') {
-        return;
-      }
-      setProductImage2(
-        response.assets[0].fileName.substring(
-          response.assets[0].fileName.lastIndexOf('-') + 1,
-        ),
-      );
-      setproductImage2Uri(response.assets[0].uri);
-      setproductImage2Type(response.assets[0].type);
+    return obj;
+  };
+  useEffect(() => {
+    handlePrevImages();
+  }, []);
+  const handlePrevImages = index => {
+    productImage.map(item => {
+      console.log('ghus gya');
+      const obj = {
+        name: item?.ImageName,
+        type: 'image/jpg',
+        uri: `https://olocker.co/uploads/supplier/${item?.ImageName}`,
+      };
+      let ImagePrams = `hiddenproduct_image${index + 1}`;
+      let NameParams = `product_name${index + 1}`;
+      setInputs(prev => ({
+        ...prev,
+        [ImagePrams]: obj,
+        [NameParams]: item?.OwnerName,
+      }));
     });
   };
-  const uploadProduct3 = type => {
-    let options = {
-      mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
-    };
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        return;
-      } else if (response.errorCode == 'camera_unavailable') {
-        return;
-      } else if (response.errorCode == 'permission') {
-        return;
-      } else if (response.errorCode == 'others') {
-        return;
-      }
-      setProductImage3(
-        response.assets[0].fileName.substring(
-          response.assets[0].fileName.lastIndexOf('-') + 1,
-        ),
-      );
-      setproductImage3Uri(response.assets[0].uri);
-      setproductImage3Type(response.assets[0].type);
-    });
-  };
-
-  const uploadShowroom1 = type => {
-    let options = {
-      mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
-    };
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        return;
-      } else if (response.errorCode == 'camera_unavailable') {
-        return;
-      } else if (response.errorCode == 'permission') {
-        return;
-      } else if (response.errorCode == 'others') {
-        return;
-      }
-      setShowroom1(
-        response.assets[0].fileName.substring(
-          response.assets[0].fileName.lastIndexOf('-') + 1,
-        ),
-      );
-      setshowroom1Uri(response.assets[0].uri);
-      setshowroom1Type(response.assets[0].type);
-    });
-  };
-
-  const uploadShowroom2 = type => {
-    let options = {
-      mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
-    };
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        return;
-      } else if (response.errorCode == 'camera_unavailable') {
-        return;
-      } else if (response.errorCode == 'permission') {
-        return;
-      } else if (response.errorCode == 'others') {
-        return;
-      }
-      setShowroom2(
-        response.assets[0].fileName.substring(
-          response.assets[0].fileName.lastIndexOf('-') + 1,
-        ),
-      );
-      setshowroom2Uri(response.assets[0].uri);
-      setshowroom2Type(response.assets[0].type);
-    });
-  };
-
-  const uploadShowroom3 = type => {
-    let options = {
-      mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
-    };
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        return;
-      } else if (response.errorCode == 'camera_unavailable') {
-        return;
-      } else if (response.errorCode == 'permission') {
-        return;
-      } else if (response.errorCode == 'others') {
-        return;
-      }
-      setShowroom3(
-        response.assets[0].fileName.substring(
-          response.assets[0].fileName.lastIndexOf('-') + 1,
-        ),
-      );
-      setshowroom3Uri(response.assets[0].uri);
-      setshowroom3Type(response.assets[0].type);
-    });
-  };
-
-  const uploadOwner1 = type => {
-    let options = {
-      mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
-    };
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        return;
-      } else if (response.errorCode == 'camera_unavailable') {
-        return;
-      } else if (response.errorCode == 'permission') {
-        return;
-      } else if (response.errorCode == 'others') {
-        return;
-      }
-      setOwnerImage1(
-        response.assets[0].fileName.substring(
-          response.assets[0].fileName.lastIndexOf('-') + 1,
-        ),
-      );
-      setownerImage1Uri(response.assets[0].uri);
-      setownerImage1Type(response.assets[0].type);
-    });
-  };
-
-  const uploadOwner2 = type => {
-    let options = {
-      mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
-    };
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        return;
-      } else if (response.errorCode == 'camera_unavailable') {
-        return;
-      } else if (response.errorCode == 'permission') {
-        return;
-      } else if (response.errorCode == 'others') {
-        return;
-      }
-      setOwnerImage2(
-        response.assets[0].fileName.substring(
-          response.assets[0].fileName.lastIndexOf('-') + 1,
-        ),
-      );
-      setownerImage2Uri(response.assets[0].uri);
-      setownerImage2Type(response.assets[0].type);
-    });
-  };
-
-  const uploadOwner3 = type => {
-    let options = {
-      mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
-    };
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        return;
-      } else if (response.errorCode == 'camera_unavailable') {
-        return;
-      } else if (response.errorCode == 'permission') {
-        return;
-      } else if (response.errorCode == 'others') {
-        return;
-      }
-      setOwnerImage3(
-        response.assets[0].fileName.substring(
-          response.assets[0].fileName.lastIndexOf('-') + 1,
-        ),
-      );
-      setownerImage3Uri(response.assets[0].uri);
-      setownerImage3Type(response.assets[0].type);
-    });
-  };
-
-  const handleSumit = () => {
-    if (supplierName == '') {
-      Toast.show('Please enter supplier name');
-    } else if (contactPerson == '') {
-      Toast.show('Please enter contact person name');
-    } else if (mobile == '') {
-      Toast.show('Please enter mobile number');
-    } else if (address == '') {
-      Toast.show('Please enter complete address');
-    } else if (state == '') {
-      Toast.show('Please select state name');
-    } else if (city == '') {
-      Toast.show('Please select city name');
-    } else if (selected == []) {
-      Toast.show('Please select gold purity');
-    } else if (selected1 == []) {
-      Toast.show('Please choose gold specialisation');
-    } else {
-    }
-  };
-
-  const manageCity = val => {
-    setState(val);
-    dispatch({
-      type: 'City_List_Request',
-      url: '/getCities',
-      stateId: val,
-    });
-  };
-
+  console.log('this is hidden image 1', inputs.hiddenowner_image1?.name);
   const renderScreen = () => {
     return (
       <ScrollView style={{paddingHorizontal: 10, paddingVertical: 10}}>
@@ -746,8 +495,8 @@ const EditSupplierProfile = ({route}) => {
               borderColor: 'grey',
               paddingLeft: 10,
             }}
-            value={supplierName}
-            onChangeText={val => setSupplierName(val)}
+            value={inputs.SupplierName}
+            onChangeText={val => handleInputs('SupplierName', val)}
           />
         </View>
         <View style={{marginTop: 10}}>
@@ -764,8 +513,8 @@ const EditSupplierProfile = ({route}) => {
               borderColor: 'grey',
               paddingLeft: 10,
             }}
-            value={contactPerson}
-            onChangeText={val => setContactPerson(val)}
+            value={inputs.ContactPersonName}
+            onChangeText={val => handleInputs('ContactPersonName', val)}
           />
         </View>
         <View style={{marginTop: 10}}>
@@ -782,8 +531,8 @@ const EditSupplierProfile = ({route}) => {
               borderColor: 'grey',
               paddingLeft: 10,
             }}
-            value={mobile}
-            onChangeText={val => setMobile(val)}
+            value={inputs.MobileNo}
+            onChangeText={val => handleInputs('MobileNo', val)}
           />
         </View>
         <View style={{marginTop: 10}}>
@@ -800,8 +549,8 @@ const EditSupplierProfile = ({route}) => {
               borderColor: 'grey',
               paddingLeft: 10,
             }}
-            value={address}
-            onChangeText={val => setAddress(val)}
+            value={inputs.Address}
+            onChangeText={val => handleInputs('Address', val)}
           />
         </View>
         <View style={{marginTop: 10}}>
@@ -828,9 +577,10 @@ const EditSupplierProfile = ({route}) => {
               labelField="label"
               valueField="value"
               placeholder="state"
-              value={state}
+              value={inputs.StateId}
               onChange={item => {
                 manageCity(item.value);
+                handleInputs('StateId', item.value);
               }}
             />
           </View>
@@ -855,9 +605,9 @@ const EditSupplierProfile = ({route}) => {
               labelField="label"
               valueField="value"
               placeholder="City"
-              value={city}
+              value={inputs.CityId}
               onChange={item => {
-                setCity(item.value);
+                handleInputs('CityId', item.value);
               }}
               inputSearchStyle={{
                 borderRadius: 10,
@@ -878,8 +628,8 @@ const EditSupplierProfile = ({route}) => {
               borderColor: 'grey',
               paddingLeft: 10,
             }}
-            value={pincode}
-            onChangeText={val => setPincode(val)}
+            value={inputs.Pincode}
+            onChangeText={val => handleInputs('Pincode', val)}
           />
         </View>
         <View style={{marginTop: 10}}>
@@ -894,8 +644,8 @@ const EditSupplierProfile = ({route}) => {
               borderColor: 'grey',
               paddingLeft: 10,
             }}
-            value={website}
-            onChangeText={val => setWesite(val)}
+            value={inputs.Website}
+            onChangeText={val => handleInputs('Website', val)}
           />
         </View>
         <View style={{marginTop: 10}}>
@@ -911,8 +661,8 @@ const EditSupplierProfile = ({route}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <RadioButton
                 value="first"
-                status={manufacturer}
-                onPress={() => manageMenu()}
+                status={inputs.SupplierType == 1 ? 'checked' : 'unchecked'}
+                onPress={() => handleInputs('SupplierType', 1)}
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
@@ -921,8 +671,8 @@ const EditSupplierProfile = ({route}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <RadioButton
                 value="first"
-                status={wholeSaler}
-                onPress={() => manageWhole()}
+                status={inputs.SupplierType == 2 ? 'checked' : 'unchecked'}
+                onPress={() => handleInputs('SupplierType', 2)}
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
@@ -932,8 +682,8 @@ const EditSupplierProfile = ({route}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <RadioButton
                 value="first"
-                status={both}
-                onPress={() => manageBoth()}
+                status={inputs.SupplierType == 3 ? 'checked' : 'unchecked'}
+                onPress={() => handleInputs('SupplierType', 3)}
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
@@ -947,8 +697,10 @@ const EditSupplierProfile = ({route}) => {
           </Text>
           <CheckBox
             disabled={false}
-            value={branch}
-            onValueChange={newValue => setBranch(newValue)}
+            value={inputs.IsAnyBranch}
+            onValueChange={newValue =>
+              handleInputs('IsAnyBranch', !inputs.IsAnyBranch)
+            }
             tintColors={{true: '#032e63', false: '#032e63'}}
             onTintColor="#032e63"
             onCheckColor="#032e63"
@@ -968,8 +720,10 @@ const EditSupplierProfile = ({route}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <CheckBox
                 disabled={false}
-                value={diamond}
-                onValueChange={newValue => setDiamond(newValue)}
+                value={inputs.JTyped}
+                onValueChange={newValue => {
+                  setInputs(prev => ({...prev, JTyped: newValue}));
+                }}
                 tintColors={{true: '#032e63', false: '#032e63'}}
                 onTintColor="#032e63"
                 onCheckColor="#032e63"
@@ -981,8 +735,8 @@ const EditSupplierProfile = ({route}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <CheckBox
                 disabled={false}
-                value={gold}
-                onValueChange={newValue => setGold(newValue)}
+                value={inputs.JTypeg}
+                onValueChange={newValue => handleInputs('JTypeg', newValue)}
                 tintColors={{true: '#032e63', false: '#032e63'}}
                 onTintColor="#032e63"
                 onCheckColor="#032e63"
@@ -994,8 +748,8 @@ const EditSupplierProfile = ({route}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <CheckBox
                 disabled={false}
-                value={platinum}
-                onValueChange={newValue => setPlatinum(newValue)}
+                value={inputs.JTypep}
+                onValueChange={newValue => handleInputs('JTypep', newValue)}
                 tintColors={{true: '#032e63', false: '#032e63'}}
                 onTintColor="#032e63"
                 onCheckColor="#032e63"
@@ -1007,8 +761,8 @@ const EditSupplierProfile = ({route}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <CheckBox
                 disabled={false}
-                value={silver}
-                onValueChange={newValue => setSilver(newValue)}
+                value={inputs.JTypes}
+                onValueChange={newValue => handleInputs('JTypes', newValue)}
                 tintColors={{true: '#032e63', false: '#032e63'}}
                 onTintColor="#032e63"
                 onCheckColor="#032e63"
@@ -1019,7 +773,7 @@ const EditSupplierProfile = ({route}) => {
             </View>
           </View>
         </View>
-        {diamond == true ? (
+        {inputs.JTyped == true ? (
           <View>
             <View style={{marginTop: 10}}>
               <Text style={styles.text}>
@@ -1029,19 +783,21 @@ const EditSupplierProfile = ({route}) => {
                 items={items1}
                 uniqueKey="name"
                 onSelectedItemsChange={val => {
-                  setSelected2(val);
+                  handleInputs('diamond_purity', val);
                   if (val.includes('Custom Purity')) {
                     setCustomPurityDia(true);
                   } else {
                     setCustomPurityDia(false);
                   }
                 }}
-                selectedItems={selected2}
+                selectedItems={inputs.diamond_purity}
                 searchIcon={false}
                 tagBorderColor={'#032e63'}
                 tagRemoveIconColor={'#fff'}
                 tagTextColor={'#fff'}
-                selectText={selected2.length > 0 ? '' : 'Select Diamond Purity'}
+                selectText={
+                  inputs.diamond_purity > 0 ? '' : 'Select Diamond Purity'
+                }
                 single={false}
                 searchInputPlaceholderText="Select Diamond Purity"
                 selectedItemTextColor={'#032e63'}
@@ -1083,8 +839,10 @@ const EditSupplierProfile = ({route}) => {
                     borderColor: 'grey',
                     paddingLeft: 10,
                   }}
-                  value={customPurityD}
-                  onChangeText={val => setCustomPurityD(val)}
+                  value={inputs.diamondcustom_purity}
+                  onChangeText={val =>
+                    handleInputs('diamondcustom_purity', val)
+                  }
                 />
               </View>
             ) : null}
@@ -1094,16 +852,20 @@ const EditSupplierProfile = ({route}) => {
                 <Text style={{color: 'red'}}>{' *'}</Text>
               </Text>
               <MultiSelect
-                items={diamondSpecilization}
-                uniqueKey="Specialisation"
-                onSelectedItemsChange={val => setSelected3(val)}
-                selectedItems={selected3}
+                items={getSpecilization(goldSpecilization)}
+                uniqueKey="id"
+                onSelectedItemsChange={val =>
+                  handleInputs('diamond_specialisation', val)
+                }
+                selectedItems={inputs.diamond_specialisation}
                 searchIcon={false}
                 tagBorderColor={'#032e63'}
                 tagRemoveIconColor={'#fff'}
                 tagTextColor={'#fff'}
                 selectText={
-                  selected3.length > 0 ? '' : 'Choose Diamond Specialisation'
+                  inputs.diamond_specialisation.length > 0
+                    ? ''
+                    : 'Choose Diamond Specialisation'
                 }
                 single={false}
                 searchInputPlaceholderText="Choose Diamond Specialisation"
@@ -1136,7 +898,7 @@ const EditSupplierProfile = ({route}) => {
             </View>
           </View>
         ) : null}
-        {gold == true ? (
+        {inputs.JTypeg == true ? (
           <View>
             <View style={{marginTop: 10}}>
               <Text style={styles.text}>
@@ -1146,19 +908,21 @@ const EditSupplierProfile = ({route}) => {
                 items={items}
                 uniqueKey="name"
                 onSelectedItemsChange={val => {
-                  setSelected(val);
+                  handleInputs('gold_purity', val);
                   if (val.includes('Custom Purity')) {
                     setCustomPurityGo(true);
                   } else {
                     setCustomPurityGo(false);
                   }
                 }}
-                selectedItems={selected}
+                selectedItems={inputs.gold_purity}
                 searchIcon={false}
                 tagBorderColor={'#032e63'}
                 tagRemoveIconColor={'#fff'}
                 tagTextColor={'#fff'}
-                selectText={selected.length > 0 ? '' : 'Select Gold Purity'}
+                selectText={
+                  inputs.gold_purity.length > 0 ? '' : 'Select Gold Purity'
+                }
                 single={false}
                 searchInputPlaceholderText="Select Gold Purity"
                 selectedItemTextColor={'#032e63'}
@@ -1201,8 +965,8 @@ const EditSupplierProfile = ({route}) => {
                     borderColor: 'grey',
                     paddingLeft: 10,
                   }}
-                  value={customPurityG}
-                  onChangeText={val => setCustomPurityG(val)}
+                  value={inputs.goldcustom_purity}
+                  onChangeText={val => handleInputs('goldcustom_purity', val)}
                 />
               </View>
             ) : null}
@@ -1212,16 +976,20 @@ const EditSupplierProfile = ({route}) => {
                 <Text style={{color: 'red'}}>{' *'}</Text>
               </Text>
               <MultiSelect
-                items={goldSpecilization}
-                uniqueKey="Specialisation"
-                onSelectedItemsChange={val => setSelected1(val)}
-                selectedItems={selected1}
+                items={getSpecilization(diamondSpecilization)}
+                uniqueKey="id"
+                onSelectedItemsChange={val =>
+                  handleInputs('gold_specialisation', val)
+                }
+                selectedItems={inputs.gold_specialisation}
                 searchIcon={false}
                 tagBorderColor={'#032e63'}
                 tagRemoveIconColor={'#fff'}
                 tagTextColor={'#fff'}
                 selectText={
-                  selected1.length > 0 ? '' : 'Choose Gold Specialisation'
+                  inputs.gold_specialisation.length > 0
+                    ? ''
+                    : 'Choose Gold Specialisation'
                 }
                 single={false}
                 searchInputPlaceholderText="Choose Gold Specialisation"
@@ -1254,7 +1022,7 @@ const EditSupplierProfile = ({route}) => {
             </View>
           </View>
         ) : null}
-        {platinum == true ? (
+        {inputs.JTypep == true ? (
           <View>
             <View style={{marginTop: 10}}>
               <Text style={styles.text}>
@@ -1264,20 +1032,22 @@ const EditSupplierProfile = ({route}) => {
                 items={items2}
                 uniqueKey="name"
                 onSelectedItemsChange={val => {
-                  setSelected4(val);
+                  handleInputs('platinum_purity', val);
                   if (val.includes('Custom Purity')) {
                     setCustomPurityPla(true);
                   } else {
                     setCustomPurityPla(false);
                   }
                 }}
-                selectedItems={selected4}
+                selectedItems={inputs.platinum_purity}
                 searchIcon={false}
                 tagBorderColor={'#032e63'}
                 tagRemoveIconColor={'#fff'}
                 tagTextColor={'#fff'}
                 selectText={
-                  selected4.length > 0 ? '' : 'Select Platinum Purity'
+                  inputs.platinum_purity.length > 0
+                    ? ''
+                    : 'Select Platinum Purity'
                 }
                 single={false}
                 searchInputPlaceholderText="Select Platinum Purity"
@@ -1320,8 +1090,10 @@ const EditSupplierProfile = ({route}) => {
                     borderColor: 'grey',
                     paddingLeft: 10,
                   }}
-                  value={customPurityP}
-                  onChangeText={val => setCustomPurityP(val)}
+                  value={inputs.platinumcustom_purity}
+                  onChangeText={val =>
+                    handleInputs('platinumcustom_purity', val)
+                  }
                 />
               </View>
             ) : null}
@@ -1331,16 +1103,20 @@ const EditSupplierProfile = ({route}) => {
                 <Text style={{color: 'red'}}>{' *'}</Text>
               </Text>
               <MultiSelect
-                items={platinumSpecilization}
-                uniqueKey="Specialisation"
-                onSelectedItemsChange={val => setSelected5(val)}
-                selectedItems={selected5}
+                items={getSpecilization(platinumSpecilization)}
+                uniqueKey="id"
+                onSelectedItemsChange={val =>
+                  handleInputs('platinum_specialisation', val)
+                }
+                selectedItems={inputs.platinum_specialisation}
                 searchIcon={false}
                 tagBorderColor={'#032e63'}
                 tagRemoveIconColor={'#fff'}
                 tagTextColor={'#fff'}
                 selectText={
-                  selected4.length > 0 ? '' : 'Choose Platinum Specialisation'
+                  inputs.platinum_specialisation.length > 0
+                    ? ''
+                    : 'Choose Platinum Specialisation'
                 }
                 single={false}
                 searchInputPlaceholderText="Choose Platinum Specialisation"
@@ -1352,7 +1128,6 @@ const EditSupplierProfile = ({route}) => {
                 submitButtonText="Submit"
                 textInputProps={{editable: false, autoFocus: false}}
                 styleDropdownMenu={{
-                  // width:'100%',
                   borderBottomWidth: 1.5,
                   borderColor: '#032e63',
                   height: 55,
@@ -1373,7 +1148,7 @@ const EditSupplierProfile = ({route}) => {
             </View>
           </View>
         ) : null}
-        {silver == true ? (
+        {inputs.JTypes == true ? (
           <View>
             <View style={{marginTop: 10}}>
               <Text style={styles.text}>
@@ -1383,19 +1158,21 @@ const EditSupplierProfile = ({route}) => {
                 items={items3}
                 uniqueKey="name"
                 onSelectedItemsChange={val => {
-                  setSelected6(val);
+                  handleInputs('silver_purity', val);
                   if (val.includes('Custom Purity')) {
                     setCustomPuritySil(true);
                   } else {
                     setCustomPuritySil(false);
                   }
                 }}
-                selectedItems={selected6}
+                selectedItems={inputs.silver_purity}
                 searchIcon={false}
                 tagBorderColor={'#032e63'}
                 tagRemoveIconColor={'#fff'}
                 tagTextColor={'#fff'}
-                selectText={selected6.length > 0 ? '' : 'Select Silver Purity'}
+                selectText={
+                  inputs.silver_purity.length > 0 ? '' : 'Select Silver Purity'
+                }
                 single={false}
                 searchInputPlaceholderText="Select Gold Purity"
                 selectedItemTextColor={'#032e63'}
@@ -1437,8 +1214,8 @@ const EditSupplierProfile = ({route}) => {
                     borderColor: 'grey',
                     paddingLeft: 10,
                   }}
-                  value={customPurityS}
-                  onChangeText={val => setCustomPurityS(val)}
+                  value={inputs.silvercustom_purity}
+                  onChangeText={val => handleInputs('silvercustom_purity', val)}
                 />
               </View>
             ) : null}
@@ -1448,16 +1225,20 @@ const EditSupplierProfile = ({route}) => {
                 <Text style={{color: 'red'}}>{' *'}</Text>
               </Text>
               <MultiSelect
-                items={silverSpecilization}
-                uniqueKey="Specialisation"
-                onSelectedItemsChange={val => setSelected7(val)}
-                selectedItems={selected7}
+                items={getSpecilization(silverSpecilization)}
+                uniqueKey="id"
+                onSelectedItemsChange={val =>
+                  handleInputs('silver_specialisation', val)
+                }
+                selectedItems={inputs.silver_specialisation}
                 searchIcon={false}
                 tagBorderColor={'#032e63'}
                 tagRemoveIconColor={'#fff'}
                 tagTextColor={'#fff'}
                 selectText={
-                  selected7.length > 0 ? '' : 'Choose Silver Specialisation'
+                  inputs.silver_specialisation.length > 0
+                    ? ''
+                    : 'Choose Silver Specialisation'
                 }
                 single={false}
                 searchInputPlaceholderText="Choose Silver Specialisation"
@@ -1502,8 +1283,8 @@ const EditSupplierProfile = ({route}) => {
               borderColor: 'grey',
               paddingLeft: 10,
             }}
-            value={quality}
-            onChangeText={val => setQuality(val)}
+            value={inputs.DiamondQuality}
+            onChangeText={val => handleInputs('DiamondQuality', val)}
           />
         </View>
         <View style={{marginTop: 10}}>
@@ -1517,8 +1298,8 @@ const EditSupplierProfile = ({route}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <CheckBox
                 disabled={false}
-                value={isActive}
-                onValueChange={newValue => setIsActive(newValue)}
+                value={inputs.IsActive}
+                onValueChange={newValue => handleInputs('IsActive', newValue)}
                 tintColors={{true: '#032e63', false: '#032e63'}}
                 onTintColor="#032e63"
                 onCheckColor="#032e63"
@@ -1530,8 +1311,10 @@ const EditSupplierProfile = ({route}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <CheckBox
                 disabled={false}
-                value={isDefault}
-                onValueChange={newValue => setIsDefault(newValue)}
+                value={inputs.IsDefaultSupplier}
+                onValueChange={newValue =>
+                  handleInputs('IsDefaultSupplier', newValue)
+                }
                 tintColors={{true: '#032e63', false: '#032e63'}}
                 onTintColor="#032e63"
                 onCheckColor="#032e63"
@@ -1558,7 +1341,7 @@ const EditSupplierProfile = ({route}) => {
               alignItems: 'center',
             }}>
             <TouchableOpacity
-              onPress={() => chooseFile('photo')}
+              onPress={() => handleImageUpload('logo')}
               style={{
                 backgroundColor: 'grey',
                 height: 40,
@@ -1576,21 +1359,105 @@ const EditSupplierProfile = ({route}) => {
                 justifyContent: 'center',
                 width: '70%',
               }}>
-              {logoName == '' ? (
+              {inputs.logo.name == '' ? (
                 <Text>No File Choosen</Text>
               ) : (
-                <Text>{logoName}</Text>
+                <Text>{inputs.logo?.name}</Text>
               )}
             </View>
           </View>
+          {inputs.logo.uri ? (
+            <View
+              style={{
+                elevation: 5,
+                shadowColor: 'black',
+                shadowOffset: {height: 4, width: 4},
+                shadowOpacity: 5,
+                shadowRadius: 4,
+              }}>
+              <Image
+                style={{
+                  height: widthPercentageToDP(30),
+                  width: widthPercentageToDP(30),
+                  alignSelf: 'center',
+                  marginTop: 10,
+                }}
+                source={{uri: inputs.logo?.uri}}
+              />
+            </View>
+          ) : null}
         </View>
 
         <View style={{marginTop: 10}}>
           <Text style={styles.text}>Upload image of your product:</Text>
-          <View>
+          <FlatList
+            data={productImage}
+            renderItem={({item, index}) => (
+              <View>
+                <View style={styles.uploadView}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      handleImageUpload(`hiddenproduct_image${index + 1}`)
+                    }
+                    style={styles.grey}>
+                    <Text style={{color: '#fff'}}>Choose File</Text>
+                  </TouchableOpacity>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '70%',
+                    }}>
+                    {inputs[`hiddenproduct_image${index + 1}`]?.name == '' ||
+                    undefined ? (
+                      <Text>No File Choosen</Text>
+                    ) : (
+                      <Text>{inputs[`product_name${index + 1}`]?.name}</Text>
+                    )}
+                  </View>
+                </View>
+                <TextInput
+                  placeholder="Product Name"
+                  style={{
+                    borderWidth: 1,
+                    marginTop: 4,
+                    height: 40,
+                    borderRadius: 6,
+                    borderColor: 'grey',
+                    paddingLeft: 10,
+                  }}
+                  value={inputs[`product_name${index + 1}`]}
+                  onChangeText={val =>
+                    handleInputs(`product_name${index + 1}`, val)
+                  }
+                />
+                {inputs[`hiddenproduct_image${index + 1}`]?.uri ? (
+                  <View
+                    style={{
+                      elevation: 5,
+                      shadowColor: 'black',
+                      shadowOffset: {height: 4, width: 4},
+                      shadowOpacity: 5,
+                      shadowRadius: 4,
+                    }}>
+                    <Image
+                      style={{
+                        height: widthPercentageToDP(30),
+                        width: widthPercentageToDP(30),
+                        alignSelf: 'center',
+                        marginTop: 10,
+                      }}
+                      source={{uri: inputs.hiddenproduct_image1?.uri}}
+                    />
+                  </View>
+                ) : null}
+              </View>
+            )}
+          />
+          {/* <View style={{marginTop: 5}}>
             <View style={styles.uploadView}>
               <TouchableOpacity
-                onPress={() => uploadProduct1('photo')}
+                onPress={() => handleImageUpload('hiddenproduct_image2')}
                 style={styles.grey}>
                 <Text style={{color: '#fff'}}>Choose File</Text>
               </TouchableOpacity>
@@ -1600,10 +1467,10 @@ const EditSupplierProfile = ({route}) => {
                   justifyContent: 'center',
                   width: '70%',
                 }}>
-                {productImage1 == '' ? (
+                {inputs.hiddenproduct_image2?.uri == '' ? (
                   <Text>No File Choosen</Text>
                 ) : (
-                  <Text>{productImage1}</Text>
+                  <Text>{inputs.hiddenproduct_image2?.name}</Text>
                 )}
               </View>
             </View>
@@ -1617,14 +1484,34 @@ const EditSupplierProfile = ({route}) => {
                 borderColor: 'grey',
                 paddingLeft: 10,
               }}
-              value={productName1}
-              onChangeText={val => setProductName1(val)}
+              value={inputs.product_name2}
+              onChangeText={val => handleInputs('product_name2', val)}
             />
-          </View>
-          <View style={{marginTop: 5}}>
+            {inputs.hiddenproduct_image2.uri ? (
+              <View
+                style={{
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: {height: 4, width: 4},
+                  shadowOpacity: 5,
+                  shadowRadius: 4,
+                }}>
+                <Image
+                  style={{
+                    height: widthPercentageToDP(30),
+                    width: widthPercentageToDP(30),
+                    alignSelf: 'center',
+                    marginTop: 10,
+                  }}
+                  source={{uri: inputs.hiddenproduct_image2.uri}}
+                />
+              </View>
+            ) : null}
+          </View> */}
+          {/* <View style={{marginTop: 5}}>
             <View style={styles.uploadView}>
               <TouchableOpacity
-                onPress={() => uploadProduct2('photo')}
+                onPress={() => handleImageUpload('hiddenproduct_image3')}
                 style={styles.grey}>
                 <Text style={{color: '#fff'}}>Choose File</Text>
               </TouchableOpacity>
@@ -1634,10 +1521,10 @@ const EditSupplierProfile = ({route}) => {
                   justifyContent: 'center',
                   width: '70%',
                 }}>
-                {productImage2 == '' ? (
+                {inputs.hiddenproduct_image3?.name == '' ? (
                   <Text>No File Choosen</Text>
                 ) : (
-                  <Text>{productImage2}</Text>
+                  <Text>{inputs.hiddenproduct_image3?.name}</Text>
                 )}
               </View>
             </View>
@@ -1651,44 +1538,30 @@ const EditSupplierProfile = ({route}) => {
                 borderColor: 'grey',
                 paddingLeft: 10,
               }}
-              value={productName2}
-              onChangeText={val => setProductName2(val)}
+              value={inputs.product_name3}
+              onChangeText={val => handleInputs('product_name3', val)}
             />
-          </View>
-          <View style={{marginTop: 5}}>
-            <View style={styles.uploadView}>
-              <TouchableOpacity
-                onPress={() => uploadProduct3('photo')}
-                style={styles.grey}>
-                <Text style={{color: '#fff'}}>Choose File</Text>
-              </TouchableOpacity>
+            {inputs.hiddenproduct_image3?.uri ? (
               <View
                 style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '70%',
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: {height: 4, width: 4},
+                  shadowOpacity: 5,
+                  shadowRadius: 4,
                 }}>
-                {productImage3 == '' ? (
-                  <Text>No File Choosen</Text>
-                ) : (
-                  <Text>{productImage3}</Text>
-                )}
+                <Image
+                  style={{
+                    height: widthPercentageToDP(30),
+                    width: widthPercentageToDP(30),
+                    alignSelf: 'center',
+                    marginTop: 10,
+                  }}
+                  source={{uri: inputs.hiddenproduct_image3?.uri}}
+                />
               </View>
-            </View>
-            <TextInput
-              placeholder="Product Name"
-              style={{
-                borderWidth: 1,
-                marginTop: 4,
-                height: 40,
-                borderRadius: 6,
-                borderColor: 'grey',
-                paddingLeft: 10,
-              }}
-              value={productName3}
-              onChangeText={val => setProductName3(val)}
-            />
-          </View>
+            ) : null}
+          </View> */}
         </View>
 
         <View style={{marginTop: 10}}>
@@ -1710,8 +1583,8 @@ const EditSupplierProfile = ({route}) => {
                 padding: 0,
                 margin: 0,
               }}
-              value={about}
-              onChangeText={val => setAbout(val)}
+              value={inputs.aboutus}
+              onChangeText={val => handleInputs('aboutus', val)}
               multiline
             />
           </View>
@@ -1723,8 +1596,8 @@ const EditSupplierProfile = ({route}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <RadioButton
                 value="first"
-                status={ten}
-                onPress={() => manageTen()}
+                status={inputs.NoofEmployee == 1 ? 'checked' : 'unchecked'}
+                onPress={() => handleInputs('NoofEmployee', 1)}
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
@@ -1733,8 +1606,8 @@ const EditSupplierProfile = ({route}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <RadioButton
                 value="first"
-                status={elevan}
-                onPress={() => manageElevan()}
+                status={inputs.NoofEmployee == 2 ? 'checked' : 'unchecked'}
+                onPress={() => handleInputs('NoofEmployee', 2)}
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
@@ -1744,8 +1617,8 @@ const EditSupplierProfile = ({route}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <RadioButton
                 value="first"
-                status={twentySix}
-                onPress={() => manageTwentySix()}
+                status={inputs.NoofEmployee == 3 ? 'checked' : 'unchecked'}
+                onPress={() => handleInputs('NoofEmployee', 3)}
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
@@ -1755,8 +1628,8 @@ const EditSupplierProfile = ({route}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <RadioButton
                 value="first"
-                status={thirtySix}
-                onPress={() => manageThirySix()}
+                status={inputs.NoofEmployee == 4 ? 'checked' : 'unchecked'}
+                onPress={() => handleInputs('NoofEmployee', 4)}
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
@@ -1766,8 +1639,8 @@ const EditSupplierProfile = ({route}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <RadioButton
                 value="first"
-                status={fifty}
-                onPress={() => manageFifty()}
+                status={inputs.NoofEmployee == 5 ? 'checked' : 'unchecked'}
+                onPress={() => handleInputs('NoofEmployee', 5)}
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
@@ -1778,26 +1651,59 @@ const EditSupplierProfile = ({route}) => {
 
         <View style={{marginTop: 10}}>
           <Text style={styles.text}>Upload Showroom Images (upto 3):</Text>
-          <View style={styles.sView}>
-            <TouchableOpacity
-              onPress={() => uploadShowroom1('photo')}
-              style={styles.sTouch}>
-              <Text style={{color: '#fff'}}>Choose File</Text>
-            </TouchableOpacity>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '70%',
-              }}>
-              {showroom1 == '' ? (
-                <Text>No File Choosen</Text>
-              ) : (
-                <Text>{showroom1}</Text>
-              )}
+          <View>
+            <View style={styles.sView}>
+              <TouchableOpacity
+                onPress={() => handleImageUpload('showroom_image')}
+                style={styles.sTouch}>
+                <Text style={{color: '#fff'}}>Choose File</Text>
+              </TouchableOpacity>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '70%',
+                }}>
+                {inputs.showroom_image.length <= 0 ? (
+                  <Text>No File Choosen</Text>
+                ) : (
+                  <Text>
+                    {
+                      inputs.showroom_image[inputs.showroom_image.length - 1]
+                        ?.name
+                    }
+                  </Text>
+                )}
+              </View>
             </View>
+            <FlatList
+              data={inputs.showroom_image}
+              horizontal
+              style={{marginTop: 10}}
+              renderItem={({item}) => {
+                console.log('thjos os called', item);
+                return (
+                  <View
+                    style={{
+                      height: widthPercentageToDP(30),
+                      width: widthPercentageToDP(30),
+                      elevation: 5,
+                      shadowColor: 'black',
+                      shadowOffset: {height: 4, width: 4},
+                      shadowOpacity: 5,
+                      shadowRadius: 4,
+                      marginHorizontal: widthPercentageToDP(2),
+                    }}>
+                    <Image
+                      style={{height: '100%', width: '100%'}}
+                      source={{uri: item.uri}}
+                    />
+                  </View>
+                );
+              }}
+            />
           </View>
-          <View style={styles.sView}>
+          {/* <View style={styles.sView}>
             <TouchableOpacity
               onPress={() => uploadShowroom2('photo')}
               style={styles.sTouch}>
@@ -1815,8 +1721,8 @@ const EditSupplierProfile = ({route}) => {
                 <Text>{showroom2}</Text>
               )}
             </View>
-          </View>
-          <View style={styles.sView}>
+          </View> */}
+          {/* <View style={styles.sView}>
             <TouchableOpacity
               onPress={() => uploadShowroom3('photo')}
               style={styles.sTouch}>
@@ -1834,30 +1740,52 @@ const EditSupplierProfile = ({route}) => {
                 <Text>{showroom3}</Text>
               )}
             </View>
-          </View>
+          </View> */}
         </View>
 
         <View style={{marginTop: 10}}>
           <Text style={styles.text}>Upload Owner images:</Text>
           <View>
-            <View style={styles.uploadView}>
-              <TouchableOpacity
-                onPress={() => uploadOwner1('photo')}
-                style={styles.grey}>
-                <Text style={{color: '#fff'}}>Choose File</Text>
-              </TouchableOpacity>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '70%',
-                }}>
-                {ownerImage1 == '' ? (
-                  <Text>No File Choosen</Text>
-                ) : (
-                  <Text>{ownerImage1}</Text>
-                )}
+            <View>
+              <View style={styles.uploadView}>
+                <TouchableOpacity
+                  onPress={() => handleImageUpload('hiddenowner_image1')}
+                  style={styles.grey}>
+                  <Text style={{color: '#fff'}}>Choose File</Text>
+                </TouchableOpacity>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '70%',
+                  }}>
+                  {inputs.hiddenowner_image1?.name == '' ? (
+                    <Text>No File Choosen</Text>
+                  ) : (
+                    <Text>{inputs.hiddenowner_image1?.name}</Text>
+                  )}
+                </View>
               </View>
+              {inputs.hiddenowner_image1?.uri ? (
+                <View
+                  style={{
+                    elevation: 5,
+                    shadowColor: 'black',
+                    shadowOffset: {height: 4, width: 4},
+                    shadowOpacity: 5,
+                    shadowRadius: 4,
+                  }}>
+                  <Image
+                    style={{
+                      height: widthPercentageToDP(30),
+                      width: widthPercentageToDP(30),
+                      alignSelf: 'center',
+                      marginTop: 10,
+                    }}
+                    source={{uri: inputs.hiddenowner_image1?.uri}}
+                  />
+                </View>
+              ) : null}
             </View>
             <TextInput
               placeholder="Owner Name"
@@ -1869,38 +1797,60 @@ const EditSupplierProfile = ({route}) => {
                 borderColor: 'grey',
                 paddingLeft: 10,
               }}
-              value={ownerName1}
-              onChangeText={val => setOwnerName1(val)}
+              value={inputs.owner_name1}
+              onChangeText={val => handleInputs('owner_name1', val)}
             />
             <View style={styles.multiline}>
               <TextInput
                 placeholder="Write about owner description"
                 style={styles.input}
                 multiline
-                value={description1}
-                onChangeText={val => setDescriptiion1(val)}
+                value={inputs.owner_description1}
+                onChangeText={val => handleInputs('owner_description1', val)}
               />
             </View>
           </View>
           <View style={{marginTop: 5}}>
-            <View style={styles.uploadView}>
-              <TouchableOpacity
-                onPress={() => uploadOwner2('photo')}
-                style={styles.grey}>
-                <Text style={{color: '#fff'}}>Choose File</Text>
-              </TouchableOpacity>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '70%',
-                }}>
-                {ownerImage2 == '' ? (
-                  <Text>No File Choosen</Text>
-                ) : (
-                  <Text>{ownerImage2}</Text>
-                )}
+            <View>
+              <View style={styles.uploadView}>
+                <TouchableOpacity
+                  onPress={() => handleImageUpload('hiddenowner_image2')}
+                  style={styles.grey}>
+                  <Text style={{color: '#fff'}}>Choose File</Text>
+                </TouchableOpacity>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '70%',
+                  }}>
+                  {inputs.hiddenowner_image2?.name == '' ? (
+                    <Text>No File Choosen</Text>
+                  ) : (
+                    <Text>{inputs.hiddenowner_image2?.name}</Text>
+                  )}
+                </View>
               </View>
+              {inputs.hiddenowner_image2?.uri != '' ? (
+                <View
+                  style={{
+                    elevation: 5,
+                    shadowColor: 'black',
+                    shadowOffset: {height: 4, width: 4},
+                    shadowOpacity: 5,
+                    shadowRadius: 4,
+                  }}>
+                  <Image
+                    style={{
+                      height: widthPercentageToDP(30),
+                      width: widthPercentageToDP(30),
+                      alignSelf: 'center',
+                      marginTop: 10,
+                    }}
+                    source={{uri: inputs.hiddenowner_image2?.uri}}
+                  />
+                </View>
+              ) : null}
             </View>
             <TextInput
               placeholder="Owner Name"
@@ -1912,38 +1862,60 @@ const EditSupplierProfile = ({route}) => {
                 borderColor: 'grey',
                 paddingLeft: 10,
               }}
-              value={ownerName2}
-              onChangeText={val => setOwnerName2(val)}
+              value={inputs.owner_name2}
+              onChangeText={val => handleInputs('owner_name2', val)}
             />
             <View style={styles.multiline}>
               <TextInput
                 placeholder="Write about owner description"
                 style={styles.input}
                 multiline
-                value={description2}
-                onChangeText={val => setDescriptiion2(val)}
+                value={inputs.owner_description2}
+                onChangeText={val => handleInputs('owner_description2', val)}
               />
             </View>
           </View>
           <View style={{marginTop: 5}}>
-            <View style={styles.uploadView}>
-              <TouchableOpacity
-                onPress={() => uploadOwner3('photo')}
-                style={styles.grey}>
-                <Text style={{color: '#fff'}}>Choose File</Text>
-              </TouchableOpacity>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '70%',
-                }}>
-                {ownerImage3 == '' ? (
-                  <Text>No File Choosen</Text>
-                ) : (
-                  <Text>{ownerImage3}</Text>
-                )}
+            <View>
+              <View style={styles.uploadView}>
+                <TouchableOpacity
+                  onPress={() => handleImageUpload('hiddenowner_image3')}
+                  style={styles.grey}>
+                  <Text style={{color: '#fff'}}>Choose File</Text>
+                </TouchableOpacity>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '70%',
+                  }}>
+                  {inputs.hiddenowner_image3?.name == '' ? (
+                    <Text>No File Choosen</Text>
+                  ) : (
+                    <Text>{inputs.hiddenowner_image3?.name}</Text>
+                  )}
+                </View>
               </View>
+              {inputs.hiddenowner_image3?.uri ? (
+                <View
+                  style={{
+                    elevation: 5,
+                    shadowColor: 'black',
+                    shadowOffset: {height: 4, width: 4},
+                    shadowOpacity: 5,
+                    shadowRadius: 4,
+                  }}>
+                  <Image
+                    style={{
+                      height: widthPercentageToDP(30),
+                      width: widthPercentageToDP(30),
+                      alignSelf: 'center',
+                      marginTop: 10,
+                    }}
+                    source={{uri: inputs.hiddenowner_image3?.uri}}
+                  />
+                </View>
+              ) : null}
             </View>
             <TextInput
               placeholder="Owner Name"
@@ -1955,16 +1927,16 @@ const EditSupplierProfile = ({route}) => {
                 borderColor: 'grey',
                 paddingLeft: 10,
               }}
-              value={ownerName3}
-              onChangeText={val => setOwnerName3(val)}
+              value={inputs.owner_name3}
+              onChangeText={val => handleInputs('owner_name3', val)}
             />
             <View style={styles.multiline}>
               <TextInput
                 placeholder="Write about owner description"
                 style={styles.input}
                 multiline
-                value={description3}
-                onChangeText={val => setDescriptiion3(val)}
+                value={inputs.owner_description3}
+                onChangeText={val => handleInputs('owner_description3', val)}
               />
             </View>
           </View>
@@ -1972,7 +1944,7 @@ const EditSupplierProfile = ({route}) => {
 
         <View>
           <TouchableOpacity
-            onPress={() => validateUser()}
+            onPress={() => handleOnSumit()}
             style={{
               height: 40,
               width: '100%',
@@ -2035,48 +2007,30 @@ const items = [
   },
 ];
 const items1 = [
-  {
-    id: '1',
-    name: 'Custom Purity',
-  },
-  {
-    id: '2',
-    name: 'I-FG',
-  },
-  {
-    id: '3',
-    name: 'IF',
-  },
-  {
-    id: '4',
-    name: 'SI-FG',
-  },
-  {
-    id: '5',
-    name: 'SI-GH',
-  },
-  {
-    id: '6',
-    name: 'SI-I-FG',
-  },
+  {id: '1', name: 'Custom purity'},
+  {id: '2', name: 'I-FG'},
+  {id: '3', name: 'IF'},
+  {id: '4', name: 'SI-FG'},
+  {id: '5', name: 'SI-GH'},
+  {id: '6', name: 'SI-I-FG'},
+  {id: '7', name: 'SI-I-GH'},
+  {id: '8', name: 'VS-EF'},
+  {id: '9', name: 'VS-FG'},
+  {id: '10', name: 'VS-GH'},
+  {id: '11', name: 'VS-SI-EF'},
+  {id: '12', name: 'VS-SI-FG'},
+  {id: '13', name: 'VS-SI-GH'},
+  {id: '14', name: 'VVS-EF'},
+  {id: '15', name: 'VVS-FG'},
+  {id: '16', name: 'VVS-VS-EF'},
+  {id: '17', name: 'VVS-VS-FG'},
+  {id: '18', name: 'VVS-VS-GH'},
 ];
 const items2 = [
-  {
-    id: '1',
-    name: 'Custom Purity',
-  },
-  {
-    id: '2',
-    name: '950',
-  },
+  {id: '1', name: 'Custom purity'},
+  {id: '2', name: '950'},
 ];
 const items3 = [
-  {
-    id: '1',
-    name: 'Custom Purity',
-  },
-  {
-    id: '2',
-    name: '92',
-  },
+  {id: '1', name: 'Custom purity'},
+  {id: '2', name: '92'},
 ];
