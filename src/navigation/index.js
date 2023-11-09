@@ -18,7 +18,6 @@ import Customers from '../screens/Main/Customers';
 import Mycustomer from '../screens/Main/Mycustomers';
 import MyCustomerDetail from '../screens/Main/MyCustomerDetail';
 import Feedback from '../screens/Main/Feedback';
-
 import Chat from '../screens/Main/chatOnline';
 import Purchase from '../screens/Main/Purchasehistory';
 import LoyaltyPage from '../screens/Main/Loyaltypage';
@@ -26,7 +25,6 @@ import Loyalty from '../screens/Main/Loyalty';
 import MyNetwork from '../screens/Main/MyNetwork';
 import PendingRequest from '../screens/Main/PendingRequest';
 import SentRequest from '../screens/Main/SentRequest';
-
 import PartnerProfile from '../screens/Main/PartnerProfile';
 import editProduct from '../screens/Main/EditProductDetails';
 import CategoryDetails from '../screens/Main/CategoryDetails';
@@ -48,17 +46,16 @@ import ListOfProduct from '../screens/Main/ListOfProducts-1';
 import AddSupplierProdcut from '../screens/Main/ListOfproducts';
 import ChooseSupplierProduct from '../screens/Main/AddProducts';
 import FavouriteList from '../screens/Main/favouriteDetailsPage';
-import myNetworkBtn from '../screens/Main/myNetworkBtn';
-import index from '../screens/Main/addMore';
-import addMore from '../screens/Main/addMore';
+import MyNetworkBtn from '../screens/Main/myNetworkBtn';
+import AddMore from '../screens/Main/addMore';
 import AddProductTooffer from '../screens/Main/addProductTooffer';
-
 import ChatScreen from '../screens/Main/ChatScreen';
 import Messagebox from '../screens/Main/chatOnline';
 import MessageBox2 from '../screens/Main/MessageBox2';
 import MyNetworkList from '../screens/Main/MyNetworkList';
 import ChangePassword from '../screens/Main/changePassword';
 import PatnerProfile from '../screens/Main/patnerProfile';
+import User from 'react-native-vector-icons/FontAwesome5';
 
 const Stack1 = createNativeStackNavigator();
 function HomeScreen1() {
@@ -93,8 +90,8 @@ function HomeScreen1() {
         name="ChooseSupplierProduct"
         component={ChooseSupplierProduct}
       />
-      <Stack1.Screen name="myNetworkBtn" component={myNetworkBtn} />
-      <Stack1.Screen name="addMore" component={addMore} />
+      <Stack1.Screen name="myNetworkBtn" component={MyNetworkBtn} />
+      <Stack1.Screen name="addMore" component={AddMore} />
       <Stack1.Screen name="AddProductTooffer" component={AddProductTooffer} />
       <Stack2.Screen name="PatnerProfile" component={PatnerProfile} />
       <Stack2.Screen name="FavouriteList" component={FavouriteList} />
@@ -191,7 +188,7 @@ function Bottom() {
           },
         }}
       /> */}
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Message1"
         component={ChatStack}
         options={{
@@ -210,7 +207,7 @@ function Bottom() {
             );
           },
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Notification"
         component={Notification}
@@ -236,16 +233,17 @@ function Bottom() {
         options={{
           tabBarIcon: ({focused}) => {
             return (
-              <Image
-                style={{
-                  // tintColor: focused ? '#fff' : 'grey',
-                  height: 25,
-                  width: 22,
-                  resizeMode: 'center',
-                  tintColor: '#fff',
-                }}
-                source={require('../assets/supplierImage/user.png')}
-              />
+              // <Image
+              //   style={{
+              //     // tintColor: focused ? '#fff' : 'grey',
+              //     height: 25,
+              //     width: 22,
+              //     resizeMode: 'center',
+              //     tintColor: '#fff',
+              //   }}
+              //   source={require('../assets/supplierImage/user.png')}
+              // />
+              <User name="user-alt" size={22.4} color={'white'} />
             );
           },
         }}

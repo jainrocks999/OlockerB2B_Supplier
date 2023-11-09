@@ -24,7 +24,7 @@ import InviteRetailerList from '../InviteRetailerList';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function myNetworkBtn({route}) {
+export default function MyNetworkBtn({route}) {
   const {data} = route.params;
 
   const [listofRetailer, setListOfRetailer] = useState(false);

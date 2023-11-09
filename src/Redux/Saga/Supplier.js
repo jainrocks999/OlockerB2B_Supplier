@@ -8,7 +8,7 @@ import {parse} from 'react-native-svg';
 function* SupportProfileRequest(action) {
   try {
     const data = {
-      userId: '10',
+      userId: action.userId,
       usertype: 'supplier',
       role: '6',
     };
@@ -28,6 +28,7 @@ function* SupportProfileRequest(action) {
     yield put({
       type: 'Supplier_Profile_Error',
     });
+    console.log('this is error', error);
   }
 }
 

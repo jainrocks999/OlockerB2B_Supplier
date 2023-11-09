@@ -48,7 +48,15 @@ const SearchRetailer = () => {
     setState('');
     setSearch('');
   };
-
+  const handleWishList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Get_wishListProduct_Request',
+      url: '/wishListProduct',
+      user_id: user_id,
+      navigation,
+    });
+  };
   const getDetails = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
 
@@ -103,18 +111,25 @@ const SearchRetailer = () => {
           </Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
-            style={{height: 24, width: 28}}
-            source={require('../../../assets/Fo.png')}
-          />
-          <Image
-            style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
-            source={require('../../../assets/Image/dil.png')}
-          />
-          <Image
+          <TouchableOpacity onPress={() => navigation.navigate('Message')}>
+            <Image
+              style={{height: 24, width: 28}}
+              source={require('../../../assets/Fo.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              handleWishList();
+            }}>
+            <Image
+              style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
+              source={require('../../../assets/Image/dil.png')}
+            />
+          </TouchableOpacity>
+          {/* <Image
             style={{height: 24, width: 28, tintColor: '#fff', marginLeft: 15}}
             source={require('../../../assets/supplierImage/more.png')}
-          />
+          /> */}
         </View>
       </View>
       <ScrollView>

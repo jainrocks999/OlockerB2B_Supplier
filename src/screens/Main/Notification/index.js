@@ -13,7 +13,7 @@
 //     const filtered = data.filter(
 //       item =>
 //       // item.email.toLowerCase().includes(searchText.toLowerCase())||
-//       item.partner_name.toLowerCase().includes(searchText.toLowerCase()) 
+//       item.partner_name.toLowerCase().includes(searchText.toLowerCase())
 //     );
 //     setFilteredData(filtered);
 //   };
@@ -36,7 +36,7 @@
 //           returnKeyType="search"
 //           onSubmitEditing={handleReturnKey}
 //         />
-//         <TouchableOpacity 
+//         <TouchableOpacity
 //         onPress={()=>{handleReturnKey()}}
 //         >
 //           <Feather name="search" size={25} />
@@ -146,18 +146,12 @@
 //     color: '#000',
 //   },
 
-
 // ];
 
+import {View, Text} from 'react-native';
+import React from 'react';
+import PatnerProfile from '../patnerProfile';
 
-import { View, Text } from 'react-native'
-import React from 'react'
-import PatnerProfile from '../patnerProfile'
-
-export default function index() {
-  return (
-    <View style={{flex:1}}>
-   
-    </View>
-  )
+export default function Notification() {
+  return <View style={{flex: 1}}></View>;
 }

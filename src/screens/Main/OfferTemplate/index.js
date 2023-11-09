@@ -176,7 +176,7 @@ const OfferTemplate = () => {
               fontFamily: 'Roboto-Medium',
               marginLeft: 14,
             }}>
-            Offers template
+            Offer template
           </Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>

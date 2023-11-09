@@ -35,7 +35,7 @@ function* networkList(action) {
       userId: 13,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-    // console.log('thisi is user response', response);
+    console.log('thisi is user response', response);
     if (response.success == true) {
       yield put({
         type: 'Network_List_Success',
@@ -50,6 +50,7 @@ function* networkList(action) {
     yield put({
       type: 'Network_List_Error',
     });
+    console.log('this is errro', console.log(error));
   }
 }
 function* productTypeList(action) {
@@ -78,7 +79,7 @@ function* productTypeList(action) {
 }
 function* SearchRetailerRequest(action) {
   try {
-    console.log('called');
+    console.log('called', action);
     const data = {
       userRole: action.role,
       userId: action.userId,
@@ -89,6 +90,7 @@ function* SearchRetailerRequest(action) {
       length: action.length,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
+    console.log('this is response', JSON.stringify(response));
     if (response.status) {
       Toast.show('jtttotototo');
       console.log('this is search response');

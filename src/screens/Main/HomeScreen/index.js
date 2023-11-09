@@ -12,9 +12,8 @@ import {
   Alert,
   BackHandler,
 } from 'react-native';
-import Carousel from 'react-native-banner-carousel';
+
 import {useNavigation} from '@react-navigation/native';
-import Header from '../../../components/CustomHeader';
 import styles from './styles';
 import Toast from 'react-native-simple-toast';
 import Loader from '../../../components/Loader';
@@ -25,10 +24,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import Catalogue from '../../../Redux/Reducer/Catalogue';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Offer from '../../../assets/supplierImage/Offer.svg';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import Svg, {Path} from 'react-native-svg';
+
 let backPress = 0;
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -39,7 +41,6 @@ const HomeScreen = () => {
   const bannerList = useSelector(state => state.Home.BannerList);
   const isFetching4 = useSelector(state => state.State.BannerList);
   const fetching = useSelector(state => state.Home.isFetching);
-  // // console.log('this is network data daaa', bannerList);
   const win = Dimensions.get('window');
 
   const date = new Date();
@@ -180,7 +181,7 @@ const HomeScreen = () => {
   };
   return (
     <SafeAreaView style={{flex: 1}}>
-      <ScrollView style={styles.scroll}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.scroll}>
         {isFetching || isFetching1 || fetching || isFetching3 || isFetching4 ? (
           <Loader />
         ) : null}
@@ -291,68 +292,61 @@ const HomeScreen = () => {
             )}
           />
         </View>
-        <View style={styles.middle1}>
-          <View
-            style={{
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              paddingVertical: 10,
-            }}>
-            <TouchableOpacity
-              onPress={() => handleMyCatalogue('cat')}
-              style={{alignItems: 'center', width: '45%'}}>
-              <Image
-                resizeMode="contain"
-                style={{width: '100%', height: 150}}
-                source={require('../../../assets/Image/services.png')}
-              />
-              <Text style={styles.textc}>{'Catalogue'}</Text>
-            </TouchableOpacity>
+        {/* <View style={styles.middle1}> */}
+        <ScrollView
+          horizontal={true}
+          scrollEnabled={false}
+          contentContainerStyle={{
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 30,
+          }}>
+          {/* <View
+              style={{
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                paddingVertical: 10,
+              }}> */}
+          <TouchableOpacity
+            onPress={() => handleMyCatalogue('cat')}
+            style={{alignItems: 'center', width: 120}}>
+            <Image
+              resizeMode="contain"
+              style={{width: 110, height: 110}}
+              source={require('../../../assets/Image/services.png')}
+            />
+            <Text style={styles.textc}>{'Catalogue'}</Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('SearchRetailer');
-              }}
-              style={{alignItems: 'center', width: '45%'}}>
-              <Image
-                resizeMode="contain"
-                style={{width: '100%', height: 150}}
-                source={require('../../../assets/Image/partner.png')}
-              />
-              <Text style={styles.textc}>{'My Network'}</Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              paddingVertical: 10,
-            }}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('OfferTemplate')}
-              style={{alignItems: 'center', width: '45%'}}>
-              <View
-                style={{
-                  width: 150,
-                  height: 150,
-                  backgroundColor: '#032e63',
-                  borderRadius: 75,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                {/* <Image
-                  style={{width: '100%', height: 150, resizeMode: 'center'}}
-                  source={require('../../../assets/supplierImage/person.png')}
-                /> */}
-                <MaterialIcons name="local-offer" color="white" size={wp(18)} />
-              </View>
-              <Text style={styles.textc}>{'Add Offers'}</Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('SearchRetailer');
+            }}
+            style={{alignItems: 'center', width: 120}}>
+            <Image
+              resizeMode="contain"
+              style={{width: 110, height: 110}}
+              source={require('../../../assets/Image/partner.png')}
+            />
+            <Text style={styles.textc}>{'My Network'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('OfferTemplate');
+            }}
+            style={{alignItems: 'center', width: 120}}>
+            <Image
+              resizeMode="contain"
+              style={{width: 110, height: 110}}
+              source={require('../../../assets/Image/Offer.png')}
+            />
+            <Text style={styles.textc}>{'Offers'}</Text>
+          </TouchableOpacity>
 
+          {/* 
             <TouchableOpacity
               onPress={() => handleMyCatalogue('')}
               style={{alignItems: 'center', width: '45%'}}>
@@ -369,10 +363,12 @@ const HomeScreen = () => {
                 />
               </View>
               <Text style={styles.textc}>{'App Product'}</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{height: 40}} />
-        </View>
+            </TouchableOpacity> */}
+          {/* </View> */}
+        </ScrollView>
+        <View style={{height: 40}} />
+        {/* </View> */}
+
         {/* <View style={styles.bottom}>
             <View style={styles.Gold}>
               <Image
@@ -412,7 +408,7 @@ const HomeScreen = () => {
                 </View>
               </ImageBackground>
             )}
-          />
+          />+
         </View> */}
       </ScrollView>
       {/* <TabView /> */}
