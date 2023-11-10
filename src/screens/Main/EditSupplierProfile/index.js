@@ -325,7 +325,7 @@ const EditSupplierProfile = ({route}) => {
           data.append(item, newdata[item]);
       }
     });
-    // validateUser(data);
+    validateUser(data);
     console.log('this is diamond specialization', inputs.product_name1);
   };
   const validateUser = async data => {

@@ -590,7 +590,7 @@ const AddProducts = () => {
     };
 
     let data2 = new FormData();
-    await Object.keys(data).map(async (item, index) => {
+    Object.keys(data).map(async (item, index) => {
       switch (item) {
         case 'chk_sc':
           data[item]?.map((items, index) => {

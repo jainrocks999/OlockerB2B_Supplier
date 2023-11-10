@@ -8,7 +8,7 @@ const Profile = () => {
   const ownerImagePath = 'https://olocker.co/uploads/supplier/';
   return (
     <View style={{flex: 1, backgroundColor: '#fff', paddingVertical: 20}}>
-      {/* {isFetching ? <Loader /> : null} */}
+      {isFetching ? <Loader /> : null}
 
       <View style={{paddingHorizontal: 20, alignItems: 'flex-start'}}>
         <TouchableOpacity
