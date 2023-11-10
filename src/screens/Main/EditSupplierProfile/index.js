@@ -177,7 +177,6 @@ const EditSupplierProfile = ({route}) => {
     hiddenproduct_id1: 428,
     hiddenproduct_id2: 429,
     hiddenproduct_id3: 430,
-
     EmailId: 'tested@gmail.com',
   });
 
@@ -431,6 +430,7 @@ const EditSupplierProfile = ({route}) => {
       }
     });
   };
+  // const [productImages, setPorductImages] = useState(something);
 
   const getSpecilization = data => {
     let arr = [];
@@ -1412,12 +1412,20 @@ const EditSupplierProfile = ({route}) => {
                     undefined ? (
                       <Text>No File Choosen</Text>
                     ) : (
-                      <Text>{inputs[`product_name${index + 1}`]?.name}</Text>
+                      <Text>
+                        {inputs[`product_name${index + 1}`]?.name != undefined
+                          ? inputs[`product_name${index + 1}`]?.name !=
+                            undefined
+                          : item.ImageName}
+                      </Text>
                     )}
                   </View>
                 </View>
                 <TextInput
-                  placeholder="Product Name"
+                  placeholder={
+                    item?.OwnerName ? item.OwnerName : 'Product Name'
+                  }
+                  placeholderTextColor={item?.OwnerName ? 'black' : ''}
                   style={{
                     borderWidth: 1,
                     marginTop: 4,
@@ -1431,7 +1439,8 @@ const EditSupplierProfile = ({route}) => {
                     handleInputs(`product_name${index + 1}`, val)
                   }
                 />
-                {inputs[`hiddenproduct_image${index + 1}`]?.uri ? (
+                {inputs[`hiddenproduct_image${index + 1}`]?.uri ||
+                item?.ImageName ? (
                   <View
                     style={{
                       elevation: 5,
@@ -1447,7 +1456,11 @@ const EditSupplierProfile = ({route}) => {
                         alignSelf: 'center',
                         marginTop: 10,
                       }}
-                      source={{uri: inputs.hiddenproduct_image1?.uri}}
+                      source={{
+                        uri: inputs.hiddenproduct_image1?.uri
+                          ? inputs.hiddenproduct_image1?.uri
+                          : `https://olocker.co/uploads/supplier/${item?.ImageName}`,
+                      }}
                     />
                   </View>
                 ) : null}
