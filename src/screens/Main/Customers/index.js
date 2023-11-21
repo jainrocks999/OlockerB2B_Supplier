@@ -20,7 +20,6 @@
 // import RNPickerSelect from 'react-native-picker-select';
 // import styles from './styles';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
-
 // const MyCatalogue = () => {
 //   const navigation = useNavigation();
 //   const [status, setStatus] = useState('');

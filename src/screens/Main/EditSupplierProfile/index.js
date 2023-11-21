@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native';
 import Header from '../../../components/CustomHeader';
 import {useNavigation} from '@react-navigation/native';
@@ -59,8 +60,9 @@ const EditSupplierProfile = ({route}) => {
   const stateList1 = useSelector(state => state.State.StateList);
   const stateList = stateList1?.satates;
   const cityList1 = useSelector(state => state.City.CityList);
+  const cityList2 = useSelector(state => state.State.city);
   const cityList = cityList1?.cities;
-
+  const dispatch = useDispatch();
   useEffect(() => {
     route.params.selector.specialisation.map(item => {
       if (item.metaltype == 'Gold') {
@@ -134,50 +136,10 @@ const EditSupplierProfile = ({route}) => {
       type: '',
       uri: '',
     },
-    product_name1: '',
-    product_name2: '',
-    product_name3: '',
-    hiddenproduct_image1: '',
-    hiddenproduct_image2: '',
-    hiddenproduct_image3: '',
-    // product_image3: {
-    //   name: '',
-    //   type: '',
-    //   uri: '',
-    // },
     aboutus: '',
     NoofEmployee: 0,
-    showroom_image: [],
-
-    owner_name1: '',
-    owner_description1: '',
-    // owner_image2: {
-    //   name: '',
-    //   type: '',
-    //   uri: '',
-    // },
-    owner_name2: '',
-    owner_description2: '',
-    // owner_image3: {
-    //   name: '',
-    //   type: '',
-    //   uri: '',
-    // },
-    owner_name3: '',
-    owner_description3: '',
-    hiddenowner_image1: '',
-    hiddenowner_id1: 434,
-    owner_description1: '',
-    hiddenowner_image2: '',
-    hiddenowner_id2: 435,
-    owner_description2: '',
-    hiddenowner_image3: '',
-    hiddenowner_id3: 436,
-    owner_description3: '',
-    hiddenproduct_id1: 428,
-    hiddenproduct_id2: 429,
-    hiddenproduct_id3: 430,
     EmailId: 'tested@gmail.com',
+    showroom_image: [],
   });
 
   const handleInputs = (key, value) => {
@@ -188,6 +150,32 @@ const EditSupplierProfile = ({route}) => {
     const Token = await AsyncStorage.getItem('loginToken');
     const newdata = {...inputs, SrNo: user_id};
     let data = new FormData();
+    productImages.map((item, index) => {
+      data.append(
+        `hiddenproduct_image${index + 1}`,
+        item[`hiddenproduct_image${index + 1}`],
+      );
+      data.append(
+        `hiddenproduct_id${index + 1}`,
+        item[`hiddenproduct_id${index + 1}`],
+      );
+      data.append(`product_name${index + 1}`, item[`product_name${index + 1}`]);
+    });
+    ownerImages.map((item, index) => {
+      data.append(
+        `hiddenowner_image${index + 1}`,
+        item[`hiddenowner_image${index + 1}`],
+      );
+      data.append(
+        `hiddenowner_id${index + 1}`,
+        item[`hiddenowner_id${index + 1}`],
+      );
+      data.append(`owner_name${index + 1}`, item[`owner_name${index + 1}`]);
+      data.append(
+        `owner_description${index + 1}`,
+        item[`owner_description${index + 1}`],
+      );
+    });
     Object.keys(newdata).map(item => {
       setFetching(true);
       switch (item) {
@@ -320,14 +308,14 @@ const EditSupplierProfile = ({route}) => {
         case 'IsAnyBranch':
           data.append(item, newdata[item] ? 'on' : 'off');
           break;
-
         default:
           data.append(item, newdata[item]);
       }
     });
     validateUser(data);
-    console.log('this is diamond specialization', inputs.product_name1);
+    console.log('thisis formdata', JSON.stringify(data));
   };
+
   const validateUser = async data => {
     const Token = await AsyncStorage.getItem('loginToken');
     console.log('called');
@@ -357,9 +345,6 @@ const EditSupplierProfile = ({route}) => {
       console.log('this is iresponae', error);
     }
   };
-
-  // console.log('thjios isi isisisi', inputs.showroom_image);
-
   const handleImageUpload = type => {
     let options = {
       mediaType: 'photo',
@@ -430,7 +415,6 @@ const EditSupplierProfile = ({route}) => {
       }
     });
   };
-  // const [productImages, setPorductImages] = useState(something);
 
   const getSpecilization = data => {
     let arr = [];
@@ -441,14 +425,6 @@ const EditSupplierProfile = ({route}) => {
     return arr;
   };
 
-  // useEffect(() => {
-  //   setInputs(prev => ({
-  //     ...prev,
-  //     hiddenowner_image1: getOwnerImage(ownerImage[0]),
-  //     hiddenowner_image2: getOwnerImage(ownerImage[1]),
-  //     hiddenowner_image3: getOwnerImage(ownerImage[2]),
-  //   }));
-  // }, [ownerImage]);
   const getOwnerImage = data => {
     const obj = {
       name: data?.ImageName,
@@ -477,7 +453,182 @@ const EditSupplierProfile = ({route}) => {
       }));
     });
   };
-  console.log('this is hidden image 1', inputs.hiddenowner_image1?.name);
+  // console.log('this is hidden image 1', inputs.hiddenowner_image1?.name);
+  const manageCity = stateId => {
+    dispatch({
+      type: 'city_list_request',
+      url: 'getCities',
+      stateId,
+    });
+  };
+  const setPrevProduct = type => {
+    let arr = [];
+
+    productImage?.map((item, index) => {
+      let obj = {};
+      obj[`hiddenproduct_image${index + 1}`] = {
+        name: item?.ImageName,
+        uri: `https://olocker.co/uploads/supplier/${item?.ImageName}`,
+        type: 'image/jpg',
+      };
+      obj[`product_name${index + 1}`] = item?.OwnerName;
+      obj[`hiddenproduct_id${index + 1}`] = item?.SrNo;
+      arr.push(obj);
+    });
+    return arr;
+  };
+
+  const setPrevOwner = type => {
+    let arr = [];
+
+    ownerImage?.map((item, index) => {
+      let obj = {};
+      obj[`hiddenowner_image${index + 1}`] = {
+        name: item?.ImageName,
+        uri: `https://olocker.co/uploads/supplier/${item?.ImageName}`,
+        type: 'image/jpg',
+      };
+      obj[`owner_name${index + 1}`] = item?.OwnerName;
+      obj[`owner_description${index + 1}`] = item?.Description;
+      obj[`hiddenowner_id${index + 1}`] = item?.SrNo;
+      arr.push(obj);
+    });
+
+    return arr;
+  };
+
+  const [productImages, setProductImages] = useState(setPrevProduct('image'));
+  const [ownerImages, setOwnerImages] = useState(setPrevOwner('image'));
+
+  const handleProductImages = (index, types) => {
+    let options = {
+      mediaType: 'photo',
+      maxWidth: 300,
+      maxHeight: 550,
+      quality: 1,
+      selectionLimit: 1,
+    };
+    let updatedArray = [...productImages];
+
+    if (types == 'image') {
+      launchImageLibrary(options, response => {
+        if (response.didCancel) {
+          return;
+        } else if (response.errorCode == 'camera_unavailable') {
+          return;
+        } else if (response.errorCode == 'permission') {
+          return;
+        } else if (response.errorCode == 'others') {
+          return;
+        }
+        let updatedObj = {};
+        updatedObj = {
+          [`hiddenproduct_image${index + 1}`]: {
+            uri: response.assets[0].uri,
+            name: response?.assets[0]?.fileName?.replace(
+              /^rn_image_picker_lib_temp_/,
+              '',
+            ),
+            type: response.assets[0].type,
+          },
+
+          [`product_name${index + 1}`]:
+            productImages[index][`product_name${index + 1}`],
+          [`hiddenproduct_id${index + 1}`]:
+            productImages[index][`hiddenproduct_id${index + 1}`],
+        };
+        updatedArray[index] = {...updatedObj};
+        setProductImages(updatedArray);
+      });
+    } else {
+      let updatedObj = {};
+      updatedObj = {
+        [`hiddenproduct_image${index + 1}`]:
+          productImages[index][`hiddenproduct_image${index + 1}`],
+        [`product_name${index + 1}`]: types,
+        [`hiddenproduct_id${index + 1}`]:
+          productImages[index][`hiddenproduct_id${index + 1}`],
+      };
+
+      updatedArray[index] = {...updatedObj};
+
+      setProductImages(updatedArray);
+    }
+  };
+  const handleOwnerImages = (index, types, type2) => {
+    let options = {
+      mediaType: 'photo',
+      maxWidth: 300,
+      maxHeight: 550,
+      quality: 1,
+      selectionLimit: 1,
+    };
+    let updatedArray = [...ownerImages];
+
+    if (types == 'image') {
+      launchImageLibrary(options, response => {
+        if (response.didCancel) {
+          return;
+        } else if (response.errorCode == 'camera_unavailable') {
+          return;
+        } else if (response.errorCode == 'permission') {
+          return;
+        } else if (response.errorCode == 'others') {
+          return;
+        }
+        let updatedObj = {};
+        updatedObj = {
+          [`hiddenowner_image${index + 1}`]: {
+            uri: response.assets[0].uri,
+            name: response?.assets[0]?.fileName?.replace(
+              /^rn_image_picker_lib_temp_/,
+              '',
+            ),
+            type: response.assets[0].type,
+          },
+
+          [`owner_name${index + 1}`]:
+            ownerImages[index][`owner_name${index + 1}`],
+          [`owner_description${index + 1}`]:
+            ownerImages[index][`owner_description${index + 1}`],
+          [`hiddenowner_id${index + 1}`]:
+            ownerImages[index][`hiddenowner_id${index + 1}`],
+        };
+        updatedArray[index] = {...updatedObj};
+        setOwnerImages(updatedArray);
+      });
+    } else if (type2 == 'name') {
+      let updatedObj = {};
+      updatedObj = {
+        [`hiddenowner_image${index + 1}`]:
+          ownerImages[index][`hiddenowner_image${index + 1}`],
+        [`owner_name${index + 1}`]: types,
+        [`owner_description${index + 1}`]:
+          ownerImages[index][`owner_description${index + 1}`],
+        [`hiddenowner_id${index + 1}`]:
+          ownerImages[index][`hiddenowner_id${index + 1}`],
+      };
+
+      updatedArray[index] = {...updatedObj};
+
+      setOwnerImages(updatedArray);
+    } else {
+      let updatedObj = {};
+      updatedObj = {
+        [`hiddenowner_image${index + 1}`]:
+          ownerImages[index][`hiddenowner_image${index + 1}`],
+        [`owner_name${index + 1}`]:
+          ownerImages[index][`owner_name${index + 1}`],
+        [`owner_description${index + 1}`]: types,
+        [`hiddenowner_id${index + 1}`]:
+          ownerImages[index][`hiddenowner_id${index + 1}`],
+      };
+
+      updatedArray[index] = {...updatedObj};
+
+      setOwnerImages(updatedArray);
+    }
+  };
   const renderScreen = () => {
     return (
       <ScrollView style={{paddingHorizontal: 10, paddingVertical: 10}}>
@@ -600,7 +751,7 @@ const EditSupplierProfile = ({route}) => {
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
               iconStyle={styles.iconStyle}
-              data={cityList ? cityList : []}
+              data={cityList2 ? cityList2 : cityList ? cityList : []}
               maxHeight={250}
               labelField="label"
               valueField="value"
@@ -1391,14 +1542,12 @@ const EditSupplierProfile = ({route}) => {
         <View style={{marginTop: 10}}>
           <Text style={styles.text}>Upload image of your product:</Text>
           <FlatList
-            data={productImage}
+            data={productImages}
             renderItem={({item, index}) => (
               <View>
                 <View style={styles.uploadView}>
                   <TouchableOpacity
-                    onPress={() =>
-                      handleImageUpload(`hiddenproduct_image${index + 1}`)
-                    }
+                    onPress={() => handleProductImages(index, 'image')}
                     style={styles.grey}>
                     <Text style={{color: '#fff'}}>Choose File</Text>
                   </TouchableOpacity>
@@ -1408,23 +1557,18 @@ const EditSupplierProfile = ({route}) => {
                       justifyContent: 'center',
                       width: '70%',
                     }}>
-                    {inputs[`hiddenproduct_image${index + 1}`]?.name == '' ||
+                    {item[`hiddenproduct_image${index + 1}`]?.name == '' ||
                     undefined ? (
                       <Text>No File Choosen</Text>
                     ) : (
                       <Text>
-                        {inputs[`product_name${index + 1}`]?.name != undefined
-                          ? inputs[`product_name${index + 1}`]?.name !=
-                            undefined
-                          : item.ImageName}
+                        {item[`hiddenproduct_image${index + 1}`]?.name}
                       </Text>
                     )}
                   </View>
                 </View>
                 <TextInput
-                  placeholder={
-                    item?.OwnerName ? item.OwnerName : 'Product Name'
-                  }
+                  placeholder={'Product Name'}
                   placeholderTextColor={item?.OwnerName ? 'black' : ''}
                   style={{
                     borderWidth: 1,
@@ -1434,13 +1578,10 @@ const EditSupplierProfile = ({route}) => {
                     borderColor: 'grey',
                     paddingLeft: 10,
                   }}
-                  value={inputs[`product_name${index + 1}`]}
-                  onChangeText={val =>
-                    handleInputs(`product_name${index + 1}`, val)
-                  }
+                  value={item?.[`product_name${index + 1}`]}
+                  onChangeText={val => handleProductImages(index, val)}
                 />
-                {inputs[`hiddenproduct_image${index + 1}`]?.uri ||
-                item?.ImageName ? (
+                {item[`hiddenproduct_image${index + 1}`]?.uri ? (
                   <View
                     style={{
                       elevation: 5,
@@ -1457,9 +1598,7 @@ const EditSupplierProfile = ({route}) => {
                         marginTop: 10,
                       }}
                       source={{
-                        uri: inputs.hiddenproduct_image1?.uri
-                          ? inputs.hiddenproduct_image1?.uri
-                          : `https://olocker.co/uploads/supplier/${item?.ImageName}`,
+                        uri: item[`hiddenproduct_image${index + 1}`]?.uri,
                       }}
                     />
                   </View>
@@ -1758,72 +1897,81 @@ const EditSupplierProfile = ({route}) => {
 
         <View style={{marginTop: 10}}>
           <Text style={styles.text}>Upload Owner images:</Text>
-          <View>
-            <View>
-              <View style={styles.uploadView}>
-                <TouchableOpacity
-                  onPress={() => handleImageUpload('hiddenowner_image1')}
-                  style={styles.grey}>
-                  <Text style={{color: '#fff'}}>Choose File</Text>
-                </TouchableOpacity>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '70%',
-                  }}>
-                  {inputs.hiddenowner_image1?.name == '' ? (
-                    <Text>No File Choosen</Text>
-                  ) : (
-                    <Text>{inputs.hiddenowner_image1?.name}</Text>
-                  )}
+          <FlatList
+            data={ownerImages}
+            renderItem={({item, index}) => (
+              <View>
+                <View>
+                  <View style={styles.uploadView}>
+                    <TouchableOpacity
+                      onPress={() => handleOwnerImages(index, 'image', '')}
+                      style={styles.grey}>
+                      <Text style={{color: '#fff'}}>Choose File</Text>
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '70%',
+                      }}>
+                      {item[`hiddenowner_image${index + 1}`]?.name == '' ? (
+                        <Text>No File Choosen</Text>
+                      ) : (
+                        <Text>
+                          {item[`hiddenowner_image${index + 1}`]?.name}
+                        </Text>
+                      )}
+                    </View>
+                  </View>
+                  {item[`hiddenowner_image${index + 1}`]?.uri ? (
+                    <View
+                      style={{
+                        elevation: 5,
+                        shadowColor: 'black',
+                        shadowOffset: {height: 4, width: 4},
+                        shadowOpacity: 5,
+                        shadowRadius: 4,
+                      }}>
+                      <Image
+                        style={{
+                          height: widthPercentageToDP(30),
+                          width: widthPercentageToDP(30),
+                          alignSelf: 'center',
+                          marginTop: 10,
+                        }}
+                        source={{
+                          uri: item[`hiddenowner_image${index + 1}`]?.uri,
+                        }}
+                      />
+                    </View>
+                  ) : null}
                 </View>
-              </View>
-              {inputs.hiddenowner_image1?.uri ? (
-                <View
+                <TextInput
+                  placeholder="Owner Name"
                   style={{
-                    elevation: 5,
-                    shadowColor: 'black',
-                    shadowOffset: {height: 4, width: 4},
-                    shadowOpacity: 5,
-                    shadowRadius: 4,
-                  }}>
-                  <Image
-                    style={{
-                      height: widthPercentageToDP(30),
-                      width: widthPercentageToDP(30),
-                      alignSelf: 'center',
-                      marginTop: 10,
-                    }}
-                    source={{uri: inputs.hiddenowner_image1?.uri}}
+                    borderWidth: 1,
+                    marginTop: 4,
+                    height: 40,
+                    borderRadius: 6,
+                    borderColor: 'grey',
+                    paddingLeft: 10,
+                  }}
+                  value={item[`owner_name${index + 1}`]}
+                  onChangeText={val => handleOwnerImages(index, val, 'name')}
+                />
+                <View style={styles.multiline}>
+                  <TextInput
+                    placeholder="Write about owner description"
+                    style={styles.input}
+                    multiline
+                    value={item[`owner_description${index + 1}`]}
+                    onChangeText={val => handleOwnerImages(index, val, '')}
                   />
                 </View>
-              ) : null}
-            </View>
-            <TextInput
-              placeholder="Owner Name"
-              style={{
-                borderWidth: 1,
-                marginTop: 4,
-                height: 40,
-                borderRadius: 6,
-                borderColor: 'grey',
-                paddingLeft: 10,
-              }}
-              value={inputs.owner_name1}
-              onChangeText={val => handleInputs('owner_name1', val)}
-            />
-            <View style={styles.multiline}>
-              <TextInput
-                placeholder="Write about owner description"
-                style={styles.input}
-                multiline
-                value={inputs.owner_description1}
-                onChangeText={val => handleInputs('owner_description1', val)}
-              />
-            </View>
-          </View>
-          <View style={{marginTop: 5}}>
+              </View>
+            )}
+          />
+          {/* <View style={{marginTop: 5}}>
             <View>
               <View style={styles.uploadView}>
                 <TouchableOpacity
@@ -1952,7 +2100,7 @@ const EditSupplierProfile = ({route}) => {
                 onChangeText={val => handleInputs('owner_description3', val)}
               />
             </View>
-          </View>
+          </View> */}
         </View>
 
         <View>
