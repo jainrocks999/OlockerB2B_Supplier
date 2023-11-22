@@ -48,7 +48,7 @@ const EditSupplierProfile = ({route}) => {
   const productImage = getImages('Product Image');
 
   const showroomImage = getImages('ShowRoom Image');
-  const supplierLogo = route.params.supplierLogo;
+  const supplierLogo = getImages('Logo');
   const ownerImage = getImages('Owner Image');
   // console.log('ownerName1,productImage',productImage,ownerImage);
   console.log(JSON.stringify(ownerImage));
@@ -100,7 +100,23 @@ const EditSupplierProfile = ({route}) => {
       }
     });
   }, []);
-
+  const getShowroom = () => {
+    let arr = [];
+    showroomImage?.map(item => {
+      let obj;
+      obj = {
+        name: item?.ImageName,
+        uri: `https://olocker.co/uploads/supplier/${item?.ImageName}`,
+        type: 'image/jpg',
+      };
+      arr.push(obj);
+    });
+    return arr;
+  };
+  console.log(
+    'thisi is details',
+    JSON.stringify(details?.IsActive == 1 ? true : false),
+  );
   const [inputs, setInputs] = useState({
     SupplierName: details?.SupplierName,
     ContactPersonName: details?.ContactPersonName,
@@ -129,17 +145,17 @@ const EditSupplierProfile = ({route}) => {
     platinumcustom_purity: '',
     silvercustom_purity: '',
     DiamondQuality: '',
-    IsActive: false,
-    IsDefaultSupplier: false,
+    IsActive: details?.IsActive ? true : false,
+    IsDefaultSupplier: details?.IsDefaultSupplier == 1 ? true : false,
     logo: {
-      name: '',
-      type: '',
-      uri: '',
+      name: supplierLogo[0]?.ImageName,
+      type: 'image/jpg',
+      uri: `https://olocker.co/uploads/supplier/${supplierLogo[0]?.ImageName}`,
     },
     aboutus: '',
-    NoofEmployee: 0,
+    NoofEmployee: details?.NoofEmployee,
     EmailId: 'tested@gmail.com',
-    showroom_image: [],
+    showroom_image: getShowroom(),
   });
 
   const handleInputs = (key, value) => {
@@ -378,15 +394,6 @@ const EditSupplierProfile = ({route}) => {
         case 'logo':
           handleInputs('logo', obj);
           break;
-        case 'hiddenproduct_image1':
-          handleInputs('hiddenproduct_image1', obj);
-          break;
-        case 'hiddenproduct_image2':
-          handleInputs('hiddenproduct_image2', obj);
-          break;
-        case 'hiddenproduct_image3':
-          handleInputs('hiddenproduct_image3', obj);
-          break;
         case 'showroom_image': {
           response.assets.map(item => {
             let obj2 = {
@@ -401,15 +408,7 @@ const EditSupplierProfile = ({route}) => {
           handleInputs('showroom_image', arr);
           break;
         }
-        case 'hiddenowner_image1':
-          handleInputs('hiddenowner_image1', obj);
-          break;
-        case 'hiddenowner_image2':
-          handleInputs('hiddenowner_image2', obj);
-          break;
-        case 'hiddenowner_image3':
-          handleInputs('hiddenowner_image3', obj);
-          break;
+
         default:
           return;
       }
@@ -433,26 +432,7 @@ const EditSupplierProfile = ({route}) => {
     };
     return obj;
   };
-  useEffect(() => {
-    handlePrevImages();
-  }, []);
-  const handlePrevImages = index => {
-    productImage.map(item => {
-      console.log('ghus gya');
-      const obj = {
-        name: item?.ImageName,
-        type: 'image/jpg',
-        uri: `https://olocker.co/uploads/supplier/${item?.ImageName}`,
-      };
-      let ImagePrams = `hiddenproduct_image${index + 1}`;
-      let NameParams = `product_name${index + 1}`;
-      setInputs(prev => ({
-        ...prev,
-        [ImagePrams]: obj,
-        [NameParams]: item?.OwnerName,
-      }));
-    });
-  };
+
   // console.log('this is hidden image 1', inputs.hiddenowner_image1?.name);
   const manageCity = stateId => {
     dispatch({
@@ -605,12 +585,9 @@ const EditSupplierProfile = ({route}) => {
         [`owner_name${index + 1}`]: types,
         [`owner_description${index + 1}`]:
           ownerImages[index][`owner_description${index + 1}`],
-        [`hiddenowner_id${index + 1}`]:
-          ownerImages[index][`hiddenowner_id${index + 1}`],
+        [`hiddenowner_id${index + 1}`]: ownerImages[index][`-${index + 1}`],
       };
-
       updatedArray[index] = {...updatedObj};
-
       setOwnerImages(updatedArray);
     } else {
       let updatedObj = {};
@@ -1606,114 +1583,6 @@ const EditSupplierProfile = ({route}) => {
               </View>
             )}
           />
-          {/* <View style={{marginTop: 5}}>
-            <View style={styles.uploadView}>
-              <TouchableOpacity
-                onPress={() => handleImageUpload('hiddenproduct_image2')}
-                style={styles.grey}>
-                <Text style={{color: '#fff'}}>Choose File</Text>
-              </TouchableOpacity>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '70%',
-                }}>
-                {inputs.hiddenproduct_image2?.uri == '' ? (
-                  <Text>No File Choosen</Text>
-                ) : (
-                  <Text>{inputs.hiddenproduct_image2?.name}</Text>
-                )}
-              </View>
-            </View>
-            <TextInput
-              placeholder="Product Name"
-              style={{
-                borderWidth: 1,
-                marginTop: 4,
-                height: 40,
-                borderRadius: 6,
-                borderColor: 'grey',
-                paddingLeft: 10,
-              }}
-              value={inputs.product_name2}
-              onChangeText={val => handleInputs('product_name2', val)}
-            />
-            {inputs.hiddenproduct_image2.uri ? (
-              <View
-                style={{
-                  elevation: 5,
-                  shadowColor: 'black',
-                  shadowOffset: {height: 4, width: 4},
-                  shadowOpacity: 5,
-                  shadowRadius: 4,
-                }}>
-                <Image
-                  style={{
-                    height: widthPercentageToDP(30),
-                    width: widthPercentageToDP(30),
-                    alignSelf: 'center',
-                    marginTop: 10,
-                  }}
-                  source={{uri: inputs.hiddenproduct_image2.uri}}
-                />
-              </View>
-            ) : null}
-          </View> */}
-          {/* <View style={{marginTop: 5}}>
-            <View style={styles.uploadView}>
-              <TouchableOpacity
-                onPress={() => handleImageUpload('hiddenproduct_image3')}
-                style={styles.grey}>
-                <Text style={{color: '#fff'}}>Choose File</Text>
-              </TouchableOpacity>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '70%',
-                }}>
-                {inputs.hiddenproduct_image3?.name == '' ? (
-                  <Text>No File Choosen</Text>
-                ) : (
-                  <Text>{inputs.hiddenproduct_image3?.name}</Text>
-                )}
-              </View>
-            </View>
-            <TextInput
-              placeholder="Product Name"
-              style={{
-                borderWidth: 1,
-                marginTop: 4,
-                height: 40,
-                borderRadius: 6,
-                borderColor: 'grey',
-                paddingLeft: 10,
-              }}
-              value={inputs.product_name3}
-              onChangeText={val => handleInputs('product_name3', val)}
-            />
-            {inputs.hiddenproduct_image3?.uri ? (
-              <View
-                style={{
-                  elevation: 5,
-                  shadowColor: 'black',
-                  shadowOffset: {height: 4, width: 4},
-                  shadowOpacity: 5,
-                  shadowRadius: 4,
-                }}>
-                <Image
-                  style={{
-                    height: widthPercentageToDP(30),
-                    width: widthPercentageToDP(30),
-                    alignSelf: 'center',
-                    marginTop: 10,
-                  }}
-                  source={{uri: inputs.hiddenproduct_image3?.uri}}
-                />
-              </View>
-            ) : null}
-          </View> */}
         </View>
 
         <View style={{marginTop: 10}}>
@@ -1855,44 +1724,6 @@ const EditSupplierProfile = ({route}) => {
               }}
             />
           </View>
-          {/* <View style={styles.sView}>
-            <TouchableOpacity
-              onPress={() => uploadShowroom2('photo')}
-              style={styles.sTouch}>
-              <Text style={{color: '#fff'}}>Choose File</Text>
-            </TouchableOpacity>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '70%',
-              }}>
-              {showroom2 == '' ? (
-                <Text>No File Choosen</Text>
-              ) : (
-                <Text>{showroom2}</Text>
-              )}
-            </View>
-          </View> */}
-          {/* <View style={styles.sView}>
-            <TouchableOpacity
-              onPress={() => uploadShowroom3('photo')}
-              style={styles.sTouch}>
-              <Text style={{color: '#fff'}}>Choose File</Text>
-            </TouchableOpacity>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '70%',
-              }}>
-              {showroom3 == '' ? (
-                <Text>No File Choosen</Text>
-              ) : (
-                <Text>{showroom3}</Text>
-              )}
-            </View>
-          </View> */}
         </View>
 
         <View style={{marginTop: 10}}>
@@ -1971,136 +1802,6 @@ const EditSupplierProfile = ({route}) => {
               </View>
             )}
           />
-          {/* <View style={{marginTop: 5}}>
-            <View>
-              <View style={styles.uploadView}>
-                <TouchableOpacity
-                  onPress={() => handleImageUpload('hiddenowner_image2')}
-                  style={styles.grey}>
-                  <Text style={{color: '#fff'}}>Choose File</Text>
-                </TouchableOpacity>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '70%',
-                  }}>
-                  {inputs.hiddenowner_image2?.name == '' ? (
-                    <Text>No File Choosen</Text>
-                  ) : (
-                    <Text>{inputs.hiddenowner_image2?.name}</Text>
-                  )}
-                </View>
-              </View>
-              {inputs.hiddenowner_image2?.uri != '' ? (
-                <View
-                  style={{
-                    elevation: 5,
-                    shadowColor: 'black',
-                    shadowOffset: {height: 4, width: 4},
-                    shadowOpacity: 5,
-                    shadowRadius: 4,
-                  }}>
-                  <Image
-                    style={{
-                      height: widthPercentageToDP(30),
-                      width: widthPercentageToDP(30),
-                      alignSelf: 'center',
-                      marginTop: 10,
-                    }}
-                    source={{uri: inputs.hiddenowner_image2?.uri}}
-                  />
-                </View>
-              ) : null}
-            </View>
-            <TextInput
-              placeholder="Owner Name"
-              style={{
-                borderWidth: 1,
-                marginTop: 4,
-                height: 40,
-                borderRadius: 6,
-                borderColor: 'grey',
-                paddingLeft: 10,
-              }}
-              value={inputs.owner_name2}
-              onChangeText={val => handleInputs('owner_name2', val)}
-            />
-            <View style={styles.multiline}>
-              <TextInput
-                placeholder="Write about owner description"
-                style={styles.input}
-                multiline
-                value={inputs.owner_description2}
-                onChangeText={val => handleInputs('owner_description2', val)}
-              />
-            </View>
-          </View>
-          <View style={{marginTop: 5}}>
-            <View>
-              <View style={styles.uploadView}>
-                <TouchableOpacity
-                  onPress={() => handleImageUpload('hiddenowner_image3')}
-                  style={styles.grey}>
-                  <Text style={{color: '#fff'}}>Choose File</Text>
-                </TouchableOpacity>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '70%',
-                  }}>
-                  {inputs.hiddenowner_image3?.name == '' ? (
-                    <Text>No File Choosen</Text>
-                  ) : (
-                    <Text>{inputs.hiddenowner_image3?.name}</Text>
-                  )}
-                </View>
-              </View>
-              {inputs.hiddenowner_image3?.uri ? (
-                <View
-                  style={{
-                    elevation: 5,
-                    shadowColor: 'black',
-                    shadowOffset: {height: 4, width: 4},
-                    shadowOpacity: 5,
-                    shadowRadius: 4,
-                  }}>
-                  <Image
-                    style={{
-                      height: widthPercentageToDP(30),
-                      width: widthPercentageToDP(30),
-                      alignSelf: 'center',
-                      marginTop: 10,
-                    }}
-                    source={{uri: inputs.hiddenowner_image3?.uri}}
-                  />
-                </View>
-              ) : null}
-            </View>
-            <TextInput
-              placeholder="Owner Name"
-              style={{
-                borderWidth: 1,
-                marginTop: 4,
-                height: 40,
-                borderRadius: 6,
-                borderColor: 'grey',
-                paddingLeft: 10,
-              }}
-              value={inputs.owner_name3}
-              onChangeText={val => handleInputs('owner_name3', val)}
-            />
-            <View style={styles.multiline}>
-              <TextInput
-                placeholder="Write about owner description"
-                style={styles.input}
-                multiline
-                value={inputs.owner_description3}
-                onChangeText={val => handleInputs('owner_description3', val)}
-              />
-            </View>
-          </View> */}
         </View>
 
         <View>
