@@ -50,10 +50,10 @@ export default StyleSheet.create({
   },
   cardbtn: {
     height: hp(4.5),
-    width: wp(20),
+    paddingHorizontal: wp(2),
     //borderWidth: 1,
     marginTop: 15,
-    backgroundColor: '#0dcaf0',
+    backgroundColor: '#032e63',
     shadowColor: 'black',
     shadowOpacity: 10,
     shadowRadius: 10,

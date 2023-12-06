@@ -272,7 +272,7 @@ const OfferList = () => {
               fontFamily: 'Roboto-Medium',
               marginLeft: 14,
             }}>
-            Offers list
+            Offer list
           </Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -870,7 +870,7 @@ const OfferList = () => {
                     <View
                       style={{
                         flexDirection: 'row',
-                        width: '65%',
+                        width: '90%',
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         alignSelf: 'center',
@@ -882,23 +882,23 @@ const OfferList = () => {
                           style={{
                             fontSize: wp(4.5),
                             fontWeight: '600',
-                            color: 'black',
+                            color: 'white',
                           }}>
-                          View
+                          View Products
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => {
                           offerProductList(item);
                         }}
-                        style={[styles.cardbtn, {backgroundColor: '#fd3550'}]}>
+                        style={[styles.cardbtn, {backgroundColor: '#032e63'}]}>
                         <Text
                           style={{
                             fontSize: wp(4.5),
                             fontWeight: '600',
-                            color: 'black',
+                            color: 'white',
                           }}>
-                          Add
+                          Add Products
                         </Text>
                       </TouchableOpacity>
                     </View>

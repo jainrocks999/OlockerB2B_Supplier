@@ -79,7 +79,25 @@ const InviteRetailerList = () => {
                 data={selector}
                 renderItem={({item}) => (
                   <View style={styles.list}>
-                    <View style={{}}>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '700',
+                          marginRight: 10,
+                          color: 'black',
+                          width: wp(34),
+                        }}>
+                        {'Retailer Name'}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '700',
+                          color: 'black',
+                        }}>
+                        {':  '}
+                      </Text>
                       <Text
                         style={{
                           width: '60%',
@@ -89,66 +107,168 @@ const InviteRetailerList = () => {
                         }}>
                         {item.RetailerName}
                       </Text>
-                      <Text style={{color: 'grey'}}>{item.EmailId}</Text>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-
-                          marginTop: 5,
-                        }}>
-                        <Text
-                          style={{
-                            fontSize: 16,
-                            fontWeight: '700',
-                            marginRight: 10,
-                            color: 'black',
-                          }}>
-                          City :{' '}
-                          <Text style={{fontWeight: '400', color: 'grey'}}>
-                            {item.Location}{' '}
-                          </Text>
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 16,
-                            fontWeight: '700',
-                            color: 'black',
-                          }}>
-                          Contact Number :{' '}
-                          <Text style={{fontWeight: '400', color: 'grey'}}>
-                            {item.ContactNumber}{' '}
-                          </Text>
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          marginTop: 5,
-                        }}>
-                        <Text
-                          style={{
-                            fontSize: 16,
-                            fontWeight: '700',
-                            marginRight: 10,
-                            color: 'black',
-                          }}>
-                          Category Type :{' '}
-                          <Text style={{fontWeight: '400', color: 'grey'}}>
-                            {item.CategoryType}{' '}
-                          </Text>
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 16,
-                            fontWeight: '700',
-                            color: 'black',
-                          }}>
-                          Contact Name :{' '}
-                          <Text style={{fontWeight: '400', color: 'grey'}}>
-                            {item.ContactPersonFirstName}{' '}
-                          </Text>
-                        </Text>
-                      </View>
                     </View>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '700',
+                          marginRight: 10,
+                          color: 'black',
+                          width: wp(34),
+                        }}>
+                        {'Email'}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '700',
+                          // marginRight: 10,
+                          color: 'black',
+                        }}>
+                        {':  '}
+                      </Text>
+                      <Text
+                        style={{
+                          width: '60%',
+                          fontWeight: '600',
+                          fontSize: 18,
+                          color: 'grey',
+                        }}>
+                        {item.EmailId}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+
+                        // marginTop: 5,
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '700',
+                          marginRight: 10,
+                          color: 'black',
+                          width: wp(34),
+                        }}>
+                        City
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '700',
+                          marginRight: 10,
+                          color: 'black',
+                        }}>
+                        {':'}
+                      </Text>
+                      <Text
+                        style={{
+                          width: '60%',
+                          fontWeight: '600',
+                          fontSize: 18,
+                          color: 'grey',
+                        }}>
+                        {item.Location}
+                      </Text>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '700',
+                          marginRight: 10,
+                          color: 'black',
+                          width: wp(34),
+                        }}>
+                        Contact Number
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '700',
+                          marginRight: 10,
+                          color: 'black',
+                        }}>
+                        {':'}
+                      </Text>
+                      <Text
+                        style={{
+                          width: '60%',
+                          fontWeight: '600',
+                          fontSize: 18,
+                          color: 'grey',
+                        }}>
+                        {item.ContactNumber}{' '}
+                      </Text>
+                    </View>
+                    {/* <View
+                        style={{
+                          marginTop: 5,
+                        }}> */}
+                    <View style={{flexDirection: 'row'}}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '700',
+                          marginRight: 10,
+                          color: 'black',
+                          width: wp(34),
+                        }}>
+                        Category Type
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '700',
+                          marginRight: 10,
+                          color: 'black',
+                        }}>
+                        {':'}
+                      </Text>
+                      <Text
+                        style={{
+                          width: '60%',
+                          fontWeight: '600',
+                          fontSize: 18,
+                          color: 'grey',
+                        }}>
+                        {item.CategoryType}{' '}
+                      </Text>
+                    </View>
+                    {/* ContactPersonFirstName? */}
+                    {/* <View style={{flexDirection: 'row'}}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            fontWeight: '700',
+                            marginRight: 10,
+                            color: 'black',
+                            width: wp(34),
+                          }}>
+                          Contact Name
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            fontWeight: '700',
+                            marginRight: 10,
+                            color: 'black',
+                          }}>
+                          {':'}
+                        </Text>
+                        <Text
+                          style={{
+                            width: '60%',
+                            fontWeight: '600',
+                            fontSize: 18,
+                            color: 'grey',
+                          }}>
+                          {item.ContactPersonFirstName}{' '}
+                        </Text>
+                      </View> */}
+                    {/* </View> */}
                   </View>
                 )}
               />

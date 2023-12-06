@@ -351,7 +351,7 @@ const OfferProductModal = ({
                       style={{
                         fontSize: wp(4.5),
                         fontWeight: '600',
-                        color: 'black',
+                        color: 'white',
                       }}>
                       Add
                     </Text>
@@ -365,12 +365,12 @@ const OfferProductModal = ({
                       });
                       setProductModal(false);
                     }}
-                    style={[styles.cardbtn, {backgroundColor: '#fd3550'}]}>
+                    style={[styles.cardbtn, {backgroundColor: '#032e63'}]}>
                     <Text
                       style={{
                         fontSize: wp(4.5),
                         fontWeight: '600',
-                        color: 'black',
+                        color: 'white',
                       }}>
                       Close
                     </Text>

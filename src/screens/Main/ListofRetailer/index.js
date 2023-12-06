@@ -115,181 +115,242 @@ const ListOfRetailer = ({route}) => {
                   shadowRadius: 8.3,
                   elevation: 5,
                   backgroundColor: 'white',
-                  flexDirection: 'row',
-                  alignItems: 'center',
                   borderRadius: wp(3),
                   marginHorizontal: 5,
-                  paddingHorizontal: wp(2),
-                  paddingVertical: wp(2),
+                  paddingHorizontal: wp(4),
+                  paddingVertical: wp(3),
                 }}>
-                <View>
+                {console.log('this is itme ', JSON.stringify(item))}
+                <View style={{flexDirection: 'row'}}>
                   <Text
                     style={{
-                      fontWeight: '500',
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      marginLeft: 10,
+                      color: 'black',
+                      width: wp(36),
+                    }}>
+                    CompanyName
+                  </Text>
+                  <Text
+                    style={{
+                      fontWeight: '700',
                       fontSize: wp(4.2),
                       marginLeft: 10,
                       color: 'black',
                     }}>
-                    CompanyName :
-                    <Text
-                      style={{
-                        fontWeight: '500',
-                        fontSize: wp(4.2),
-                        color: 'grey',
-                      }}>
-                      {' '}
-                      {item.CompanyName}
-                    </Text>
+                    {': '}
                   </Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginHorizontal: 10,
-                      marginTop: 5,
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: wp(4.2),
-                        fontWeight: '500',
-                        marginRight: 10,
-                        color: 'black',
-                      }}>
-                      City :
-                      <Text style={{fontWeight: '400', color: 'grey'}}>
-                        {' '}
-                        {item.CityName}{' '}
-                      </Text>
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: wp(4.2),
-                        fontWeight: '500',
-                        color: 'black',
-                      }}>
-                      State :
-                      <Text style={{fontWeight: '400', color: 'grey'}}>
-                        {' '}
-                        {item.StateName}{' '}
-                      </Text>
-                    </Text>
-                  </View>
-                  <View style={{marginLeft: 10, marginTop: 5}}>
-                    <Text
-                      style={{
-                        fontWeight: '500',
-                        color: 'black',
-                        fontSize: wp(4.2),
-                      }}>
-                      Assign Category :
-                      <Text style={{width: '60%', color: 'grey'}}>
-                        {' '}
-                        {item.CategoryType}
-                      </Text>
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      marginLeft: 10,
-                      flexDirection: 'row',
-                      marginTop: 5,
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: wp(4.2),
-                        fontWeight: '500',
-                        color: 'black',
-                      }}>
-                      IsShowInRetailerApp :
-                      <Text
-                        style={{
-                          width: '60%',
-                          fontWeight: '400',
-                          color: 'grey',
-                        }}>
-                        {' '}
-                        {item.IsShowInRetailerApp}
-                      </Text>
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: wp(4.2),
-                        fontWeight: '500',
-                        marginLeft: 10,
-                        color: 'black',
-                      }}>
-                      Status :
-                      <Text
-                        style={{
-                          width: '60%',
-                          fontWeight: '400',
-                          color: 'grey',
-                        }}>
-                        {' '}
-                        {item.Status}
-                      </Text>
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginLeft: 10,
-                      marginTop: 5,
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: wp(4.2),
-                        fontWeight: '500',
-                        color: 'black',
-                      }}>
-                      Action :{' '}
-                    </Text>
 
-                    <View
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      color: 'grey',
+                    }}>
+                    {' '}
+                    {item.CompanyName}
+                  </Text>
+                </View>
+
+                <View style={{flexDirection: 'row'}}>
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      marginLeft: 10,
+                      color: 'black',
+                      width: wp(36),
+                    }}>
+                    City
+                  </Text>
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      marginLeft: 10,
+                      color: 'black',
+                    }}>
+                    {': '}
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      color: 'grey',
+                    }}>
+                    {' '}
+                    {item?.CityName}
+                  </Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      marginLeft: 10,
+                      color: 'black',
+                      width: wp(36),
+                    }}>
+                    State
+                  </Text>
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      marginLeft: 10,
+                      color: 'black',
+                    }}>
+                    {': '}
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      color: 'grey',
+                    }}>
+                    {' '}
+                    {item.StateName}
+                  </Text>
+                </View>
+
+                <View style={{flexDirection: 'row'}}>
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      marginLeft: 10,
+                      color: 'black',
+                      width: wp(36),
+                    }}>
+                    Assign Category
+                  </Text>
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      marginLeft: 10,
+                      color: 'black',
+                    }}>
+                    {': '}
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      color: 'grey',
+                    }}>
+                    {' '}
+                    {item.CategoryType}
+                  </Text>
+                </View>
+                {/* ShowInRetailerApp IsShowInRetailerApp */}
+
+                <View style={{flexDirection: 'row'}}>
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      marginLeft: 10,
+                      color: 'black',
+                      width: wp(36),
+                    }}>
+                    ShowInRetailerApp
+                  </Text>
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      marginLeft: 10,
+                      color: 'black',
+                    }}>
+                    {': '}
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      color: 'grey',
+                    }}>
+                    {' '}
+                    {item.IsShowInRetailerApp}
+                  </Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      marginLeft: 10,
+                      color: 'black',
+                      width: wp(36),
+                    }}>
+                    Status
+                  </Text>
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      marginLeft: 10,
+                      color: 'black',
+                    }}>
+                    {': '}
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      fontSize: wp(4.2),
+                      color: 'grey',
+                    }}>
+                    {' '}
+                    {item.Status}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width: wp(65),
+                    justifyContent: 'space-between',
+                  }}>
+                  <TouchableOpacity
+                    style={styles.updateBtn}
+                    onPress={() => {
+                      sendData(item);
+                    }}>
+                    <Text
                       style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        width: '45%',
+                        color: 'white',
+                        fontWeight: '700',
+                        fontSize: wp(3),
+                        textAlign: 'center',
+                        width: wp(35),
                       }}>
-                      <TouchableOpacity
-                        style={{width: '80%', marginLeft: 10}}
-                        onPress={() => {
-                          sendData(item);
-                        }}>
-                        <Text
-                          style={{
-                            color: 'blue',
-                            fontWeight: '700',
-                            fontSize: wp(4),
-                            textAlign: 'center',
-                          }}>
-                          Update Status & Assign Category
-                        </Text>
-                      </TouchableOpacity>
-                      <Text
-                        style={{
-                          fontSize: wp(6),
-                          color: '#000',
-                          marginHorizontal: 5,
-                        }}>
-                        |
-                      </Text>
-                      <TouchableOpacity
-                        onPress={() => {
-                          removeRetailer(item.SrNo);
-                        }}
-                        style={{width: '60%', marginLeft: 10}}>
-                        <Text
-                          style={{
-                            fontSize: wp(4.2),
-                            color: 'blue',
-                            fontWeight: '700',
-                          }}>
-                          Remove
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
+                      Update Status & Assign Category
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      removeRetailer(item.SrNo);
+                    }}
+                    style={styles.updateBtn}>
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontWeight: '700',
+                        fontSize: wp(3),
+                        textAlign: 'center',
+                      }}>
+                      Remove
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             )}
@@ -309,7 +370,8 @@ const ListOfRetailer = ({route}) => {
               justifyContent: 'center',
               borderWidth: 2,
               borderColor: '#032E63',
-              backgroundColor: '#032E63',
+              backgroundColor:
+                selector?.searchpartner.length > 0 ? '#032E63' : 'white',
               borderRadius: 30,
               width: wp(42),
               height: hp(6),
@@ -326,7 +388,6 @@ const ListOfRetailer = ({route}) => {
               renderItem={({item, index}) => (
                 <TouchableOpacity
                   onPress={() => {
-                    // navigation.navigate('PatnerProfile')
                     'clal';
                   }}
                   style={styles.list}>

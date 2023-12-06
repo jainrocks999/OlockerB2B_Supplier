@@ -1,16 +1,20 @@
 import React from 'react';
 import {Platform, StyleSheet} from 'react-native';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 export default StyleSheet.create({
-  list:{
+  list: {
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 6,
     },
- //   justifyContent:'space-around',
+    //   justifyContent:'space-around',
     shadowOpacity: 0.39,
-    marginLeft:10,
+    marginLeft: 10,
     shadowRadius: 8.3,
     flexDirection: 'row',
     elevation: 13,
@@ -22,9 +26,11 @@ export default StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    alignItems:'center',justifyContent:'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 50,
-     backgroundColor: '#032e63'},
+    backgroundColor: '#032e63',
+  },
 
   text: {textAlign: 'center', fontWeight: '100'},
   dataWrapper: {marginTop: -1},
@@ -98,5 +104,17 @@ export default StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     fontWeight: '700',
+  },
+  updateBtn: {
+    paddingHorizontal: wp(2),
+    paddingVertical: wp(2),
+    backgroundColor: '#032e63',
+    borderRadius: wp(2),
+    shadowColor: 'black',
+    shadowOffset: {height: 4, width: 4},
+    shadowOpacity: 5,
+    shadowRadius: 5,
+    elevation: 5,
+    marginTop: wp(4),
   },
 });

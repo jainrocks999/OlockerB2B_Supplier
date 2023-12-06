@@ -42,7 +42,9 @@ const EditSupplierProfile = ({route}) => {
     const newArr = supplierProfile?.supplierimagedetails?.filter(
       item => item.Type == type,
     );
-
+    if (type == 'Product Image') {
+      console.log('this is product imafes', JSON.stringify(newArr));
+    }
     return newArr;
   };
   const productImage = getImages('Product Image');
@@ -455,6 +457,7 @@ const EditSupplierProfile = ({route}) => {
       obj[`hiddenproduct_id${index + 1}`] = item?.SrNo;
       arr.push(obj);
     });
+
     return arr;
   };
 

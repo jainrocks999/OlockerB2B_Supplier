@@ -14,7 +14,7 @@ import Addproduct from '../screens/Main/Addproduct';
 import DetailsFav from '../screens/Main/favouriteDetailsPage';
 import MyProductDetails from '../screens/Main/MyProductDetails';
 import SubCategory from '../screens/Main/SubCategory';
-import Customers from '../screens/Main/Customers';
+import Customers from '../screens/Main/Customers/index2';
 import Mycustomer from '../screens/Main/Mycustomers';
 import MyCustomerDetail from '../screens/Main/MyCustomerDetail';
 import Feedback from '../screens/Main/Feedback';

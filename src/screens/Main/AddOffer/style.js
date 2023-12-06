@@ -171,7 +171,7 @@ export default StyleSheet.create({
     width: wp(20),
     //borderWidth: 1,
     marginTop: 15,
-    backgroundColor: '#0dcaf0',
+    backgroundColor: '#032e63',
     shadowColor: 'black',
     shadowOpacity: 10,
     shadowRadius: 10,
