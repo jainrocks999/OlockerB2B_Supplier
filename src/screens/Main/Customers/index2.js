@@ -291,17 +291,6 @@ const HomeScreen = () => {
     setSetting(true);
   };
 
-  // {navigation.navigate('EditSupplierProfile',
-  //               {
-  //               selector:selector,
-  //               productImage:productImage,
-  //               ownerImage:ownerImage,
-  //               supplierLogo:supplierLogo,
-  //               showroomImage:showroomImage
-  //             }
-  //               )
-
-  //             }
   manageUpdate = () => {
     dispatch({
       type: 'City_List_Request',
@@ -419,12 +408,6 @@ const HomeScreen = () => {
               source={require('../../../assets/Image/dil.png')}
             />
           </TouchableOpacity>
-          {/* <TouchableOpacity onPress={() => Logout()}>
-            <Image
-              style={styles.img3}
-              source={require('../../../assets/logout.png')}
-            />
-          </TouchableOpacity> */}
         </View>
       </View>
 
@@ -515,7 +498,6 @@ const HomeScreen = () => {
               width: '100%',
             }}>
             <TouchableOpacity
-              // onPress={()=>addToNetwork()}
               onPress={() => manageUpdate()}
               style={{
                 backgroundColor: '#ea056c',
@@ -526,11 +508,9 @@ const HomeScreen = () => {
               <Text
                 style={{color: '#fff', fontSize: 12, fontFamily: 'Acephimere'}}>
                 {'Edit Profile'}
-                {/* Added To Network */}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              // onPress={()=>addToNetwork()}
               onPress={() => navigation.navigate('ChangePassword')}
               style={{
                 backgroundColor: '#ea056c',
@@ -558,7 +538,6 @@ const HomeScreen = () => {
               <Text
                 style={{color: '#fff', fontSize: 12, fontFamily: 'Acephimere'}}>
                 {'Logout'}
-                {/* Added To Network */}
               </Text>
             </TouchableOpacity>
           </View>

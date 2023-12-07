@@ -1,11 +1,7 @@
 import React from 'react';
 import {Platform, StyleSheet} from 'react-native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+
 export default StyleSheet.create({
- 
   img: {
     height: 18,
     width: 12,
@@ -33,8 +29,6 @@ export default StyleSheet.create({
     paddingHorizontal: 12,
     flexDirection: 'row',
     paddingVertical: 15,
- 
-
   },
   text: {
     color: 'white',
@@ -46,14 +40,14 @@ export default StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
   },
-  
-  addBtn:{
-    borderWidth:1,
-    backgroundColor:'#032e63',
-    height:40,
-    alignItems:'center',
-    justifyContent:'center',
-    borderRadius:30,
-    width:'45%'
-  }
+
+  addBtn: {
+    borderWidth: 1,
+    backgroundColor: '#032e63',
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 30,
+    width: '45%',
+  },
 });
