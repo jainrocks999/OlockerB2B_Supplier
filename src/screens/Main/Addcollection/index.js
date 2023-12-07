@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Platform,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
@@ -50,14 +49,6 @@ const Addcollection = () => {
       try {
         setFetching(true);
         const data = new FormData();
-
-        // userId:13
-        // Name:testing case wwwwwwww
-        // Title:testing case three
-        // Description:testing case three
-        // IsActive:1
-        //SrNo:153
-
         data.append('userId', user_id);
         data.append('Name', name);
         data.append('Title', tag);
@@ -98,7 +89,6 @@ const Addcollection = () => {
         } else {
           setFetching(false);
           Toast.show(response.data.msg);
-          // console.log('thissi is rresponseelse');
         }
       } catch (error) {
         setFetching(false);

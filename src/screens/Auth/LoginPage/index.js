@@ -29,7 +29,6 @@ const loginValidationSchema = yup.object().shape({
     .string()
     .required('Please enter your Email')
     .matches(
-      // /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/,
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       'Please enter valid Email Address',
     ),
@@ -40,9 +39,8 @@ const Login = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const isFetching = useSelector(state => state.Login.isFetching);
-  //  const [fetching, setFetching] = useState(false);
+
   const pertnerLogin = async values => {
-    // console.log('values', values);
     setFetching(true);
     const axios = require('axios');
 
@@ -56,7 +54,6 @@ const Login = () => {
     axios
       .request(config)
       .then(response => {
-        // console.log(JSON.stringify(response.data));
         if (response.data.status) {
           setFetching(false);
           navigation.replace('Home');
@@ -67,7 +64,7 @@ const Login = () => {
         }
       })
       .catch(error => {
-        // console.log(error);
+        console.log(error);
       });
   };
 
@@ -80,23 +77,6 @@ const Login = () => {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     };
-    // try {
-    //   const response = await axios({
-    //     method: 'POST',
-    //     config:{
-    //        headers: {
-    //       'Content-Type': 'application/x-www-form-urlencoded'
-    //     }},
-    //     url: 'https://olocker.co/api/supplier//login',
-    //     params: params,
-    //   });
-    //   // console.log('response.....',response.data);
-    //   return response;
-    // } catch (error) {
-    //   // console.log('why eorror fatch by login', error);
-    // }
-    //  const response=   await axios.post('https://olocker.co/api/supplier//login', params, config)
-    //      // console.log('this is useer response',response.data);
 
     let token = await messaging().getToken();
     console.log('this is token', token);
@@ -144,7 +124,6 @@ const Login = () => {
                   <View style={styles.main}>
                     <Text style={styles.text}>Login</Text>
                   </View>
-                  {/* <View style={styles.line} /> */}
                   <View style={[styles.input, {marginTop: 20}]}>
                     <View style={{height: hp('4%'), width: wp('5%')}}>
                       <Image
@@ -159,7 +138,6 @@ const Login = () => {
                         placeholderTextColor={'grey'}
                         keyboardType="email-address"
                         onChangeText={handleChange('email')}
-                        //onChange={(e) => { handleChange(e); LoginAuto(); }}
                         onBlur={handleBlur('email')}
                         value={values.email}
                         returnKeyType="go"
@@ -178,10 +156,7 @@ const Login = () => {
                         source={require('../../../assets/lock1.png')} // source={require('../../../assets/msg.png')}
                       />
                     </View>
-                    {/* <Image
-              style={styles.image}
-              source={require('../../../assets/lock1.png')}
-            /> */}
+
                     <View style={{width: wp('53%'), marginLeft: 1}}>
                       <TextInput
                         style={styles.input1}
@@ -192,7 +167,6 @@ const Login = () => {
                         value={values.password}
                         keyboardType={'default'}
                         secureTextEntry={true}
-                        // returnKeyType="done"
                       />
                     </View>
                   </View>
@@ -205,40 +179,14 @@ const Login = () => {
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => {
-                        // navigation.replace('Home');
-                        // pertnerLogin();
                         handleSubmit();
                       }}>
                       <Text style={{color: '#474747'}}>Login</Text>
                     </TouchableOpacity>
                   </View>
                   <View style={{height: 40}} />
-                  {/* <Image
-            style={{marginTop: 10, marginBottom: -20}}
-            source={require('../../../assets/oloc.png')}
-          /> */}
                 </View>
-                <View style={{alignItems: 'center'}}>
-                  {/* <View style={styles.bottom}>
-                    <Text
-                      style={{
-                        fontWeight: '700',
-                        color: '#474747',
-                        width: '45%',
-                      }}>{`Don't have account? `}</Text>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('RegisterPage')}>
-                      <Text
-                        style={{
-                          color: '#e9056b',
-                          marginLeft: 3,
-                          width: '100%',
-                        }}>
-                        {'Create Your Account'}
-                      </Text>
-                    </TouchableOpacity>
-                  </View> */}
-                </View>
+                <View style={{alignItems: 'center'}}></View>
               </View>
             </KeyboardAwareScrollView>
           </ScrollView>

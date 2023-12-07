@@ -24,7 +24,6 @@ export default StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
     marginTop: 22,
   },
   Card: {
@@ -36,7 +35,6 @@ export default StyleSheet.create({
     borderRadius: 10,
     padding: 8,
     width: '100%',
-    //  backgroundColor: '#f0f0f0',
   },
   modalView: {
     margin: 20,

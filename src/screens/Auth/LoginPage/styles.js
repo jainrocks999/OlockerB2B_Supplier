@@ -1,4 +1,4 @@
-import {Platform, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -19,7 +19,6 @@ export default StyleSheet.create({
   line: {
     borderBottomWidth: 1,
     width: wp('14.5%'),
-    // marginHorizontal: Platform.OS == 'android' ? 265 : 293,
     marginLeft: 14,
   },
   view: {
@@ -33,8 +32,6 @@ export default StyleSheet.create({
     marginTop: 0,
     marginLeft: 13,
     paddingHorizontal: -5,
-    // width:'15%',
-    // borderBottomWidth:1
   },
   text: {
     fontSize: 20,
@@ -43,21 +40,14 @@ export default StyleSheet.create({
     textDecorationStyle: 'solid',
     textDecorationColor: '#000',
     textShadowOffset: {height: 1, width: 0},
-    // //  color: '#949494'
-    // marginTop:-100,
   },
   card: {
-    // shadowColor: 'black',
     shadowOpacity: 0.25,
     shadowRadius: 4,
     shadowOffset: {height: 2, width: 0},
     elevation: 2,
-    // borderRadius: 10,
-    //backgroundColor: 'white',
     paddingHorizontal: 15,
     paddingVertical: 10,
-    //marginTop: 10,
-    //borderWidth: 1,
   },
   image: {
     width: 28,
@@ -69,15 +59,12 @@ export default StyleSheet.create({
     paddingVertical: 5,
     color: '#474747',
     width: '100%',
-    // borderWidth:1
-    //color: colors.textColor,
   },
   input: {
     alignItems: 'center',
     flexDirection: 'row',
     borderBottomWidth: 1,
     width: wp('60%'),
-    //  borderWidth:5,
     marginLeft: 20,
   },
   error: {

@@ -347,17 +347,15 @@ const EditSupplierProfile = ({route}) => {
         },
         url: 'https://olocker.co/api/supplier//updateProfile',
       });
-      console.log('this is iresponae', response.data);
+
       if (response.data.status) {
         setFetching(false);
         Toast.show(response.data.msg);
       } else {
         setFetching(false);
         Toast.show(response.data.msg);
-        // console.log('this is iresponae',response);
       }
     } catch (error) {
-      // // console.log("err->", error.response.data)
       Toast.show('Something went wrong');
       setFetching(false);
       console.log('this is iresponae', error);

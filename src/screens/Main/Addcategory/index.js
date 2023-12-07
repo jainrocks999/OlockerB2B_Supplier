@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Platform,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
@@ -15,7 +14,6 @@ import RNPickerSelect from 'react-native-picker-select';
 import Buttom from '../../../components/StoreButtomTab';
 const AddCategory = () => {
   const navigation = useNavigation();
-  const [selectedItems, setSelectedItems] = useState('');
   return (
     <View style={styles.container1}>
       <View style={styles.container}>
@@ -44,7 +42,7 @@ const AddCategory = () => {
             <Text style={styles.Text1}>Select Type</Text>
             <View style={styles.main1}>
               <RNPickerSelect
-                onValueChange={val =>  console.log(val)}
+                onValueChange={val => console.log(val)}
                 items={Data}
                 style={{
                   inputAndroid: {

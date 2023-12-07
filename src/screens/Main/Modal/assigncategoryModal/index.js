@@ -1,15 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Modal,
-  FlatList,
-  TextInput,
-} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {View, Text, TouchableOpacity, Modal, TextInput} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import styles from './styles';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -27,14 +17,12 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
     {label: 'Approved', value: '1'},
     {label: 'Reject', value: '2'},
   ];
-
   const [allow, setAllow] = useState(false);
   const [value, setValue] = useState(props.data?.CategoryType);
   const [name, setName] = useState(props.data?.CompanyName);
   const [Status, setStatus] = useState(
     props.data?.Status ? props.data?.Status : 'Select',
   );
-  console.log('tthtt', props.data?.IsShowInRetailerApp);
   useEffect(() => {
     setAllow(props.data?.IsShowInRetailerApp == 'No' ? false : true);
     setName(props.data?.CompanyName);

@@ -1,14 +1,5 @@
-import React, {Fragment, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  LogBox,
-  Button,
-  Platform,
-  SafeAreaView,
-  FlatList,
-} from 'react-native';
+import React, {Fragment} from 'react';
+import {LogBox, Platform, SafeAreaView} from 'react-native';
 import {Provider} from 'react-redux';
 import Store from './src/Redux/Store';
 import RootApp from './src/navigation';

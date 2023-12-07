@@ -31,20 +31,14 @@ export default StyleSheet.create({
   text: {
     fontSize: 20,
     color: '#474747',
-    // marginTop:-100,
   },
   card: {
-    // shadowColor: 'black',
     shadowOpacity: 0.25,
     shadowRadius: 4,
     shadowOffset: {height: 2, width: 0},
     elevation: 2,
-    // borderRadius: 10,
-    //backgroundColor: 'white',
     paddingHorizontal: 15,
     paddingVertical: 10,
-    //marginTop: 10,
-    //borderWidth: 1,
   },
   image: {
     width: 34,
@@ -56,7 +50,6 @@ export default StyleSheet.create({
     paddingVertical: 10,
     width: '100%',
     color: '#474747',
-    //color: colors.textColor,
   },
   input: {
     alignItems: 'center',
