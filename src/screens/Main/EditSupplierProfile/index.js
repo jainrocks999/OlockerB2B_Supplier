@@ -166,7 +166,7 @@ const EditSupplierProfile = ({route}) => {
   const handleOnSumit = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
-    const newdata = {...inputs, SrNo: user_id};
+    const newData = {...inputs, SrNo: user_id};
     let data = new FormData();
     productImages.map((item, index) => {
       data.append(
@@ -194,140 +194,140 @@ const EditSupplierProfile = ({route}) => {
         item[`owner_description${index + 1}`],
       );
     });
-    Object.keys(newdata).map(item => {
+    Object.keys(newData).map(item => {
       setFetching(true);
       switch (item) {
         case 'logo':
-          data.append(item, newdata[item]);
+          data.append(item, newData[item]);
           break;
         case 'SupplierName': {
-          if (newdata[item] == '') {
+          if (newData[item] == '') {
             Toast.show('Please enter supplier name');
             return;
           }
-          data.append(item, newdata[item]);
+          data.append(item, newData[item]);
           break;
         }
         case 'ContactPersonName': {
-          if (newdata[item] == '') {
+          if (newData[item] == '') {
             Toast.show('Please enter contact person name');
             return;
           }
-          data.append(item, newdata[item]);
+          data.append(item, newData[item]);
           break;
         }
         case 'Address': {
-          if (newdata[item] == '') {
+          if (newData[item] == '') {
             Toast.show('Please enter full address');
             return;
           }
-          data.append(item, newdata[item]);
+          data.append(item, newData[item]);
           break;
         }
         case 'MobileNo': {
-          if (newdata[item] == '') {
+          if (newData[item] == '') {
             Toast.show('Please enter mobile number');
             return;
           }
-          data.append(item, newdata[item]);
+          data.append(item, newData[item]);
           break;
         }
         case 'StateId': {
-          if (newdata[item] == '') {
+          if (newData[item] == '') {
             Toast.show('Please select State name');
             return;
           }
-          data.append(item, newdata[item]);
+          data.append(item, newData[item]);
           break;
         }
         case 'StateId': {
-          if (newdata[item] == '') {
+          if (newData[item] == '') {
             Toast.show('Please select State name');
             return;
           }
-          data.append(item, newdata[item]);
+          data.append(item, newData[item]);
           break;
         }
         case 'CityId': {
-          if (newdata[item] == '') {
+          if (newData[item] == '') {
             Toast.show('Please select city name');
             return;
           }
-          data.append(item, newdata[item]);
+          data.append(item, newData[item]);
           break;
         }
         case 'IsActive':
-          data.append(item, newdata[item] ? 'on' : 'off');
+          data.append(item, newData[item] ? 'on' : 'off');
           break;
         case 'IsDefaultSupplier':
-          data.append(item, newdata[item] ? 'on' : 'off');
+          data.append(item, newData[item] ? 'on' : 'off');
           break;
         case 'diamond_purity':
-          newdata[item].map((items, index) => {
+          newData[item].map((items, index) => {
             data.append(`diamond_purity[${index}]`, items);
           });
           break;
         case 'diamond_specialisation':
-          newdata[item].map((items, index) => {
+          newData[item].map((items, index) => {
             data.append(`diamond_specialisation[${index}]`, items);
           });
           break;
         case 'diamondcustom_purity':
-          data.append(`diamondcustom_purity`, newdata[item]);
+          data.append(`diamondcustom_purity`, newData[item]);
           break;
         case 'gold_purity':
-          newdata[item].map((items, index) => {
+          newData[item].map((items, index) => {
             data.append(`gold_purity[${index}]`, items);
           });
           break;
         case 'silver_purity':
-          newdata[item].map((items, index) => {
+          newData[item].map((items, index) => {
             data.append(`silver_purity[${index}]`, items);
           });
           break;
         case 'platinum_purity':
-          newdata[item].map((items, index) => {
+          newData[item].map((items, index) => {
             data.append(`platinum_purity[${index}]`, items);
           });
 
           break;
         case 'gold_specialisation':
-          newdata[item].map((items, index) => {
+          newData[item].map((items, index) => {
             data.append(`gold_specialisation[${index}]`, items);
           });
           break;
         case 'silver_specialisation':
-          newdata[item].map((items, index) => {
+          newData[item].map((items, index) => {
             data.append(`silver_specialisation[${index}]`, items);
           });
           break;
         case 'platinum_specialisation':
-          newdata[item].map((items, index) => {
+          newData[item].map((items, index) => {
             data.append(`platinum_specialisation[${index}]`, items);
           });
           break;
         case 'showroom_image':
-          newdata[item].map((items, index) => {
+          newData[item].map((items, index) => {
             data.append(`showroom_image[${index}]`, items);
           });
           break;
         case 'JTyped':
-          data.append(item, newdata[item] ? 'Diamond' : '');
+          data.append(item, newData[item] ? 'Diamond' : '');
           break;
         case 'JTypep':
-          data.append(item, newdata[item] ? 'Platinum' : '');
+          data.append(item, newData[item] ? 'Platinum' : '');
           break;
         case 'JTypeg':
-          data.append(item, newdata[item] ? 'Gold' : '');
+          data.append(item, newData[item] ? 'Gold' : '');
           break;
         case 'JTypes':
-          data.append(item, newdata[item] ? 'Silver' : '');
+          data.append(item, newData[item] ? 'Silver' : '');
           break;
         case 'IsAnyBranch':
-          data.append(item, newdata[item] ? 'on' : 'off');
+          data.append(item, newData[item] ? 'on' : 'off');
           break;
         default:
-          data.append(item, newdata[item]);
+          data.append(item, newData[item]);
       }
     });
     validateUser(data);
