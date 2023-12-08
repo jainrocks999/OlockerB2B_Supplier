@@ -42,9 +42,7 @@ const EditSupplierProfile = ({route}) => {
     const newArr = supplierProfile?.supplierimagedetails?.filter(
       item => item.Type == type,
     );
-    if (type == 'Product Image') {
-      console.log('this is product imafes', JSON.stringify(newArr));
-    }
+
     return newArr;
   };
   const productImage = getImages('Product Image');
@@ -52,7 +50,7 @@ const EditSupplierProfile = ({route}) => {
   const showroomImage = getImages('ShowRoom Image');
   const supplierLogo = getImages('Logo');
   const ownerImage = getImages('Owner Image');
-  // console.log('ownerName1,productImage',productImage,ownerImage);
+
   console.log(JSON.stringify(ownerImage));
   const [customPurityDia, setCustomPurityDia] = useState(false);
   const [customPurityGo, setCustomPurityGo] = useState(false);

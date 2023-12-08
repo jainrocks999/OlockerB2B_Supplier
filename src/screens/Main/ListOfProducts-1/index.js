@@ -261,7 +261,7 @@ const ListOfProduct = () => {
               paddingVertical: 10,
               borderRadius: 20,
             }}>
-            <Text style={{color: 'white'}}>See all</Text>
+            <Text style={{color: 'white'}}>More..</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

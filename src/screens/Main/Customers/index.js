@@ -250,7 +250,6 @@ const HomeScreen = () => {
   const selector1 = useSelector(state => state.Supplier.SupplierDetail);
   const selector = selector1?.data;
   const ownerImagePath = 'https://olocker.co/uploads/supplier/';
-  // console.log('this is selector');
   const isFetching = useSelector(state => state.Supplier.isFetching);
   const isFetching1 = useSelector(state => state.City.isFetching);
   const [profile, setProfile] = useState(true);
@@ -291,17 +290,6 @@ const HomeScreen = () => {
     setSetting(true);
   };
 
-  // {navigation.navigate('EditSupplierProfile',
-  //               {
-  //               selector:selector,
-  //               productImage:productImage,
-  //               ownerImage:ownerImage,
-  //               supplierLogo:supplierLogo,
-  //               showroomImage:showroomImage
-  //             }
-  //               )
-
-  //             }
   manageUpdate = () => {
     dispatch({
       type: 'City_List_Request',

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import styles from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';

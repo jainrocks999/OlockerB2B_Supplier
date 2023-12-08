@@ -1,9 +1,9 @@
-import { ToastAndroid, YellowBox } from 'react-native';
-import { takeEvery, put, call } from 'redux-saga/effects';
+import {ToastAndroid, YellowBox} from 'react-native';
+import {takeEvery, put, call} from 'redux-saga/effects';
 import Api from '../Api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GetMessageCommon } from '../../screens/Main/ChatScreen/common';
-import { err } from 'react-native-svg/lib/typescript/xml';
+import {GetMessageCommon} from '../../screens/Main/ChatScreen/common';
+import {err} from 'react-native-svg/lib/typescript/xml';
 
 function* PatnerContact(action) {
   try {
@@ -31,15 +31,12 @@ function* PatnerContact(action) {
 
 function* SendMessage(action) {
   try {
-
     const response = yield call(Api.sendMessage, action);
-
 
     if (response.status == true) {
       yield put({
         type: 'Message_Send_Success',
-        payload: action.reciverId
-
+        payload: action.reciverId,
       });
 
       GetMessageCommon(action.reciverId, action.user_type);
@@ -58,13 +55,11 @@ function* GetMessage(action) {
   const data = {
     sender_id: action.senderId,
     reciver_id: action.reciverid,
-    user_type: action.user_type
+    user_type: action.user_type,
   };
-
 
   try {
     const res = yield call(Api.fetchDataByGET1, action.url, data);
-    // console.log('this si respons', res)
     if (res.status == true) {
       let message = [];
       res.data.map(item => {
@@ -85,15 +80,14 @@ function* GetMessage(action) {
     } else {
       yield put({
         type: 'get_Message_Error',
-        payload: []
+        payload: [],
       });
-
     }
   } catch (error) {
     console.log('try catch  saga =>>>>>>>>>', error);
     yield put({
       type: 'get_Message_Error',
-      payload: []
+      payload: [],
     });
   }
 }
@@ -101,13 +95,12 @@ function* GetMessage2(action) {
   const data = {
     sender_id: action.senderId,
     reciver_id: action.reciverid,
-    user_type: action.user_type
+    user_type: action.user_type,
   };
-
 
   try {
     const res = yield call(Api.fetchDataByGET1, action.url, data);
-    console.log('this is rspons on send mesegee', JSON.stringify(res))
+    console.log('this is rspons on send mesegee', JSON.stringify(res));
 
     if (res.status == true) {
       let message = [];
@@ -129,14 +122,14 @@ function* GetMessage2(action) {
     } else {
       yield put({
         type: 'get_Message_Error',
-        payload: []
+        payload: [],
       });
     }
   } catch (error) {
     // console.log('try catch  saga =>>>>>>>>>', error);
     yield put({
       type: 'get_Message_Error',
-      payload: []
+      payload: [],
     });
   }
 }
