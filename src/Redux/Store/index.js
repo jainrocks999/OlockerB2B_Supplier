@@ -1,6 +1,5 @@
 import {createStore, applyMiddleware} from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import logger from 'redux-logger';
 import Reducer from '../Reducer';
 import authSaga from '../Saga/Auth';
 import loginSaga from '../Saga/Login';
@@ -11,7 +10,6 @@ import catalogueSaga from '../Saga/Catalogue';
 import homeSaga from '../Saga/Home';
 import ChatSaga from '../Saga/Chat';
 import sagaOffer from '../Saga/Offer';
-
 const sagamiddleware = createSagaMiddleware();
 const store = createStore(Reducer, applyMiddleware(sagamiddleware));
 sagamiddleware.run(authSaga);
