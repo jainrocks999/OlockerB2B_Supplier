@@ -39,45 +39,18 @@ const HomeScreen = () => {
   const isFetching3 = useSelector(state => state.Home.isFetching);
   const selector1 = useSelector(state => state.Home.NetworkList);
   const bannerList = useSelector(state => state.Home.BannerList);
-  const isFetching4 = useSelector(state => state.State.BannerList);
+  // const isFetching4 = useSelector(state => state.State.BannerList);
   const fetching = useSelector(state => state.Home.isFetching);
   const win = Dimensions.get('window');
 
   const date = new Date();
   let ToDAY = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-
-  const Logout = () => {
-    Alert.alert(
-      'Are you want to logout ?',
-      '',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => {
-            cancelable: false;
-          },
-          style: 'cancel',
-        },
-        {text: 'ok', onPress: () => LogoutApp()},
-      ],
-      {cancelable: false},
-    );
-  };
-
-  const LogoutApp = async () => {
-    await AsyncStorage.setItem('loginToken', '');
-    navigation.navigate('Login');
-  };
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     ApiCallWithUseEffect();
   }, []);
 
-  const MyNetwork = async () => {
-    const Token = await AsyncStorage.getItem('loginToken');
-  };
   const ApiCallWithUseEffect = async () => {
     const Token = await AsyncStorage.getItem('loginToken');
     const Id = await AsyncStorage.getItem('Partnersrno');
@@ -113,22 +86,12 @@ const HomeScreen = () => {
   };
 
   const supplierprofile = async id => {
-    const Token = await AsyncStorage.getItem('loginToken');
-
-    AsyncStorage.setItem('supplierID', id);
+    console.log('thjos os user id', id);
     dispatch({
-      type: 'User_supplierDetail_Request',
-      url: '/partners/supplierDetail',
-      supplierId: id,
-      Token: Token,
+      type: 'get_network_retailer_detail_request',
+      partnerId: id,
+      url: 'getNetworkRetailerDeatils',
       navigation,
-    });
-    dispatch({
-      type: 'User_SupplierCategories_Request',
-      url: 'partners/productTypeList',
-      userId: id,
-      userType: 'supplier',
-      Token: Token,
     });
   };
   useEffect(() => {
@@ -182,7 +145,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.scroll}>
-        {isFetching || isFetching1 || fetching || isFetching3 || isFetching4 ? (
+        {isFetching || isFetching1 || fetching || isFetching3 ? (
           <Loader />
         ) : null}
         <ImageBackground
@@ -204,12 +167,6 @@ const HomeScreen = () => {
                   source={require('../../../assets/Image/dil.png')}
                 />
               </TouchableOpacity>
-              {/* <TouchableOpacity onPress={() => Logout()}>
-                <Image
-                  style={styles.img3}
-                  source={require('../../../assets/Image/menu-icon.png')}
-                />
-              </TouchableOpacity> */}
             </View>
           </View>
           <View style={{paddingHorizontal: 10}}>
@@ -226,7 +183,7 @@ const HomeScreen = () => {
               marginVertical: 0,
               paddingHorizontal: 30,
             }}
-            indicatorContainerStyle={{position: 'absolute', bottom: 10}}
+            indicatorContainerStyle={{position: 'absolute', bottom: 4}}
             indicatorActiveColor={'#032e63'}
             indicatorInActiveColor={'#ffffff'}
             indicatorActiveWidth={5}
@@ -259,11 +216,12 @@ const HomeScreen = () => {
             showsHorizontalScrollIndicator={false}
             horizontal={true}
             data={selector1}
+            inverted
             style={{marginTop: 7}}
             renderItem={({item}) => (
               <View style={{width: win.width * 0.37, alignItems: 'center'}}>
                 <TouchableOpacity
-                  onPress={() => supplierprofile(item.SupplierSrNo)}
+                  onPress={() => supplierprofile(item.PartnerSrNo)}
                   style={[styles.cardview]}>
                   <Image
                     style={{
@@ -274,7 +232,7 @@ const HomeScreen = () => {
                     }}
                     source={
                       item.Logo
-                        ? {uri: `${item.Logo}`}
+                        ? {uri: `${item.url}${item.Logo}`}
                         : require('../../../assets/Image/Not.jpeg')
                     }
                   />

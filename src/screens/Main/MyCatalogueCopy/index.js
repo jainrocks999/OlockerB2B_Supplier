@@ -153,6 +153,16 @@ const MyCatalogueCopy = () => {
 
     return res;
   };
+  const proctDetail = async item => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'product_detail_request',
+      url: 'productDetails',
+      productId: item.productId,
+      supplierSrNo: user_id,
+      navigation,
+    });
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -435,26 +445,31 @@ const MyCatalogueCopy = () => {
                       />
                     </TouchableOpacity>
                   </View>
-                  <Image
-                    style={{height: 144, width: '100%', borderRadius: 10}}
-                    source={{uri: item.images}}
-                  />
-                  <View style={{marginTop: 10}}>
-                    <Text
-                      style={{
-                        fontFamily: 'Roboto-Medium',
-                        fontSize: 14,
-                        color: '#030303',
-                      }}>
-                      {item.productTypeName}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: 'Roboto-Medium',
-                        fontSize: 14,
-                        color: '#666666',
-                      }}></Text>
-                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      proctDetail(item);
+                    }}>
+                    <Image
+                      style={{height: 144, width: '100%', borderRadius: 10}}
+                      source={{uri: item.images}}
+                    />
+                    <View style={{marginTop: 10}}>
+                      <Text
+                        style={{
+                          fontFamily: 'Roboto-Medium',
+                          fontSize: 14,
+                          color: '#030303',
+                        }}>
+                        {item.productTypeName}
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: 'Roboto-Medium',
+                          fontSize: 14,
+                          color: '#666666',
+                        }}></Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
               );
             }}

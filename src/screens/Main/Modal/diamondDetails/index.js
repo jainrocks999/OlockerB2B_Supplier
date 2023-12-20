@@ -105,6 +105,10 @@ const DiamondViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
       hProductSrNo: productEdit ? hProductSrNo : 0,
     });
   };
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    setVisible(visi);
+  }, [visi]);
 
   return (
     <View style={styles.container}>

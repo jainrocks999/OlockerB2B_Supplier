@@ -337,6 +337,7 @@ const OfferTemplate = () => {
           </View>
           <FlatList
             data={selector?.offertype}
+            inverted
             style={{marginTop: 10}}
             renderItem={({item}) => (
               <View
@@ -361,6 +362,7 @@ const OfferTemplate = () => {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                   }}>
+                  {console.log('thi si stiem', item)}
                   <Text
                     style={{
                       color: '#030303',

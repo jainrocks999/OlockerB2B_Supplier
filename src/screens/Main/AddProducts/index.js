@@ -204,8 +204,6 @@ const AddProducts = () => {
   };
 
   useEffect(() => {
-    {
-    }
     productTypeList();
   }, [isFocuse]);
   const dispatch = useDispatch();
@@ -667,6 +665,15 @@ const AddProducts = () => {
     setVisible([indexx]);
   };
   //  console.log('this is visible', visible);
+  const handleWishList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Get_wishListProduct_Request',
+      url: '/wishListProduct',
+      user_id: user_id,
+      navigation,
+    });
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -697,7 +704,7 @@ const AddProducts = () => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            width: wp(53),
+            width: wp(60),
             justifyContent: 'space-between',
           }}>
           <TouchableOpacity
@@ -762,21 +769,6 @@ const AddProducts = () => {
             <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
               Digital Inventory
             </Text>
-            {/* <View style={{marginLeft: wp(5)}}>
-              <RadioButton
-                value={inputs.radioInventoryPreInsured}
-                color="#032e63"
-                uncheckedColor="#474747"
-                status={
-                  inputs.radioInventoryPreInsured == 1 ? 'checked' : 'unchecked'
-                }
-                onPress={() => handleInputs('radioInventoryPreInsured', 1)}
-              />
-            </View>
-
-            <Text style={{fontSize: wp(3.8), fontWeight: '600'}}>
-              Pre-Insured Jewellery
-            </Text> */}
           </View>
 
           <View style={styles.mrt}>

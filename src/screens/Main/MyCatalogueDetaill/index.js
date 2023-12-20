@@ -190,6 +190,7 @@ const MyCatalogueDetaill = () => {
   };
   // console.log('this i selected',selected);
   const renderCheck = item => {
+    console.log('this is item', item);
     let check = false;
     if (selected.includes(item.SrNo)) {
       check = true;
@@ -413,7 +414,7 @@ const MyCatalogueDetaill = () => {
                   <Image
                     style={{height: 150, width: '100%', borderRadius: 5}}
                     source={{
-                      uri: `https://olocker.co${selector.ImageUrl}${selector.ImageName}`,
+                      uri: `https://olocker.co${item.ImageUrl}${item.ImageName}`,
                     }}
                   />
 

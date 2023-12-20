@@ -31,6 +31,9 @@ const Addproduct = ({route}) => {
   const dispatch = useDispatch();
   const collectionList = useSelector(state => state.Catalogue.Catalogue);
   const selector = useSelector(state => state.Catalogue.SelfCreatedProduct);
+  const addedProducts = useSelector(
+    state => state.Catalogue.CollectionDetails?.products,
+  );
   //console.log('this is selector', JSON.stringify(route.params.no));
   const isFetching = useSelector(state => state.Catalogue.isFetching);
   const selector1 = useSelector(state => state.Catalogue.OlockerCreatedProduct);
@@ -204,6 +207,7 @@ const Addproduct = ({route}) => {
         if (response.data.status) {
           setFetching(false);
           Toast.show(response.data.msg);
+          navigation.goBack();
         } else {
           setFetching(false);
           Toast.show(response.data.msg);
@@ -280,7 +284,7 @@ const Addproduct = ({route}) => {
         },
         url: 'https://olocker.co/api/supplier//moveProductToCollection',
       });
-      // console.log('thissi is rresponse', response);
+
       if (response.data.status) {
         setFetching(false);
         Toast.show(response.data.msg);
@@ -293,11 +297,9 @@ const Addproduct = ({route}) => {
       } else {
         setFetching(false);
         Toast.show(response.data.msg);
-        // console.log('thissi is rresponseelse');
       }
     } catch (error) {
       setFetching(false);
-      // console.log('this isi error', error);
     }
   };
 
@@ -338,6 +340,30 @@ const Addproduct = ({route}) => {
       />
     );
   };
+  const [products, setProducts] = useState([]);
+  const handlePrevProdut = async () => {
+    let array = [];
+    if (addedProducts?.length <= 0) {
+      setProducts(selector);
+      return;
+    }
+    await addedProducts?.map(async (item, index) => {
+      let indexx = index;
+      await selector?.map((items, index) => {
+        array.push(items);
+        if (
+          indexx + 1 == addedProducts.length &&
+          index + 1 == selector.length
+        ) {
+          setProducts(array);
+          alert('thisiss rajh');
+        }
+      });
+    });
+  };
+  useEffect(() => {
+    handlePrevProdut();
+  }, [addedProducts, selector]);
   return (
     <View style={{flex: 1}}>
       <StatusBar />
@@ -459,7 +485,7 @@ const Addproduct = ({route}) => {
             <TouchableOpacity
               onPress={() =>
                 search.length > 0
-                  ? handleSearch()
+                  ? manageApis()
                   : Toast.show('Please enter collection name')
               }
               style={{
@@ -666,7 +692,7 @@ const Addproduct = ({route}) => {
             </View>
           </View>
           <FlatList
-            data={olocker == true ? selector1 : self == true ? selector : []}
+            data={selector}
             renderItem={({item}) => (
               <View
                 style={{

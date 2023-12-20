@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -19,7 +19,7 @@ import {
 } from 'react-native-responsive-screen';
 import {TextInput} from 'react-native';
 import CategoryViewModal from '../Modal/categoryList';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useIsFocused} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loading from '../../../components/Loader';
@@ -49,7 +49,6 @@ const ListOfProduct = () => {
     });
   };
   const proctDetail = async item => {
-    console.log('callrd');
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
       type: 'product_detail_request',
@@ -57,6 +56,54 @@ const ListOfProduct = () => {
       productId: item.productId,
       supplierSrNo: user_id,
       navigation,
+    });
+  };
+  const [input, setInput] = useState('');
+  const isFocused = useIsFocused();
+  const [product, setProduct] = useState([]);
+  useEffect(() => {
+    const delay = 100;
+    const deBounce = setTimeout(() => {
+      handleOnSearch();
+    }, delay);
+    return () => {
+      clearTimeout(deBounce);
+    };
+  }, [input, isFocused, selector]);
+
+  const handleOnSearch = async () => {
+    let filteredData = [];
+
+    if (input === '') {
+      setProduct(selector);
+      return;
+    }
+
+    if (Array.isArray(selector) && selector.length > 0) {
+      const inputLowerCase = input.toLowerCase();
+      filteredData = selector.filter(item => {
+        const productTypeName = item?.productTypeName?.toLowerCase();
+        if (productTypeName === inputLowerCase) {
+          return true;
+        } else {
+          return productTypeName?.includes(inputLowerCase);
+        }
+      });
+    }
+
+    setProduct(filteredData);
+  };
+  const loadMore = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'My_Product_Request',
+      url: '/getProductList',
+      user_id: user_id,
+      start: 0,
+      length: product.length + 10,
+      search: '',
+      navigation,
+      btn: 'more',
     });
   };
   return (
@@ -108,8 +155,8 @@ const ListOfProduct = () => {
 
         <View style={[styles.searchbar, {marginTop: 20}]}>
           <TextInput
-            value={SearctTxt}
-            onChangeText={txt => setSearctTxt(txt)}
+            value={input}
+            onChangeText={txt => setInput(txt)}
             placeholder="Search"
             style={{fontSize: 18, width: '90%', color: 'black'}}
             placeholderTextColor={'grey'}
@@ -173,7 +220,7 @@ const ListOfProduct = () => {
             marginTop: 20,
           }}>
           <FlatList
-            data={selector}
+            data={product}
             style={{width: '96%'}}
             numColumns={2}
             // contentContainerStyle={{justifyContent:'center',}}
@@ -254,19 +301,26 @@ const ListOfProduct = () => {
 
             justifyContent: 'center',
           }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#032e63',
-              paddingHorizontal: 15,
-              paddingVertical: 10,
-              borderRadius: 20,
-            }}>
-            <Text style={{color: 'white'}}>More..</Text>
-          </TouchableOpacity>
+          {product.length > 0 ? (
+            <TouchableOpacity
+              onPress={() => loadMore()}
+              style={{
+                backgroundColor: '#032e63',
+                paddingHorizontal: 15,
+                paddingVertical: 10,
+                borderRadius: 20,
+              }}>
+              <Text style={{color: 'white'}}>More..</Text>
+            </TouchableOpacity>
+          ) : (
+            <Text style={{color: 'black', alignSelf: 'center', zIndex: 1}}>
+              No products found
+            </Text>
+          )}
         </View>
       </ScrollView>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{
           position: 'absolute',
           backgroundColor: '#032e63',
@@ -280,7 +334,7 @@ const ListOfProduct = () => {
           width: wp(18),
         }}>
         <Ionicons name="chatbubbles-outline" size={45} color={'white'} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

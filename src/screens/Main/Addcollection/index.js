@@ -6,6 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Modal,
+  FlatList,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
@@ -15,10 +17,17 @@ import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../components/Loader';
 import axios from 'axios';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RadioButton} from 'react-native-paper';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
 const Addcollection = () => {
+  const loading = useSelector(state => state.Auth.isFetching);
+  const libraryImages = useSelector(state => state.Catalogue.lImages);
+  const visible = useSelector(state => state.Catalogue.visible);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [name, setName] = useState('');
@@ -92,6 +101,7 @@ const Addcollection = () => {
         }
       } catch (error) {
         setFetching(false);
+        Toast.show('Something went wrong');
         console.log('this isi error', error);
       }
     }
@@ -122,11 +132,27 @@ const Addcollection = () => {
     setActive('unchecked');
     setInActive('checked');
   };
+  const handleWishList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Get_wishListProduct_Request',
+      url: '/wishListProduct',
+      user_id: user_id,
+      navigation,
+    });
+  };
 
+  const getLibraryProduct = () => {
+    dispatch({
+      type: 'library_images_request',
+      url: 'creativeImgList',
+      open: true,
+    });
+  };
   return (
     <View style={styles.container1}>
       <StatusBar />
-      {fetching ? <Loader /> : null}
+      {fetching || loading ? <Loader /> : null}
       <View
         style={{
           backgroundColor: '#032e63',
@@ -161,14 +187,16 @@ const Addcollection = () => {
             style={{height: 24, width: 28}}
             source={require('../../../assets/Fo.png')}
           />
-          <Image
-            style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
-            source={require('../../../assets/Image/dil.png')}
-          />
-          <Image
+          <TouchableOpacity onPress={() => handleWishList()}>
+            <Image
+              style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
+              source={require('../../../assets/Image/dil.png')}
+            />
+          </TouchableOpacity>
+          {/* <Image
             style={{height: 24, width: 28, tintColor: '#fff', marginLeft: 15}}
             source={require('../../../assets/supplierImage/more.png')}
-          />
+          /> */}
         </View>
       </View>
       <ScrollView>
@@ -292,6 +320,9 @@ const Addcollection = () => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
+              onPress={() => {
+                getLibraryProduct();
+              }}
               style={{
                 borderWidth: 1,
                 width: '48%',
@@ -342,6 +373,46 @@ const Addcollection = () => {
         </View>
         <View style={{height: 50}} />
       </ScrollView>
+      <Modal visible={false} transparent={true}>
+        <View style={{flex: 1}}>
+          <View
+            style={{
+              height: '80%',
+              width: '90%',
+              alignSelf: 'center',
+              backgroundColor: 'white',
+              borderRadius: 8,
+              opacity: 5,
+              elevation: 5,
+              marginTop: '15%',
+            }}>
+            <View style={{marginTop: '5%'}}>
+              <FlatList
+                data={libraryImages}
+                renderItem={({item, index}) => (
+                  <View
+                    style={{
+                      height: hp(25),
+                      marginVertical: 5,
+                    }}>
+                    <Image
+                      style={{
+                        height: '100%',
+                        width: '90%',
+                        alignSelf: 'center',
+                        borderRadius: 5,
+                      }}
+                      source={{
+                        uri: `https://olocker.co/uploads/creatives/${item?.Logo}`,
+                      }}
+                    />
+                  </View>
+                )}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

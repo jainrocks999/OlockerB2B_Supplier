@@ -88,6 +88,7 @@ const FavouriteList = () => {
       console.log(error);
     }
   };
+  console.log('this is wishlist item', JSON.stringify(selector?.wishlistitems));
 
   return (
     <View style={styles.container}>
@@ -100,6 +101,7 @@ const FavouriteList = () => {
         onPress={() => navigation.goBack()}
         onPress2={() => navigation.navigate('Message')}
       />
+
       <ScrollView>
         <View style={styles.main}>
           <View>
@@ -107,7 +109,7 @@ const FavouriteList = () => {
           </View>
         </View>
         <View style={styles.card}>
-          {true ? (
+          {selector?.wishlistitems[0] != false ? (
             <FlatList
               data={selector?.wishlistitems}
               numColumns={2}
@@ -256,7 +258,18 @@ const FavouriteList = () => {
                 ) : null;
               }}
             />
-          ) : null}
+          ) : (
+            <Text
+              style={{
+                fontSize: wp(5),
+                alignSelf: 'center',
+                fontFamily: 'Roboto-Medium',
+                fontWeight: '400',
+                marginTop: wp(45),
+              }}>
+              No Data Found{' '}
+            </Text>
+          )}
         </View>
         <View style={{height: 70}} />
       </ScrollView>

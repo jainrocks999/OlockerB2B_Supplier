@@ -132,7 +132,7 @@ const OfferProductModal = ({
                           }
                           onChange={() => {
                             if (inputs.hdnselectedvalue.includes(item?.SrNo)) {
-                              let newee = hdnselectedvalue.filter(
+                              let newee = inputs.hdnselectedvalue.filter(
                                 items => items != item.SrNo,
                               );
                               setInputs(prev => ({
@@ -149,6 +149,7 @@ const OfferProductModal = ({
                               }));
                             }
                           }}
+                          tintColors={{true: '#032e63', false: '#032e63'}}
                         />
                       </View>
                       <View style={{padding: 7}}>

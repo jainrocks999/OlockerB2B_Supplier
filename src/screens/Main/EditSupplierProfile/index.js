@@ -37,6 +37,10 @@ const EditSupplierProfile = ({route}) => {
   );
 
   const details = route.params.selector.supplierdetails[0];
+  console.log(
+    'this is su',
+    JSON.stringify(supplierProfile?.supplierimagedetails),
+  );
   const [fetching, setFetching] = useState(false);
   const getImages = type => {
     const newArr = supplierProfile?.supplierimagedetails?.filter(

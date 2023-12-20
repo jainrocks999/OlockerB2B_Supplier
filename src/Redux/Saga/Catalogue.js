@@ -302,7 +302,6 @@ function* addDecorative(action) {
 }
 function* verifyWt(action) {
   try {
-    console.log(action);
     const data = {
       GrossWt: action.GrossWt,
       MetalWtGrandTotal: action.MetalWtGrandTotal,
@@ -316,7 +315,6 @@ function* verifyWt(action) {
         type: 'verify_product_wieght_success',
         payload: res.msg,
       });
-      Toast.show(res.msg);
     } else {
       yield put({
         type: 'verify_product_wieght_error1',
@@ -604,6 +602,32 @@ function* getProductsPrice(action) {
     console.log('this is resssdjf', JSON.stringify(res));
   } catch (error) {}
 }
+function* getImages(action) {
+  try {
+    const res = yield call(Api.fetchDataByGET1, action.url);
+    if (res.status) {
+      yield put({
+        type: 'library_images_success',
+        payload: res?.data,
+      });
+      yield put({
+        type: 'visible_request',
+        visible: action.open,
+      });
+    } else {
+      yield put({
+        type: 'library_images_error',
+      });
+      Toast.show('Something went wrong');
+    }
+  } catch (error) {
+    yield put({
+      type: 'library_images_error',
+    });
+    Toast.show('Something went wrong');
+    console.log('thisisis i', error);
+  }
+}
 export default function* citySaga() {
   yield takeEvery('Get_Catalogue_Request', getCatalogue);
   yield takeEvery('My_Product_Request', getProducts);
@@ -625,4 +649,5 @@ export default function* citySaga() {
   yield takeEvery('product_detail_request', productData);
   yield takeEvery('product_delete_request', deleteProduct);
   yield takeEvery('get_product_price_request', getProductsPrice);
+  yield takeEvery('library_images_request', getImages);
 }

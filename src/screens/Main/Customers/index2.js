@@ -291,7 +291,7 @@ const HomeScreen = () => {
     setSetting(true);
   };
 
-  manageUpdate = () => {
+  const manageUpdate = () => {
     dispatch({
       type: 'City_List_Request',
       url: '/getCities',

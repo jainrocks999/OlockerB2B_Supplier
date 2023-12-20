@@ -15,7 +15,7 @@ import TabView from '../../../components/StoreButtomTab';
 import {useNavigation} from '@react-navigation/native';
 import {FlatListSlider} from 'react-native-flatlist-slider';
 import Preview from '../../../components/Preview';
-import Banner from '../../../components/Banner';
+import Banner from '../../../components/Banner/index2';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './styles';
 import {useSelector, useDispatch} from 'react-redux';
@@ -143,7 +143,7 @@ const SubCategory = ({route}) => {
 
     return response;
   };
-
+  console.log('tjos os soso', JSON.stringify(productData));
   const addProductWishList = async item => {
     setIsFetching(true);
     const Token = await AsyncStorage.getItem('loginToken');
@@ -244,8 +244,8 @@ const SubCategory = ({route}) => {
               justifyContent: 'center',
               height: hp(25),
             }}>
-            <FlatList
-              data={productImage()}
+            {/* <FlatList
+              data={productData?.productdetails?.productimages}
               horizontal
               pagingEnabled
               renderItem={({item}) => (
@@ -258,12 +258,34 @@ const SubCategory = ({route}) => {
                     marginHorizontal: wp(3.5),
                     elevation: 5,
                   }}>
+                  {console.log('this is item', productImage())}
                   <Image
-                    source={{uri: item}}
+                    source={{
+                      uri: `https://olocker.co/uploads/product/${item?.ImageName}`,
+                    }}
                     style={{height: '100%', width: '100%'}}
                   />
                 </View>
               )}
+            /> */}
+            <FlatListSlider
+              data={productData?.productdetails?.productimages}
+              height={170}
+              timer={3000}
+              contentContainerStyle={{
+                marginVertical: 0,
+                paddingHorizontal: 30,
+              }}
+              indicatorContainerStyle={{position: 'absolute', bottom: -8}}
+              indicatorActiveColor={'#fff'}
+              indicatorInActiveColor={'#000'}
+              indicatorActiveWidth={5}
+              animation
+              component={<Banner />}
+              separatorWidth={15}
+              width={300}
+              autoscroll={false}
+              loop={false}
             />
           </View>
         </View>

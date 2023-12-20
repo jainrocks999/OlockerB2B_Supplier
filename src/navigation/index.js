@@ -15,6 +15,7 @@ import DetailsFav from '../screens/Main/favouriteDetailsPage';
 import MyProductDetails from '../screens/Main/MyProductDetails';
 import SubCategory from '../screens/Main/SubCategory';
 import Customers from '../screens/Main/Customers/index2';
+import PartnerProfile2 from '../screens/Main/Customers/index';
 import Mycustomer from '../screens/Main/Mycustomers';
 import MyCustomerDetail from '../screens/Main/MyCustomerDetail';
 import Feedback from '../screens/Main/Feedback';
@@ -95,6 +96,7 @@ function HomeScreen1() {
       <Stack1.Screen name="AddProductTooffer" component={AddProductTooffer} />
       <Stack2.Screen name="PatnerProfile" component={PatnerProfile} />
       <Stack2.Screen name="FavouriteList" component={FavouriteList} />
+      <Stack3.Screen name="PartnerProfile" component={PartnerProfile2} />
     </Stack1.Navigator>
   );
 }
@@ -105,6 +107,7 @@ function Customer1() {
       initialRouteName="Customers"
       screenOptions={{headerShown: false}}>
       <Stack3.Screen name="Customers" component={Customers} />
+
       <Stack3.Screen
         name="EditSupplierProfile"
         component={EditSupplierProfile}
@@ -130,7 +133,7 @@ function MyNetwork1() {
       screenOptions={{headerShown: false}}>
       <Stack2.Screen name="MyNetwork" component={MyNetwork} />
       <Stack2.Screen name="MyNetworks" component={MyNetworkList} />
-      <Stack2.Screen name="PartnerProfile" component={PartnerProfile} />
+      <Stack2.Screen name="PartnerProfile2" component={PartnerProfile} />
       <Stack2.Screen name="PendingRequest" component={PendingRequest} />
       <Stack2.Screen name="SentRequest" component={SentRequest} />
     </Stack2.Navigator>

@@ -22,6 +22,8 @@ initialstate = {
     metal: false,
     diamond: false,
   },
+  lImages: [],
+  visible: false,
 };
 
 export default (state = initialstate, action) => {
@@ -226,6 +228,19 @@ export default (state = initialstate, action) => {
       return {...state, isFetching: false};
     case 'product_delete_error':
       return {...state, isFetching: false};
+    case 'library_images_request':
+      return {...state, isFetching: true};
+    case 'library_images_success':
+      return {
+        ...state,
+        isFetching: false,
+        lImages: action.payload,
+      };
+    case 'library_images_error':
+      return {...state, isFetching: false};
+    case 'visible_request': {
+      return {...state, visible: action.visible};
+    }
     default:
       return state;
   }

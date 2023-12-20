@@ -343,6 +343,7 @@ const OfferList = () => {
                 {detaildata?.offerProductList?.length > 0 ? (
                   <FlatList
                     data={detaildata?.offerProductList}
+                    inverted
                     renderItem={({item, index}) => (
                       <View
                         style={[
@@ -643,6 +644,7 @@ const OfferList = () => {
             </Text>
             <FlatList
               data={OfferListData?.offerList}
+              inverted
               style={{marginTop: 10}}
               renderItem={({item}) => (
                 <View style={styles.some}>

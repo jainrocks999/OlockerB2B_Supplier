@@ -35,7 +35,7 @@ function* networkList(action) {
       userId: 13,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-    console.log('thisi is user response', response);
+
     if (response.success == true) {
       yield put({
         type: 'Network_List_Success',
@@ -92,7 +92,6 @@ function* SearchRetailerRequest(action) {
     const response = yield call(Api.fetchDataByGET1, action.url, data);
     console.log('this is response', JSON.stringify(response));
     if (response.status) {
-      Toast.show('jtttotototo');
       console.log('this is search response');
       yield put({
         type: 'Search_Retailer_Success',
@@ -290,6 +289,32 @@ function* RemovePatner(action) {
     });
   }
 }
+function* getPartner(action) {
+  try {
+    alert(action.partnerId);
+    const data = {
+      partnerId: action.partnerId,
+    };
+    const response = yield call(Api.fetchDataByGET1, action.url, data);
+    if (response.status || response.success) {
+      yield put({
+        type: 'get_network_retailer_detail_success',
+        payload: response.data,
+      });
+      action.navigation.navigate('PartnerProfile');
+    } else {
+      yield put({
+        type: 'get_network_retailer_detail_error',
+      });
+    }
+    Toast.show(response?.msg);
+  } catch (error) {
+    console.log('thisi s partner detail error', error);
+    yield put({
+      type: 'get_network_retailer_detail_error',
+    });
+  }
+}
 
 export default function* homeSaga() {
   yield takeEvery('Banner_List_Request', bannerList);
@@ -303,4 +328,5 @@ export default function* homeSaga() {
   yield takeEvery('product_TypeList_Request', productTypeList);
   yield takeEvery('Addnetwork_toPatner_Request', AddnetworkToPatner);
   yield takeEvery('RemovePatner_Request', RemovePatner);
+  yield takeEvery('get_network_retailer_detail_request', getPartner);
 }

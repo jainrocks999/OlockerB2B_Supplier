@@ -6,6 +6,8 @@ const Profile = () => {
   const selector = useSelector(state => state?.Supplier?.SupplierDetail?.data);
   const isFetching = useSelector(state => state.Supplier.isFetching);
   const ownerImagePath = 'https://olocker.co/uploads/supplier/';
+  const parnerData = useSelector(state => state.Home.partnerData);
+  const partner = parnerData?.partnerdetails;
   return (
     <View style={{flex: 1, backgroundColor: '#fff', paddingVertical: 20}}>
       {isFetching ? <Loader /> : null}
@@ -29,11 +31,12 @@ const Profile = () => {
           style={{
             fontSize: 16,
             textAlign: 'center',
-            marginTop: 20,
             color: '#535353',
             fontFamily: 'Acephimere',
+            marginTop: 15,
+            marginLeft: '5%',
           }}>
-          {selector?.supplierdetails[0]?.SupplierIntroduction}
+          {partner?.PartnerIntroduction}
         </Text>
 
         {/* {selector.Images.map((item)=>

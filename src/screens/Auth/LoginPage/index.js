@@ -40,44 +40,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const isFetching = useSelector(state => state.Login.isFetching);
 
-  const pertnerLogin = async values => {
-    setFetching(true);
-    const axios = require('axios');
-
-    let config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: `https://olocker.co/api/partners//login?email=${values.email}&password=${values.password}`,
-      headers: {},
-    };
-
-    axios
-      .request(config)
-      .then(response => {
-        if (response.data.status) {
-          setFetching(false);
-          navigation.replace('Home');
-          Toast.show('Login successful');
-        } else {
-          Toast.show(response.data.message);
-          setFetching(false);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
-  const Demo = async values => {
-    const params = new URLSearchParams();
-    params.append('email', 'issuenotfound.404+1@gmail.com');
-    params.append('password', '123456');
-    const config = {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    };
-
+  const handleLogin = async values => {
     let token = await messaging().getToken();
     console.log('this is token', token);
 
@@ -93,7 +56,7 @@ const Login = () => {
   return (
     <Formik
       initialValues={{email: '', password: ''}}
-      onSubmit={values => Demo(values)}
+      onSubmit={values => handleLogin(values)}
       validateOnMount={true}
       validationSchema={loginValidationSchema}>
       {({
