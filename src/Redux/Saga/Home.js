@@ -291,7 +291,6 @@ function* RemovePatner(action) {
 }
 function* getPartner(action) {
   try {
-    alert(action.partnerId);
     const data = {
       partnerId: action.partnerId,
     };

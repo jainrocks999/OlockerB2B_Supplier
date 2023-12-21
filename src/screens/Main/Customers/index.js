@@ -4,36 +4,28 @@ import {
   Text,
   Dimensions,
   Image,
-  FlatList,
   ScrollView,
   TouchableOpacity,
   Linking,
   Share,
-  Alert,
 } from 'react-native';
-import Header from '../../../components/CustomHeader';
 import {useNavigation} from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
-import BottomTab from '../../../components/StoreButtomTab';
 import Stars from 'react-native-stars';
 import styles from './styles';
 import Catalogue from '../../../components/Catalogue';
-import Profile from '../../../components/Profile';
+import Profile2 from '../../../components/Profile/index2';
 import Setting from '../../../components/Settings';
 import Loader from '../../../components/Loader';
-import ImagePath from '../../../components/ImagePath';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux';
 
 let productImage = [];
 let showroomImage = [];
 let supplierLogo = '';
 let ownerImage = [];
-let goldSpecilization = [];
 const HomeScreen = () => {
   const parnerData = useSelector(state => state.Home.partnerData);
-  console.log('this is partner data', JSON.stringify(parnerData));
+  console.log('this is some data', JSON.stringify(parnerData));
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const selector1 = useSelector(state => state.Supplier.SupplierDetail);
@@ -381,7 +373,7 @@ const HomeScreen = () => {
           </View>
         </View>
         <View style={{marginTop: 10}}>
-          {profile == true ? <Profile /> : null}
+          {profile == true ? <Profile2 /> : null}
           {catalogue == true ? <Catalogue /> : null}
           {setting == true ? <Setting /> : null}
         </View>

@@ -1,7 +1,11 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Image, FlatList} from 'react-native';
-import ImagePath from '../ImagePath';
 import {useSelector} from 'react-redux';
+import Loading from '../Loader';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 const Profile = () => {
   const selector = useSelector(state => state?.Supplier?.SupplierDetail?.data);
   const isFetching = useSelector(state => state.Supplier.isFetching);
@@ -10,7 +14,7 @@ const Profile = () => {
   const partner = parnerData?.partnerdetails;
   return (
     <View style={{flex: 1, backgroundColor: '#fff', paddingVertical: 20}}>
-      {isFetching ? <Loader /> : null}
+      {isFetching ? <Loading /> : null}
 
       <View style={{paddingHorizontal: 20, alignItems: 'flex-start'}}>
         <TouchableOpacity
@@ -38,9 +42,6 @@ const Profile = () => {
           }}>
           {partner?.PartnerIntroduction}
         </Text>
-
-        {/* {selector.Images.map((item)=>
-               item.Type == 'Owner Image' ? */}
         <TouchableOpacity
           style={{
             backgroundColor: '#032e63',
@@ -68,8 +69,6 @@ const Profile = () => {
                   width: '35%',
                   paddingVertical: 15,
                 }}>
-                {/* {// console.log('bire', `https://olocker.co/uploads/supplier/${item.ImageName}`)} */}
-
                 <View style={{width: '80%', alignItems: 'center'}}>
                   <View style={{height: 90, width: '100%', borderWidth: 1}}>
                     <Image
@@ -96,7 +95,6 @@ const Profile = () => {
             ) : null,
           )}
         </View>
-
         <View>
           <TouchableOpacity
             style={{
@@ -119,6 +117,107 @@ const Profile = () => {
               Showrooms
             </Text>
           </TouchableOpacity>
+          <View style={{flexDirection: 'row'}}>
+            {selector?.supplierimagedetails?.map(item =>
+              item.Type == 'ShowRoom Image' ? (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: wp('32%'),
+                    paddingVertical: 15,
+                  }}>
+                  <View style={{width: '80%', alignItems: 'center'}}>
+                    <View style={{height: 90, width: '100%', borderWidth: 1}}>
+                      <Image
+                        style={{height: '100%', width: '100%'}}
+                        resizeMode={'stretch'}
+                        source={
+                          item.ImageName
+                            ? {uri: `${ownerImagePath}${item.ImageName}`}
+                            : require('../../assets/Image/Not.jpeg')
+                        }
+                      />
+                    </View>
+                    <Text
+                      style={{
+                        marginTop: 5,
+                        color: '#032e63',
+                        fontFamily: 'Acephimere',
+                        fontSize: 13,
+                      }}>
+                      {item.OwnerName}
+                    </Text>
+                  </View>
+                </View>
+              ) : null,
+            )}
+          </View>
+        </View>
+        <View>
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#032e63',
+              paddingHorizontal: 12,
+              paddingVertical: 8,
+              borderRadius: 20,
+              width: 110,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 0,
+            }}>
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 14,
+                fontFamily: 'Acephimere',
+                width: '90%',
+              }}>
+              Products
+            </Text>
+          </TouchableOpacity>
+          <View style={{flexDirection: 'row'}}>
+            {selector?.supplierimagedetails?.map(item =>
+              item.Type == 'Product Image' ? (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: wp('32%'),
+                    paddingVertical: 15,
+                  }}>
+                  {/* {// console.log('bire', `https://olocker.co/uploads/supplier/${item.ImageName}`)} */}
+
+                  <View style={{width: '80%', alignItems: 'center'}}>
+                    <View style={{height: 90, width: '100%', borderWidth: 1}}>
+                      <Image
+                        style={{height: '100%', width: '100%'}}
+                        resizeMode={'stretch'}
+                        source={
+                          item.ImageName
+                            ? {uri: `${ownerImagePath}${item.ImageName}`}
+                            : require('../../assets/Image/Not.jpeg')
+                        }
+                      />
+                    </View>
+                    <Text
+                      style={{
+                        marginTop: 5,
+                        color: '#032e63',
+                        fontFamily: 'Acephimere',
+                        fontSize: 13,
+                      }}>
+                      {item.OwnerName}
+                    </Text>
+                  </View>
+                </View>
+              ) : null,
+            )}
+          </View>
+        </View>
+        <View>
           <View style={{paddingHorizontal: 20, marginTop: 20}}>
             <View
               style={{

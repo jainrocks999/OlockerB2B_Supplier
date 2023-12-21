@@ -86,7 +86,6 @@ const HomeScreen = () => {
   };
 
   const supplierprofile = async id => {
-    console.log('thjos os user id', id);
     dispatch({
       type: 'get_network_retailer_detail_request',
       partnerId: id,
@@ -206,9 +205,7 @@ const HomeScreen = () => {
               }}
               source={require('../../../assets/Image/myjewlery.png')}
             />
-            <TouchableOpacity
-            //  onPress={()=>updateFieldChanged('1')}
-            >
+            <TouchableOpacity>
               <Text style={styles.text4}>Network</Text>
             </TouchableOpacity>
           </View>
@@ -216,12 +213,11 @@ const HomeScreen = () => {
             showsHorizontalScrollIndicator={false}
             horizontal={true}
             data={selector1}
-            inverted
             style={{marginTop: 7}}
             renderItem={({item}) => (
               <View style={{width: win.width * 0.37, alignItems: 'center'}}>
                 <TouchableOpacity
-                  onPress={() => supplierprofile(item.PartnerSrNo)}
+                  onPress={() => supplierprofile(item?.PartnerSrNo)}
                   style={[styles.cardview]}>
                   <Image
                     style={{
