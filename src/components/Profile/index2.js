@@ -2,16 +2,12 @@ import React from 'react';
 import {View, Text, TouchableOpacity, Image, FlatList} from 'react-native';
 import ImagePath from '../ImagePath';
 import {useSelector} from 'react-redux';
+import Loader from '../Loader';
 const Profile = () => {
-  const selector = useSelector(state => state?.Supplier?.SupplierDetail?.data);
   const isFetching = useSelector(state => state.Supplier.isFetching);
   const ownerImagePath = 'https://olocker.co/uploads/supplier/';
   const parnerData = useSelector(state => state.Home.partnerData);
   const partner = parnerData?.partnerdetails;
-  console.log(
-    'this is item',
-    JSON.stringify(parnerData?.partnerimagedetails?.OwnerImage),
-  );
   return (
     <View style={{flex: 1, backgroundColor: '#fff', paddingVertical: 20}}>
       {isFetching ? <Loader /> : null}
@@ -43,8 +39,6 @@ const Profile = () => {
           {partner?.PartnerIntroduction}
         </Text>
 
-        {/* {selector.Images.map((item)=>
-               item.Type == 'Owner Image' ? */}
         <TouchableOpacity
           style={{
             backgroundColor: '#032e63',
@@ -71,8 +65,6 @@ const Profile = () => {
                 width: '35%',
                 paddingVertical: 15,
               }}>
-              {/* {// console.log('bire', `https://olocker.co/uploads/supplier/${item.ImageName}`)} */}
-
               <View style={{width: '80%', alignItems: 'center'}}>
                 <View style={{height: 90, width: '100%', borderWidth: 1}}>
                   <Image
@@ -130,8 +122,6 @@ const Profile = () => {
                 width: '35%',
                 paddingVertical: 15,
               }}>
-              {/* {// console.log('bire', `https://olocker.co/uploads/supplier/${item.ImageName}`)} */}
-
               <View style={{width: '80%', alignItems: 'center'}}>
                 <View style={{height: 90, width: '100%', borderWidth: 1}}>
                   <Image

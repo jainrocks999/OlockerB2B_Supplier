@@ -27,6 +27,7 @@ function* getCatalogue(action) {
     yield put({
       type: 'Get_Catalogue_Error',
     });
+    console.log(error);
   }
 }
 

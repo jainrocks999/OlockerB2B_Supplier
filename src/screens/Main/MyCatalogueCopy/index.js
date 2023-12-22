@@ -1,15 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  Alert,
-} from 'react-native';
+import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import Path from '../../../components/ImagePath';
 import Loader from '../../../components/Loader';
 import {
   widthPercentageToDP as wp,
