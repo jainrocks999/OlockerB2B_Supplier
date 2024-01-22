@@ -7,9 +7,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Toast from 'react-native-simple-toast';
 import Banner from '../../../components/Banner';
 import {FlatListSlider} from 'react-native-flatlist-slider';
 import {ScrollView} from 'react-native-gesture-handler';

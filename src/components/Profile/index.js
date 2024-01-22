@@ -165,7 +165,7 @@ const Profile = () => {
               width: 110,
               alignItems: 'center',
               justifyContent: 'center',
-              marginTop: 0,
+              marginTop: 15,
             }}>
             <Text
               style={{
