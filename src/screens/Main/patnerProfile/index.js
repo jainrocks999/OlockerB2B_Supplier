@@ -34,6 +34,10 @@ let goldSpecilization = [];
 const PatnerProfile = ({route}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+ 
+
+ const selector3 =useSelector(state=>state.Home?.partnerData)
+console.log('partnerDetail,,,,,,,',selector3?.partnerdetails);
   const selector1 = useSelector(state => state.Supplier.SupplierDetail);
   const selector = selector1?.data;
   const ownerImagePath = 'https://olocker.co/uploads/supplier/';
@@ -161,11 +165,14 @@ const PatnerProfile = ({route}) => {
                 width: '30%',
                 borderRadius: 10,
               }}>
+
+{console.log('imageytetetee path deataillll',`${ownerImagePath}${selector3?.partnerdetails?.Logo}`)}
+
               <Image
                 style={{width: '100%', height: '100%', borderRadius: 10}}
                 source={
-                  supplierLogo
-                    ? {uri: `${ownerImagePath}${supplierLogo}`}
+                  selector3?.partnerdetails?.Logo
+                    ? {uri: `${ownerImagePath}${selector3?.partnerdetails?.Logo}`}
                     : require('../../../assets/Image/Not.jpeg')
                 }
               />
@@ -173,11 +180,11 @@ const PatnerProfile = ({route}) => {
             <View style={{marginLeft: 10, width: '60%', marginTop: -4}}>
               <Text
                 style={{color: '#fff', fontSize: 19, fontFamily: 'Acephimere'}}>
-                {selector?.supplierdetails[0]?.SupplierName}
+                {selector3?.partnerdetails?.CompanyName}
               </Text>
               <Text
                 style={{color: '#fff', fontSize: 12, fontFamily: 'Acephimere'}}>
-                {selector?.supplierdetails[0]?.ContactPersonName}
+                {selector3?.partnerdetails?.Location}
               </Text>
               <View
                 style={{
@@ -201,7 +208,7 @@ const PatnerProfile = ({route}) => {
 
                 <View style={{flexDirection: 'row'}}>
                   <TouchableOpacity
-                    onPress={() => Linking.openURL(`tel:${'999320456'}`)}
+                    onPress={() => Linking.openURL(`tel:${selector3?.partnerdetails?.Mobile}`)}
                     style={{alignItems: 'center', justifyContent: 'center'}}>
                     <Image
                       style={{width: 30, height: 30}}

@@ -15,7 +15,8 @@ initialstate = {
   RemovePatner: [],
   data2: {},
   session: '',
-  partnerData: {},
+  partnerD:[],
+   partnerData: {},
 };
 export default (state = initialstate, action) => {
   switch (action.type) {
@@ -105,12 +106,26 @@ export default (state = initialstate, action) => {
       return {...state, isFetching: false, RemovePatner: action.payload};
     case 'RemovePatner_Error':
       return {...state, isFetching: false};
-    case 'get_network_retailer_detail_request':
-      return {...state, isFetching: true};
-    case 'get_network_retailer_detail_success':
-      return {...state, isFetching: false, partnerData: action.payload};
-    case 'get_network_retailer_detail_error':
-      return {...state, isFetching: false};
+
+
+
+      // get_networkretailerdetail_request
+
+      case 'get_networkretailerdetail_request':
+        return {...state, isFetching: true};
+      case 'get_networkretailerdetail_Success':
+console.log('reducer .......',action.payload);
+         return {...state, isFetching: false, partnerData: action.payload};
+      case 'get_networkretailerdetail_Error':
+        return {...state, isFetching: false};
+
+      
+    // case 'get_network_retailer_detail_request':
+    //   return {...state, isFetching: true};
+    // case 'get_network_retailer_detail_success':
+    //   return {...state, isFetching: false, partnerData: action.payload};
+    // case 'get_network_retailer_detail_error':
+    //   return {...state, isFetching: false};
 
     default:
       return state;

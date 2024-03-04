@@ -85,12 +85,12 @@ const HomeScreen = () => {
     });
   };
 
-  const supplierprofile = async id => {
+  const supplierprofile = async( id) => {
     dispatch({
-      type: 'get_network_retailer_detail_request',
+      type: 'get_networkretailerdetail_request',
       partnerId: id,
       url: 'getNetworkRetailerDeatils',
-      navigation,
+       navigation,
     });
   };
   useEffect(() => {
@@ -217,7 +217,10 @@ const HomeScreen = () => {
             renderItem={({item}) => (
               <View style={{width: win.width * 0.37, alignItems: 'center'}}>
                 <TouchableOpacity
-                  onPress={() => supplierprofile(item?.PartnerSrNo)}
+                  onPress={() => 
+                      // navigation.navigate('PatnerProfile')
+                       supplierprofile(item?.PartnerSrNo)
+                  }
                   style={[styles.cardview]}>
                   <Image
                     style={{

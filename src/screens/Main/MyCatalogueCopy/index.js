@@ -229,7 +229,7 @@ const MyCatalogueCopy = () => {
             component={<Banner />}
             separatorWidth={15}
             width={300}
-            autoscroll={false}
+            autoscroll={true}
             loop={false}
           />
           <View

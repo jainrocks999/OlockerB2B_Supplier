@@ -39,7 +39,11 @@ export default class Api {
     }
   };
   static fetchDataByGET1 = async (url, data) => {
+
+
     const Token = await AsyncStorage.getItem('loginToken');
+
+    console.log('higihgigg', Constants.MainUrl + url,data,Token);
     try {
       const response = await axios({
         method: 'GET',

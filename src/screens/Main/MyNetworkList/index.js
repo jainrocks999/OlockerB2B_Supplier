@@ -48,6 +48,16 @@ const MyNetworkList = () => {
     });
   };
 
+
+  const supplierprofile = async id => {
+    dispatch({
+      type: 'get_network_retailer_detail_request',
+      partnerId: id,
+      url: 'getNetworkRetailerDeatils',
+      navigation,
+    });
+  };
+
   return (
     <View style={{flex: 1}}>
       {isFetching ? <Loader /> : null}
@@ -70,9 +80,11 @@ const MyNetworkList = () => {
               data={selector}
               renderItem={({item}) => (
                 <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('PatnerProfile');
-                  }}
+                  onPress={() => 
+                    
+                    // supplierprofile(item?.PartnerSrNo)
+                     navigation.navigate('PatnerProfile')
+                  }
                   style={{
                     backgroundColor: '#F4F5FC',
                     marginHorizontal: 10,

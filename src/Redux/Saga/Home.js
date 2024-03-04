@@ -1,4 +1,4 @@
-import {ToastAndroid, YellowBox} from 'react-native';
+import {Alert, ToastAndroid, YellowBox} from 'react-native';
 import {takeEvery, put, call} from 'redux-saga/effects';
 import Api from '../Api';
 import Toast from 'react-native-simple-toast';
@@ -289,31 +289,76 @@ function* RemovePatner(action) {
     });
   }
 }
-function* getPartner(action) {
+
+function*getPartnerDetail(action){
+  console.log('partneer deatail action.....',action);
+
   try {
+
     const data = {
-      partnerId: action.partnerId,
-    };
-    const response = yield call(Api.fetchDataByGET1, action.url, data);
-    if (response.status || response.success) {
-      yield put({
-        type: 'get_network_retailer_detail_success',
-        payload: response.data,
-      });
-      action.navigation.navigate('PartnerProfile');
-    } else {
-      yield put({
-        type: 'get_network_retailer_detail_error',
-      });
-    }
-    Toast.show(response?.msg);
+            partnerId: action.partnerId,
+          };
+
+          const response = yield call(Api.fetchDataByGET1, action.url, data);  
+    console.log('resonse data ,,,,4444',response);
+if(response.status==true){
+ 
+  yield put({
+            type: 'get_networkretailerdetail_Success',
+            payload: response.data,
+          });
+          action.navigation.navigate('PatnerProfile');
+}
+
+
   } catch (error) {
     console.log('thisi s partner detail error', error);
-    yield put({
-      type: 'get_network_retailer_detail_error',
-    });
+        yield put({
+          type: 'get_networkretailerdetail_error',
+        });
   }
 }
+
+
+
+
+
+
+
+// function* getPartner(action) {
+//   console.log('virendra,,',action);
+//   try {
+//     const data = {
+//       partnerId: action.partnerId,
+//     };
+
+//     const response = yield call(Api.fetchDataByGET1, action.url, data);
+//     // const response = yield call(Api.fetchDataByGET1, action.url, data);
+//    console.log('rfghjh',response);
+// // if(response.status==true){
+// //   console.log('response data ......',response.data);
+// // }
+
+
+//     // if (response.status==true || response.success ==true) {
+//     //   yield put({
+//     //     type: 'get_network_retailer_detail_success',
+//     //     payload: response,
+//     //   });
+//     //   // action.navigation.navigate('PatnerProfile');
+//     // } else {
+//     //   yield put({
+//     //     type: 'get_network_retailer_detail_error',
+//     //   });
+//     // }
+//     Toast.show(response?.msg);
+//   } catch (error) {
+//     console.log('thisi s partner detail error', error);
+//     yield put({
+//       type: 'get_network_retailer_detail_error',
+//     });
+//    }
+// }
 
 export default function* homeSaga() {
   yield takeEvery('Banner_List_Request', bannerList);
@@ -327,5 +372,7 @@ export default function* homeSaga() {
   yield takeEvery('product_TypeList_Request', productTypeList);
   yield takeEvery('Addnetwork_toPatner_Request', AddnetworkToPatner);
   yield takeEvery('RemovePatner_Request', RemovePatner);
-  yield takeEvery('get_network_retailer_detail_request', getPartner);
+yield takeEvery('get_networkretailerdetail_request',getPartnerDetail);
+
+  // yield takeEvery('get_network_retailer_detail_request', getPartner);
 }
