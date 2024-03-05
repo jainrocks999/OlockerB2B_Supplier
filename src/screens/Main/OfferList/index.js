@@ -221,7 +221,7 @@ const OfferList = () => {
     setOfferId(item?.Id);
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
-      type: 'getOfferProductList_request',
+      type: 'get_OfferProductList_request',
       userId: user_id,
       url: 'getOfferProductList',
       start: 0,

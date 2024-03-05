@@ -298,7 +298,7 @@ const AddOffer = ({route}) => {
   const offerProductList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
-      type: 'getOfferProductList_request',
+      type: 'Get_OfferProductList_Request',
       userId: user_id,
       url: 'getOfferProductList',
       start: startpage,

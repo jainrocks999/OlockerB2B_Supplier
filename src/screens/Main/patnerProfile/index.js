@@ -17,7 +17,7 @@ import BottomTab from '../../../components/StoreButtomTab';
 import Stars from 'react-native-stars';
 import styles from './styles';
 import Catalogue from '../../../components/Catalogue';
-import Profile from '../../../components/Profile';
+import Profile from '../../../components/Profile/index2';
 import Setting from '../../../components/Settings';
 import Loader from '../../../components/Loader';
 import ImagePath from '../../../components/ImagePath';

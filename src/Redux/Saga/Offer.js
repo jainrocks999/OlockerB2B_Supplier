@@ -111,39 +111,93 @@ function* offerTypeList(action) {
     });
   }
 }
-function* getOfferProductList(action) {
+
+function* offerprodutlist(action){
   try {
-    console.log('this is product');
     const data = {
       userId: action.userId,
-      start: action.start,
-      limit: action.limit,
-    };
-    const res = yield call(Api.fetchDataByGET1, action.url, data);
-
-    if (res.status) {
-      yield put({
-        type: 'getOfferProductList_success',
-        payload: res.data,
-      });
-      yield put({
-        type: 'offfer_product_modal',
-        modal: action.modal,
-      });
-    } else {
-      yield put({
-        type: 'getOfferProductList_error',
-      });
-    }
-    Toast.show(res.msg);
-  } catch (error) {
-    console.log('this is erro', error);
-    yield put({
-      type: 'getOfferProductList_error',
-    });
-    Toast.show('Something went wrong');
+        start: action.start,
+       limit: action.limit,
+      };
+ 
+  const res = yield call(Api.fetchDataByGET1, action.url, data);
+  console.log('response data ,,,,,,,',res.data);
+  if(res.status==true){
+    
   }
-}
+
+  if (res.status==true) {
+           yield put({
+             type: 'Get_OfferProductList_Success',
+             payload: res.data,
+           });
+    
+           console.log('response ...offerupadate ...',res.data.products);
+           yield put({
+             type: 'offfer_product_modal',
+            modal: action.modal,
+           });
+         } else {
+           yield put({
+             type: 'Get_OfferProductList_Error',
+           });
+         }
+  
+  } catch (error) {
+    console.log('error //////////.........',error);
+    yield put({
+            type: 'Get_OfferProductList_Error',
+           });
+           Toast.show('Something went wrong');
+  }
+  
+  }
+
+
+
+
+
+
+
+
+
+
+
+// function* getOfferProductList12(action) {
+//   try {
+//     console.log('this is product',action);
+//     const data = {
+//       userId: action.userId,
+//       start: action.start,
+//       limit: action.limit,
+//     };
+//     const res = yield call(Api.fetchDataByGET1, action.url, data);
+
+//     if (res.status==true) {
+//       yield put({
+//         type: 'get_OfferProductList_success',
+//         payload: res.data,
+//       });
+
+//       console.log('response ...offerupadate ...',res.data.products);
+//       yield put({
+//         type: 'offfer_product_modal',
+//         modal: action.modal,
+//       });
+//     } else {
+//       yield put({
+//         type: 'get_OfferProductList_error',
+//       });
+//     }
+//     Toast.show(res.msg);
+//   } catch (error) {
+//     console.log('this is erro', error);
+//     yield put({
+//       type: 'get_OfferProductList_error',
+//     });
+//     Toast.show('Something went wrong');
+//   }
+// }
 function* createOffer(action) {
   const id = yield AsyncStorage.getItem('user_id');
   console.log(action);
@@ -279,12 +333,18 @@ function* addPorudctOffer(action) {
     console.log('this is error', error);
   }
 }
+
+
+
 export default function* citySaga() {
   yield takeEvery('Template_Detail_Request', offerList);
   yield takeEvery('Add_Offer_Request', offerTempList);
   yield takeEvery('Offer_List_Request', offerListData);
   yield takeEvery('get_offer_type_list_request', offerTypeList);
-  yield takeEvery('getOfferProductList_request', getOfferProductList);
+  
+yield takeEvery('Get_OfferProductList_Request',offerprodutlist);
+
+  // yield takeEvery('get_OfferProductList_request', getOfferProductList12);
   yield takeEvery('createOffer_request', createOffer);
   yield takeEvery('remove_offer_list_request', removeOffer);
   yield takeEvery('offer_details_request', getOfferDetails);

@@ -10,6 +10,8 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
   const dispatch = useDispatch();
   const isFetching = useSelector(state => state.Supplier.isFetching);
   const AssiGnModal = useSelector(state => state.Supplier.AssiGnModal);
+
+  
   const data2 = useSelector(state => state.Home.data2);
 
   const StatusDropdown = [
@@ -30,10 +32,13 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
     setValue(props.data?.CategoryType);
   }, [props.data]);
   const updateData = () => {
+    console.log('virendra,,,,,,',props.data,);
     let data = new FormData();
-    data.append('hSrNo', props.data.SrNo);
+    data.append('hSrNo', props.data?.SrNo);
     data.append('ddlStatus', Status);
     data.append('ddlCategory', value);
+    data.append('supplierId', props.data?.SupplierSrNo);
+    data.append('partnerId',props.data?.PartnerSrNo);
     data.append('IsShowInRetailerApp', allow ? 'Yes' : 'No');
     dispatch({
       type: 'update_status_&_assign_request',
@@ -136,7 +141,7 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
                   placeholder={`${Status}`}
                   value={Status}
                   onChange={item => {
-                    setStatus(item.value);
+                     setStatus(item.value);
                   }}
                 />
               </View>

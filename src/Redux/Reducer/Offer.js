@@ -36,11 +36,14 @@ export default (state = initialstate, action) => {
       return {...state, isFetching: true};
     case 'get_offer_type_list_success':
       return {...state, isFetching: false, offerTypeList: action.payload};
-    case 'getOfferProductList_request':
+      
+   
+   
+      case 'Get_OfferProductList_Request':
       return {...state, isFetching: true};
-    case 'getOfferProductList_success':
+    case 'Get_OfferProductList_Success':
       return {...state, isFetching: false, offerProudctList: action.payload};
-    case 'getOfferProductList_error':
+    case 'Get_OfferProductList_Error':
       return {...state, isFetching: false};
     case 'createOffer_request':
       return {...state, isFetching: true};

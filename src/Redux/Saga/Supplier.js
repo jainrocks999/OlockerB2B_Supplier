@@ -61,8 +61,9 @@ function* addRetailer(action) {
 }
 function* assiGnData(action) {
   try {
+    console.log('search retailer ,,,,,,,',action);
     const res = yield call(Api.fetchDataByPOST, action.url, action.data);
-    console.log('this is called');
+   
     if (res.status) {
       yield put({
         type: 'update_status_&_assign_success',

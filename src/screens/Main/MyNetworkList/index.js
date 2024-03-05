@@ -49,12 +49,12 @@ const MyNetworkList = () => {
   };
 
 
-  const supplierprofile = async id => {
+  const supplierprofile = async( id) => {
     dispatch({
-      type: 'get_network_retailer_detail_request',
+      type: 'get_networkretailerdetail_request',
       partnerId: id,
       url: 'getNetworkRetailerDeatils',
-      navigation,
+       navigation,
     });
   };
 
@@ -80,11 +80,11 @@ const MyNetworkList = () => {
               data={selector}
               renderItem={({item}) => (
                 <TouchableOpacity
-                  onPress={() => 
+                  onPress={() =>supplierprofile(item?.PartnerSrNo) }
                     
-                    // supplierprofile(item?.PartnerSrNo)
-                     navigation.navigate('PatnerProfile')
-                  }
+                     
+                    //  navigation.navigate('PatnerProfile')
+                  
                   style={{
                     backgroundColor: '#F4F5FC',
                     marginHorizontal: 10,

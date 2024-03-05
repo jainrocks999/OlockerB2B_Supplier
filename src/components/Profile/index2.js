@@ -66,17 +66,17 @@ const Profile = () => {
                 paddingVertical: 15,
               }}>
               <View style={{width: '80%', alignItems: 'center'}}>
+
+                { item.name!=""?
                 <View style={{height: 90, width: '100%', borderWidth: 1}}>
                   <Image
                     style={{height: '100%', width: '100%'}}
                     resizeMode={'stretch'}
                     source={
-                      item.ImageName
-                        ? {uri: `${ownerImagePath}${item.name}`}
-                        : require('../../assets/Image/Not.jpeg')
+                         {uri: `${ownerImagePath}${item.name}`}
                     }
                   />
-                </View>
+                </View>:null}
                 <Text
                   style={{
                     marginTop: 5,
@@ -123,19 +123,20 @@ const Profile = () => {
                 paddingVertical: 15,
               }}>
               <View style={{width: '80%', alignItems: 'center'}}>
+
+                {item.name!==""?
                 <View style={{height: 90, width: '100%', borderWidth: 1}}>
                   <Image
                     style={{height: '100%', width: '100%'}}
                     resizeMode={'stretch'}
                     source={
-                      item.name
-                        ? {
+                       {
                             uri: `https://olocker.co/uploads/partner/${item.name}`,
                           }
-                        : require('../../assets/Image/Not.jpeg')
+                       
                     }
                   />
-                </View>
+                </View>:null}
                 <Text
                   style={{
                     marginTop: 5,
@@ -192,12 +193,16 @@ const Profile = () => {
             </Text>
           </TouchableOpacity>
           <View style={{paddingHorizontal: 20, marginTop: 20}}>
+          {
+                  partner?.Mobile!=""?
             <View style={{flexDirection: 'row'}}>
               <Image
                 style={{height: 28, width: 28}}
                 source={require('../../assets/PartnerImage/16.png')}
               />
               <View>
+               
+               
                 <Text
                   style={{
                     marginLeft: 20,
@@ -205,10 +210,14 @@ const Profile = () => {
                     fontFamily: 'Acephimere',
                     color: '#424242',
                   }}>{`+91${partner?.Mobile}`}</Text>
+                 
                 {/* <Text style={{marginLeft:30,fontSize:14,fontFamily:'Acephimere',color:'#424242'}}>{'Ph:9876567898 '}</Text>
                      <Text style={{marginLeft:30,fontSize:14,fontFamily:'Acephimere',color:'#424242'}}>{'Ph:9876567898 '}</Text> */}
               </View>
             </View>
+            :null}
+
+{partner?.BillingContactEmail!=""?
             <View style={{flexDirection: 'row', marginTop: 20}}>
               <Image
                 style={{height: 28, width: 28}}
@@ -225,14 +234,14 @@ const Profile = () => {
                   {partner?.BillingContactEmail}
                 </Text>
               </View>
-            </View>
+            </View>:null}
 
             <View style={{flexDirection: 'row', marginTop: 20}}>
               <Image
                 style={{height: 28, width: 28}}
                 source={require('../../assets/PartnerImage/facebook.png')}
               />
-              <View>
+              {/* <View>
                 <Text
                   style={{
                     marginLeft: 20,
@@ -242,7 +251,7 @@ const Profile = () => {
                   }}>
                   {'fb.com/rcbafna '}
                 </Text>
-              </View>
+              </View> */}
             </View>
 
             <View style={{height: 100}} />

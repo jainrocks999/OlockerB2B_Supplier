@@ -386,7 +386,7 @@ const OfferProductModal = ({
                   renderItem={({item}) => (
                     <TouchableOpacity
                       onPress={() => {
-                        handlePage(item.num);
+                        // handlePage(item.num);
                       }}
                       style={styles.circleBtn}>
                       <Text
