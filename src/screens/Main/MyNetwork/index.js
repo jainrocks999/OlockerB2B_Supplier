@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,11 +14,11 @@ import {
 import TabView from '../../../components/StoreButtomTab';
 import Header from '../../../components/CustomHeader';
 import Carousel from 'react-native-banner-carousel';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Loader from '../../../components/Loader';
 import RNPickerSelect from 'react-native-picker-select';
 import Banner from '../../../components/Banner';
-import {FlatListSlider} from 'react-native-flatlist-slider';
+import { FlatListSlider } from 'react-native-flatlist-slider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import colors from '../../../components/colors';
@@ -28,209 +28,333 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useDispatch, useSelector} from 'react-redux';
-import {useIsFocused} from '@react-navigation/native';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
+import { Dropdown } from 'react-native-element-dropdown';
+import style from '../../../components/StoreButtomTab/style';
+import styles from './styles';
+import Preview from '../../../components/Preview';
+import SliderBanner from '../HomeScreen/Banner';
 const MyCatalogue = () => {
   const navigation = useNavigation();
+  const scrollViewRef = useRef();
   const focus = useIsFocused();
   const dispatch = useDispatch();
-  const selector = useSelector(state => state.State.StateList?.satates);
-  // console.log('this is state list', selector);
-  const isFetching = useSelector(state => state?.isFetching);
-  const [data, setData1] = useState('');
-  const BannerWidth = (Dimensions.get('window').width * 15) / 16;
+  const selector4 = useSelector(state => state?.Home?.RetailerRequestList);
+  const data2 = useSelector(state => state?.Home?.deletData1)
+  const isFetching1 = useSelector(state => state.Home.isFetching);
+  const selector1 = useSelector(state => state.Home.NetworkList?.networkretailer);
+
+  const selector2 = useSelector(state => state.Home.NetworkList1?.partnerApprovedRequest);
+  const selector = useSelector(state => state.State.StateList);
+  const cityList1 = useSelector(state => state.City.CityList);
+  let cityList = cityList1?.cities;
+  const isFetching = useSelector(state => state.City.isFetching);
+  const isFocuse = useIsFocused()
+  const selector3 = useSelector(state => state.Home.SearchRetailerList);
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [metal, setMetal] = useState('');
   const [supplier, setSupplier] = useState('');
-  const [list, setList] = useState();
   const [show, setShow] = useState(false);
-  const BannerHeight = 140;
   const [visiable1, setVisible1] = useState(false);
-  const [data2, setData2] = useState('');
-  const [visible, setVisible] = useState(false);
-  const state2 = async () => {
-    const Token = await AsyncStorage.getItem('loginToken');
-    //setShow(true)
-    dispatch({
-      type: 'Get_State_Request',
-      url: '/partners/getStateList',
-      Token: Token,
-    });
+  const [demoData, setData2] = useState('')
+  const [visible, setVisible2] = useState(false);
+  const [citydemo, setCityDemo] = useState([{ label: 'Select city', value: '1' },])
+  const [search, setSearch] = useState('');
+  const [filteredDataSource, setFilteredDataSource] = useState(selector);
+  const [masterDataSource, setMasterDataSource] = useState(selector);
+  const win = Dimensions.get('window');
+
+  const bannerList = useSelector(state => state.Home.BannerList);
+  const BannerData = [];
+
+
+  bannerList?.map((item) => {
+    if (item.ImageSection == "supplierMyNetwork" && item.isActive == 1) {
+      const url = `https://olocker.co/${item.ImageUrl}${item.ImageName
+        }`;
+      BannerData.push({
+        ...item
+      });
+    }
+  })
+
+
+
+  const handleScroll = (event) => {
+
+
+    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+    const paddingToBottom = 20;
+    if (layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom) {
+
+      console.log('end reach of call by function ');
+
+    }
   };
+
+
+  // const searchFilterFunction = text => {
+
+  //   if (text) {
+  //     const newData = masterDataSource.filter(function (item) {
+  //       const itemData = `${item.label} `
+  //         ? `${item.label}`.toUpperCase()
+  //         : ''.toUpperCase();
+  //       const textData = text.toUpperCase();
+  //       return itemData.indexOf(textData) > -1;
+  //     });
+  //     setFilteredDataSource(newData);
+  //     setSearch(text);
+  //   } else {
+  //     setFilteredDataSource(masterDataSource);
+  //     setSearch(text);
+  //   }
+  // };
+
+  // const handleSearch = () => {
+  //   setSearch('');
+  //   setFilteredDataSource(masterDataSource);
+  // };
+  // useEffect(() => {
+  //   setFilteredDataSource()
+
+  // }, [])
+
+
 
   useEffect(() => {
-    setState(''), setCity(''), setMetal('');
-    setShow(true);
-    setVisible1(false);
-    //  show
-  }, [focus]);
+
+    if (isFocuse) {
+      setData2('');
+      setShow(false);
+      setVisible1(false);
+      setSupplier('');
+      setCity('');
+      setState('');
+      ApiCallWithUseEffect();
+
+    }
+  }, [isFocuse]);
+  const ApiCallWithUseEffect = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Network_List_Request',
+      url: '/getNetworkRetailer',
+      userId: user_id,
+      userRole: 6, 
+    });
+   
+    dispatch({
+      type: 'Retailer_RequestList',
+      url: '/getReatilerRequest',
+      userId: user_id,
+      userRole: '6',
+    });
+    dispatch({
+      type: 'Network_ApprovedRequestList_Request',
+      url: '/partnerApprovedRequestList',
+      userId: user_id,
+      userRole: 6,
+    });
+  }
+
+  const manageState = val => {
+    setCity('');
+    // setSupplier('');
+
+    dispatch({
+      type: 'City_List_Request',
+      url: '/getCities',
+      stateId: val,
+    });
+  };
+
+
+  const supplierprofile = async (id) => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'get_networkretailerdetail_request',
+      partnerId: id.SrNo,
+      url: 'getNetworkRetailerDeatils',
+      supplierId:user_id,
+      isAdd:id.isAdd,
+      navigation,
+    });
+  };
+
+  const demo = (ind, index2) => {
+  
+
+    var data = [...selector4].filter((item, index) => {
+      return ind != item.SrNo;
+
+    })
+    dispatch({
+      type: 'Retailer_RequestList_Success',
+      payload: data
+    })
+
+  }
+  const AcceptMEthod = async (id, index) => {
+    console.log('dddddd', index, id);
+    const Token = await AsyncStorage.getItem('loginToken');
+    setVisible2(true);
+    const axios = require('axios');
+    let data = new FormData();
+    data.append('hSrNo', id?.SrNo);
+    data.append('ddlStatus', '1');
+    data.append('ddlCategory', id?.CategoryType);
+    data.append('txtRejectReason', '');
+    data.append('partnerId', id?.PartnerSrNo);
+    data.append('supplierId', id?.SupplierSrNo);
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'https://olocker.co/api/supplier/retailerStatusUpdate',
+      headers: {
+        'Olocker': `Bearer ${Token}`,
+        // ...data.getHeaders()
+      },
+      data: data
+    };
+
+    axios.request(config)
+      .then((response) => {
+        console.log('response,,,,,,,,,,', response.data);
+        if (response?.data?.status == "success") {
+          setVisible2(false);
+          demo(id.SrNo, index);
+          Toast.show(response?.data?.msg);
+
+        }
+
+      })
+      .catch((error) => {
+        setVisible2(false);
+        console.log(error);
+      });
+
+
+  }
+  const RejectMEthod = async (id, index) => {
+
+    const Token = await AsyncStorage.getItem('loginToken');
+    setVisible2(true)
+    const axios = require('axios');
+    let data = new FormData();
+    data.append('hSrNo', id?.SrNo);
+    data.append('ddlStatus', '2');
+    data.append('ddlCategory', '');
+    data.append('txtRejectReason', '');
+    data.append('partnerId', id?.PartnerSrNo);
+    data.append('supplierId', id?.SupplierSrNo);
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'https://olocker.co/api/supplier/retailerStatusUpdate',
+      headers: {
+        'Olocker': `Bearer ${Token}`,
+        // ...data.getHeaders()
+      },
+      data: data
+    };
+
+    axios.request(config)
+      .then((response) => {
+        console.log('response,,,,,,,,,,', response.data);
+        if (response.data.status == "success") {
+          setVisible2(false);
+          demo(id.SrNo, index);
+          // Toast.show(response?.data?.msg);
+
+
+        }
+
+      })
+      .catch((error) => {
+        setVisible2(false);
+        console.log('tjisssi', error);
+      });
+
+  }
+
+
+
+
+
+  const scrollToIndex = (index) => {
+    const ITEM_HEIGHT = 50;
+    scrollViewRef.current.scrollTo({ y: index * ITEM_HEIGHT, animated: true });
+  };
+
 
   const getSupplier = async () => {
-    // window.location.reload(false);
-    setVisible1(true);
+    const user_id = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
-    const Id = await AsyncStorage.getItem('Partnersrno');
-    const axios = require('axios');
 
+    // if (city != '' || state != '' || search != '') {
+    setVisible1(true);
+    const axios = require('axios');
+    let data = new FormData();
+    console.log('search input data,,,,', city, state, supplier, user_id);
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'https://olocker.co/api//partners/searchSupplier',
+
+      url: `https://olocker.co/api/supplier/searchRetailer?userRole=6&userId=${user_id}&stateId=${state}&cityId=${city}&retailerName=${supplier}`,
       headers: {
-        Olocker: `Bearer ${Token}`,
+        'Olocker': `Bearer ${Token}`,
+
       },
-      params: {
-        partnerId: Id,
-        supplierName: supplier,
-        stateId: state,
-        city: city,
-        metalType: metal,
-      },
+    
     };
-
-    axios
-      .request(config)
-      .then(response => {
+console.log('api url ,,,',config.url);
+    axios.request(config)
+      .then((response) => {
         if (response.data.status == true) {
-          setData1(response.data.list);
+          console.log('heeeyeygyyrg', JSON.stringify(response.data.data?.searchpartner));
+          setData2(response?.data?.data?.searchpartner);
           setVisible1(false);
-          // console.log('seach api data ', JSON.stringify(response.data.list));
-
-          if (Object.keys(response.data.list).length) {
-            setShow(false);
-            // console.log('data log view on...', show);
-          } else {
-            setShow(true);
-            // console.log('data log view of...', show);
-          }
+          setShow(true);
         }
+
       })
-      .catch(error => {
-        Toast.show('Server not responding');
+      .catch((error) => {
         setVisible1(false);
-        // console.log(error);
+        console.log('error.....', error);
       });
+
+
+
+
+
+
+
+
+
+    // dispatch({
+    //   type: 'Search_Retailer_Request',
+    //   url: '/searchRetailer',
+    //   userId: user_id,
+    //   userRole: '6',
+    //   city: city,
+    //   state: state,
+    //   Rname: search,
+    //   // navigation: navigation,
+    //   start: 1,
+    //   length: 10,
+    // });
+    // }
   };
 
-  const AcceptMEthod = SupplierSrNo => {
-    dispatch({
-      type: 'Get_Accepted_Request',
-      url: 'AcceptSupplierRequest',
-      SrNo: SupplierSrNo,
-      IsShowinRetailerApp: true,
-    });
-  };
+const lenght= BannerData.length
 
-  const Reject = SupplierSrNo => {
-    dispatch({
-      type: 'Get_Rejected_Request',
-      url: 'RejectSupplierRequest',
-      SrNo: SupplierSrNo,
-      RejectReason: 'string',
-    });
-  };
-  const pendingRequest = async () => {
-    const srno = await AsyncStorage.getItem('Partnersrno');
-    const Token = await AsyncStorage.getItem('loginToken');
-    dispatch({
-      type: 'Get_Pending_Request',
-      url: '/partners/pendingSupplierRequest',
-      partnerId: srno,
-      Token: Token,
-      navigation,
-    });
-    dispatch({
-      type: 'Get_delete1_Success',
-      payload: undefined,
-    });
-  };
-  const SentRequest = async () => {
-    const srno = await AsyncStorage.getItem('Partnersrno');
-    const Token = await AsyncStorage.getItem('loginToken');
 
-    dispatch({
-      type: 'Get_Sent_Request',
-      url: '/partners/requestedSupplierList',
-      partnerId: srno,
-      Token: Token,
-      navigation,
-    });
-    dispatch({
-      type: 'Get_delete_Success',
-      payload: undefined,
-    });
-  };
-
-  const searchJeweller = () => {
-    dispatch({
-      type: 'Search_Jewellers_Request',
-      url: 'RejectSupplierRequest',
-      data: {
-        SrNo: 1,
-        RejectReason: 'string',
-      },
-    });
-  };
-  const partnerDetaitl = id => {
-    dispatch({
-      type: 'Get_Profile_Request',
-      url: 'GetSupplierProfile',
-      supplierSrno: id,
-      navigation,
-    });
-  };
-  // console.log('this is data on Heart', selector);
-
-  const citySearch = async value => {
-    setState(value);
-
-    const Token = await AsyncStorage.getItem('loginToken');
-    setVisible1(true);
-
-    const axios = require('axios');
-
-    let config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: `https://olocker.co/api//partners/getCities`,
-      headers: {
-        Olocker: `Bearer ${Token}`,
-      },
-      params: {
-        stateId: state,
-      },
-    };
-
-    axios
-      .request(config)
-      .then(response => {
-        if (response.data.status == true) {
-          setData2(response.data.cities);
-          setVisible1(false);
-        }
-      })
-      .catch(error => {
-        // console.log(error);
-
-        Toast.show('Server not responding');
-        setVisible1(false);
-      });
-  };
-
-  const [visiable2, setVisible2] = useState(false);
-  const manageOption2 = val => {
-    setVisible2(false);
-  };
-  const [visiable3, setVisible3] = useState(false);
-  const manageOption3 = val => {
-    setVisible3(false);
-    setMetal(val);
-  };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#f0eeef'}}>
+    <View style={styles.container}>
       <Header
         source1={require('../../../assets/Fo.png')}
         source2={require('../../../assets/Image/dil.png')}
@@ -239,70 +363,54 @@ const MyCatalogue = () => {
         onPress1={() => navigation.navigate('Message')}
         onPress2={() => navigation.navigate('FavDetails')}
       />
-      <ScrollView>
-        {isFetching ? <Loader /> : null}
-        <View
-          style={{
-            backgroundColor: '#032e63',
-            // height: 150,
-            width: '100%',
-            borderBottomRightRadius: 60,
-            borderBottomLeftRadius: 60,
-          }}>
-          <View style={{alignItems: 'center', height: 160, marginTop: 0}}>
-            <FlatListSlider
-              data={images}
-              height={160}
-              timer={5000}
-              contentContainerStyle={{marginVertical: 0, paddingHorizontal: 15}}
-              indicatorContainerStyle={{position: 'absolute', bottom: 10}}
-              indicatorActiveColor={'#032e63'}
-              indicatorInActiveColor={'#ffffff'}
-              indicatorActiveWidth={5}
-              animation
-              component={<Banner />}
-              separatorWidth={15}
-              width={300}
-              autoscroll={false}
-              loop={false}
-            />
-          </View>
+      {isFetching || isFetching1 || visible || visiable1 ? <Loader /> : null}
+      <ScrollView ref={scrollViewRef}>
 
-          <View style={{height: 150}} />
+        <View
+          style={styles.container1}>
+          {/* {lenght > 0 ? */}
+
+
+          {/* <FlatListSlider
+                data={images}
+                height={170}
+                timer={3000}
+                contentContainerStyle={{ marginVertical: 0, paddingHorizontal: 16 }}
+                indicatorContainerStyle={{ position: 'absolute', bottom: -16 }}
+                indicatorActiveColor={'#032e63'}
+                indicatorInActiveColor={'#ffffff'}
+                indicatorActiveWidth={10}
+                animation
+                component={<Preview />}
+                separatorWidth={15}
+                width={300}
+                autoscroll={true}
+                loop={false}
+              /> */}
+{lenght>0?
+          <SliderBanner data={BannerData} bottom={-15} height={9} width={9} borderRadius={5} />
+
+          : null}
+
+          <View style={{ height: 150 }} />
         </View>
-        <View style={{marginTop: -135, paddingHorizontal: 15}}>
+        <View style={{ marginTop: -135, paddingHorizontal: 15 }}>
           <Text
-            style={{
-              color: '#fff',
-              fontWeight: '700',
-              fontSize: 16,
-              fontFamily: 'Philosopher-Regular',
-            }}>
-            Search Jeweller Partner
+            style={styles.text2}>
+            Search Retailer
           </Text>
           <View
-            style={{
-              width: '100%',
-              backgroundColor: '#fff',
-              marginTop: 15,
-              elevation: 5,
-              borderRadius: 10,
-            }}>
+            style={styles.main2}>
             <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingHorizontal: 10,
-                justifyContent: 'space-between',
-              }}>
-              <View style={{paddingTop: 10}}>
+              style={styles.main1}>
+              <View style={{ paddingTop: 10 }}>
                 <Text
                   style={{
                     fontFamily: 'Acephimere',
                     fontSize: 12,
                     color: '#595959',
                   }}>
-                  Search by name of jeweller partner
+                  Search by name of jeweller Retailer's
                 </Text>
                 <TextInput
                   style={{
@@ -315,193 +423,82 @@ const MyCatalogue = () => {
                     width: '100%',
                   }}
                   value={supplier}
+                  placeholderTextColor='#474747'
                   onChangeText={val => setSupplier(val)}
                   placeholder="Enter Jeweller Partner Name"
                 />
               </View>
-              {/* <View style={{}}>
-                <Image
-                  style={{height: 40, width: 40}}
-                  source={require('../../../assets/PartnerImage/1.png')}
-                />
-              </View> */}
+
             </View>
-            <View style={{borderWidth: 0.5, borderColor: 'grey'}} />
+            <View style={{ borderWidth: 0.5, borderColor: 'grey' }} />
             <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                height: 100,
+                height: 100,width:'100%',
               }}>
               <View
-                style={{
-                  padding: 0,
-                  justifyContent: 'center',
-                  width: '42%',
-                  alignItems: 'flex-start',
-                }}>
+                style={[styles.linerview,{marginLeft:10}]}>
                 <View
-                  style={{
-                    height: 45,
-                    width: '100%',
-                    borderWidth: 0,
-                    marginLeft: 10,
-                    borderWidth: 0,
-                    marginBottom: 5,
-                  }}>
-                  {/* <PickerModel
-                    visi={visiable1}
-                    close={() => setVisible1(false)}
-                    data={City}
-                    onPress1={manageOption1}
-                    styles={{
-                      height: 250,
-                      width: '55%',
-                      alignSelf: 'flex-start',
-                      // marginLeft: Platform.OS == 'android' ? '0%' : '3%',
-                      marginTop: Platform.OS == 'android' ? '65%' : '68%',
-                    }}
-                  />
-                  <TouchableOpacity
-                    onPress={() => setVisible1(true)}
+                  style={[styles.linert,]}>
+
+                  <Dropdown
                     style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      paddingHorizontal: 0,
-                    }}>
-                    <Text
-                      style={{
-                        color: '#032e63',
-                        width: '100%',
-                        fontSize: 14,
-                        marginBottom: -1,
-                        // fontFamily: 'Acephimere',
-                        fontWeight: '700',
-                        marginTop: 8,
-                        marginLeft: 20,
-                      }}>{`${state}`}</Text>
-                  </TouchableOpacity> */}
-                  {/* <RNPickerSelect
-                    // items={selector}
-                    items={selector != undefined ? selector : undefined}
-                    onValueChange={value => citySearch(value)}
-                    style={{
-                      inputAndroid: {
-                        padding: 0,
-                        color: '#032e63',
-                        width: '100%',
-                        fontSize: 14,
-                        marginBottom: -1,
-                        fontFamily: 'Acephimere',
-                        fontWeight: '700',
-                        height: 40,
-                        marginTop: 5,
-                        borderWidth: 0,
-                      },
-                      inputIOS: {
-                        color: '#032e63',
-                        fontSize: 14,
-                        width: '100%',
-                        marginBottom: 0,
-                        fontFamily: 'Acephimere',
-                        fontWeight: '700',
-                        height: 40,
-                        marginTop: 5,
-                      },
-                      placeholder: {
-                        color: '#032e63',
-                        width: '100%',
-                        alignSelf: 'center',
-                        fontFamily: 'Acephimere',
-                      },
+                      color: '#032e63',
+                      width: '100%',
+                      marginBottom: -1, height: 40,
+                      marginTop: 0,
+
                     }}
+                    // renderInputSearch={renderInputSearch}
+                    placeholderStyle={{
+                      color: '#032e63',
+                      width: '100%', fontWeight: '600',
+                      alignSelf: 'center',
+                      fontFamily: 'Acephimere', fontSize: 15,
+                      // paddingLeft: '10%'
+                    }}
+                    selectedTextStyle={{
+                      color: '#032e63',
+                      alignSelf: 'center',
+                      fontFamily: 'Acephimere',
+                      fontSize: 15,
+                     
+                       textAlign:'center',
+
+
+                      // borderWidth:1
+                    }}
+                    mode='default'
+                    iconStyle={{ tintColor: '#474747', }}
+                    data={selector?.satates}
+                    inputSearchStyle={{
+                      borderRadius: 10,
+                      color: '#474747',
+                      backgroundColor: '#f0f0f0',
+                    }}
+                    dropdownPosition={lenght>0?'top':null}
+                    itemTextStyle={{ color: '#474747' }}
+                    itemContainerStyle={{ marginBottom: -15, }}
+                    searchPlaceholder="search.."
+
+                    maxHeight={200}
+                    search
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select state"
+
                     value={state}
-                    useNativeAndroidPickerStyle={false}
-                    placeholder={{label: 'Select State', value: ''}}
-                  /> */}
-                </View>
 
-                <View
-                  style={{
-                    height: 45,
-                    width: '100%',
-                    borderWidth: 0,
-                    marginLeft: 10,
-                  }}>
-                  {/* <PickerModel
-                    visi={visiable2}
-                    close={() => setVisible2(false)}
-                    data={City}
-                    onPress1={manageOption2}
-                    styles={{
-                      height: 250,
-                      width: '55%',
-                      alignSelf: 'flex-start',
-                      // marginLeft: Platform.OS == 'android' ? '0%' : '3%',
-                      marginTop: Platform.OS == 'android' ? '75%' : '77%',
+                    onChange={item => {
+                      manageState(item.value), setState(item.value);
                     }}
                   />
-                  <TouchableOpacity
-                    onPress={() => setVisible2(true)}
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      paddingHorizontal: 0,
-                    }}>
-                    <Text
-                      style={{
-                        color: '#032e63',
-                        width: '100%',
-                        fontSize: 14,
-                        marginBottom: -1,
-                        // fontFamily: 'Acephimere',
-                        fontWeight: '700',
-                        marginTop: -4,
-                        marginLeft: 20,
-                      }}>{`${city}`}</Text>
-                  
-                  </TouchableOpacity> */}
 
-                  {/* <RNPickerSelect
-                    items={data2}
-                    // items={data2!=undefined?data2:undefined}
-                    onValueChange={value => setCity(value)}
-                    style={{
-                      inputAndroid: {
-                        padding: -14,
-                        color: '#032e63',
-                        width: '100%',
-                        fontSize: 14,
-                        marginBottom: 0,
-                        fontFamily: 'Acephimere',
-                        fontWeight: '700',
-                        height: 40,
-                        marginTop: -5,
-                        borderWidth: 0,
-                      },
-                      inputIOS: {
-                        color: '#032e63',
-                        fontSize: 14,
-                        width: '100%',
-                        marginBottom: 0,
-                        fontFamily: 'Acephimere',
-                        fontWeight: '700',
-                        height: 40,
-                        marginTop: 5,
-                      },
-                      placeholder: {
-                        color: '#032e63',
-                        width: '100%',
-                        alignSelf: 'center',
-                        fontFamily: 'Acephimere',
-                      },
-                    }}
-                    value={city}
-                    useNativeAndroidPickerStyle={false}
-                    placeholder={{label: 'Select City', value: ''}}
-                  /> */}
+
                 </View>
+
               </View>
 
               <View
@@ -510,123 +507,164 @@ const MyCatalogue = () => {
                   height: 90,
                   borderColor: 'grey',
                   marginTop: 0,
+                  // marginLeft: '10%'
                 }}
               />
-              <View
+{/* Added from here */}
+            <View
+                style={[styles.linerview,{marginRight:10}]}>
+                <View
+                  style={[styles.linert,]}>
+
+                  <Dropdown
+                    style={{
+                      color: '#032e63',
+                      width: '100%',
+                      marginBottom: -1, height: 40,
+                      marginTop: 0,
+
+                    }}
+                    // renderInputSearch={renderInputSearch}
+                    placeholderStyle={{
+                      color: '#032e63',
+                      width: '100%', fontWeight: '600',
+                      alignSelf: 'center',
+                      fontFamily: 'Acephimere', fontSize: 15,
+                      // paddingLeft: '10%'
+                    }}
+                    selectedTextStyle={{
+                      color: '#032e63',
+                      alignSelf: 'center',
+                      fontFamily: 'Acephimere',
+                      fontSize: 15,
+                      // paddingLeft: '6%'
+                      //  textAlign:'center',
+
+
+                      // borderWidth:1
+                    }}
+                    mode='default'
+                    iconStyle={{ tintColor: '#474747',  }}
+                    data={cityList ? cityList : []}
+                    inputSearchStyle={{
+                      borderRadius: 10,
+                      color: '#474747',
+                      backgroundColor: '#f0f0f0',
+                    }}
+                    dropdownPosition={lenght>0?'top':null}
+                    itemTextStyle={{ color: '#474747' }}
+                    itemContainerStyle={{ marginBottom: -15, }}
+                    searchPlaceholder="search.."
+
+                    maxHeight={200}
+                    search
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select City"
+
+                    value={city}
+
+                onChange={item => {
+                  setCity(item.value)
+                }}
+                  />
+
+
+                </View>
+
+              </View>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              {/* <View
                 style={{
                   padding: 0,
                   alignItems: 'flex-end',
                   justifyContent: 'center',
                   width: '42%',
-                }}>
-                {/* <View style={{alignItems:'center',justifyContent:'center'}}> */}
-                <View
+                }}> */}
+
+              {/* <View
                   style={{
                     height: 45,
                     width: '100%',
                     borderWidth: 0,
-                    marginRight: 0,
-                  }}>
-                  {/* <PickerModel
-                    visi={visiable3}
-                    close={() => setVisible3(false)}
-                    data={Metal}
-                    onPress1={manageOption3}
-                    styles={{
-                      height: 250,
-                      width: '55%',
-                      alignSelf: 'flex-end',
-                      // marginLeft: Platform.OS == 'android' ? '0%' : '3%',
-                      marginTop: Platform.OS == 'android' ? '69%' : '71%',
-                    }}
-                  />
-                  <TouchableOpacity
-                    onPress={() => setVisible3(true)}
-                    style={{
-                      // flexDirection: 'row',
-                      // justifyContent: 'space-between',
-                      paddingHorizontal: 0,
-                    }}>
-                    <Text
-                      style={{
-                        color: '#032e63',
-                        width: '100%',
-                        fontSize: 14,
-                        marginBottom: -1,
-                        // fontFamily: 'Acephimere',
-                        fontWeight: '700',
-                        marginTop: -4,
-                        marginLeft: 15,
-                      }}>{`${metal}`}</Text> */}
-                  {/* <Image
-                      style={styles.rnimg}
-                      source={require('../../../assets/F.png')}
-                    /> */}
-                  {/* </TouchableOpacity> */}
-                  {/* <RNPickerSelect
-                    items={Metal}
-                    //     MetalType != undefined ?MetalType.map((item) => ({
-                    //    label:item.Value,
-                    //     value:item.Value
-                    //  })):undefined}
-                    onValueChange={Value => setMetal(Value)}
-                    style={{
-                      inputAndroid: {
-                        color: '#032e63',
-                        width: '100%',
-                        fontSize: 14,
-                        marginBottom: -1,
-                        fontFamily: 'Acephimere',
-                        fontWeight: '700',
-                        height: 40,
-                        marginLeft: 30,
-                        padding: 10,
-                        borderWidth: 0,
-                      },
-                      inputIOS: {
-                        color: '#032e63',
-                        fontSize: 14,
-                        width: '100%',
-                        marginBottom: 0,
-                        fontFamily: 'Acephimere',
-                        fontWeight: '700',
-                        height: 40,
-                        marginTop: 5,
-                      },
-                      placeholder: {
-                        color: '#032e63',
-                        width: '100%',
-                        alignSelf: 'center',
-                        fontFamily: 'Acephimere',
-                      },
-                    }}
-                    value={metal}
-                    useNativeAndroidPickerStyle={false}
-                    placeholder={{label: 'Select Metal', value: ''}}
-                  /> */}
-                  {/* </View> */}
-                  {/* {// console.log('resssmish',metal)} */}
+                    marginRight: 10,
+                  }}> */}
 
-                  {/* <RNPickerSelect
-                  
-                     items={id3}
-                      onValueChange={val =>setId(val)}
-                      style={ {
-                        inputAndroid: { color: '#032e63', width: '100%', fontSize: 14, marginBottom: -1,fontFamily:'Acephimere',fontWeight:'700',height:40,marginTop:-20,padding:-10 },
-                        inputIOS: { color: '#032e63', width: '100%', fontSize: 14, marginBottom:10,fontFamily:'Acephimere' },
-                        placeholder: { color: '#032e63', width: '100%', alignSelf: 'center',fontFamily:'Acephimere' },
-                    }}
-                      value={id}
-                      useNativeAndroidPickerStyle={false}
-                      placeholder={{ label: 'Select Metal', value: '' }}
-                    /> */}
-                  {/* <Text style={{color:'#032e63',fontFamily:'Acephimere',fontWeight:'700'}}>{'Gold '}</Text> */}
-                  {/* <Text style={{fontSize:12,color:'#595959',fontFamily:'Acephimere',marginTop:-6}}>Select Metal</Text> */}
-                </View>
-              </View>
+              {/* <View style={{width:'42%'}}> */}
+              {/* <Dropdown
+                style={{
+                  color: '#032e63',
+                  //  width:150,
+                  width: '100%',
+                  marginBottom: -1,
+                  height: 40,
+                  marginTop: -10,
+                  marginRight: '30%'
+
+
+                }}
+
+                placeholderStyle={{
+                  color: '#032e63',
+                  width: '100%', fontWeight: '600',
+                  alignSelf: 'center',
+                  fontFamily: 'Acephimere', fontSize: 15,
+                  paddingLeft: '10%'
+                }}
+                selectedTextStyle={{
+                  color: '#032e63',
+                  width: '100%',
+                  alignSelf: 'center',
+                  fontFamily: 'Acephimere', fontSize: 15,
+                  paddingLeft: '10%'
+                }}
+                iconStyle={{ tintColor: '#474747', position: 'absolute', left: '38%' }}
+                // data={Metal}
+                data={cityList ? cityList : []}
+                inputSearchStyle={{
+                  borderRadius: 10,
+                  color: '#474747',
+                  backgroundColor: '#f0f0f0',
+                }}
+                dropdownPosition='top'
+                itemContainerStyle={{ marginBottom: -10 }}
+                searchPlaceholder="search.."
+                maxHeight={200}
+                itemTextStyle={{ color: '#474747' }}
+
+                search
+                labelField="label"
+                valueField="value"
+                placeholder="Select city"
+                value={city}
+
+                onChange={item => {
+                  setCity(item.value)
+                }}
+              /> */}
+              {/* </View>
+
+
+                </View> */}
+
+
+              {/* </View> */}
             </View>
           </View>
-          <View style={{alignItems: 'center', marginTop: -20}}>
+          <View style={{ alignItems: 'center', marginTop: -11 }}>
             <TouchableOpacity
               onPress={() => getSupplier()}
               style={{
@@ -638,73 +676,81 @@ const MyCatalogue = () => {
                 justifyContent: 'center',
               }}>
               <Text
-                style={{color: '#fff', fontFamily: 'Acephimere', fontSize: 15}}>
+                style={{ color: '#fff', fontFamily: 'Acephimere', fontSize: 15 }}>
                 Search
               </Text>
             </TouchableOpacity>
           </View>
-          {show ? (
+
+
+          {show && demoData?.length <= 0 ? (
             <Text
               style={{
-                alignSelf: 'flex-start',
+                alignSelf: 'center',
                 marginTop: 10,
                 fontSize: 13,
-                color: 'red',
+                color: 'red', marginBottom: 10
               }}>
-              {'No Records found!'}
+              {'SEARCHED JEWELLER NOT FOUND'}
             </Text>
           ) : (
-            <View style={{paddingVertical: 10}}>
-              <FlatList
-                data={data}
-                renderItem={({item}) => (
-                  <TouchableOpacity
-                    // onPress={() => partnerDetaitl(item.SrNo)}
-                    style={{
-                      elevation: 5,
-                      backgroundColor: '#fff',
-                      paddingVertical: 15,
-                      paddingHorizontal: 10,
-                      marginTop: 10,
-                      borderRadius: 8,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
-                    <View>
-                      {/* <Text style={{ fontSize: 16, color: '#000', fontFamily: 'Acephimere' }}>{item.SrNo}</Text> */}
-                      <Text
+            <View style={{ paddingVertical: 10 }}>
+              <View style={{ height: demoData?.length == 0 ? hp(0) : hp(35), zIndex: 2 }}>
+                <ScrollView nestedScrollEnabled
+                  ref={scrollViewRef}
+                  onScroll={handleScroll}
+                  scrollEventThrottle={400}
+                >
+                  <FlatList
+                    data={demoData}
+                    scrollEnabled={false}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity
+                        onPress={() => supplierprofile(item)}
                         style={{
-                          fontSize: 16,
-                          color: '#000',
-                          fontFamily: 'Acephimere',
+                          elevation: 5,
+                          backgroundColor: '#fff',
+                          paddingVertical: 15,
+                          paddingHorizontal: 10,
+                          marginTop: 10,
+                          borderRadius: 8,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
                         }}>
-                        {item.SupplierName}
-                      </Text>
-                      <View style={{}}>
-                        <Text
-                          style={{
-                            color: '#595959',
-                            fontFamily: 'Acephimere',
-                            fontSize: 11,
-                          }}>
-                          {item.CityName}
-                        </Text>
-                        <Text
-                          style={{
-                            color: '#595959',
-                            fontFamily: 'Acephimere',
-                            fontSize: 11,
-                          }}>
-                          {item.StateName}
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={{flexDirection: 'row'}}>
-                      {/* <Image style={{height:20,width:40}} resizeMode='center' source={require('../../../assets/Image/eye.png')}/> */}
-                    </View>
-                  </TouchableOpacity>
-                )}
-              />
+
+                        <View>
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              color: '#000',
+                              fontFamily: 'Acephimere',
+                            }}>
+                            {item.CompanyName}
+                          </Text>
+                          <View style={{}}>
+                            <Text
+                              style={{
+                                color: '#595959',
+                                fontFamily: 'Acephimere',
+                                fontSize: 11,
+                              }}>
+                              {item.city_name}
+                            </Text>
+                            <Text
+                              style={{
+                                color: '#595959',
+                                fontFamily: 'Acephimere',
+                                fontSize: 11,
+                              }}>
+                              {item.state_name}
+                            </Text>
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                  />
+                </ScrollView>
+              </View>
             </View>
           )}
 
@@ -716,7 +762,7 @@ const MyCatalogue = () => {
               elevation: 5,
               borderRadius: 10,
             }}>
-            <View style={{paddingHorizontal: 10, paddingVertical: 10}}>
+            <View style={{ paddingHorizontal: 10, paddingVertical: 10, }}>
               <Text
                 style={{
                   fontSize: 18,
@@ -726,7 +772,7 @@ const MyCatalogue = () => {
                 My Network{' '}
               </Text>
             </View>
-            <View style={{borderWidth: 0.5, borderColor: 'grey'}} />
+            <View style={{ borderWidth: 0.5, borderColor: 'grey' }} />
             <View
               style={{
                 flexDirection: 'row',
@@ -735,16 +781,24 @@ const MyCatalogue = () => {
                 width: '100%',
               }}>
               <TouchableOpacity
-                onPress={() => navigation.navigate('MyNetworks')}
+                onPress={() => navigation.navigate('MyNetworks1')}
                 style={{
                   padding: 10,
                   alignItems: 'center',
                   justifyContent: 'center',
                   width: '33%',
                 }}>
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                {selector2?.length == 0 ?
+                  <View>
+                    <Text style={{ color: '#565656', fontFamily: 'Acephimere' }}>{''}</Text>
+                  </View> :
+                  <View style={{ height: 18, width: 30, bottom: -4, backgroundColor: '#e9056b', alignSelf: 'flex-end', borderRadius: 10 }}>
+                    <Text style={{ color: '#fff', textAlign: 'center', marginTop: -1 }}>{`${selector2?.length}`}</Text>
+                  </View>}
+
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                   <Image
-                    style={{height: 40, width: 42, tintColor: '#032e63'}}
+                    style={{ height: 40, width: 42, tintColor: '#032e63' }}
                     source={require('../../../assets/PartnerImage/4.png')}
                   />
                 </View>
@@ -767,16 +821,27 @@ const MyCatalogue = () => {
                 }}
               />
               <TouchableOpacity
-                onPress={() => pendingRequest()}
+                onPress={() => navigation.navigate('PendingRequest')}
                 style={{
                   padding: 10,
                   alignItems: 'center',
                   justifyContent: 'center',
                   width: '33%',
                 }}>
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+
+
+                { selector4?.length == 0 ?
+                  <View>
+                    <Text style={{ color: '#565656', fontFamily: 'Acephimere' }}>{''}</Text>
+                  </View> :
+
+                  <View style={{ height: 18, width: 30, bottom: -5, backgroundColor: '#da062f', alignSelf: 'flex-end', borderRadius: 10 }}>
+                    <Text style={{ color: '#fff', textAlign: 'center' }}>{`${selector4?.length}`}</Text>
+                  </View>
+                }
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                   <Image
-                    style={{height: 42, width: 50}}
+                    style={{ height: 42, width: 50 }}
                     source={require('../../../assets/PartnerImage/2.png')}
                   />
                 </View>
@@ -800,16 +865,24 @@ const MyCatalogue = () => {
               />
 
               <TouchableOpacity
-                onPress={() => SentRequest()}
+                onPress={() => navigation.navigate('SentRequest')}
                 style={{
                   padding: 10,
                   alignItems: 'center',
                   justifyContent: 'center',
                   width: '33%',
                 }}>
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+
+                {selector1?.length == 0 ?
+                  <View>
+                    <Text style={{ color: '#565656', fontFamily: 'Acephimere' }}>{''}</Text>
+                  </View> :
+                  <View style={{ height: 18, width: 30, bottom: -4, backgroundColor: '#e9056b', alignSelf: 'flex-end', borderRadius: 10 }}>
+                    <Text style={{ color: '#fff', textAlign: 'center', marginTop: -1 }}>{`${selector1?.length}`}</Text>
+                  </View>}
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                   <Image
-                    style={{height: 42, width: 52}}
+                    style={{ height: 42, width: 52 }}
                     source={require('../../../assets/PartnerImage/3.png')}
                   />
                 </View>
@@ -820,125 +893,125 @@ const MyCatalogue = () => {
                     color: '#343434',
                     fontFamily: 'Acephimere',
                   }}>
-                  Send Request
+                  Sent Request
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{paddingVertical: 10}}>
-            <Text
-              style={{
-                fontFamily: 'Acephimere',
-                fontSize: 16,
-                color: '#383838',
-              }}>
-              Notifications
-            </Text>
-            <FlatList
-              data={data1}
-              renderItem={({item}) => (
-                <View
-                  style={{
-                    elevation: 5,
-                    backgroundColor: '#fff',
-                    paddingVertical: 15,
-                    paddingHorizontal: 10,
-                    marginTop: 10,
-                    borderRadius: 8,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
-                  <View>
-                    <Text
+          <View style={{ paddingVertical: 10 }}>
+            { selector4?.length == 0 ?
+
+              <View>
+                <Text style={{ color: '#565656', fontFamily: 'Acephimere' }}>{''}</Text>
+              </View>
+              :
+              <View>
+                <Text style={{ color: '#565656', fontFamily: 'Acephimere' }}>{`${ selector4?.length==1? `${selector4?.length} Notification`:`${selector4?.length} Notifications`}`}</Text>
+                <FlatList
+                  data={(selector4)?.slice(0, 3)}
+
+                  renderItem={({ item, index }) => (
+                    <View
                       style={{
-                        fontSize: 16,
-                        color: '#000',
-                        fontFamily: 'Acephimere',
+                        elevation: 5,
+                        backgroundColor: '#fff',
+                        paddingVertical: 15,
+                        paddingHorizontal: 10,
+                        marginTop: 10,
+                        borderRadius: 8,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
                       }}>
-                      {item.SupplierName}
-                    </Text>
-                    <Text
-                      style={{
-                        color: '#000',
-                        fontFamily: 'Acephimere',
-                        fontSize: 13,
-                      }}>
-                      {item.Location}
-                    </Text>
-                  </View>
-                  <View style={{flexDirection: 'row'}}>
-                    <TouchableOpacity
-                      onPress={() => AcceptMEthod(item.SupplierSrNo)}
-                      style={{height: 40, width: 40}}>
-                      <Image
-                        style={{height: '100%', width: '100%'}}
-                        source={require('../../../assets/PartnerImage/6.png')}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => Reject(item.SupplierSrNo)}
-                      style={{height: 40, width: 40, marginLeft: 10}}>
-                      <Image
-                        style={{height: '100%', width: '100%'}}
-                        source={require('../../../assets/PartnerImage/5.png')}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )}
-            />
+                      <View>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: '#000',
+                            fontFamily: 'Acephimere',
+                          }}>
+                          {item.CompanyName}
+                        </Text>
+                        <Text
+                          style={{
+                            color: '#000',
+                            fontFamily: 'Acephimere',
+                            fontSize: 13,
+                          }}>
+                          {item.city_name}
+                        </Text>
+                      </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity
+                          onPress={() => AcceptMEthod(item, index)}
+                          style={{ height: 40, width: 40 }}>
+                          <Image
+                            style={{ height: '100%', width: '100%' }}
+                            source={require('../../../assets/PartnerImage/6.png')}
+                          />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => RejectMEthod(item, index)}
+                          style={{ height: 40, width: 40, marginLeft: 10 }}>
+                          <Image
+                            style={{ height: '100%', width: '100%' }}
+                            source={require('../../../assets/PartnerImage/5.png')}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  )}
+                />
+              </View>
+            }
           </View>
         </View>
 
-        <View style={{height: 70}} />
+        <View style={{ height: 185 }} />
       </ScrollView>
-      <View
-        style={{
-          marginVertical: hp('2.5%'),
-          position: 'absolute',
-          top: '50%',
-          right: '50%',
-        }}>
-        <ActivityIndicator
-          size="large"
-          animating={visiable1}
-          color={colors.bc}
-        />
-      </View>
+
+
     </View>
   );
 };
 export default MyCatalogue;
 const data = [
-  {title: 'Hello'},
-  {title: 'Hello'},
-  {title: 'Hello'},
-  {title: 'Hello'},
-  {title: 'Hello'},
-  {title: 'Hello'},
-  {title: 'Hello'},
-  {title: 'Hello'},
-  {title: 'Hello', type: 'add'},
+  { title: 'Hello' },
+  { title: 'Hello' },
+  { title: 'Hello' },
+  { title: 'Hello' },
+  { title: 'Hello' },
+  { title: 'Hello' },
+  { title: 'Hello' },
+  { title: 'Hello' },
+  { title: 'Hello', type: 'add' },
 ];
 const data1 = [
-  {name: 'Milind Jeweller', city: 'Mumbai'},
-  {name: 'Milind Jeweller', city: 'Mumbai'},
-  {name: 'Milind Jeweller', city: 'Mumbai'},
+  { name: 'Milind Jeweller', city: 'Mumbai' },
+  { name: 'Milind Jeweller', city: 'Mumbai' },
+  { name: 'Milind Jeweller', city: 'Mumbai' },
 ];
 
 const City = [
-  {label: 'Mumbai', value: 'Mumbai'},
-  {label: 'Indore', value: 'Indore'},
-  {label: 'Bangalore', value: 'Bangalore'},
-  {label: 'Mumbai', value: 'Mumbai'},
-  {label: 'Indore', value: 'Indore'},
-  {label: 'Bangalore', value: 'Bangalore'},
+  { label: 'Mumbai', value: 'Mumbai' },
+  { label: 'Indore', value: 'Indore' },
+  { label: 'Bangalore', value: 'Bangalore' },
+  { label: 'Mumbai', value: 'Mumbai' },
+  { label: 'Indore', value: 'Indore' },
+  { label: 'Bangalore', value: 'Bangalore' },
 ];
 const Metal = [
-  {label: 'Diamond', value: 'Diamond'},
-  {label: 'Gold', value: 'Gold'},
-  {label: 'Platinum', value: 'Platinum'},
-  {label: 'Silver', value: 'Silver'},
+  { label: 'Select Metal', value: 'Select Metal' },
+  { label: 'Diamond', value: 'Diamond' },
+  { label: 'Gold', value: 'Gold' },
+  { label: 'Platinum', value: 'Platinum' },
+  { label: 'Silver', value: 'Silver' },
+  { label: 'Mumbai', value: 'Mumbai' },
+  { label: 'Indore', value: 'Indore' },
+  { label: 'Bangalore', value: 'Bangalore' },
+  { label: 'Mumbai', value: 'Mumbai' },
+  { label: 'Indore', value: 'Indore' },
+  { label: 'Bangalore', value: 'Bangalore' },
+
 ];
 
 const images = [

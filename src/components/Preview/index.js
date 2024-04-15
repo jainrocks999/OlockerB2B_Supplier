@@ -159,7 +159,7 @@ const Preview = ({style, item, imageKey, onPress, index, active, local}) => {
       >
         <View style={[styles.imageContainer]}>
           <Image
-            style={{height: 190, width: BannerWidth, borderRadius: 190}}
+            style={{height: 190, width: BannerWidth, borderRadius: 25}}
             source={{uri: item[imageKey]}}
             resizeMode={Platform.OS == 'android' ? 'contain' : ''}
           />

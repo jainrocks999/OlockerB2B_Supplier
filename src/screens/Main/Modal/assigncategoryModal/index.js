@@ -6,11 +6,12 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {useDispatch, useSelector} from 'react-redux';
 import Loading from '../../../../components/Loader';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 const AssignCategory = ({visi, close = () => {}, ...props}) => {
   const dispatch = useDispatch();
   const isFetching = useSelector(state => state.Supplier.isFetching);
   const AssiGnModal = useSelector(state => state.Supplier.AssiGnModal);
-
+  const navigation =useNavigation();
   
   const data2 = useSelector(state => state.Home.data2);
 
@@ -46,6 +47,7 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
       url: 'retailerStatusUpdate',
       AssiGnModal: !AssiGnModal,
       data2,
+      navigation,
     });
   };
   return (
@@ -95,7 +97,7 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
                   marginTop: 10,
                 }}>
                 <View style={{}}>
-                  <Text style={{fontWeight: '600', fontSize: 18}}>
+                  <Text style={{fontWeight: '600', fontSize: 18,color:'#000'}}>
                     Name of the retailer <Text style={{color: 'red'}}>*</Text>
                   </Text>
                 </View>
@@ -122,7 +124,7 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
                   marginTop: 10,
                 }}>
                 <View style={{}}>
-                  <Text style={{fontWeight: '600', fontSize: 18}}>
+                  <Text style={{fontWeight: '600', fontSize: 18,color:'#000'}}>
                     Status <Text style={{color: 'red'}}>*</Text>
                   </Text>
                 </View>
@@ -138,6 +140,7 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
                   maxHeight={250}
                   labelField="label"
                   valueField="value"
+                  itemTextStyle={{color: '#000'}}
                   placeholder={`${Status}`}
                   value={Status}
                   onChange={item => {
@@ -150,7 +153,7 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
                   marginTop: 10,
                 }}>
                 <View style={{}}>
-                  <Text style={{fontWeight: '600', fontSize: 18}}>
+                  <Text style={{fontWeight: '600', fontSize: 18,color:'#000'}}>
                     Category <Text style={{color: 'red'}}>*</Text>
                   </Text>
                 </View>
@@ -163,6 +166,7 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
                   placeholderStyle={styles.placeholderStyle}
                   selectedTextStyle={styles.selectedTextStyle}
                   iconStyle={styles.iconStyle}
+                  itemTextStyle={{color: '#000'}}
                   data={DropData}
                   maxHeight={250}
                   labelField="label"
@@ -186,10 +190,12 @@ const AssignCategory = ({visi, close = () => {}, ...props}) => {
                 value={allow}
                 onChange={() => {
                   setAllow(!allow);
+                  
                 }}
+                tintColors={{true: '#032e63', false: '#032e63'}}
               />
 
-              <Text style={{fontWeight: '600', fontSize: 14}}>
+              <Text style={{fontWeight: '600', fontSize: 14,color:'#000'}}>
                 Allow products to show on Retailer's App
               </Text>
             </View>

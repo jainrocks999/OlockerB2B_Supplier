@@ -20,6 +20,15 @@ export default StyleSheet.create({
 
     elevation: 2,
   },
+  placeholderStyle: {
+    fontSize: 15,
+    color: 'grey',
+  },
+  selectedTextStyle: {
+    fontSize:15,
+    color: 'black',
+  },
+
   uploadView: {
     borderWidth: 1,
     marginTop: 4,

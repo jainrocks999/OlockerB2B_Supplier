@@ -74,7 +74,7 @@ function* SupportProfileRequest(action) {
     const data = {
       userId: '10',
       usertype: 'supplier',
-      role: '6',
+     userRole:'6',
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
     // console.log('this is user response', response);

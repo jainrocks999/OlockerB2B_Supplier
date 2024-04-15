@@ -7,14 +7,30 @@ import {useNavigation} from '@react-navigation/native';
 
 const Settings = () => {
   const navigation = useNavigation();
+  const dispatch=useDispatch();
+  const selector3 =useSelector(state=>state.Home?.partnerData?.partnerdetails)
+  const removeRetailer = async(item) => {
+    console.log('logfff.....',item);
+    const userId = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'remove_retailerfromnetwork_Request',
+      url: 'removepartner',
+      // SupplierSrNo: userId,
+      partner_id: selector3.SrNo,
+   user:userId,
+   navigation,
+      reatailer:true,
+    });
+  };
 
   return (
-    <View
-      style={{
-        backgroundColor: '#fff',
-        paddingVertical: 20,
-        paddingHorizontal: 15,
-      }}>
+    <View>
+      {selector3.isAdd == 0 ?null:
+    <View style={{
+      backgroundColor: '#fff',
+      paddingVertical: 30,
+      paddingHorizontal: 15,
+    }}>
       <View
         style={{
           flexDirection: 'row',
@@ -23,7 +39,7 @@ const Settings = () => {
           marginTop: 0,
           width: '33%',
         }}>
-        <View style={{width: '100%'}}>
+        <View style={{ width: '100%' }}>
           <Text
             style={{
               fontSize: 14,
@@ -35,12 +51,13 @@ const Settings = () => {
           </Text>
         </View>
         <View
-          style={{flexDirection: 'row', alignItems: 'center', marginLeft: 20}}>
+          style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 20 }}>
+
           <TouchableOpacity
-            // onPress={()=>deteleApi(selector.Profile.SrNo,)}
+            onPress={() => removeRetailer()}
             style={{
               borderColor: '#e9056b',
-              paddingHorizontal: 20,
+              paddingHorizontal: 18,
               paddingVertical: 6,
               borderRadius: 8,
               borderWidth: 1,
@@ -54,8 +71,11 @@ const Settings = () => {
               {'REMOVE'}
             </Text>
           </TouchableOpacity>
+
         </View>
       </View>
+    </View>
+}
     </View>
   );
 };

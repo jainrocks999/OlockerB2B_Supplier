@@ -27,7 +27,7 @@ import AssignCategory from '../Modal/assigncategoryModal';
 const RetailerRequestList = () => {
   const navigation = useNavigation();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(0);
   const isFetching = useSelector(state => state.Home.isFetching);
   const [AssignModal, setAssignModal] = useState(false);
   const [data, setData] = useState(false);
@@ -42,12 +42,16 @@ const RetailerRequestList = () => {
 
   const selector = useSelector(state => state.Home.RetailerRequestList);
   const isFetching2 = useSelector(state => state.Auth.isFetching);
-
   const isFocuse = useIsFocused();
   useEffect(() => {
     RetailerReques();
   }, [isFocuse]);
+ const Previous =(id)=>{
 
+ let idd=id-1;
+ setValue(idd);
+
+ }
   const dispatch = useDispatch();
 
   const RetailerReques = async () => {
@@ -57,7 +61,20 @@ const RetailerRequestList = () => {
       type: 'Retailer_RequestList',
       url: '/getReatilerRequest',
       userId: user_id,
-      role: '6',
+     userRole:'6',
+    });
+  };
+
+  const removeRetailer = async(item) => {
+    const userId = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'remove_retailerfromnetwork_Request',
+      url: 'removepartner',
+      // SupplierSrNo: userId,
+      partner_id: item?.PartnerSrNo,
+      // data2,
+      userId: userId,
+      reatailer:false
     });
   };
 
@@ -111,9 +128,9 @@ const RetailerRequestList = () => {
             labelField="label"
             valueField="value"
             placeholder="Select item"
-            value={value}
+            value={DropData[value]}
             onChange={item => {
-              setValue(item.value);
+               setValue(item.value)
             }}
             renderItem={renderItem}
           />
@@ -156,7 +173,7 @@ const RetailerRequestList = () => {
                   }}>
                   <View style={{marginLeft: wp(3)}}>
                     <View style={{flexDirection: 'row'}}>
-                      {console.log('this is some item', item)}
+                     
                       <Text style={styles.txt1}>CompanyName</Text>
                       <Text style={styles.txt2}>
                         {':    '}
@@ -196,7 +213,10 @@ const RetailerRequestList = () => {
                       <Text style={styles.txt1}>Status</Text>
                       <Text style={styles.txt2}>
                         {':    '}
-                        {item.Status == 1 ? 'Approved' : 'Reject'}
+
+                        
+  
+                        {item.Status == 3 ? 'Pending' : item.Status==1?'Approved':'Reject'}
                       </Text>
                     </View>
                     <View
@@ -226,7 +246,9 @@ const RetailerRequestList = () => {
                         }}>
                         |
                       </Text>
-                      <TouchableOpacity style={{width: '60%', marginLeft: 10}}>
+                      <TouchableOpacity
+                        onPress={()=>removeRetailer(item)}
+                      style={{width: '60%', marginLeft: 10}}>
                         <Text
                           style={{
                             fontSize: wp(4.5),
@@ -249,40 +271,40 @@ const RetailerRequestList = () => {
             flexDirection: 'row',
             marginBottom: 0,
             marginTop: 50,
-            marginHorizontal: 10,
+            marginHorizontal: 10, alignSelf:'flex-end'
           }}>
-          <TouchableOpacity
+          <TouchableOpacity onPress={()=>setValue(value-1)}
             style={{
               borderWidth: 2,
               paddingVertical: 5,
               borderRadius: 15,
               paddingHorizontal: 15,
               borderColor: '#032E63',
-              backgroundColor: '#032E63',
+              backgroundColor: '#032E63',marginRight:5
             }}>
             <Text style={{color: 'white'}}>Prev</Text>
           </TouchableOpacity>
-          <View style={{}}>
+          {/* <View style={{}}>
             <FlatList
-              data={page}
+              data={DropData}
               horizontal
               renderItem={({item}) => (
                 <View
                   style={{
-                    height: 40,
-                    width: 40,
+                    height: 30,
+                    width: 30,
                     backgroundColor: '#032E63',
                     alignItems: 'center',
                     justifyContent: 'center',
                     marginHorizontal: 5,
-                    borderRadius: 20,
+                    borderRadius: 15,
                   }}>
-                  <Text style={{color: 'white'}}>{item.number}</Text>
+                  <Text style={{color: 'white'}}>{item.label}</Text>
                 </View>
               )}
             />
-          </View>
-          <TouchableOpacity
+          </View> */}
+          <TouchableOpacity onPress={()=>setValue(value+1)}
             style={{
               borderWidth: 2,
               paddingVertical: 5,

@@ -5,7 +5,7 @@ import 'react-native-gesture-handler';
 import {AppRegistry} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
-import messaging from '@react-native-firebase/messaging';
+
 import {GetMessageCommon} from './src/screens/Main/ChatScreen/common';
 
 // messaging().setBackgroundMessageHandler(async remoteMessage => {
@@ -14,11 +14,13 @@ import {GetMessageCommon} from './src/screens/Main/ChatScreen/common';
 
 // });
 // messaging().getInitialNotification(async remoteMessage => {
-//   GetMessageCommon(remoteMessage.notification.title)
-//   // console.log('Message  the clean mode!' ,remoteMessage);
+//   // GetMessageCommon(remoteMessage.notification.title)
+//    console.log('Message  the clean mode!' ,remoteMessage);
 // });
 
-messaging().onMessage(async remoteMessage => {
-  GetMessageCommon(remoteMessage.notification.title, 'supplier');
-});
+// messaging().onMessage(async remoteMessage => {
+//   // alert('notification');
+//   console.log('dsnsldndnlasdfaadad',remoteMessage.notification);
+//   GetMessageCommon(remoteMessage.notification.title, 'supplier');
+// });
 AppRegistry.registerComponent(appName, () => App);

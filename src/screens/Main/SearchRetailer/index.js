@@ -65,7 +65,7 @@ const SearchRetailer = () => {
         type: 'Search_Retailer_Request',
         url: '/searchRetailer',
         userId: user_id,
-        role: '6',
+       userRole:'6',
         city: city,
         state: state,
         Rname: search,
@@ -177,11 +177,12 @@ const SearchRetailer = () => {
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
                 data={stateList1?.satates}
-                itemTextStyle={{color: 'grey'}}
+                itemTextStyle={{color: '#000'}}
                 inputSearchStyle={{
                   borderRadius: 10,
-                  backgroundColor: '#f0f0f0',
+                  backgroundColor: '#f0f0f0',color:'#000'
                 }}
+                
                 searchPlaceholder="search.."
                 maxHeight={250}
                 search
@@ -217,7 +218,7 @@ const SearchRetailer = () => {
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
                 data={cityList ? cityList : []}
-                itemTextStyle={{color: 'grey'}}
+                itemTextStyle={{color: '#000'}}
                 maxHeight={250}
                 labelField="label"
                 valueField="value"
@@ -228,7 +229,7 @@ const SearchRetailer = () => {
                 }}
                 inputSearchStyle={{
                   borderRadius: 10,
-                  backgroundColor: '#f0f0f0',
+                  backgroundColor: '#f0f0f0',color:'#000'
                 }}
               />
             </View>

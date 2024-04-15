@@ -139,6 +139,19 @@ const EditCollection = ({route}) => {
     setInActive('checked');
   };
 
+
+  const handleWishList = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Get_wishListProduct_Request',
+      url: '/wishListProduct',
+      user_id: user_id,
+      navigation,
+    });
+  };
+
+
+
   return (
     <View style={styles.container1}>
       <StatusBar />
@@ -173,7 +186,26 @@ const EditCollection = ({route}) => {
           </Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
+
+
+
+        <TouchableOpacity onPress={() => navigation.navigate('Message')}>
+            <Image
+              style={{height: 24, width: 28}}
+              source={require('../../../assets/Fo.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{marginLeft: 15}}
+            onPress={() => handleWishList()}>
+            <Image
+              style={{height: 22, width: 26, tintColor: '#fff'}}
+              source={require('../../../assets/Image/dil.png')}
+            />
+          </TouchableOpacity>
+
+
+          {/* <Image
             style={{height: 24, width: 28}}
             source={require('../../../assets/Fo.png')}
           />
@@ -184,7 +216,7 @@ const EditCollection = ({route}) => {
           <Image
             style={{height: 24, width: 28, tintColor: '#fff', marginLeft: 15}}
             source={require('../../../assets/supplierImage/more.png')}
-          />
+          /> */}
         </View>
       </View>
       <ScrollView>
@@ -197,7 +229,7 @@ const EditCollection = ({route}) => {
               fontFamily: 'Roboto-Medium',
               borderColor: '#03154138',
               borderRadius: 5,
-              height: 40,
+              height: 40,color:'#000'
             }}
             placeholderTextColor={'#23233C'}
             value={name}
@@ -212,7 +244,7 @@ const EditCollection = ({route}) => {
               borderColor: '#03154138',
               borderRadius: 5,
               height: 40,
-              marginTop: 20,
+              marginTop: 20,color:'#000'
             }}
             placeholderTextColor={'#23233C'}
             value={tag}
@@ -231,7 +263,7 @@ const EditCollection = ({route}) => {
               style={{
                 paddingLeft: 10,
                 fontFamily: 'Roboto-Medium',
-                marginTop: -8,
+                marginTop: -8,color:'#000'
               }}
               placeholderTextColor={'#23233C'}
               value={description}

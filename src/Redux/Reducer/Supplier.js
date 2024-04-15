@@ -2,7 +2,9 @@ initialstate = {
   SupplierDetail: '',
   isFetching: false,
   modalStatus: false,
-  AssiGnModal: false
+  AssiGnModal: false,
+  Changepassword:[],
+  RemovePartner:''
 
 };
 export default (state = initialstate, action) => {
@@ -32,6 +34,24 @@ export default (state = initialstate, action) => {
       return { ...state, isFetching: false }
     case 'add_partner_to_network_error':
       return { ...state, isFetching: false }
+
+     
+
+      case 'Get_changePassword_Request':
+        return { ...state, isFetching: true }
+      case 'Get_changePassword_Success':
+        return { ...state, isFetching: false,Changepassword: action.payload  }
+      case 'Get_changePassword_Error':
+        return { ...state, isFetching: false }
+
+
+       
+        case 'remove_retailerfromnetwork_Request':
+          return { ...state, isFetching: true }
+        case 'remove_retailerfromnetwork_Success':
+          return { ...state, isFetching: false,RemovePartner: action.payload  }
+        case 'remove_retailerfromnetwork_Error':
+          return { ...state, isFetching: false }
 
     default:
       return state;

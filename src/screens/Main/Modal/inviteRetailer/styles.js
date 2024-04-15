@@ -82,9 +82,11 @@ export default StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
+    color:'grey'
   },
   selectedTextStyle: {
     fontSize: 16,
+    color:'grey'
   },
   iconStyle: {
     width: 20,

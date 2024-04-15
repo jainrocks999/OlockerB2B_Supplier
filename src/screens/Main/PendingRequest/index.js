@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,8 +9,9 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import Toast from 'react-native-simple-toast';
 import Header from '../../../components/CustomHeader';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
 import BottomTab from '../../../components/StoreButtomTab';
 import styles from './styles';
@@ -20,40 +21,65 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const selector = useSelector(state => state.Pending);
-  const data2 = useSelector(state => state.deletData1)
-  const isFetching = useSelector(state => state?.isFetching)
-  // console.log('pendind request on  get daat ', selector);
+  const focus=useIsFocused()
+  const [visiable1,setVisible1]= useState(false);
+  const [visiable2,setVisible2]= useState(false);
+  const selector = useSelector(state => state?.Home?.RetailerRequestList);
+  console.log('dkfmskgmjsg',selector);
+  const data2 = useSelector(state => state?.Home?.deletData1)
+  const isFetching = useSelector(state => state?.Home?.isFetching)
+
+
+useEffect(()=>{
+if(focus)
+{
+  ApiCallWithUseEffect();
+}
+},[focus])
+
+
+const ApiCallWithUseEffect = async () => {
+  const user_id = await AsyncStorage.getItem('user_id');
+  dispatch({
+    type: 'Retailer_RequestList',
+    url: '/getReatilerRequest',
+    userId: user_id,
+    userRole: '6',
+  });
+}
+
+
+
+
+ 
   const demo = (ind, index2) => {
-    // console.log('srno ..................', ind);
-    const tempData = data2 ? data2 : selector?.list
-    var data = tempData.filter((item, index) => {
+  
+    var data = [...selector].filter((item, index) => {
       return index != index2;
 
     })
-
-
     dispatch({
-      type: 'Get_delete1_Success',
+      type: 'Retailer_RequestList_Success',
       payload: data
     })
 
   }
   const AcceptMEthod = async (id, index) => {
-    const srno = await AsyncStorage.getItem('Partnersrno');
-    const Token = await AsyncStorage.getItem('loginToken')
-
+    console.log('dddddd',index,id);
+    const Token = await AsyncStorage.getItem('loginToken');
+setVisible1(true);
     const axios = require('axios');
     let data = new FormData();
-    data.append('sp_networkId', id);
-    data.append('statusId', '1');
-    data.append('partnerId', srno);
-    data.append('rejectReason', '');
-
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: 'https://olocker.co/api//partners/updateSupplierRequest',
+    data.append('hSrNo', id?.SrNo);
+    data.append('ddlStatus', '1'); 
+    data.append('ddlCategory', id?.CategoryType);
+    data.append('txtRejectReason', '');
+    data.append('partnerId', id?.PartnerSrNo);
+    data.append('supplierId', id?.SupplierSrNo);
+        let config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url: 'https://olocker.co/api/supplier/retailerStatusUpdate',
       headers: {
         'Olocker': `Bearer ${Token}`,
         // ...data.getHeaders()
@@ -63,36 +89,38 @@ const HomeScreen = () => {
 
     axios.request(config)
       .then((response) => {
-        // console.log('response data ........', (response.data));
-        if (response.data.status == true) {
-          demo(index)
+        console.log('response,,,,,,,,,,',response.data);
+        if (response?.data?.status == "success") {
+          setVisible1(false);
+          demo(id,index);
+          Toast.show(response?.data?.msg);
 
         }
 
       })
       .catch((error) => {
-        // console.log(error);
+        setVisible1(false);
+        console.log(error);
       });
 
 
   }
   const RejectMEthod = async (id, index) => {
-
-    // console.log('data iss s', id);
-    const srno = await AsyncStorage.getItem('Partnersrno');
-    const Token = await AsyncStorage.getItem('loginToken')
-
+   
+    const Token = await AsyncStorage.getItem('loginToken');
+setVisible2(true)
     const axios = require('axios');
     let data = new FormData();
-    data.append('sp_networkId', id);
-    data.append('statusId', '2');
-    data.append('partnerId', srno);
-    data.append('rejectReason', '');
-
+    data.append('hSrNo', id?.SrNo);
+    data.append('ddlStatus', '2');
+    data.append('ddlCategory', '');
+    data.append('txtRejectReason', '');
+    data.append('partnerId', id?.PartnerSrNo);
+    data.append('supplierId', id?.SupplierSrNo);
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'https://olocker.co/api//partners/updateSupplierRequest',
+      url: 'https://olocker.co/api/supplier/retailerStatusUpdate',
       headers: {
         'Olocker': `Bearer ${Token}`,
         // ...data.getHeaders()
@@ -102,18 +130,20 @@ const HomeScreen = () => {
 
     axios.request(config)
       .then((response) => {
-        // console.log('response data ........', (response.data));
-        if (response.data.status == true) {
-          demo(index)
+       console.log('response,,,,,,,,,,',response.data);
+        if (response.data.status == "success") {
+          setVisible2(false);
+          demo(id,index);
+          // Toast.show(response?.data?.msg);
+          
 
         }
 
       })
       .catch((error) => {
-        // console.log(error);
+        setVisible2(false);
+        console.log(error);
       });
-
-
 
     // dispatch({
     //   type: 'Get_updateSupplierRequest1_Request',
@@ -135,122 +165,148 @@ const HomeScreen = () => {
         source1={require('../../../assets/Fo.png')}
         title={'Pending Request '}
         onPress={() => navigation.goBack()}
-        onPress1={() => navigation.navigate('Message')}
+        onPress1={() => navigation.navigate('MessageBox')}
         onPress2={() => navigation.navigate('FavDetails')}
       />
-      {/* <ScrollView> */}
+     
 
-      <View style={{ paddingHorizontal: 20, marginTop: 10 }}>
-        <Text style={{ color: '#565656', fontFamily: 'Acephimere' }}>{`${data2 ? data2?.length : selector?.list.length}${' Pending Requests'}`}</Text>
-      </View>
-      {isFetching ? <Loader /> : null}
-      <FlatList
-        data={data2 ? data2 : selector?.list}
-        renderItem={({ item, index }) => (
-          <View
-            style={{
-              marginTop: 20,
-              paddingHorizontal: 20,
-              flexDirection: 'row',
-            }}>
-            {/* {console.log('image shows aaa  ', item.logoImage)} */}
-            <View
-              style={{
-                width: '38%',
-                height: 100,
-                backgroundColor: '#fff',
-                elevation: 5,
-                borderRadius: 8,
-              }}>
 
-              <Image
-                style={{ height: '100%', width: '100%' }}
-                resizeMode={'cover'}
-                source={item.logoImage ? { uri: item.logoImage } : require('../../../assets/Image/Not.jpeg')}
-              />
+      {isFetching ||visiable1||visiable2 ? <Loader /> : null}
+      { selector?.length === 0 ?
+        <View style={{ alignItems: 'center', justifyContent: 'center', alignSelf: 'center', height: '90%', }}>
+          <Text style={{ color: 'grey', fontFamily: 'Acephimere', fontSize: 19, fontWeight: '700' }}> {'No Request'} </Text>
+         
+        </View>
+        :
+        <ScrollView>
+        <View>
+         {/* {data2?.length==1&&selector?.length==1?
+         <View> 
+                    <Text style={{ color: '#565656', fontFamily: 'Acephimere' ,marginLeft:10,marginTop:15}}>{`${data2 ? data2?.length : selector?.length}${' Pending Request'}`}</Text>
+                    </View>
+                    :
+                    <Text style={{ color: '#565656', fontFamily: 'Acephimere' ,marginLeft:10,marginTop:15}}>{`${data2 ? data2?.length : selector?.length}${' Pending Requests'}`}</Text>
 
-            </View>
-            <View style={{ marginLeft: 20 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: '#032e63',
-                  fontFamily: 'Acephimere',
-                }}>
-                {item.SupplierName}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 13,
-                  color: '#032e63',
-                  fontFamily: 'Acephimere',
-                }}>
-                {item.CityName}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 11,
-                  color: '#575757',
-                  fontFamily: 'Acephimere',
-                }}>
-                {item.Timestamp}
-              </Text>
+
+         } */}
+           <Text style={{ color: '#565656', fontFamily: 'Acephimere' ,marginLeft:10,marginTop:15}}>{`${selector?.length==1? `${selector?.length}  Pending Request`:`${selector?.length}  Pending Requests`}`}</Text>
+          <FlatList
+          // data={selector}
+             data={selector}
+            renderItem={({ item, index }) => (
               <View
                 style={{
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  marginTop: 20,
+                  marginTop: 10,
+                  paddingHorizontal: 20,
+                  height:140,
+                  flexDirection: 'row', elevation: 5,
+                  shadowColor: '#000',
+                  shadowOffset: {width: 0, height: 2},
+                  shadowOpacity: 0.3,
+                  shadowRadius: 8,
+                  borderRadius: 8,
                 }}>
-                <TouchableOpacity
-                  onPress={() => AcceptMEthod(item.SrNo, index)}
+                  {console.log(item)}
+                <View
                   style={{
-                    backgroundColor: '#5dc95c',
-                    paddingHorizontal: 15,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 15,
-                    paddingVertical: 5,
+                    width: '38%',
+                    height: 100,
+                    backgroundColor: '#fff',marginTop:20,
+                    // elevation: 5,
+                    // shadowColor: '#000',
+                    // shadowOffset: {width: 0, height: 4},
+                    // shadowOpacity: 0.6,
+                    // shadowRadius: 8,
+                    borderRadius: 8,
                   }}>
-                  <Text
-                    style={{
-                      color: '#fff',
-                      fontSize: 12,
-                      fontFamily: 'Acephimere',
-                    }}>
 
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => RejectMEthod(item.SrNo, index)}
-                  style={{
-                    backgroundColor: 'red',
-                    paddingHorizontal: 15,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 15,
-                    paddingVertical: 5,
-                    marginLeft: 10,
-                  }}>
+                  <Image
+                    style={{ height: '100%', width: '100%' }}
+                    resizeMode={'cover'}
+                    source={item.logoImage ? { uri: item.logoImage } : require('../../../assets/logo.png')}
+                  />
+
+                </View>
+                <View style={{ marginLeft: 20 ,marginTop:20,}}>
                   <Text
                     style={{
-                      color: '#fff',
-                      fontSize: 12,
+                      fontSize: 16,
+                      color: '#032e63',
                       fontFamily: 'Acephimere',
                     }}>
-                    REJECT
+                    {item.CompanyName}
                   </Text>
-                </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: '#032e63',
+                      fontFamily: 'Acephimere',
+                    }}>
+                    {item.city_name}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      color: '#575757',
+                      fontFamily: 'Acephimere',
+                    }}>
+                    {item.Timestamp}
+                  </Text>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      marginTop: 20,
+                    }}>
+                    <TouchableOpacity
+                      onPress={() => AcceptMEthod(item, index)}
+                      style={{
+                        backgroundColor: '#5dc95c',
+                        paddingHorizontal: 15,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 15,
+                        paddingVertical: 5,
+                      }}>
+                      <Text
+                        style={{
+                          color: '#fff',
+                          fontSize: 12,
+                          fontFamily: 'Acephimere',textAlign:'center'
+                        }}>
+                        Accept
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => RejectMEthod(item, index)}
+                      style={{
+                        backgroundColor: 'red',
+                        paddingHorizontal: 15,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 15,
+                        paddingVertical: 5,
+                        marginLeft: 10,
+                      }}>
+                      <Text
+                        style={{
+                          color: '#fff',
+                          fontSize: 12,
+                          fontFamily: 'Acephimere',textAlign:'center'
+                        }}>
+                        Reject
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
-            </View>
-            {/* {// console.log('zvvvv',item)} */}
-          </View>
-        )}
-      />
-      {/* </ScrollView> */}
-      {/* <View style={{bottom:0,position:'absolute',left:0,right:0}}>
-      <BottomTab/>
-      </View> */}
+            )}
+          />
+        </View>
+        </ScrollView>
+      }
+     
       <StatusBar />
     </View>
   );
@@ -259,20 +315,20 @@ export default HomeScreen;
 const data = [
   {
     image: '',
-    name: 'RC Bafna Jewellers',
-    city: 'Mumbai',
-    time: '17 Minutes ago',
+    SupplierName: 'RC Bafna Jewellers',
+    CityName: 'Mumbai',
+    Timestamp: '17 Minutes ago',
   },
   {
     image: '',
-    name: 'RC Bafna Jewellers',
-    city: 'Mumbai',
-    time: '17 Minutes ago',
+    SupplierName: 'RC Bafna Jewellers',
+    CityName: 'Mumbai',
+    Timestamp: '17 Minutes ago',
   },
   {
     image: '',
-    name: 'RC Bafna Jewellers',
-    city: 'Mumbai',
-    time: '17 Minutes ago',
+    SupplierName: 'RC Bafna Jewellers',
+    CityName: 'Mumbai',
+    Timestamp: '17 Minutes ago',
   },
 ];

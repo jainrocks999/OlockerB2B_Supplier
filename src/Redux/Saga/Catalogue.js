@@ -541,7 +541,7 @@ function* productData(action) {
         payload: res.data,
       });
       action.navigation.navigate('SubCategory');
-      Toast.show('datials data get success');
+      // Toast.show('datails data get success');
     } else {
       yield put({
         type: 'product_detail_error',

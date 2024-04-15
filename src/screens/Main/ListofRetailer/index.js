@@ -67,19 +67,43 @@ const ListOfRetailer = ({route}) => {
       id: check,
       userId,
       data2,
+      navigation
     });
   };
-  const removeRetailer = async pSrNo => {
-    console.log(pSrNo);
+  const removeRetailer = async(item) => {
+    console.log('logfff.....',item);
     const userId = await AsyncStorage.getItem('user_id');
     dispatch({
-      type: 'remove_retailer_from_network',
-      url: 'removeSuppliertest',
-      SupplierSrNo: userId,
-      PartnerSrNo: pSrNo,
+      type: 'remove_retailerfromnetwork_Request',
+      url: 'removepartner',
+      // SupplierSrNo: userId,
+      partner_id: item?.PartnerSrNo,
       data2,
+      reatailer:true,
     });
   };
+
+  console.log('datatdaad',selector?.searchpartner.length);
+  const getDetails = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+   console.log('daddadadad',data2);
+    
+      dispatch({
+        type: 'Search_Retailer_Request',
+        url: '/searchRetailer',
+        userId: data2?.userId,
+        role: data2?.role,
+        city: data2?.city,
+        state: data2?.state,
+        Rname: data2?.RRname,
+        // navigation: navigation,
+        start: data2?.start,
+        length: data2?.length+10,
+      });
+   
+  };
+
+
   return (
     <View style={{flex: 1}}>
       {isFetching ? <Loader /> : null}
@@ -338,7 +362,7 @@ const ListOfRetailer = ({route}) => {
 
                   <TouchableOpacity
                     onPress={() => {
-                      removeRetailer(item.SrNo);
+                      removeRetailer(item);
                     }}
                     style={styles.updateBtn}>
                     <Text
@@ -376,7 +400,7 @@ const ListOfRetailer = ({route}) => {
               width: wp(42),
               height: hp(6),
             }}>
-            <Text style={{fontSize: 16, fontWeight: '700', color: 'white'}}>
+            <Text style={{fontSize: 16, fontWeight: '700', color:selector?.searchpartner.length > 0 ? '#fff' : '#032E63',}}>
               Add To Network
             </Text>
           </TouchableOpacity>
@@ -385,6 +409,13 @@ const ListOfRetailer = ({route}) => {
           <View style={{flex: 1}}>
             <FlatList
               data={selector?.searchpartner}
+
+              // onEndReached={() => {
+              //   // console.log('fdmdghdo');
+              //   getDetails()
+              // }}
+              // onEndReachedThreshold={0.1}
+              // ListFooterComponent={<View style={{ height: 50 }} />} 
               renderItem={({item, index}) => (
                 <TouchableOpacity
                   onPress={() => {
@@ -393,8 +424,8 @@ const ListOfRetailer = ({route}) => {
                   style={styles.list}>
                   <View style={{}}>
                     <View style={{flexDirection: 'row'}}>
-                      <CheckBox
-                        value={check.includes(item.SrNo)}
+                      <CheckBox  tintColors={{ true: '#032e63', false: '#032e63' }}
+                        value={check.includes(item.SrNo)? true : false}
                         onChange={() => handleOnCheck(item.SrNo)}
                       />
                       <Text
@@ -402,7 +433,7 @@ const ListOfRetailer = ({route}) => {
                           width: '100%',
                           fontWeight: '600',
                           fontSize: 18,
-                          marginLeft: 10,
+                          marginLeft: 10,color:'#032E63'
                         }}>
                         {item.CompanyName}
                       </Text>
@@ -413,7 +444,7 @@ const ListOfRetailer = ({route}) => {
                         fontWeight: '400',
                         fontSize: 18,
                         marginLeft: 10,
-                        marginTop: 5,
+                        marginTop: 5,color:'grey'
                       }}>
                       {item.BillingContactEmail}
                     </Text>
@@ -428,14 +459,14 @@ const ListOfRetailer = ({route}) => {
                         style={{
                           fontSize: 16,
                           fontWeight: '700',
-                          marginRight: 10,
+                          marginRight: 10,color:'#032E63'
                         }}>
                         City :{' '}
                         <Text style={{fontWeight: '400'}}>
                           {item.city_name}{' '}
                         </Text>
                       </Text>
-                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                      <Text style={{fontSize: 16, fontWeight: '700',color:'#032E63'}}>
                         State :{' '}
                         <Text style={{fontWeight: '400'}}>
                           {item.state_name}{' '}
@@ -463,6 +494,30 @@ const ListOfRetailer = ({route}) => {
               )}
             />
           </View>
+          <View
+          style={{
+            marginVertical: 40,
+            alignItems: 'center',
+
+            justifyContent: 'center',
+          }}>
+          {selector?.searchpartner?.length >0 ? (
+            <TouchableOpacity
+              onPress={() => getDetails()}
+              style={{
+                backgroundColor: '#032e63',
+                paddingHorizontal: 15,
+                paddingVertical: 10,
+                borderRadius: 20,
+              }}>
+              <Text style={{color: 'white'}}>More..</Text>
+            </TouchableOpacity>
+          ) : (
+            <Text style={{color: 'grey', alignSelf: 'center', zIndex: 1,fontSize:20,fontWeight:'700'}}>
+              No Retailers found
+            </Text>
+          )}
+        </View>
         </View>
       </View>
 

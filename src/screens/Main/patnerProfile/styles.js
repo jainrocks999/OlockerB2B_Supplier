@@ -12,5 +12,12 @@ export default StyleSheet.create({
         paddingVertical:15,
         paddingHorizontal:25,
         backgroundColor:'#fff'
-    }
+    },
+    addButton:{
+        backgroundColor: '#ea056c',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 20,
+      },
+      text1:{ color: '#fff',  fontFamily: 'Acephimere' },
 })

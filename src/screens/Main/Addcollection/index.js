@@ -26,7 +26,7 @@ import {
 
 const Addcollection = () => {
   const loading = useSelector(state => state.Auth.isFetching);
-  const libraryImages = useSelector(state => state.Catalogue.lImages);
+  const libraryImages = useSelector(state => state.Catalogue?.lImages);
   const visible = useSelector(state => state.Catalogue.visible);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -40,13 +40,28 @@ const Addcollection = () => {
   const [photoType, setPhotoType] = useState('');
   const [fetching, setFetching] = useState(false);
 
+  const onlyCharacters = /^[a-zA-Z\s]*$/;
+
+  // if (onlyCharacters.test(textInputValue)) {
+  //   // If only characters are present, display success message
+  //   Alert.alert('Success', 'Only characters are present');
+  // } else {
+  //   // If characters and numbers are present, display error message
+  //   Alert.alert('Error', 'Numbers are also present');
+  // }
+
+
+
+
+
+
   const validateUser = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
-    if (name == '') {
-      Toast.show('Please enter collection name');
+    if(onlyCharacters.test(name) == '') {
+      Toast.show('Please enter collection name only charecter');
     }
-    if (tag == '') {
+    if (onlyCharacters.test(tag) == '') {
       Toast.show('Please enter tagline');
     }
     if (description == '') {
@@ -79,14 +94,9 @@ const Addcollection = () => {
           },
           url: 'https://olocker.co/api/supplier//postCreateCollection',
         });
-        console.log(JSON.stringify(response.data));
-        const rresponse = {
-          data: {
-            status: true,
-            msg: 'your are chutiys',
-          },
-        };
-        if (response.data.status) {
+        console.log('data add colloction .....',JSON.stringify(response.data));
+       
+        if (response.data.status ==true) {
           setFetching(false);
           dispatch({
             type: 'Get_Catalogue_Request',

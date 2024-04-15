@@ -17,7 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const MyNetworkList = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const navigation = useNavigation();
-  const selector = useSelector(state => state.Home.SearchMyNetworkList);
+  const selector = useSelector(state => state.Home.NetworkList);
   const isFetching = useSelector(state => state.Home.isFetching);
   const [arr, setArr] = useState([]);
   const isFocuse = useIsFocused();
@@ -34,7 +34,7 @@ const MyNetworkList = () => {
       type: 'Search_MyNetwork_Request',
       url: '/getNetworkRetailer',
       userId: user_id,
-      role: '6',
+     userRole:'6',
     });
   };
 
@@ -50,9 +50,11 @@ const MyNetworkList = () => {
 
 
   const supplierprofile = async( id) => {
+    const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
       type: 'get_networkretailerdetail_request',
       partnerId: id,
+      supplierId:user_id,
       url: 'getNetworkRetailerDeatils',
        navigation,
     });

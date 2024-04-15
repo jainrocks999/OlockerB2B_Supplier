@@ -25,7 +25,7 @@ let supplierLogo = '';
 let ownerImage = [];
 const HomeScreen = () => {
   const parnerData = useSelector(state => state.Home.partnerData);
-  console.log('this is some data', JSON.stringify(parnerData));
+  console.log('this is some data detailsmmmmmmm', JSON.stringify(parnerData));
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const selector1 = useSelector(state => state.Supplier.SupplierDetail);

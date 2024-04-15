@@ -54,7 +54,7 @@ const InviteRetailerList = () => {
       type: 'Invite_RetailerList',
       url: '/inviteRetailerList',
       userId: user_id,
-      role: '6',
+     userRole:'6',
     });
   };
 
@@ -102,7 +102,7 @@ const InviteRetailerList = () => {
                         style={{
                           width: '60%',
                           fontWeight: '600',
-                          fontSize: 18,
+                          fontSize: 15,
                           color: 'grey',
                         }}>
                         {item.RetailerName}
@@ -132,8 +132,8 @@ const InviteRetailerList = () => {
                         style={{
                           width: '60%',
                           fontWeight: '600',
-                          fontSize: 18,
-                          color: 'grey',
+                          fontSize: 15,
+                          color: 'grey',width:wp(55),
                         }}>
                         {item.EmailId}
                       </Text>
@@ -167,7 +167,7 @@ const InviteRetailerList = () => {
                         style={{
                           width: '60%',
                           fontWeight: '600',
-                          fontSize: 18,
+                          fontSize: 15,
                           color: 'grey',
                         }}>
                         {item.Location}
@@ -197,7 +197,7 @@ const InviteRetailerList = () => {
                         style={{
                           width: '60%',
                           fontWeight: '600',
-                          fontSize: 18,
+                          fontSize: 15,
                           color: 'grey',
                         }}>
                         {item.ContactNumber}{' '}
@@ -231,7 +231,7 @@ const InviteRetailerList = () => {
                         style={{
                           width: '60%',
                           fontWeight: '600',
-                          fontSize: 18,
+                          fontSize: 15,
                           color: 'grey',
                         }}>
                         {item.CategoryType}{' '}

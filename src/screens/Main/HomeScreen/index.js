@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -13,15 +13,15 @@ import {
   BackHandler,
 } from 'react-native';
 
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import Toast from 'react-native-simple-toast';
 import Loader from '../../../components/Loader';
-import {FlatListSlider} from 'react-native-flatlist-slider';
+import { FlatListSlider } from 'react-native-flatlist-slider';
 import Banner from '../../../components/Banner';
 import ImagePath from '../../../components/ImagePath';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Catalogue from '../../../Redux/Reducer/Catalogue';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Offer from '../../../assets/supplierImage/Offer.svg';
@@ -29,16 +29,32 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import Svg, {Path} from 'react-native-svg';
-
+import Svg, { Path } from 'react-native-svg';
+import FastImage from 'react-native-fast-image';
+// import Banner from './Banner';
+import SliderBanner from './Banner';
 let backPress = 0;
+const { width } = Dimensions.get('window');
 const HomeScreen = () => {
   const navigation = useNavigation();
   const isFetching = useSelector(state => state?.isFetching);
   const isFetching1 = useSelector(state => state.Catalogue.isFetching);
   const isFetching3 = useSelector(state => state.Home.isFetching);
-  const selector1 = useSelector(state => state.Home.NetworkList);
+  const selector1 = useSelector(state => state.Home.NetworkList1);
   const bannerList = useSelector(state => state.Home.BannerList);
+  const BannerData = [];
+console.log('network list data ,,',selector1);
+
+  bannerList?.map((item) => {
+    if (item.ImageSection == "supplierHome" && item.isActive == 1) {
+      const url = `https://olocker.co/${item.ImageUrl}${item.ImageName
+        }`;
+      BannerData.push({
+        ...item
+      });
+    }
+  })
+ 
   // const isFetching4 = useSelector(state => state.State.BannerList);
   const fetching = useSelector(state => state.Home.isFetching);
   const win = Dimensions.get('window');
@@ -66,13 +82,32 @@ const HomeScreen = () => {
       userId: user_id,
       userRole: 6,
     });
+    dispatch({
+      type: 'Get_delete_Success',
+      payload: undefined
+    });
+
+
+   dispatch({
+    type:'Get_pushNotificationLis_Request',
+    url:'/pushNotificationList',
+    supplierId:user_id
+   })
+  
+
+    dispatch({
+      type: 'Network_ApprovedRequestList_Request',
+      url: '/partnerApprovedRequestList',
+      userId: user_id,
+      userRole: 6,
+    });
 
     dispatch({
       type: 'Supplier_Profile_Request',
       url: '/editProfile',
       userId: user_id,
       userType: 'supplier',
-      role: 6,
+      userRole: 6,
     });
     dispatch({
       type: 'State_List_Request',
@@ -85,12 +120,14 @@ const HomeScreen = () => {
     });
   };
 
-  const supplierprofile = async( id) => {
+  const supplierprofile = async (id) => {
+    const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
       type: 'get_networkretailerdetail_request',
       partnerId: id,
+      supplierId:user_id,
       url: 'getNetworkRetailerDeatils',
-       navigation,
+      navigation,
     });
   };
   useEffect(() => {
@@ -118,6 +155,34 @@ const HomeScreen = () => {
     }
   };
 
+  const Logout = () => {
+    Alert.alert(
+      'Are you sure you want to log out?',
+      '',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            cancelable: false;
+          },
+          style: 'cancel',
+        },
+        { text: 'ok', onPress: () => LogoutApp() },
+      ],
+      { cancelable: false },
+    );
+  };
+
+  const LogoutApp = async () => {
+    await AsyncStorage.setItem('loginToken', '');
+
+    navigation.navigate('Login');
+    // const Token = await AsyncStorage.getItem('loginToken');
+   
+  };
+
+
+  const BannerWidth = (Dimensions.get('window').width * 20) / 18;
   const handleWishList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
@@ -141,8 +206,29 @@ const HomeScreen = () => {
       btn,
     });
   };
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const flatListRef = useRef();
+  useEffect(() => {
+    // Set up the interval for automatic sliding
+    const interval = setInterval(() => {
+      setCurrentIndex(prevIndex => {
+        const nextIndex = prevIndex + 1;
+        return nextIndex < BannerData.length ? nextIndex : 0;
+      });
+    }, 3000); // Change slide every 3 seconds
+
+    return () => clearInterval(interval); // Clear the interval when the component is unmounted
+  }, [BannerData.length]);
+  useEffect(() => {
+    // Automatically scroll to the new index when it changes
+    flatListRef.current?.scrollToIndex({
+      animated: true,
+      index: currentIndex,
+      viewPosition: 0.5,
+    });
+  }, [currentIndex]);
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.scroll}>
         {isFetching || isFetching1 || fetching || isFetching3 ? (
           <Loader />
@@ -159,40 +245,52 @@ const HomeScreen = () => {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                style={{marginLeft: 15}}
+                style={{ marginLeft: 15 }}
                 onPress={() => handleWishList()}>
                 <Image
                   style={styles.img2}
                   source={require('../../../assets/Image/dil.png')}
                 />
               </TouchableOpacity>
+              <TouchableOpacity onPress={() => Logout()}>
+                <Image
+                  style={[styles.img3, { tintColor: '#FFFF', height: 26, width: 26 }]}
+                  source={require('../../../assets/Image/logout.png')}
+                />
+              </TouchableOpacity>
+
+
             </View>
           </View>
-          <View style={{paddingHorizontal: 10}}>
+          <View style={{ paddingHorizontal: 10 }}>
             <Text style={styles.text1}>Welcome to MyJeweller</Text>
             <Text style={styles.text2}>{'Onestop solution\nfor you'}</Text>
           </View>
         </ImageBackground>
         <View style={styles.main}>
-          <FlatListSlider
-            data={bannerList}
-            height={170}
+          {/* <FlatListSlider
+            data={BannerData}
+            height={hp(25)}
             timer={3000}
             contentContainerStyle={{
               marginVertical: 0,
-              paddingHorizontal: 30,
+              alignSelf:'center',
+              borderWidth:5
             }}
-            indicatorContainerStyle={{position: 'absolute', bottom: 4}}
+            indicatorContainerStyle={{position: 'absolute', bottom: -15}}
             indicatorActiveColor={'#032e63'}
             indicatorInActiveColor={'#ffffff'}
             indicatorActiveWidth={5}
             animation
-            component={<Banner />}
-            separatorWidth={15}
-            width={300}
-            autoscroll={false}
+            component={<Text style={{color:'white',alignSelf:'center'}}>raju</Text>}
+            separatorWidth={wp(2.5)}
+            width={wp(95)}
+            autoscroll={true}
             loop={false}
-          />
+          /> */}
+
+
+      <SliderBanner data={BannerData} bottom={-10}height={6}width={6} borderRadius={3}/>
         </View>
         <View style={styles.itemview}>
           <View style={styles.itemview1}>
@@ -212,14 +310,15 @@ const HomeScreen = () => {
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal={true}
-            data={selector1}
-            style={{marginTop: 7}}
-            renderItem={({item}) => (
-              <View style={{width: win.width * 0.37, alignItems: 'center'}}>
+            data={selector1?.partnerApprovedRequest}
+            style={{ marginTop: 7 }}
+            renderItem={({ item }) => (
+              <View style={{ width: win.width * 0.37, alignItems: 'center' }}>
+               
                 <TouchableOpacity
-                  onPress={() => 
-                      // navigation.navigate('PatnerProfile')
-                       supplierprofile(item?.PartnerSrNo)
+                  onPress={() =>
+                    
+                    supplierprofile(item?.PartnerSrNo)
                   }
                   style={[styles.cardview]}>
                   <Image
@@ -227,11 +326,11 @@ const HomeScreen = () => {
                       width: win.width * 0.33,
                       height: '100%',
                       resizeMode: 'contain',
-                      borderRadius: 15,
+                      borderRadius: 10,
                     }}
                     source={
                       item.Logo
-                        ? {uri: `${item.url}${item.Logo}`}
+                        ? { uri: `${item.url}${item.Logo}` }
                         : require('../../../assets/Image/Not.jpeg')
                     }
                   />
@@ -269,10 +368,10 @@ const HomeScreen = () => {
               }}> */}
           <TouchableOpacity
             onPress={() => handleMyCatalogue('cat')}
-            style={{alignItems: 'center', width: 120}}>
+            style={{ alignItems: 'center', width: 120 }}>
             <Image
               resizeMode="contain"
-              style={{width: 110, height: 110}}
+              style={{ width: 110, height: 110 }}
               source={require('../../../assets/Image/services.png')}
             />
             <Text style={styles.textc}>{'Catalogue'}</Text>
@@ -280,12 +379,12 @@ const HomeScreen = () => {
 
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('SearchRetailer');
+              navigation.navigate('MyNetwork');
             }}
-            style={{alignItems: 'center', width: 120}}>
+            style={{ alignItems: 'center', width: 120 }}>
             <Image
               resizeMode="contain"
-              style={{width: 110, height: 110}}
+              style={{ width: 110, height: 110 }}
               source={require('../../../assets/Image/partner.png')}
             />
             <Text style={styles.textc}>{'My Network'}</Text>
@@ -294,10 +393,10 @@ const HomeScreen = () => {
             onPress={() => {
               navigation.navigate('OfferTemplate');
             }}
-            style={{alignItems: 'center', width: 120}}>
+            style={{ alignItems: 'center', width: 120 }}>
             <Image
               resizeMode="contain"
-              style={{width: 110, height: 110}}
+              style={{ width: 110, height: 110 }}
               source={require('../../../assets/Image/Offer.png')}
             />
             <Text style={styles.textc}>{'Offers'}</Text>
@@ -323,7 +422,7 @@ const HomeScreen = () => {
             </TouchableOpacity> */}
           {/* </View> */}
         </ScrollView>
-        <View style={{height: 40}} />
+        <View style={{ height: 40 }} />
         {/* </View> */}
 
         {/* <View style={styles.bottom}>
@@ -417,16 +516,16 @@ var object = {
       id: 1,
       title: 'A',
       data: [
-        {id: '1', name: 'First Name', type: 'text'},
-        {id: '2', name: 'Last Name', type: 'text'},
+        { id: '1', name: 'First Name', type: 'text' },
+        { id: '2', name: 'Last Name', type: 'text' },
       ],
     },
     {
       id: 2,
       title: 'B',
       data: [
-        {id: '1', name: 'Twitter', type: 'text'},
-        {id: '2', name: 'Twitter follower', type: 'number'},
+        { id: '1', name: 'Twitter', type: 'text' },
+        { id: '2', name: 'Twitter follower', type: 'number' },
       ],
     },
   ],

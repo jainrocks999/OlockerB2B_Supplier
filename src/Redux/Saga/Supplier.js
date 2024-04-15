@@ -5,15 +5,17 @@ import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {parse} from 'react-native-svg';
 
+
 function* SupportProfileRequest(action) {
+  console.log('supplier action,,,ds,',action);
   try {
     const data = {
       userId: action.userId,
       usertype: 'supplier',
-      role: '6',
+     userRole:'6',
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-    //  // console.log('this is user response',response);
+   
     if (response.status == true) {
       yield put({
         type: 'Supplier_Profile_Success',
@@ -82,7 +84,7 @@ function* assiGnData(action) {
         Rname: action.data2.RRname,
         start: action.data2.start,
         length: action.data2.length,
-        navigation: '',
+        navigation: action.navigation,
       });
       Toast.show(res.msg);
     }
@@ -94,6 +96,7 @@ function* assiGnData(action) {
   }
 }
 function* addtoNetwork(action) {
+  console.log('acction kmklfgmlkfgm,,,,,',action);
   try {
     let data = new FormData();
     data.append('userId', action.userId);
@@ -103,46 +106,162 @@ function* addtoNetwork(action) {
       yield put({
         type: 'add_partner_to_network_success',
       });
+
+       yield put({
+      
+          type: 'get_networkretailerdetail_request',
+          partnerId: action.id,
+          supplierId:action.userId,
+          url: 'getNetworkRetailerDeatils',
+          navigation:action.navigation,
+      
+       })
+           
+
       // console.log(action.data2)
-      yield put({
-        type: 'Search_Retailer_Request',
-        url: '/searchRetailer',
-        userId: action.data2.userId,
-        role: action.data2.role,
-        city: action.data2.city,
-        state: action.data2.state,
-        Rname: action.data2.RRname,
-        start: action.data2.start,
-        length: action.data2.length,
-        navigation: '',
-      });
-      Toast.show(res.msg);
+      // yield put({
+      //   type: 'Search_Retailer_Request',
+      //   url: '/searchRetailer',
+      //   userId: action.data2.userId,
+      //   role: action.data2.role,
+      //   city: action.data2.city,
+      //   state: action.data2.state,
+      //   Rname: action.data2.RRname,
+      //   start: action.data2.start,
+      //   length: action.data2.length,
+      //   navigation: action.navigation,
+      // });
+       Toast.show(res.msg);
     } else {
-      Toast.show('Something went wrong1');
+      Toast.show('Something went wrong');
     }
   } catch (err) {
     console.log(err);
     yield put({
       type: 'add_partner_to_network_error',
     });
-    Toast.show('Something went wrong2');
+    Toast.show('Something went wrong');
   }
 }
 function* removeSuppliertest(action) {
   try {
     const data = {
-      PartnerSrNo: action.PartnerSrNo,
-      SupplierSrNo: action.SupplierSrNo,
+      partner_id: action.partner_id,
+      
     };
     const res = yield call(Api.fetchDataByGET1, action.url, data);
+console.log('response ..... dtata',res);
+if(res.status==true){
+  yield put({
+    type: 'remove_retailerfromnetwork_Success',
+  });
+
+  yield put({
+      
+    type: 'get_networkretailerdetail_request',
+    partnerId: action.partner_id,
+    supplierId:action.user,
+    url: 'getNetworkRetailerDeatils',
+    navigation:action.navigation,
+
+ });
+ yield put({
+ 
+    type: 'Network_List_Request',
+    url: '/getNetworkRetailer',
+    userId: action.user,
+    userRole: 6,
+ 
+ 
+    type: 'Get_delete_Success',
+    payload: undefined
+
+ })     
+
+
+// if(action.reatailer==true){
+//   yield put({
+//     type: 'Search_Retailer_Request',
+//     url: '/searchRetailer',
+//     userId: action.data2.userId,
+//     role: action.data2.role,
+//     city: action.data2.city,
+//     state: action.data2.state,
+//     Rname: action.data2.RRname,
+//     start: action.data2.start,
+//     length: action.data2.length,
+//     navigation: action.navigation,
+//   });}
+//   else{
+//     yield put({
+//       type: 'Retailer_RequestList',
+//       url: '/getReatilerRequest',
+//       userId:action.userId,
+//      userRole:'6',
+//     });
+    
+//   }
+  Toast.show(res?.msg)
+}
+else{
+  yield put({
+    type: 'remove_retailerfromnetwork_Error',
+  });
+}
+
+
   } catch (error) {
+    yield put({
+      type: 'remove_retailerfromnetwork_Error',
+    });
     console.log(error);
   }
+}
+function* ChangePass(action){
+  try {
+    data={
+      userid:action.userid,
+      oldpass: action.oldpass,
+      newPassword:action.newPassword,
+      cnPass:action.cnPass,
+    }
+    const res = yield call(Api.fetchDataByGET1, action.url, data);
+    if(res.status==true){
+      yield put({
+        type: 'Get_changePassword_Success',
+        payload:res,
+      });
+      // yield put({
+      
+      //     type: 'Supplier_Profile_Request',
+      //     url: '/editProfile',
+      //     userId:action.userid,
+      //     userType: 'supplier',
+      //     role: 6,
+       
+      // })
+       action.navigation.navigate('Customers')
+    }else{
+      yield put({
+        type: 'Get_changePassword_Error',
+       
+      });
+      Toast.show(res?.msg)
+    }
+    console.log('resaponse change password,,,',res);
+  } catch (error) {
+    yield put({
+      type: 'Get_changePassword_Error',
+     
+    });
+  }
+
 }
 export default function* supplierSaga() {
   yield takeEvery('Supplier_Profile_Request', SupportProfileRequest);
   yield takeEvery('Invite_retailert_Request', addRetailer);
   yield takeEvery('update_status_&_assign_request', assiGnData);
   yield takeEvery('add_partner_to_network_request', addtoNetwork);
-  yield takeEvery('remove_retailer_from_network', removeSuppliertest);
+  yield takeEvery('remove_retailerfromnetwork_Request', removeSuppliertest);
+  yield takeEvery('Get_changePassword_Request',ChangePass)
 }

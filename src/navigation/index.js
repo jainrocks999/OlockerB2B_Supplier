@@ -57,7 +57,7 @@ import MyNetworkList from '../screens/Main/MyNetworkList';
 import ChangePassword from '../screens/Main/changePassword';
 import PatnerProfile from '../screens/Main/patnerProfile';
 import User from 'react-native-vector-icons/FontAwesome5';
-
+import MyNetworks from '../screens/Main/MyNetworks'
 const Stack1 = createNativeStackNavigator();
 function HomeScreen1() {
   return (
@@ -91,12 +91,20 @@ function HomeScreen1() {
         name="ChooseSupplierProduct"
         component={ChooseSupplierProduct}
       />
+      <Stack1.Screen name="MyNetwork" component={MyNetwork} />
+      <Stack1.Screen name="MyNetworks1" component={MyNetworks} />
+      <Stack1.Screen name="MyNetworks" component={MyNetworkList} />
+      <Stack1.Screen name="PartnerProfile2" component={PartnerProfile} />
+      <Stack1.Screen name="PendingRequest" component={PendingRequest} />
+      <Stack1.Screen name="SentRequest" component={SentRequest} />
+
       <Stack1.Screen name="myNetworkBtn" component={MyNetworkBtn} />
       <Stack1.Screen name="addMore" component={AddMore} />
       <Stack1.Screen name="AddProductTooffer" component={AddProductTooffer} />
-      <Stack2.Screen name="PatnerProfile" component={PatnerProfile} />
-      <Stack2.Screen name="FavouriteList" component={FavouriteList} />
-      <Stack3.Screen name="PartnerProfile" component={PartnerProfile2} />
+      <Stack1.Screen name="PatnerProfile" component={PatnerProfile} />
+      <Stack1.Screen name="FavouriteList" component={FavouriteList} />
+      <Stack1.Screen name="PartnerProfile" component={PartnerProfile2} />
+      
     </Stack1.Navigator>
   );
 }
@@ -125,20 +133,20 @@ function Customer1() {
     </Stack3.Navigator>
   );
 }
-const Stack2 = createNativeStackNavigator();
-function MyNetwork1() {
-  return (
-    <Stack2.Navigator
-      initialRouteName="MyNetwork"
-      screenOptions={{headerShown: false}}>
-      <Stack2.Screen name="MyNetwork" component={MyNetwork} />
-      <Stack2.Screen name="MyNetworks" component={MyNetworkList} />
-      <Stack2.Screen name="PartnerProfile2" component={PartnerProfile} />
-      <Stack2.Screen name="PendingRequest" component={PendingRequest} />
-      <Stack2.Screen name="SentRequest" component={SentRequest} />
-    </Stack2.Navigator>
-  );
-}
+// const Stack2 = createNativeStackNavigator();
+// function MyNetwork1() {
+//   return (
+//     <Stack2.Navigator
+//       initialRouteName="MyNetwork"
+//       screenOptions={{headerShown: false}}>
+//       <Stack2.Screen name="MyNetwork" component={MyNetwork} />
+//       <Stack2.Screen name="MyNetworks" component={MyNetworkList} />
+//       <Stack2.Screen name="PartnerProfile2" component={PartnerProfile} />
+//       <Stack2.Screen name="PendingRequest" component={PendingRequest} />
+//       <Stack2.Screen name="SentRequest" component={SentRequest} />
+//     </Stack2.Navigator>
+//   );
+// }
 const Tab = createBottomTabNavigator();
 function Bottom() {
   return (
@@ -161,12 +169,12 @@ function Bottom() {
             return (
               <Image
                 style={{
-                  // tintColor: focused ? '#fff' : 'grey',
+                   tintColor: focused ? '#fff' : 'grey',
                   height: 26,
                   width: 24,
                   resizeMode: 'center',
                 }}
-                source={require('../assets/supplierImage/homeIcon.png')}
+                source={require('../assets/supplierImage/For.png')}
               />
             );
           },
@@ -219,12 +227,12 @@ function Bottom() {
             return (
               <Image
                 style={{
-                  // tintColor: focused ? '#fff' : 'grey',
-                  height: 26,
-                  width: 24,
+                   tintColor: focused ? '#fff' : 'grey',
+                  height: 28,
+                  width: 28,
                   resizeMode: 'center',
                 }}
-                source={require('../assets/supplierImage/notificationIcon.png')}
+                source={require('../assets/supplierImage/noti.png')}
               />
             );
           },
@@ -236,17 +244,17 @@ function Bottom() {
         options={{
           tabBarIcon: ({focused}) => {
             return (
-              // <Image
-              //   style={{
-              //     // tintColor: focused ? '#fff' : 'grey',
-              //     height: 25,
-              //     width: 22,
-              //     resizeMode: 'center',
-              //     tintColor: '#fff',
-              //   }}
-              //   source={require('../assets/supplierImage/user.png')}
-              // />
-              <User name="user-alt" size={22.4} color={'white'} />
+              <Image
+                style={{
+                   tintColor: focused ? '#fff' : 'grey',
+                  height: 25,
+                  width: 22,
+                  resizeMode: 'center',
+                  // tintColor: '#fff',
+                }}
+                source={require('../assets/supplierImage/Sh.png')}
+              />
+              
             );
           },
         }}

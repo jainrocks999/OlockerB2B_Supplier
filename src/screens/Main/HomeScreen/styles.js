@@ -1,5 +1,6 @@
 import React from 'react';
 import {Platform, StyleSheet} from 'react-native';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
 export default StyleSheet.create({
   container1: {
     flex: 1,
@@ -206,4 +207,25 @@ export default StyleSheet.create({
     fontWeight: '700',
     marginTop: 3,
   },
+    
+  imageContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius:15,
+    marginHorizontal:widthPercentageToDP(5)
+  },
+  shadow: {
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+  },
+
 });

@@ -296,7 +296,7 @@ const SubCategory = ({route}) => {
             source={require('../../../assets/Image/rupay.png')}
           />
           <Text style={styles.text}>
-            {productData?.products?.ProductsPrice}
+            {parseFloat(productData?.products?.ProductsPrice)?.toFixed(2)}
           </Text>
           <Text style={styles.text1}>( Approximate Price )</Text>
         </View>
@@ -370,8 +370,10 @@ const SubCategory = ({route}) => {
                   alignItems: 'center',
                   marginTop: -15,
                 }}>
+
+                 
                 <Text style={styles.cardtext}>
-                  {'Metal        :     ' + productData?.products?.ItemDesc}
+                  {'Metal        :     ' + `${parseFloat(productData?.products?.GrossWt)?.toFixed(2)}  Gm`}
                 </Text>
 
                 <TextInput

@@ -2,7 +2,7 @@ initialstate = {
   isFetching:false,
   // Login1: '',
   WishList: [],
-  // SupplierDetail:'',
+  //  SupplierDetail:'',
   // StateList:[],
   // CityList:[],
  

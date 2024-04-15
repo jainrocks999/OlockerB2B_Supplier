@@ -14,7 +14,7 @@ const Profile = () => {
   const partner = parnerData?.partnerdetails;
   return (
     <View style={{flex: 1, backgroundColor: '#fff', paddingVertical: 20}}>
-      {isFetching ? <Loading /> : null}
+      {/* {isFetching ? <Loading /> : null} */}
 
       <View style={{paddingHorizontal: 20, alignItems: 'flex-start'}}>
         <TouchableOpacity

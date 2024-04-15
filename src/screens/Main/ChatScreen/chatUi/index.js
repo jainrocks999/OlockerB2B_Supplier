@@ -20,27 +20,30 @@ const ChatScreen2 = ({...props}) => {
     GetMessage();
   }, [isFocused]);
   const GetMessage = async () => {
-    const user_id = AsyncStorage.getItem('user_id');
+    const user_id = await AsyncStorage.getItem('user_id');
+
+    console.log('sender id .......',(user_id));
     const Token = await AsyncStorage.getItem('loginToken');
-    setUserId(parseInt(user_id._j));
+    setUserId(parseInt(user_id));
     dispatch({
       type: 'get_Message_Request',
       url: '/getMessage',
-      senderId: parseInt(user_id._j),
-      reciverid: props.data.contact_id,
+      senderId: parseInt(user_id),
+      reciverid: props.data.SrNo,
       token: Token,
       user_type: 'partner', //props.data.user_type
     });
   };
-  const onSend = async msg => {
+  const onSend = async (msg)=> {
+    console.log('hiiiiiiiii',msg);
     let message = await msg[0].text;
+    const user_id = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
-
     dispatch({
       type: 'Message_Send_Request',
-      url: '/msgSentSuccess',
-      senderId: userId,
-      reciverId: props.data.contact_id,
+      url: '/chatSupplierToPartner',
+      senderId: user_id,
+      reciverId: props.data.SrNo,
       message: message,
       user_type: 'supplier',
       token: Token,
@@ -61,9 +64,9 @@ const ChatScreen2 = ({...props}) => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#f0f0f0'}}>
-      {isFetching ? (
+      {/* {isFetching ? (
         <View />
-      ) : (
+      ) : ( */}
         <GiftedChat
           messages={data}
           alwaysShowSend={true}
@@ -76,7 +79,7 @@ const ChatScreen2 = ({...props}) => {
             borderRadius: 10,
             paddingHorizontal: 10,
             marginTop: 5,
-            borderColor: 'grey',
+            borderColor: 'grey',   color:'#474747'
           }}
           // renderActions={renderActions}
           renderInputToolbar={props => {
@@ -184,7 +187,7 @@ const ChatScreen2 = ({...props}) => {
             );
           }}
         />
-      )}
+      {/* )} */}
     </View>
   );
 };

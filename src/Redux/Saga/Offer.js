@@ -1,9 +1,10 @@
-import {ToastAndroid, YellowBox} from 'react-native';
+import {Alert, ToastAndroid, YellowBox} from 'react-native';
 import {takeEvery, put, call} from 'redux-saga/effects';
 import Api from '../Api';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {parse} from 'react-native-svg';
+import { act } from 'react-test-renderer';
 
 //Login
 function* offerList(action) {
@@ -67,7 +68,7 @@ function* offerListData(action) {
       length: 80,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-    console.log('this is responsettttt', JSON.stringify(response));
+   
     if (response.status) {
       yield put({
         type: 'Offer_List_Success',
@@ -122,9 +123,7 @@ function* offerprodutlist(action){
  
   const res = yield call(Api.fetchDataByGET1, action.url, data);
   console.log('response data ,,,,,,,',res.data);
-  if(res.status==true){
-    
-  }
+ 
 
   if (res.status==true) {
            yield put({
@@ -259,17 +258,20 @@ function* removeOffer(action) {
   }
 }
 function* getOfferDetails(action) {
+  console.log('offer list as s s as s  s as',action);
   try {
     const data = {
       userId: action.userId,
       offerId: action.offerId,
     };
     const res = yield call(Api.fetchDataByGET1, action.url, data);
+  
     if (res.status) {
       yield put({
         type: 'offer_details_success',
         payload: res.data,
       });
+     
       if (action.op == 'edit') {
         yield put({
           type: 'offer_edit_modal_open',
@@ -278,13 +280,16 @@ function* getOfferDetails(action) {
         });
         action.navigation.navigate('AddOffer', {isEdit: false});
       } else {
-        console.log('this is called form my side');
+      
+         
         yield put({
           type: 'offer_edit_modal_open',
           payload2: action.some,
           payload1: false,
         });
-        //action.navigation.navigate('OfferDetails', {isEdit: false});
+        console.log('responsessss..........viewfggdfdgfdgd',res.data);
+        // action.navigation.navigate('AddOffer', {isEdit: true});
+        // action.navigation.navigate('OfferDetails');
       }
     } else {
       yield put({
@@ -297,7 +302,7 @@ function* getOfferDetails(action) {
       type: 'offer_details_error',
     });
     Toast.show('Something went wrong');
-    console.log(err);
+    console.log('this is error ............',err);
   }
 }
 function* addPorudctOffer(action) {

@@ -1,4 +1,4 @@
-import {ToastAndroid, YellowBox} from 'react-native';
+import {Alert, ToastAndroid, YellowBox} from 'react-native';
 import {takeEvery, put, call} from 'redux-saga/effects';
 import Api from '../Api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,7 +8,7 @@ import {err} from 'react-native-svg/lib/typescript/xml';
 function* PatnerContact(action) {
   try {
     const data = {
-      user_id: action.id,
+      user_id: action.user_id,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
 
@@ -30,9 +30,10 @@ function* PatnerContact(action) {
 }
 
 function* SendMessage(action) {
+  console.log('send on message  data ,,,,',action);
   try {
     const response = yield call(Api.sendMessage, action);
-
+console.log('data    send ',response);
     if (response.status == true) {
       yield put({
         type: 'Message_Send_Success',
@@ -52,6 +53,8 @@ function* SendMessage(action) {
   }
 }
 function* GetMessage(action) {
+console.log('message data ,,,,get by action ,,,,,',action);
+
   const data = {
     sender_id: action.senderId,
     reciver_id: action.reciverid,
@@ -77,6 +80,7 @@ function* GetMessage(action) {
           type: 'get_Message_Success',
           payload: message,
         });
+        // Alert.alert('message successfull get and send')
     } else {
       yield put({
         type: 'get_Message_Error',
@@ -92,6 +96,8 @@ function* GetMessage(action) {
   }
 }
 function* GetMessage2(action) {
+
+  console.log('datatat,,,,,,,',action);
   const data = {
     sender_id: action.senderId,
     reciver_id: action.reciverid,

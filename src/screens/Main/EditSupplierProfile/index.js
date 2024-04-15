@@ -26,6 +26,7 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import {FlatList} from 'react-native';
+import { color } from 'react-native-elements/dist/helpers';
 let goldSpecilization = [];
 let diamondSpecilization = [];
 let silverSpecilization = [];
@@ -35,12 +36,9 @@ const EditSupplierProfile = ({route}) => {
   const supplierProfile = useSelector(
     state => state.Supplier?.SupplierDetail?.data,
   );
-
-  const details = route.params.selector.supplierdetails[0];
-  console.log(
-    'this is su',
-    JSON.stringify(supplierProfile?.supplierimagedetails),
-  );
+ 
+  const details = route.params?.selector?.supplierdetails[0];
+ 
   const [fetching, setFetching] = useState(false);
   const getImages = type => {
     const newArr = supplierProfile?.supplierimagedetails?.filter(
@@ -67,11 +65,49 @@ const EditSupplierProfile = ({route}) => {
   const cityList2 = useSelector(state => state.State.city);
   const cityList = cityList1?.cities;
   const dispatch = useDispatch();
+
+  function getNonNullableValues(supplierjewellerydetails) {
+    const jewelleryPurityArray = [];
+    const specialisationArray = [];
+  
+    supplierjewellerydetails.forEach(item => {
+      if (item.JewelleryPurity !== null) {
+        jewelleryPurityArray.push(item.JewelleryPurity);
+      }
+      if (item.Specialisation !== null) {
+        specialisationArray.push(item.Specialisation);
+      }
+    });
+    console.log('get differnt array ',jewelleryPurityArray);
+  
+    // return { jewelleryPurityArray, specialisationArray };
+  }
+
+
+
+
+
+  function getSupplier(type) {
+    return !!supplierProfile?.supplierjewellerydetails?.find(item => item.JewelleryType ==type);
+  }
   useEffect(() => {
-    route.params.selector.specialisation.map(item => {
+   
+    getNonNullableValues(supplierProfile?.supplierjewellerydetails)
+    //  console.log('data get by update value ,,,',supplierProfile?.supplierjewellerydetails)
+
+
+
+
+
+
+
+
+
+    route.params?.selector?.specialisation.map(item => {
       if (item.metaltype == 'Gold') {
         if (goldSpecilization.length > 0) {
           if (!goldSpecilization.includes(item)) {
+           
             goldSpecilization.push(item);
           }
         } else {
@@ -79,6 +115,7 @@ const EditSupplierProfile = ({route}) => {
         }
       } else if (item.metaltype == 'Diamond') {
         if (diamondSpecilization.length > 0) {
+          console.log('item nnnffn speciazation',item);
           if (!diamondSpecilization.includes(item)) {
             diamondSpecilization.push(item);
           }
@@ -117,10 +154,10 @@ const EditSupplierProfile = ({route}) => {
     });
     return arr;
   };
-  console.log(
-    'thisi is details',
-    JSON.stringify(details?.IsActive == 1 ? true : false),
-  );
+  // console.log(
+  //   'thisi is details',
+  //   JSON.stringify(details?.IsActive == 1 ? true : false),
+  // );
   const [inputs, setInputs] = useState({
     SupplierName: details?.SupplierName,
     ContactPersonName: details?.ContactPersonName,
@@ -132,10 +169,10 @@ const EditSupplierProfile = ({route}) => {
     Website: details?.Website,
     SupplierType: details?.SupplierType,
     IsAnyBranch: details?.IsAnyBranch == 'on' ? true : false,
-    JTyped: '',
-    JTypeg: '',
-    JTypep: '',
-    JTypes: '',
+    JTyped: getSupplier('Diamond'),
+    JTypeg: getSupplier('Gold'),
+    JTypep: getSupplier('Platinum'),
+    JTypes: getSupplier('Silver'),
     diamond_purity: [],
     diamond_specialisation: [],
     gold_purity: [],
@@ -162,6 +199,8 @@ const EditSupplierProfile = ({route}) => {
     showroom_image: getShowroom(),
   });
 
+
+  console.log('diamond_purity,,,,,,,,,,,,,,,,',inputs.diamond_purity);
   const handleInputs = (key, value) => {
     setInputs(prev => ({...prev, [key]: value}));
   };
@@ -265,12 +304,14 @@ const EditSupplierProfile = ({route}) => {
           data.append(item, newData[item] ? 'on' : 'off');
           break;
         case 'diamond_purity':
+
           newData[item].map((items, index) => {
             data.append(`diamond_purity[${index}]`, items);
           });
           break;
         case 'diamond_specialisation':
           newData[item].map((items, index) => {
+        
             data.append(`diamond_specialisation[${index}]`, items);
           });
           break;
@@ -418,14 +459,15 @@ const EditSupplierProfile = ({route}) => {
   };
 
   const getSpecilization = data => {
+    console.log('daTATC GET ,,,',data);
     let arr = [];
     data?.map((item, index) => {
-      let obj = {id: index.toString(), name: item?.name};
+      let obj = {id: item?.SrNo.toString(), name: item?.name};
       arr.push(obj);
     });
     return arr;
   };
-
+ 
   const getOwnerImage = data => {
     const obj = {
       name: data?.ImageName,
@@ -624,8 +666,9 @@ const EditSupplierProfile = ({route}) => {
               height: 40,
               borderRadius: 6,
               borderColor: 'grey',
-              paddingLeft: 10,
+              paddingLeft: 10,color:'black'
             }}
+            placeholderTextColor={'grey'}
             value={inputs.SupplierName}
             onChangeText={val => handleInputs('SupplierName', val)}
           />
@@ -642,8 +685,9 @@ const EditSupplierProfile = ({route}) => {
               height: 40,
               borderRadius: 6,
               borderColor: 'grey',
-              paddingLeft: 10,
+              paddingLeft: 10,color:'#000'
             }}
+            placeholderTextColor={'grey'}
             value={inputs.ContactPersonName}
             onChangeText={val => handleInputs('ContactPersonName', val)}
           />
@@ -660,8 +704,9 @@ const EditSupplierProfile = ({route}) => {
               height: 40,
               borderRadius: 6,
               borderColor: 'grey',
-              paddingLeft: 10,
+              paddingLeft: 10,color:'#000'
             }}
+            placeholderTextColor={'grey'}
             value={inputs.MobileNo}
             onChangeText={val => handleInputs('MobileNo', val)}
           />
@@ -678,8 +723,9 @@ const EditSupplierProfile = ({route}) => {
               height: 40,
               borderRadius: 6,
               borderColor: 'grey',
-              paddingLeft: 10,
+              paddingLeft: 10,color:'#000'
             }}
+            placeholderTextColor={'grey'}
             value={inputs.Address}
             onChangeText={val => handleInputs('Address', val)}
           />
@@ -696,11 +742,13 @@ const EditSupplierProfile = ({route}) => {
               ]}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
-              iconStyle={styles.iconStyle}
+              iconStyle={styles.iconStyle}         
               data={stateList1?.satates}
+              itemTextStyle={{color: '#000'}}
               inputSearchStyle={{
                 borderRadius: 10,
-                backgroundColor: '#f0f0f0',
+                color: '#474747',
+                        backgroundColor: '#f0f0f0'
               }}
               searchPlaceholder="search.."
               maxHeight={250}
@@ -740,9 +788,11 @@ const EditSupplierProfile = ({route}) => {
               onChange={item => {
                 handleInputs('CityId', item.value);
               }}
+              itemTextStyle={{color: '#000'}}
               inputSearchStyle={{
                 borderRadius: 10,
-                backgroundColor: '#f0f0f0',
+                color: '#474747',
+                        backgroundColor: '#f0f0f0'
               }}
             />
           </View>
@@ -757,8 +807,9 @@ const EditSupplierProfile = ({route}) => {
               height: 40,
               borderRadius: 6,
               borderColor: 'grey',
-              paddingLeft: 10,
+              paddingLeft: 10,color:'#000'
             }}
+            placeholderTextColor={'grey'}
             value={inputs.Pincode}
             onChangeText={val => handleInputs('Pincode', val)}
           />
@@ -773,8 +824,9 @@ const EditSupplierProfile = ({route}) => {
               height: 40,
               borderRadius: 6,
               borderColor: 'grey',
-              paddingLeft: 10,
+              paddingLeft: 10,color:'#000'
             }}
+            placeholderTextColor={'grey'}
             value={inputs.Website}
             onChangeText={val => handleInputs('Website', val)}
           />
@@ -797,7 +849,7 @@ const EditSupplierProfile = ({route}) => {
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
-              <Text>Manufacturer</Text>
+              <Text style={{color:'#000'}}>Manufacturer</Text>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <RadioButton
@@ -807,7 +859,7 @@ const EditSupplierProfile = ({route}) => {
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
-              <Text>Wholesaler</Text>
+              <Text style={{color:'#000'}} >Wholesaler</Text>
             </View>
 
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -818,7 +870,7 @@ const EditSupplierProfile = ({route}) => {
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
-              <Text>Both</Text>
+              <Text style={{color:'#000'}}>Both</Text>
             </View>
           </View>
         </View>
@@ -861,7 +913,7 @@ const EditSupplierProfile = ({route}) => {
                 boxType="square"
                 style={{height: 16, width: 18}}
               />
-              <Text style={{marginLeft: 10}}>Diamond</Text>
+              <Text style={{marginLeft: 10,color:'#000'}}>Diamond</Text>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <CheckBox
@@ -874,7 +926,7 @@ const EditSupplierProfile = ({route}) => {
                 boxType="square"
                 style={{height: 16, width: 18}}
               />
-              <Text style={{marginLeft: 10}}>Gold</Text>
+              <Text style={{marginLeft: 10,color:'#000'}}>Gold</Text>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <CheckBox
@@ -887,7 +939,7 @@ const EditSupplierProfile = ({route}) => {
                 boxType="square"
                 style={{height: 16, width: 18}}
               />
-              <Text style={{marginLeft: 10}}>Platinum</Text>
+              <Text style={{marginLeft: 10,color:'#000'}}>Platinum</Text>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <CheckBox
@@ -900,7 +952,7 @@ const EditSupplierProfile = ({route}) => {
                 boxType="square"
                 style={{height: 16, width: 18}}
               />
-              <Text style={{marginLeft: 10}}>Silver</Text>
+              <Text style={{marginLeft: 10,color:'#000'}}>Silver</Text>
             </View>
           </View>
         </View>
@@ -912,8 +964,9 @@ const EditSupplierProfile = ({route}) => {
               </Text>
               <MultiSelect
                 items={items1}
-                uniqueKey="name"
+                uniqueKey="id"
                 onSelectedItemsChange={val => {
+                 console.log('itemnnnn......',val);
                   handleInputs('diamond_purity', val);
                   if (val.includes('Custom Purity')) {
                     setCustomPurityDia(true);
@@ -968,8 +1021,9 @@ const EditSupplierProfile = ({route}) => {
                     height: 40,
                     borderRadius: 6,
                     borderColor: 'grey',
-                    paddingLeft: 10,
+                    paddingLeft: 10,color:'#000'
                   }}
+                  placeholderTextColor={'grey'}
                   value={inputs.diamondcustom_purity}
                   onChangeText={val =>
                     handleInputs('diamondcustom_purity', val)
@@ -983,10 +1037,10 @@ const EditSupplierProfile = ({route}) => {
                 <Text style={{color: 'red'}}>{' *'}</Text>
               </Text>
               <MultiSelect
-                items={getSpecilization(goldSpecilization)}
+                items={getSpecilization(diamondSpecilization)}
                 uniqueKey="id"
-                onSelectedItemsChange={val =>
-                  handleInputs('diamond_specialisation', val)
+                onSelectedItemsChange={val =>{
+                  handleInputs('diamond_specialisation', val)}
                 }
                 selectedItems={inputs.diamond_specialisation}
                 searchIcon={false}
@@ -1094,8 +1148,9 @@ const EditSupplierProfile = ({route}) => {
                     height: 40,
                     borderRadius: 6,
                     borderColor: 'grey',
-                    paddingLeft: 10,
+                    paddingLeft: 10,color:'#000'
                   }}
+                  placeholderTextColor={'grey'}
                   value={inputs.goldcustom_purity}
                   onChangeText={val => handleInputs('goldcustom_purity', val)}
                 />
@@ -1107,7 +1162,7 @@ const EditSupplierProfile = ({route}) => {
                 <Text style={{color: 'red'}}>{' *'}</Text>
               </Text>
               <MultiSelect
-                items={getSpecilization(diamondSpecilization)}
+                items={getSpecilization( goldSpecilization)}
                 uniqueKey="id"
                 onSelectedItemsChange={val =>
                   handleInputs('gold_specialisation', val)
@@ -1219,8 +1274,9 @@ const EditSupplierProfile = ({route}) => {
                     height: 40,
                     borderRadius: 6,
                     borderColor: 'grey',
-                    paddingLeft: 10,
+                    paddingLeft: 10,color:'#000'
                   }}
+                  placeholderTextColor={'grey'}
                   value={inputs.platinumcustom_purity}
                   onChangeText={val =>
                     handleInputs('platinumcustom_purity', val)
@@ -1343,8 +1399,9 @@ const EditSupplierProfile = ({route}) => {
                     height: 40,
                     borderRadius: 6,
                     borderColor: 'grey',
-                    paddingLeft: 10,
+                    paddingLeft: 10,color:'#000'
                   }}
+                  placeholderTextColor={'grey'}
                   value={inputs.silvercustom_purity}
                   onChangeText={val => handleInputs('silvercustom_purity', val)}
                 />
@@ -1412,8 +1469,9 @@ const EditSupplierProfile = ({route}) => {
               height: 40,
               borderRadius: 6,
               borderColor: 'grey',
-              paddingLeft: 10,
+              paddingLeft: 10,color:'#000'
             }}
+            placeholderTextColor={'grey'}
             value={inputs.DiamondQuality}
             onChangeText={val => handleInputs('DiamondQuality', val)}
           />
@@ -1437,7 +1495,7 @@ const EditSupplierProfile = ({route}) => {
                 boxType="square"
                 style={{height: 16, width: 18}}
               />
-              <Text style={{marginLeft: 10}}>Is Active</Text>
+              <Text style={{marginLeft: 10,color:'#000'}}>Is Active</Text>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <CheckBox
@@ -1452,7 +1510,7 @@ const EditSupplierProfile = ({route}) => {
                 boxType="square"
                 style={{height: 16, width: 18}}
               />
-              <Text style={{marginLeft: 10}}>
+              <Text style={{marginLeft: 10 ,color:'#000'}}>
                 Default Supplier for all retailers
               </Text>
             </View>
@@ -1493,7 +1551,7 @@ const EditSupplierProfile = ({route}) => {
               {inputs.logo.name == '' ? (
                 <Text>No File Choosen</Text>
               ) : (
-                <Text>{inputs.logo?.name}</Text>
+                <Text style={{color:'grey'}}>{inputs.logo?.name}</Text>
               )}
             </View>
           </View>
@@ -1539,9 +1597,9 @@ const EditSupplierProfile = ({route}) => {
                     }}>
                     {item[`hiddenproduct_image${index + 1}`]?.name == '' ||
                     undefined ? (
-                      <Text>No File Choosen</Text>
+                      <Text style={{color:'#000'}}>No File Choosen</Text>
                     ) : (
-                      <Text>
+                      <Text style={{color:'#000'}}>
                         {item[`hiddenproduct_image${index + 1}`]?.name}
                       </Text>
                     )}
@@ -1549,14 +1607,14 @@ const EditSupplierProfile = ({route}) => {
                 </View>
                 <TextInput
                   placeholder={'Product Name'}
-                  placeholderTextColor={item?.OwnerName ? 'black' : ''}
+                  placeholderTextColor={item?.OwnerName ? 'black' : 'grey'}
                   style={{
                     borderWidth: 1,
                     marginTop: 4,
                     height: 40,
                     borderRadius: 6,
                     borderColor: 'grey',
-                    paddingLeft: 10,
+                    paddingLeft: 10,color:'#000'
                   }}
                   value={item?.[`product_name${index + 1}`]}
                   onChangeText={val => handleProductImages(index, val)}
@@ -1599,9 +1657,10 @@ const EditSupplierProfile = ({route}) => {
               height: 70,
             }}>
             <TextInput
-              placeholder="Pincode"
+              placeholder="About "
+              placeholderTextColor={'grey'}
               style={{
-                paddingLeft: 10,
+                paddingLeft: 10,color:'#000',
                 fontSize: 12,
                 includeFontPadding: false,
                 padding: 0,
@@ -1625,7 +1684,7 @@ const EditSupplierProfile = ({route}) => {
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
-              <Text>Upto 10 employees</Text>
+              <Text style={{color:'#000'}}>Upto 10 employees</Text>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <RadioButton
@@ -1635,7 +1694,7 @@ const EditSupplierProfile = ({route}) => {
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
-              <Text>11-25 employees</Text>
+              <Text style={{color:'#000'}}>11-25 employees</Text>
             </View>
 
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -1646,7 +1705,7 @@ const EditSupplierProfile = ({route}) => {
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
-              <Text>26-35 employees</Text>
+              <Text style={{color:'#000'}}>26-35 employees</Text>
             </View>
 
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -1657,7 +1716,7 @@ const EditSupplierProfile = ({route}) => {
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
-              <Text>36-50 employees</Text>
+              <Text style={{color:'#000'}}>36-50 employees</Text>
             </View>
 
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -1668,7 +1727,7 @@ const EditSupplierProfile = ({route}) => {
                 uncheckedColor="#032e63"
                 color="#032e63"
               />
-              <Text>Above 50 employees</Text>
+              <Text style={{color:'#000'}}>Above 50 employees</Text>
             </View>
           </View>
         </View>
@@ -1689,9 +1748,9 @@ const EditSupplierProfile = ({route}) => {
                   width: '70%',
                 }}>
                 {inputs.showroom_image.length <= 0 ? (
-                  <Text>No File Choosen</Text>
+                  <Text style={{color:'#000'}}>No File Choosen</Text>
                 ) : (
-                  <Text>
+                  <Text style={{color:'#000'}}>
                     {
                       inputs.showroom_image[inputs.showroom_image.length - 1]
                         ?.name
@@ -1749,9 +1808,9 @@ const EditSupplierProfile = ({route}) => {
                         width: '70%',
                       }}>
                       {item[`hiddenowner_image${index + 1}`]?.name == '' ? (
-                        <Text>No File Choosen</Text>
+                        <Text style={{color:'#000'}}>No File Choosen</Text>
                       ) : (
-                        <Text>
+                        <Text style={{color:'#000'}}>
                           {item[`hiddenowner_image${index + 1}`]?.name}
                         </Text>
                       )}
@@ -1788,15 +1847,17 @@ const EditSupplierProfile = ({route}) => {
                     height: 40,
                     borderRadius: 6,
                     borderColor: 'grey',
-                    paddingLeft: 10,
+                    paddingLeft: 10,color:'#000'
                   }}
+                  placeholderTextColor={'grey'}
                   value={item[`owner_name${index + 1}`]}
                   onChangeText={val => handleOwnerImages(index, val, 'name')}
                 />
                 <View style={styles.multiline}>
                   <TextInput
+                  placeholderTextColor={'grey'}
                     placeholder="Write about owner description"
-                    style={styles.input}
+                    style={[styles.input,{color:'#000'}]}
                     multiline
                     value={item[`owner_description${index + 1}`]}
                     onChangeText={val => handleOwnerImages(index, val, '')}
@@ -1855,26 +1916,26 @@ export default EditSupplierProfile;
 
 const items = [
   {
-    id: '1',
+    id: '50',
     name: 'Custom Purity',
   },
   {
-    id: '2',
+    id: '46',
     name: '585 (14k)',
   },
   {
-    id: '3',
+    id: '41',
     name: '750 (18k)',
   },
   {
-    id: '4',
+    id: '48',
     name: '916 (22k)',
   },
 ];
 const items1 = [
   {id: '1', name: 'Custom purity'},
-  {id: '2', name: 'I-FG'},
-  {id: '3', name: 'IF'},
+  {id: '75', name: 'I-FG'},
+  {id: '77', name: 'IF'},
   {id: '4', name: 'SI-FG'},
   {id: '5', name: 'SI-GH'},
   {id: '6', name: 'SI-I-FG'},

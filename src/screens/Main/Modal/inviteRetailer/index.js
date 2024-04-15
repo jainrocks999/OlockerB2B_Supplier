@@ -98,7 +98,10 @@ const InviteretailerModal = ({ visi, close = () => { }, ...props }) => {
                 </Text>
                 <View style={{ marginTop: 5 }}>
                   <View style={styles.textBox}>
-                    <TextInput value={inputs.RetailerName} placeholder="Name of the retailer" onChangeText={input => { handleInput(input, 'RetailerName') }} />
+                    <TextInput value={inputs.RetailerName} placeholder="Name of the retailer"
+                      placeholderTextColor={'grey'}
+                      style={{color:'grey'}}
+                    onChangeText={input => { handleInput(input, 'RetailerName') }} />
                   </View>
                 </View>
               </View>
@@ -109,7 +112,10 @@ const InviteretailerModal = ({ visi, close = () => { }, ...props }) => {
                 </Text>
                 <View style={{ marginTop: 5 }}>
                   <View style={styles.textBox}>
-                    <TextInput value={inputs.Location} placeholder="Location" onChangeText={input => { handleInput(input, 'Location') }} />
+                    <TextInput value={inputs.Location} 
+                      placeholderTextColor={'grey'}
+                      style={{width: '90%',color:'grey'}}
+                    placeholder="Location" onChangeText={input => { handleInput(input, 'Location') }} />
                   </View>
                 </View>
               </View>
@@ -128,6 +134,7 @@ const InviteretailerModal = ({ visi, close = () => { }, ...props }) => {
                     placeholderStyle={styles.placeholderStyle}
                     selectedTextStyle={styles.selectedTextStyle}
                     iconStyle={styles.iconStyle}
+                    itemTextStyle={{color: 'grey'}}
                     data={DropData}
                     maxHeight={250}
                     labelField="label"
@@ -147,7 +154,10 @@ const InviteretailerModal = ({ visi, close = () => { }, ...props }) => {
                 </Text>
                 <View style={{ marginTop: 5 }}>
                   <View style={styles.textBox}>
-                    <TextInput value={inputs.ContactPersonFirstName} placeholder="First name" onChangeText={input => { handleInput(input, 'ContactPersonFirstName') }} />
+                    <TextInput value={inputs.ContactPersonFirstName}
+                     placeholderTextColor={'grey'}
+                     style={{width: '90%',color:'grey'}}
+                    placeholder="First name" onChangeText={input => { handleInput(input, 'ContactPersonFirstName') }} />
                   </View>
                 </View>
               </View>
@@ -164,7 +174,10 @@ const InviteretailerModal = ({ visi, close = () => { }, ...props }) => {
                 </Text>
                 <View style={{ marginTop: 5 }}>
                   <View style={styles.textBox}>
-                    <TextInput value={inputs.ContactPersonLastName} placeholder="Last name" onChangeText={input => { handleInput(input, 'ContactPersonLastName') }} />
+                    <TextInput value={inputs.ContactPersonLastName}
+                     placeholderTextColor={'grey'}
+                     style={{width: '90%',color:'grey'}}
+                    placeholder="Last name" onChangeText={input => { handleInput(input, 'ContactPersonLastName') }} />
                   </View>
                 </View>
               </View>
@@ -181,7 +194,10 @@ const InviteretailerModal = ({ visi, close = () => { }, ...props }) => {
                 </Text>
                 <View style={{ marginTop: 5 }}>
                   <View style={styles.textBox}>
-                    <TextInput value={inputs.ContactNumber} placeholder="Contact number" onChangeText={input => { handleInput(input, 'ContactNumber') }} />
+                    <TextInput value={inputs.ContactNumber}
+                     placeholderTextColor={'grey'}
+                     style={{width: '90%',color:'grey'}}
+                    placeholder="Contact number" onChangeText={input => { handleInput(input, 'ContactNumber') }} />
                   </View>
                 </View>
               </View>
@@ -197,7 +213,10 @@ const InviteretailerModal = ({ visi, close = () => { }, ...props }) => {
                 </Text>
                 <View style={{ marginTop: 5 }}>
                   <View style={styles.textBox}>
-                    <TextInput value={inputs.EmailId} placeholder="Email" onChangeText={input => { handleInput(input, 'EmailId') }} />
+                    <TextInput value={inputs.EmailId} 
+                     placeholderTextColor={'grey'}
+                     style={{width: '90%',color:'grey'}}
+                    placeholder="Email" onChangeText={input => { handleInput(input, 'EmailId') }} />
                   </View>
                 </View>
               </View>

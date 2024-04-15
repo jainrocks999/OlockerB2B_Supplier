@@ -4,6 +4,7 @@ initialstate = {
   isFetching: false,
   BannerList: [],
   NetworkList: [],
+  NetworkList1:[],
   SearchRetailerList: [],
   SearchMyNetworkList: [],
   RetailerRequestList: [],
@@ -17,9 +18,18 @@ initialstate = {
   session: '',
   partnerD:[],
    partnerData: {},
+   Notification1:[],
+   deletData1:[],
+   deletData:[]
 };
 export default (state = initialstate, action) => {
   switch (action.type) {
+
+    case 'Get_delete1_Success':
+      return { ...state, isFetching: false, deletData1: action.payload };
+      case 'Get_delete_Success':
+        return { ...state, isFetching: false, deletData: action.payload };
+
     case 'Banner_List_Request':
       return {...state, isFetching: true};
     case 'Banner_List_Success':
@@ -74,6 +84,14 @@ export default (state = initialstate, action) => {
     case 'AddWishList_Error':
       return {...state, isFetching: false};
 
+      case 'Network_ApprovedRequestList_Request':
+        return {...state, isFetching: true};
+      case 'Network_ApprovedRequestList_Success':
+        return {...state, isFetching: false, NetworkList1: action.payload};
+      case 'Network_ApprovedRequestList_Error':
+        return {...state, isFetching: false};
+
+
     case 'Network_List_Request':
       return {...state, isFetching: true};
     case 'Network_List_Success':
@@ -119,13 +137,14 @@ console.log('reducer .......',action.payload);
       case 'get_networkretailerdetail_Error':
         return {...state, isFetching: false};
 
-      
-    // case 'get_network_retailer_detail_request':
-    //   return {...state, isFetching: true};
-    // case 'get_network_retailer_detail_success':
-    //   return {...state, isFetching: false, partnerData: action.payload};
-    // case 'get_network_retailer_detail_error':
-    //   return {...state, isFetching: false};
+        // Get_pushNotificationLis_Request
+        case 'Get_pushNotificationLis_Request':
+          return {...state, isFetching: true};
+        case 'Get_pushNotificationLis_Success':
+
+           return {...state, isFetching: false, Notification1: action.payload};
+        case 'Get_pushNotificationLis_Error':
+          return {...state, isFetching: false};
 
     default:
       return state;

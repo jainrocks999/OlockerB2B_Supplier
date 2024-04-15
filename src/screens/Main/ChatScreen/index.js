@@ -9,7 +9,7 @@ export default function ChatScreen() {
   const item = route.params?.item;
   return (
     <View style={{flex: 1}}>
-      <ChatHeader name={item.conatct_name} />
+      <ChatHeader name={item.CompanyName} />
       <View style={{flex: 1}}>
         <ChatScreen2 data={item} />
       </View>

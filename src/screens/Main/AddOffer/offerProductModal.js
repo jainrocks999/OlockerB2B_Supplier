@@ -7,6 +7,7 @@ import {
   Image,
   Modal,
   ScrollView,
+  Alert,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import {useSelector} from 'react-redux';
@@ -34,7 +35,7 @@ const OfferProductModal = ({
     hdnselectedvalue: [],
   });
   const modal = useSelector(state => state.Offer.modal);
-  console.log('this is modal', modal);
+
   useEffect(() => {
     snedDataToparent(inputs.hdnselectedvalue);
   }, [inputs.hdnselectedvalue]);
@@ -75,8 +76,26 @@ const OfferProductModal = ({
     });
   };
 
+
+const handleOnEndReached=async()=>{
+  
+   let lastitem=offerProudctList?.length+10
+    console.log('itemmmvvvvvvv',lastitem);
+     const user_id = await AsyncStorage.getItem('user_id');
+     dispatch({
+       type: 'Get_OfferProductList_Request',
+       url: 'getOfferProductList',
+       userId: user_id,
+       start: 0,
+       limit: lastitem,
+       modal: true,
+     });
+  
+}
+
   return (
     <Modal visible={productModal} transparent={true}>
+
       <View
         style={{
           height: hp(95),
@@ -111,16 +130,23 @@ const OfferProductModal = ({
               }}>
               <Text
                 style={{fontSize: wp(5.5), fontWeight: 'bold', color: 'white'}}>
-                X
+                x
               </Text>
             </TouchableOpacity>
-            <ScrollView
+            {/* <ScrollView
               contentContainerStyle={{paddingBottom: wp(8)}}
-              showsVerticalScrollIndicator={false}>
+              showsVerticalScrollIndicator={false}> */}
               <View style={{flex: 1, width: wp(100)}}>
                 <FlatList
                   data={offerProudctList}
-                  scrollEnabled={false}
+                  // scrollEnabled={false}
+                  onEndReached={() => {
+                    handleOnEndReached()
+                  }}
+                  onEndReachedThreshold={0.1}
+                  ListFooterComponent={<View style={{ height: 50 }} />} // Ensure scrollability
+              
+                  // style={{marginBottom:130}}
                   renderItem={({item}) => (
                     <View style={styles.Card}>
                       <View style={{marginHorizontal: 10, marginTop: 5}}>
@@ -329,6 +355,7 @@ const OfferProductModal = ({
                       </View>
                     </View>
                   )}
+                 
                 />
               </View>
               {isformList ? (
@@ -379,7 +406,7 @@ const OfferProductModal = ({
                 </View>
               ) : null}
 
-              <View style={{alignItems: 'center', marginTop: wp(2)}}>
+              {/* <View style={{alignItems: 'center', marginTop: wp(2)}}>
                 <FlatList
                   data={data}
                   horizontal
@@ -400,8 +427,8 @@ const OfferProductModal = ({
                     </TouchableOpacity>
                   )}
                 />
-              </View>
-            </ScrollView>
+              </View> */}
+            {/* </ScrollView> */}
           </>
         ) : null}
       </View>

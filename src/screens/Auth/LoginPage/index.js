@@ -18,12 +18,12 @@ import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../components/Loader';
 import {join} from 'redux-saga/effects';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import messaging from '@react-native-firebase/messaging';
 const loginValidationSchema = yup.object().shape({
   email: yup
     .string()
@@ -38,12 +38,14 @@ const loginValidationSchema = yup.object().shape({
 const Login = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [visible,setVisible]=useState(true);
   const isFetching = useSelector(state => state.Login.isFetching);
 
   const handleLogin = async values => {
-    let token = await messaging().getToken();
-    console.log('this is token', token);
-
+    // let token = await messaging().getToken();
+    // console.log('this is token', token);
+   
+    const token =await AsyncStorage.getItem('Tokenfcm');
     dispatch({
       type: 'User_Login_Request',
       url: '/login',
@@ -120,7 +122,7 @@ const Login = () => {
                       />
                     </View>
 
-                    <View style={{width: wp('53%'), marginLeft: 1}}>
+                    <View style={{width: wp('49%'), marginLeft: 1,flexDirection:'row'}}>
                       <TextInput
                         style={styles.input1}
                         placeholder="Enter your Password"
@@ -129,9 +131,19 @@ const Login = () => {
                         onBlur={handleBlur('password')}
                         value={values.password}
                         keyboardType={'default'}
-                        secureTextEntry={true}
+                        secureTextEntry={visible}
                       />
+                      {visible?
+            <TouchableOpacity style={{marginTop:10,}}
+              onPress={()=>setVisible(!visible)}>
+              <Ionicons name="eye-off-outline" size={20} color={'#000'} />
+            </TouchableOpacity>:
+            <TouchableOpacity  style={{marginTop:10,}} onPress={()=>setVisible(!visible)}>
+              <Ionicons name="eye-outline" size={20} color={'#000'} />
+            </TouchableOpacity>
+}
                     </View>
+                    
                   </View>
                   <View style={styles.error}>
                     {errors.password && touched.password && (

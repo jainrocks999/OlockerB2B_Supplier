@@ -356,7 +356,7 @@ const Addproduct = ({route}) => {
           index + 1 == selector.length
         ) {
           setProducts(array);
-          alert('thisiss rajh');
+          // alert('thisiss rajh');
         }
       });
     });

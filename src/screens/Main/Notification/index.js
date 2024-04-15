@@ -1,3 +1,221 @@
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  Dimensions,
+  Image,
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import Header from '../../../components/CustomHeader';
+import {useNavigation} from '@react-navigation/native';
+import StatusBar from '../../../components/StatusBar';
+import BottomTab from '../../../components/StoreButtomTab';
+import Loader from '../../../components/Loader';
+import { useSelector ,useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const HomeScreen = () => {
+  const navigation = useNavigation();
+  const dispatch=useDispatch();
+ const selector =useSelector(state=>state.Home.Notification1);
+ const isFetching= useSelector(state=>state.Home.isFetching);
+ const [visiable1,setVisible]=useState(false);
+ console.log('notifiyyyyyyy...........',selector);
+
+
+useEffect(()=>{
+apicall();
+},[])
+const apicall =async()=>{
+  const user_id = await AsyncStorage.getItem('user_id');
+  dispatch({
+    type:'Get_pushNotificationLis_Request',
+    url:'/pushNotificationList',
+    supplierId:user_id
+   })
+}
+ 
+
+
+
+
+
+ const clearnotification=async()=>{
+  const Token = await AsyncStorage.getItem('loginToken');
+  const user_id = await AsyncStorage.getItem('user_id');
+  const axios = require('axios');
+setVisible(true);
+let config = {
+  method: 'get',
+  maxBodyLength: Infinity,
+  url: `https://olocker.co/api/supplier//pushNotificationRemove?supplierId=${user_id}`,
+  headers: { 
+    'Olocker': `Bearer ${Token}`
+  }
+};
+
+axios.request(config)
+.then((response) => {
+  if(response.data.status==true){
+  console.log('resposeemmmm',JSON.stringify(response.data));
+  apicall();
+  setVisible(false);
+  }
+  else{
+    setVisible(false);
+  }
+})
+.catch((error) => {
+  setVisible(false);
+  console.log(error);
+});
+
+ }
+
+  return (
+    <View style={{flex: 1, backgroundColor: '#f0eeef'}}>
+ 
+      <Header
+        source={require('../../../assets/L.png')}
+        source2={require('../../../assets/Image/dil.png')}
+        title={'Notification '}
+        onPress={() => navigation.goBack()}
+        onPress2={() => navigation.navigate('FavDetails')}
+      />
+      {isFetching||visiable1?<Loader/>:null}
+     {
+        selector?.length == 0 ?
+            <View style={{ alignItems: 'center', justifyContent: 'center', alignSelf: 'center', height: '90%',}}>
+              <Text style={{
+        fontFamily: 'Acephimere',
+        fontSize: 19,
+        color: 'grey', fontWeight: '700'
+    }}> {'No Notification'} </Text>
+
+            </View>
+            :
+
+
+      <ScrollView style={{paddingHorizontal:0}}>
+         <View style={{}}>
+          <View style={{flexDirection:'row',justifyContent:'space-between',paddingHorizontal:10}}>
+              <Text
+               style={{color:'#000',marginLeft:0,marginTop:10}}>
+                {selector?.length==1?    `${selector?.length}  Notification`:`${selector?.length}  Notifications`}
+              </Text>
+          <TouchableOpacity style={{marginTop:10,}}
+          onPress={()=>clearnotification()}
+          >   
+         <Text style={{color:'#000',textDecorationLine:'underline'}}>Clear Notification</Text>
+         </TouchableOpacity> 
+        </View>
+      {/* <Text  style={{color:'#000',marginLeft:10,marginTop:10}}>{`${selector?.length}${'  Notification'}`}</Text> */}
+        <View style={{marginBottom:20}}>
+            <FlatList
+              data={selector}
+              renderItem={({item}) => (
+                <View
+                  style={{
+                    backgroundColor: '#f0f0f0',
+                    // marginTop: 10,
+                     paddingHorizontal: 10,
+                    paddingVertical: 10,
+                    // paddingLeft: 20,
+                    shadowColor: 'black',
+    shadowOffset: {width: 3, height: 12},
+    shadowOpacity: 0.8,
+     shadowRadius: 0,
+    elevation: 8,
+                  }}>
+                  
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Text style={{fontSize: 17,color:'#000',fontWeight:'700'}}>{item.senderName}</Text>
+                    <View
+                      style={{
+                        backgroundColor: '#24a31e',
+                        paddingHorizontal: 6,
+                        paddingVertical: 2,borderRadius:5
+                      }}>
+                        
+                      <Text style={{color: '#fff', fontSize: 13,}}>
+                      {item.title}
+                      </Text>
+                    </View>
+                  </View>
+                  
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginTop: 5,
+                    }}>
+                    <Image
+                      style={{tintColor: 'grey', height: 13, width: 17}}
+                      source={require('../../../assets/Fo.png')}
+                    />
+
+                    <Text style={{marginLeft: 6, fontSize: 14, color: '#000',fontWeight:'500'}}>
+                    {item.message}
+                    </Text>
+                  </View>
+                  <Text style={{color:'#000',marginTop:5,fontSize:13,fontWeight:'600'}}>Last seen: <Text style={{color:'#000',fontWeight:'500'}}>{item?.created_at}</Text></Text>
+                  <View style={{borderWidth:0.5,marginTop:5}}/>
+                </View>
+              )}
+            />
+        </View>
+       
+        </View>
+      </ScrollView>
+}
+      <StatusBar />
+    </View>
+  );
+};
+export default HomeScreen;
+const data = [
+  {
+    title: 'Milind Jewellers',
+    text: 'We can supply product you have as..',
+    time: 'Last replied on 07 Sep,2020',
+  },
+  {
+    title: 'Mahabir Jewellers',
+    text: 'Payments term can be discussed as per..',
+    time: 'Last replied on 01 Sep,2020',
+  },
+  {
+    title: 'Narendra Jewellers',
+    text: 'We can supply product you have as..',
+    time: 'Last replied on 03 Sep,2020',
+  },
+];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // import {View, TouchableOpacity, FlatList, TextInput, Text} from 'react-native';
 // import React, {useState} from 'react';
 // import Header from '../../../components/CustomHeader';
@@ -20,7 +238,7 @@
 //   return (
 //     <View style={{flex: 1, backgroundColor: 'white'}}>
 //       <Header
-//         title={'Search Patner'}
+//         title={'Notification'}
 //         source={require('../../../assets/L.png')}
 //         onPress={() => navigation.goBack()}
 //       />
@@ -148,10 +366,10 @@
 
 // ];
 
-import {View, Text} from 'react-native';
-import React from 'react';
-import PatnerProfile from '../patnerProfile';
+// // import {View, Text} from 'react-native';
+// // import React from 'react';
+// // import PatnerProfile from '../patnerProfile';
 
-export default function Notification() {
-  return <View style={{flex: 1}}></View>;
-}
+// // export default function Notification() {
+// //   return <View style={{flex: 1}}></View>;
+// // }

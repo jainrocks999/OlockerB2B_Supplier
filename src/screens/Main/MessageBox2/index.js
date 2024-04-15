@@ -22,26 +22,95 @@ import {TextInput} from 'react-native';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
-
+import Toast from 'react-native-simple-toast'
 const MessageBox2 = () => {
   const navigation = useNavigation();
-  const selector = useSelector(state => state.Chat.patnerContact);
-
-  const isFetching = useSelector(state => state.Chat.isFetching);
+ const[data1,setData1]=useState();
+ const[visible,setVisible]=useState(false);
   const isFoucse = useIsFocused();
+console.log('eertretrewt',data1);
+  const [search, setSearch] = useState('');
+  const [filteredDataSource, setFilteredDataSource] = useState();
+  const [masterDataSource, setMasterDataSource] = useState();
+useEffect(()=>{
+  setFilteredDataSource(data1)
+  setMasterDataSource(data1)
+},[data1])
+
+ 
+  const searchFilterFunction = text => {
+    if (text) {
+      const newData = masterDataSource.filter(function (item) {
+        const itemData = `${item?.CompanyName} ${item?.created_at?.substring(0, 29)} `
+          ? `${item?.CompanyName} ${item?.created_at?.substring(0, 29)}`.toUpperCase()
+          : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      console.log('new data>>>>>>>>>>>>>',newData);
+      setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      setFilteredDataSource(masterDataSource);
+      setSearch(text);
+    }
+  };
+
+  const handleSearch = () => {
+    setSearch('');
+    setFilteredDataSource(masterDataSource);
+  };
+
+
+
+
+  
   useEffect(() => {
+    if(isFoucse){
     manageBusiness();
+    }
   }, [isFoucse]);
 
   const dispatch = useDispatch();
   const manageBusiness = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
+    const Token = await AsyncStorage.getItem('loginToken');
+    console.log('sdfsjgpogjp',user_id);
+     setVisible(true);
+    const axios = require('axios');
 
-    dispatch({
-      type: 'Patner_Contact_Request',
-      url: '/getContactPartner',
-      id: parseInt(user_id),
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `https://olocker.co/api/supplier//partnerListForSupplier?user_id=${user_id}`,
+      headers: { 
+        'Olocker': `Bearer ${Token}`
+      }
+    };
+    
+    axios.request(config)
+    .then((response) => {
+      if(response?.data?.status==true){
+        console.log('kejidfweiofdj',JSON.stringify(response.data));
+        setData1(response.data.data);
+        setVisible(false);
+      }
+      else{
+        
+        setData1(response.data.data);
+      
+        setVisible(false);
+        Toast.show(response?.data?.msg);
+      }
+      
+    })
+    .catch((error) => {
+      setVisible(false);
+      console.log('kw l;dsdmkw',error);
     });
+    
+
+
   };
   const handleWishList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
@@ -53,9 +122,11 @@ const MessageBox2 = () => {
     });
   };
 
+
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      {isFetching ? <Loader /> : null}
+      {visible ? <Loader /> : null}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -88,7 +159,7 @@ const MessageBox2 = () => {
           </View>
         </View>
 
-        <View style={{height: 80, marginTop: 15}}>
+        {/* <View style={{height: 80, marginTop: 15}}>
           {
             <FlatList
               data={selector}
@@ -131,12 +202,15 @@ const MessageBox2 = () => {
               )}
             />
           }
-        </View>
+        </View> */}
         <View style={[styles.searchbar, {marginTop: 20}]}>
           <TextInput
-            placeholder="Search Business"
+            placeholder="Search"
             style={{fontSize: 18, color: 'black'}}
             placeholderTextColor={'grey'}
+            value={search}
+            onChangeText={val => searchFilterFunction(val)}
+
           />
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
             <Feather name="search" size={30} color={'grey'} />
@@ -144,7 +218,7 @@ const MessageBox2 = () => {
         </View>
         <View>
           <FlatList
-            data={selector}
+         data={filteredDataSource}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => (
               <TouchableOpacity
@@ -163,7 +237,7 @@ const MessageBox2 = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                  <Text style={{color: 'grey'}}> {item.conatct_name[0]}</Text>
+                  <Text style={{color: 'grey'}}> {item?.CompanyName[0]}</Text>
                 </View>
                 <View
                   style={{
@@ -173,13 +247,13 @@ const MessageBox2 = () => {
                   }}>
                   <Text
                     style={{fontSize: 18, fontWeight: '800', color: '#000'}}>
-                    {item.conatct_name}
+                    {item.CompanyName}
                   </Text>
                   <Text style={{color: 'grey'}}>
-                    {item.updated_at?.substring(0, 19)}
+                 { item?.created_at?.substring(0, 19)}
                   </Text>
                 </View>
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                {/* <View style={{justifyContent: 'center', alignItems: 'center'}}>
                   <Text style={{fontWeight: '800', color: 'grey'}}>Now</Text>
                   <View
                     style={{
@@ -191,7 +265,7 @@ const MessageBox2 = () => {
                       borderRadius: 7.5,
                     }}
                   />
-                </View>
+                </View> */}
               </TouchableOpacity>
             )}
           />

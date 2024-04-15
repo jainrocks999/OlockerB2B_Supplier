@@ -1,3 +1,5 @@
+import { Alert } from "react-native";
+
 initialstate = {
   OfferList: '',
   OfferTempList: '',
@@ -64,6 +66,7 @@ export default (state = initialstate, action) => {
     case 'offer_details_error':
       return {...state, isFetching: false};
     case 'offer_edit_modal_open': {
+        
       return {...state, isEdit: action.payload1, modaleOpen: action.payload2};
     }
     case 'add_product_offer_request':

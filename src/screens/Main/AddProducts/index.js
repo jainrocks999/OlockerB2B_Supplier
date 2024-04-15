@@ -7,6 +7,7 @@ import {
   Image,
   FlatList,
   Modal,
+  Alert,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import styles from './styles';
@@ -269,7 +270,7 @@ const AddProducts = () => {
   }, [diamondData]);
 
   useEffect(() => {
-    metalData.result?.length > 0 || datadelete?.metal ? addMetalData() : null;
+    metalData?.result?.length > 0 || datadelete?.metal ? addMetalData() : null;
   }, [metalData]);
   useEffect(() => {
     decorativeData?.length > 0 || datadelete?.decorative
@@ -661,8 +662,10 @@ const AddProducts = () => {
     }
   };
   const [visible, setVisible] = useState([]);
-  const handleOnVisible = indexx => {
-    setVisible([indexx]);
+  const handleOnVisible = (indexx,items )=> {
+    
+   const res=  inputs.ImgUpload.filter(item=>item.name!=items.name)
+   setInputs(prev=>({...prev,ImgUpload:res}))
   };
   //  console.log('this is visible', visible);
   const handleWishList = async () => {
@@ -705,7 +708,7 @@ const AddProducts = () => {
             flexDirection: 'row',
             alignItems: 'center',
             width: wp(60),
-            justifyContent: 'space-between',
+            // justifyContent: 'space-between',
           }}>
           <TouchableOpacity
             delayPressIn={0}
@@ -715,8 +718,8 @@ const AddProducts = () => {
               source={require('../../../assets/L.png')}
             />
           </TouchableOpacity>
-          <Text style={[styles.text, {color: 'white'}]}>
-            {!productEdit ? 'SUPPLIER ADD PRODUCT' : 'SUPPLIER UPDATE PRODUCT'}
+          <Text style={[styles.text, {color: 'white',marginLeft:20}]}>
+            {!productEdit ? 'ADD PRODUCT' : 'UPDATE PRODUCT'}
           </Text>
         </View>
         <View style={styles.headertouch}>
@@ -751,7 +754,7 @@ const AddProducts = () => {
           <View
             style={{
               alignItems: 'center',
-              //justifyContent: 'space-between',
+              // justifyContent: 'space-between',
 
               flexDirection: 'row',
               marginHorizontal: wp(3),
@@ -769,7 +772,23 @@ const AddProducts = () => {
             <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
               Digital Inventory
             </Text>
+        
+          
+          
+            <RadioButton
+              value={inputs.radioInventoryPreInsured}
+              color="#032e63"
+              uncheckedColor="#474747"
+              status={
+                inputs.radioInventoryPreInsured == 1 ? 'checked' : 'unchecked'
+              }
+              onPress={() => handleInputs('radioInventoryPreInsured', 1)}
+            />
+            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+            Pre-Insured Jewellery
+            </Text>
           </View>
+       
 
           <View style={styles.mrt}>
             <Text style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
@@ -1783,7 +1802,11 @@ const AddProducts = () => {
                     paddingHorizontal: 5,
                     marginHorizontal: wp(3),
                   }}>
-                  <TextInput
+                  <TextInput style ={{ fontSize: wp(4),
+                  fontWeight: '500',
+                  flex: 1,
+                  color: 'black',}}
+                  placeholderTextColor={'grey'}
                     value={inputs.ProductCertifiedBy}
                     onChangeText={input =>
                       handleInputs('ProductCertifiedBy', input)
@@ -1829,8 +1852,22 @@ const AddProducts = () => {
               renderItem={({item, index}) => (
                 <View>
                   <TouchableOpacity
-                    onPress={() => {
-                      handleOnVisible(index);
+                    onLongPress={() => {
+                      Alert.alert(
+                        'Are you want to Delete image ?',
+                        '',
+                        [
+                          {
+                            text: 'Cancel',
+                            onPress: () => {
+                              cancelable: false;
+                            },
+                            style: 'cancel',
+                          },
+                          {text: 'ok', onPress: () => handleOnVisible(index,item)},
+                        ],
+                        {cancelable: false},
+                      );
                     }}>
                     <Image
                       style={{
@@ -1844,25 +1881,20 @@ const AddProducts = () => {
                       }}
                     />
                   </TouchableOpacity>
-                  <Menu
+                  {/* <Menu
                     onRequestClose={() => handleOnVisible(-1)}
                     visible={visible?.includes(index)}
-                    style={{backgroundColor: 'white'}}>
-                    {/* <MenuItem
-                      style={{
-                        borderBottomWidth: wp(0.1),
-                        height: wp(10),
-                      }}
-                      onPress={() => setDefaultAddress(item.id, index)}>
-                      Set Default
-                    </MenuItem> */}
+                    style={{backgroundColor: '#fff',borderRadius:10}}>
+                   
                     <MenuItem
                       style={{
                         height: wp(10),
                         // fontSize: 18,
+                        color:'black'
                       }}
+                      textStyle={{color:'black'}}
                       onPress={() => {
-                        alert('thiss iis');
+                       
                       }}>
                       Edit
                     </MenuItem>
@@ -1871,13 +1903,15 @@ const AddProducts = () => {
                         // borderTopWidth: wp(0.1),
                         // borderBottomWidth: wp(0.1),
                         height: wp(10),
+                       
                       }}
+                      textStyle={{color:'black'}}
                       onPress={() => {
                         alert('thississ s');
                       }}>
                       Delete
                     </MenuItem>
-                  </Menu>
+                  </Menu> */}
                 </View>
               )}
             />

@@ -94,6 +94,8 @@ const ListOfProduct = () => {
     setProduct(filteredData);
   };
   const loadMore = async () => {
+
+    console.log('length ..,......',product.length);
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
       type: 'My_Product_Request',
@@ -102,7 +104,7 @@ const ListOfProduct = () => {
       start: 0,
       length: product.length + 10,
       search: '',
-      navigation,
+      // navigation,
       btn: 'more',
     });
   };
@@ -171,7 +173,7 @@ const ListOfProduct = () => {
           </View>
         </View>
 
-        <View style={{marginHorizontal: 10}}>
+        {/* <View style={{marginHorizontal: 10}}>
           <Text
             style={{
               fontSize: 18,
@@ -197,8 +199,8 @@ const ListOfProduct = () => {
               setValue(item.value);
             }}
           />
-        </View>
-        <TouchableOpacity
+        </View> */}
+        {/* <TouchableOpacity
           style={{
             backgroundColor: '#032E63',
             alignItems: 'center',
@@ -211,7 +213,7 @@ const ListOfProduct = () => {
           <Text style={{color: 'white', fontSize: 18, fontWeight: '600'}}>
             Excel
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <View
           style={{

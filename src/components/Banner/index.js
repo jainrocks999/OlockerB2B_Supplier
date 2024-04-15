@@ -9,6 +9,7 @@ import {
   Platform,
   Dimensions
 } from 'react-native';
+import { heightPercentageToDP as hp,widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const Preview = ({
   style,
@@ -21,19 +22,17 @@ const Preview = ({
 }) => {
   const BannerWidth = (Dimensions.get('window').width * 15) / 18;
   const BannerHeight = 180;
+  
   return (
-      <View style={{alignItems:'center',justifyContent:'center',borderRadius:15}}>
-    <TouchableOpacity
-      // onPress={() => onPress(item)}
-      >
-      <View style={[styles.imageContainer]}>
+     
+      <View style={{height:hp(25),width:wp(95),marginHorizontal:wp(2.5)}}>
         <FastImage
-          style={{height:170,width:BannerWidth,borderRadius:15,borderWidth:1}}
+        resizeMode='stretch'
+          style={{height:'100%',borderRadius:15,borderWidth:1,width:'100%'}}
           source={{uri: `https://olocker.co${item.ImageUrl}${item.ImageName}`}}
         />
       </View>
-    </TouchableOpacity>
-    </View>
+   
   );
 };
 export default Preview

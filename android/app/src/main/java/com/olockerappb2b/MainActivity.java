@@ -1,4 +1,4 @@
-package com.olockerappb2b;
+package com.olockersupplier;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

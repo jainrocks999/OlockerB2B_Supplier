@@ -248,6 +248,7 @@ const HomeScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const selector1 = useSelector(state => state.Supplier.SupplierDetail);
+ 
   const selector = selector1?.data;
   const ownerImagePath = 'https://olocker.co/uploads/supplier/';
   // console.log('this is selector');
@@ -258,6 +259,7 @@ const HomeScreen = () => {
   const [catalogue, setCatalogue] = useState(false);
   const [setting, setSetting] = useState(false);
   const [rating1, setRatting1] = useState(0);
+  const  [supplierLogo,setSupplierLogo] =useState('')
   const BannerWidth = (Dimensions.get('window').width * 15) / 16;
   const BannerHeight = 140;
   const share = async () => {
@@ -292,10 +294,14 @@ const HomeScreen = () => {
   };
 
   const manageUpdate = () => {
+
+    console.log('dsfsdsd');
+console.log('sdfhnsjklgshn',selector);
+
     dispatch({
       type: 'City_List_Request',
       url: '/getCities',
-      stateId: selector.supplierdetails[0].StateId,
+      stateId: selector?.supplierdetails[0]?.StateId,
       selector: selector,
       productImage: productImage,
       ownerImage: ownerImage,
@@ -374,10 +380,11 @@ const HomeScreen = () => {
     });
     selector?.supplierimagedetails.map(item => {
       if (item.Type == 'Logo') {
-        supplierLogo = item.ImageName;
+      
+        setSupplierLogo(item.ImageName);
       }
     });
-  }, []);
+  }, [selector?.supplierimagedetails]);
 
   return (
     <View style={{flex: 1, backgroundColor: '#f0eeef'}}>
@@ -445,33 +452,15 @@ const HomeScreen = () => {
               </Text>
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
+                  // flexDirection: 'row',
+                  // justifyContent: 'space-between',
                   marginTop: 20,
                   alignItems: 'center',
-                  width: '100%',
+                  alignSelf:'flex-end',
+                  // width: '100%',
                 }}>
-                <Stars
-                  half={true}
-                  default={0}
-                  // display={3}
-                  spacing={5}
-                  update={val => setRatting1(val)}
-                  count={5}
-                  starSize={16}
-                  fullStar={require('../../../assets/Image/star.png')}
-                  emptyStar={require('../../../assets/Image/star1.png')}
-                />
-
-                <View style={{flexDirection: 'row'}}>
-                  <TouchableOpacity
-                    onPress={() => Linking.openURL(`tel:${'999320456'}`)}
-                    style={{alignItems: 'center', justifyContent: 'center'}}>
-                    <Image
-                      style={{width: 30, height: 30}}
-                      source={require('../../../assets/PartnerImage/16.png')}
-                    />
-                  </TouchableOpacity>
+                
+                  
                   <TouchableOpacity
                     onPress={() => share()}
                     style={{
@@ -480,11 +469,11 @@ const HomeScreen = () => {
                       marginLeft: 10,
                     }}>
                     <Image
-                      style={{width: 30, height: 30}}
+                      style={{width: 40, height: 40,resizeMode:'center'}}
                       source={require('../../../assets/PartnerImage/15.png')}
                     />
                   </TouchableOpacity>
-                </View>
+              
               </View>
             </View>
           </View>
@@ -546,7 +535,7 @@ const HomeScreen = () => {
 
           <View style={{height: 20}} />
         </View>
-        <View style={styles.tabContainer}>
+        {/* <View style={styles.tabContainer}>
           <View style={{alignItems: 'center'}}>
             <TouchableOpacity
               onPress={() => manageTab()}
@@ -631,7 +620,7 @@ const HomeScreen = () => {
               Settings
             </Text>
           </View>
-        </View>
+        </View> */}
         <View style={{marginTop: 10}}>
           {profile == true ? <Profile /> : null}
           {catalogue == true ? <Catalogue /> : null}

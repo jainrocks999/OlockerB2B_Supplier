@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,9 +9,10 @@ import {
   TouchableOpacity,
   Linking,
   Share,
+  Alert,
 } from 'react-native';
 import Header from '../../../components/CustomHeader';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
 import BottomTab from '../../../components/StoreButtomTab';
 import Stars from 'react-native-stars';
@@ -23,7 +24,7 @@ import Loader from '../../../components/Loader';
 import ImagePath from '../../../components/ImagePath';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 let productImage = [];
 let showroomImage = [];
@@ -31,17 +32,23 @@ let supplierLogo = '';
 let ownerImage = [];
 let goldSpecilization = [];
 
-const PatnerProfile = ({route}) => {
+const PatnerProfile = ({ route }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
- 
 
- const selector3 =useSelector(state=>state.Home?.partnerData)
-console.log('partnerDetail,,,,,,,',selector3?.partnerdetails);
+  const sentnetworkr = useSelector(state => state.Home.NetworkList?.networkretailer);
+  const selector3 = useSelector(state => state.Home?.partnerData)
+  const [id1, setId] = useState('');
+  const [pending, setPending] = useState('');
+
+  const pendingrequst = useSelector(state => state?.Home?.RetailerRequestList);
+  console.log('network k   sent data ,,,, get ', sentnetworkr, pendingrequst);
+
   const selector1 = useSelector(state => state.Supplier.SupplierDetail);
   const selector = selector1?.data;
-  const ownerImagePath = 'https://olocker.co/uploads/supplier/';
-  // console.log('this is selector');
+  const ownerImagePath = 'https://olocker.co/uploads/partner/';
+  const [visiable1, setVisible1] = useState(false);
+  const [visiable2, setVisible2] = useState(false);
   const isFetching = useSelector(state => state.Supplier.isFetching);
   const isFetching1 = useSelector(state => state.City.isFetching);
   const [profile, setProfile] = useState(true);
@@ -56,7 +63,6 @@ console.log('partnerDetail,,,,,,,',selector3?.partnerdetails);
       message: `Supplier Name :   Email Address : virendramishra252@gmail.com `,
     });
   };
-
   const manageTab = () => {
     setProfile(true);
     setMessage(false);
@@ -95,6 +101,160 @@ console.log('partnerDetail,,,,,,,',selector3?.partnerdetails);
       navigation,
     });
   };
+  const getStatus = () => {
+    const data = selector3?.partnerdetails
+    console.log('IsPartnerSend', data.IsPartnerSend);
+    console.log('issuppliersend', data.IsSupplierSend)
+    return (
+     <View style={{ flexDirection: 'row', width: '80%', justifyContent: data?.IsPartnerSend == 1 ? 'space-evenly' : 'center' }}>
+      <TouchableOpacity
+        style={[styles.addButton, { backgroundColor:data.network_status=='Reject'?'red': data?.IsSupplierSend == 1 ? '#FFF' : data?.IsPartnerSend == 1 ? 'green' : '#ea056c' }]}
+        disabled={data?.IsSupplierSend == 1 ||data.network_status=='Reject'}
+        onPress={addToNetwork}
+      >
+        <Text style={[styles.text1, { color: data?.IsSupplierSend == 1 ? '#032e63' : '#FFF', fontWeight: data?.IsSupplierSend === 1 ? '900' : '500' }]}>
+          {data.network_status=='Reject'?"Rejected":data?.IsSupplierSend == 1 ? "Requested" : data?.IsPartnerSend == 1 ? "Confirm" : "Add To Network"}
+        </Text>
+      </TouchableOpacity>
+      {data?.IsPartnerSend == 1 &&data.network_status!='Reject' ?
+        <TouchableOpacity style={[styles.addButton, { backgroundColor: 'red' }]} onPress={RejectMEthod}>
+          <Text style={styles.text1}>
+            {"Reject"}
+          </Text>
+        </TouchableOpacity>:null
+      }
+    </View>
+    )
+  }
+
+  const supplierprofile = async (id) => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    console.log('gssjfhsfhskjf', id.isAdd);
+    dispatch({
+      type: 'get_networkretailerdetail_request',
+      partnerId: id,
+      url: 'getNetworkRetailerDeatils',
+      supplierId: user_id,
+      isAdd: id.isAdd,
+      navigation,
+    });
+  };
+
+
+
+
+
+
+  const RejectMEthod = async () => {
+    const data1 = selector3?.partnerdetails;
+
+    const userId = await AsyncStorage.getItem('user_id')
+    const Token = await AsyncStorage.getItem('loginToken');
+    setVisible2(true)
+    const axios = require('axios');
+    let data = new FormData();
+    data.append('ddlStatus', '2');
+    data.append('partnerId', data1?.SrNo);
+    data.append('supplierId', userId);
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'https://olocker.co/api/supplier/retailerStatusUpdate',
+      headers: {
+        'Olocker': `Bearer ${Token}`,
+        // ...data.getHeaders()
+      },
+      data: data
+    };
+
+    axios.request(config)
+      .then((response) => {
+        console.log('response,,,,,,,,,,', response.data, config);
+        if (response.data.status == "success") {
+          setVisible2(false);
+          supplierprofile(data1?.SrNo)
+          // Toast.show(response?.data?.msg);
+
+
+        }
+
+      })
+      .catch((error) => {
+        setVisible2(false);
+        console.log(error);
+      });
+  }
+
+
+
+
+  const addToNetwork = async () => {
+
+    const data = selector3?.partnerdetails
+    console.log('callll ');
+    const userId = await AsyncStorage.getItem('user_id');
+    if (data.IsPartnerSend==1) {
+       const Token = await AsyncStorage.getItem('loginToken');
+       setVisible1(true);
+           const axios = require('axios');
+           let data = new FormData();
+           data.append('ddlStatus', '1'); 
+           data.append('partnerId', data.SrNo,);
+           data.append('supplierId',userId);
+               let config = {
+                 method: 'post',
+                 maxBodyLength: Infinity,
+                 url: 'https://olocker.co/api/supplier/retailerStatusUpdate',
+             headers: {
+               'Olocker': `Bearer ${Token}`,
+               // ...data.getHeaders()
+             },
+             data: data
+           };
+
+           axios.request(config)
+             .then((response) => {
+               console.log('response,,,,,,,,,,vvv',response.data,config);
+               if (response?.data?.status == "success") {
+                 setVisible1(false);
+                 supplierprofile(data?.SrNo);
+                 Toast.show(response?.data?.msg);
+
+               }
+
+             })
+             .catch((error) => {
+               setVisible1(false);
+               console.log(error);
+             });
+
+
+
+
+
+     }
+     else if (data.IsPartnerSend == 0 && data.IsSupplierSend == 0) {
+    
+      dispatch({
+        type: 'add_partner_to_network_request',
+        url: 'addtoNetwork',
+        id: data.SrNo,
+        userId: userId,
+        navigation,
+
+      })
+    }
+
+    // if (data.IsPartnerSend == 1 || data.network_status != 'Reject') {
+    //   Alert.alert('accept')
+
+    // } else if (data.IsSupplierSend == 1) {
+    //   alert('requested')
+    // } else {
+    //   alert('add to netwoklr')
+    // }
+  }
+
 
   useEffect(() => {
     selector?.supplierimagedetails.map(item => {
@@ -139,25 +299,29 @@ console.log('partnerDetail,,,,,,,',selector3?.partnerdetails);
     });
   }, []);
 
+
+
+
+
   return (
-    <View style={{flex: 1, backgroundColor: '#f0eeef'}}>
+    <View style={{ flex: 1, backgroundColor: '#f0eeef' }}>
       <Header
         source={require('../../../assets/L.png')}
         source2={require('../../../assets/Image/dil.png')}
         source1={require('../../../assets/Fo.png')}
-        title={'Patner Profile '}
+        title={'Partner Profile  '}
         onPress={() => navigation.goBack()}
         onPress1={() => navigation.navigate('Message')}
         onPress2={() => navigation.navigate('FavDetails')}
       />
 
       <ScrollView>
-        {isFetching || isFetching1 ? <Loader /> : null}
+        {isFetching || isFetching1 || visiable1 || visiable2 ? <Loader /> : null}
         <View
           style={{
             backgroundColor: '#032e63',
           }}>
-          <View style={{flexDirection: 'row', padding: 15, width: '100%'}}>
+          <View style={{ flexDirection: 'row', padding: 15, width: '100%' }}>
             <View
               style={{
                 backgroundColor: '#fff',
@@ -166,24 +330,22 @@ console.log('partnerDetail,,,,,,,',selector3?.partnerdetails);
                 borderRadius: 10,
               }}>
 
-{console.log('imageytetetee path deataillll',`${ownerImagePath}${selector3?.partnerdetails?.Logo}`)}
-
               <Image
-                style={{width: '100%', height: '100%', borderRadius: 10}}
+                style={{ width: '100%', height: '100%', borderRadius: 10 }}
                 source={
                   selector3?.partnerdetails?.Logo
-                    ? {uri: `${ownerImagePath}${selector3?.partnerdetails?.Logo}`}
+                    ? { uri: `${ownerImagePath}${selector3?.partnerdetails?.Logo}` }
                     : require('../../../assets/Image/Not.jpeg')
                 }
               />
             </View>
-            <View style={{marginLeft: 10, width: '60%', marginTop: -4}}>
+            <View style={{ marginLeft: 10, width: '60%', marginTop: -4 }}>
               <Text
-                style={{color: '#fff', fontSize: 19, fontFamily: 'Acephimere'}}>
+                style={{ color: '#fff', fontSize: 19, fontFamily: 'Acephimere' }}>
                 {selector3?.partnerdetails?.CompanyName}
               </Text>
               <Text
-                style={{color: '#fff', fontSize: 12, fontFamily: 'Acephimere'}}>
+                style={{ color: '#fff', fontSize: 12, fontFamily: 'Acephimere' }}>
                 {selector3?.partnerdetails?.Location}
               </Text>
               <View
@@ -194,24 +356,27 @@ console.log('partnerDetail,,,,,,,',selector3?.partnerdetails);
                   alignItems: 'center',
                   width: '100%',
                 }}>
-                <Stars
-                  half={true}
-                  default={0}
-                  // display={3}
-                  spacing={5}
-                  update={val => setRatting1(val)}
-                  count={5}
-                  starSize={16}
-                  fullStar={require('../../../assets/Image/star.png')}
-                  emptyStar={require('../../../assets/Image/star1.png')}
-                />
+                {selector3?.partnerdetails?.isAdd == 1 ?
 
-                <View style={{flexDirection: 'row'}}>
+                  <Stars
+                    half={true}
+                    default={0}
+                    // display={3}
+                    spacing={5}
+                    update={val => setRatting1(val)}
+                    count={5}
+                    starSize={16}
+                    fullStar={require('../../../assets/Image/star.png')}
+                    emptyStar={require('../../../assets/Image/star1.png')}
+                  />
+                  : null}
+
+                <View style={{ flexDirection: 'row' }}>
                   <TouchableOpacity
                     onPress={() => Linking.openURL(`tel:${selector3?.partnerdetails?.Mobile}`)}
-                    style={{alignItems: 'center', justifyContent: 'center'}}>
+                    style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <Image
-                      style={{width: 30, height: 30}}
+                      style={{ width: 30, height: 30 }}
                       source={require('../../../assets/PartnerImage/16.png')}
                     />
                   </TouchableOpacity>
@@ -223,7 +388,7 @@ console.log('partnerDetail,,,,,,,',selector3?.partnerdetails);
                       marginLeft: 10,
                     }}>
                     <Image
-                      style={{width: 30, height: 30}}
+                      style={{ width: 30, height: 30 }}
                       source={require('../../../assets/PartnerImage/15.png')}
                     />
                   </TouchableOpacity>
@@ -236,116 +401,128 @@ console.log('partnerDetail,,,,,,,',selector3?.partnerdetails);
               marginTop: 10,
               alignSelf: 'flex-end',
               flexDirection: 'row',
-              width: '62%',
+              width: '71%',
             }}>
-            <TouchableOpacity
-              // onPress={()=>addToNetwork()}
-              onPress={() => {}}
-              style={{
-                backgroundColor: '#ea056c',
-                paddingHorizontal: 20,
-                paddingVertical: 10,
-                borderRadius: 20,
-              }}>
-              <Text
-                style={{color: '#fff', fontSize: 12, fontFamily: 'Acephimere'}}>
-                {'Add To Network'}
-                {/* Added To Network */}
-              </Text>
-            </TouchableOpacity>
+            {console.log('partnerDetail,,,,,,,ddddddD23334', selector3?.partnerdetails.isAdd, id1)}
+            {selector3?.partnerdetails?.isAdd == 0 ?
+              // <TouchableOpacity 
+              // disabled={selector3?.partnerdetails?.SrNo==id1?true:false}
+              // onPressIn={addToNetwork}
+              //   style={[styles.addButton,{backgroundColor:selector3?.partnerdetails?.SrNo===id1?'#FFF':'#ea056c'}]}>
+              //   <Text style={[styles.text1,{fontSize:12,color:selector3?.partnerdetails?.SrNo===id1?'#032e63':'#FFF',fontWeight:selector3?.partnerdetails?.SrNo===id1?'900':''}]}>
+
+              //    { selector3?.partnerdetails?.SrNo===id1?'Requested':'Add To Network'}
+              //   </Text>
+              // </TouchableOpacity>
+              getStatus()
+              : <View style={styles.addButton}>
+                <Text style={[styles.text1, { fontSize: 12 }]}>
+                  {'Added To Network'}
+                </Text>
+              </View>
+            }
+
+
+
+
+
           </View>
 
-          <View style={{alignItems: 'center', height: 0, marginTop: 15}}></View>
+          <View style={{ alignItems: 'center', height: 0, marginTop: 15 }}></View>
 
-          <View style={{height: 20}} />
+          <View style={{ height: 20 }} />
         </View>
-        <View style={styles.tabContainer}>
-          <View style={{alignItems: 'center'}}>
-            <TouchableOpacity
-              onPress={() => manageTab()}
-              style={styles.tabStyle}>
-              {profile ? (
-                <Image
-                  style={{width: 50, height: 50}}
-                  source={require('../../../assets/PartnerImage/10.png')}
-                />
-              ) : (
-                <Image
-                  style={{width: 50, height: 50}}
-                  source={require('../../../assets/PartnerImage/pro_uncolor.png')}
-                />
-              )}
-            </TouchableOpacity>
-            <Text
-              style={{marginTop: 3, fontFamily: 'Acephimere', fontSize: 13}}>
-              Profile
-            </Text>
-          </View>
-          <View style={{alignItems: 'center'}}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Message')}
-              style={styles.tabStyle}>
-              {message ? (
-                <Image
-                  style={{width: 50, height: 50}}
-                  source={require('../../../assets/PartnerImage/msg_active.png')}
-                />
-              ) : (
-                <Image
-                  style={{width: 50, height: 50}}
-                  source={require('../../../assets/PartnerImage/11.png')}
-                />
-              )}
-            </TouchableOpacity>
-            <Text
-              style={{marginTop: 3, fontFamily: 'Acephimere', fontSize: 13}}>
-              Message
-            </Text>
-          </View>
-          <View style={{alignItems: 'center'}}>
-            <TouchableOpacity
-              onPress={() => manageTab2()}
-              style={styles.tabStyle}>
-              {catalogue ? (
-                <Image
-                  style={{width: 50, height: 50}}
-                  source={require('../../../assets/PartnerImage/nackactive.png')}
-                />
-              ) : (
-                <Image
-                  style={{width: 50, height: 50}}
-                  source={require('../../../assets/PartnerImage/8.png')}
-                />
-              )}
-            </TouchableOpacity>
-            <Text
-              style={{marginTop: 3, fontFamily: 'Acephimere', fontSize: 13}}>
-              Catalogue
-            </Text>
-          </View>
-          <View style={{alignItems: 'center'}}>
-            <TouchableOpacity
-              onPress={() => manageTab3()}
-              style={styles.tabStyle}>
-              {setting ? (
-                <Image
-                  style={{width: 50, height: 50}}
-                  source={require('../../../assets/PartnerImage/setting_active.png')}
-                />
-              ) : (
-                <Image
-                  style={{width: 50, height: 50, alignSelf: 'center'}}
-                  source={require('../../../assets/PartnerImage/7.png')}
-                />
-              )}
-            </TouchableOpacity>
-            <Text
-              style={{marginTop: 3, fontFamily: 'Acephimere', fontSize: 13}}>
-              Settings
-            </Text>
-          </View>
+        <View>
+          {selector3?.partnerdetails?.isAdd == 0 ? null :
+            <View style={styles.tabContainer}>
+              <View style={{ alignItems: 'center' }}>
+                <TouchableOpacity
+                  onPress={() => manageTab()}
+                  style={styles.tabStyle}>
+                  {profile ? (
+                    <Image
+                      style={{ width: 50, height: 50 }}
+                      source={require('../../../assets/PartnerImage/10.png')}
+                    />
+                  ) : (
+                    <Image
+                      style={{ width: 50, height: 50 }}
+                      source={require('../../../assets/PartnerImage/pro_uncolor.png')}
+                    />
+                  )}
+                </TouchableOpacity>
+                <Text
+                  style={{ marginTop: 3, fontFamily: 'Acephimere', fontSize: 13, color: '#000' }}>
+                  Profile
+                </Text>
+              </View>
+              <View style={{ alignItems: 'center' }}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Message')}
+                  style={styles.tabStyle}>
+                  {message ? (
+                    <Image
+                      style={{ width: 50, height: 50 }}
+                      source={require('../../../assets/PartnerImage/msg_active.png')}
+                    />
+                  ) : (
+                    <Image
+                      style={{ width: 50, height: 50 }}
+                      source={require('../../../assets/PartnerImage/11.png')}
+                    />
+                  )}
+                </TouchableOpacity>
+                <Text
+                  style={{ marginTop: 3, fontFamily: 'Acephimere', fontSize: 13, color: '#000' }}>
+                  Message
+                </Text>
+              </View>
+              <View style={{ alignItems: 'center' }}>
+                <TouchableOpacity
+                  onPress={() => manageTab2()}
+                  style={styles.tabStyle}>
+                  {catalogue ? (
+                    <Image
+                      style={{ width: 50, height: 50 }}
+                      source={require('../../../assets/PartnerImage/nackactive.png')}
+                    />
+                  ) : (
+                    <Image
+                      style={{ width: 50, height: 50 }}
+                      source={require('../../../assets/PartnerImage/8.png')}
+                    />
+                  )}
+                </TouchableOpacity>
+                <Text
+                  style={{ marginTop: 3, fontFamily: 'Acephimere', fontSize: 13, color: '#000' }}>
+                  Catalogue
+                </Text>
+              </View>
+              <View style={{ alignItems: 'center' }}>
+                <TouchableOpacity
+                  onPress={() => manageTab3()}
+                  style={styles.tabStyle}>
+                  {setting ? (
+                    <Image
+                      style={{ width: 50, height: 50 }}
+                      source={require('../../../assets/PartnerImage/setting_active.png')}
+                    />
+                  ) : (
+                    <Image
+                      style={{ width: 50, height: 50, alignSelf: 'center' }}
+                      source={require('../../../assets/PartnerImage/7.png')}
+                    />
+                  )}
+                </TouchableOpacity>
+                <Text
+                  style={{ marginTop: 3, fontFamily: 'Acephimere', color: '#000', fontSize: 13 }}>
+                  Settings
+                </Text>
+              </View>
+            </View>
+          }
         </View>
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
           {profile == true ? <Profile /> : null}
           {catalogue == true ? <Catalogue /> : null}
           {setting == true ? <Setting /> : null}

@@ -4,6 +4,7 @@ import Api from '../Api';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {parse} from 'react-native-svg';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 //Login
 function* bannerList(action) {
@@ -29,17 +30,18 @@ function* bannerList(action) {
 }
 
 function* networkList(action) {
+  console.log('action,,,,',action);
   try {
     const data = {
-      userRole: 6,
-      userId: 13,
+      userRole: action.userRole,
+      userId: action.userId,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-
-    if (response.success == true) {
+console.log('response,,,,,,,,123',response);
+    if (response.status == true) {
       yield put({
         type: 'Network_List_Success',
-        payload: response.data.networkretailer,
+        payload: response.data,
       });
     } else {
       yield put({
@@ -53,6 +55,39 @@ function* networkList(action) {
     console.log('this is errro', console.log(error));
   }
 }
+
+function* networkList1(action) {
+  console.log('ssjiogigs',action);
+  try {
+    const data = {
+      userRole: 6,
+      userId: 13,
+    };
+    const response = yield call(Api.fetchDataByGET1, action.url, data);
+    // console.log('responsed  network mmmmmmmm',response);
+    if (response.status == true) {
+      console.log('responsed  network mmmmmmmm',response);
+      yield put({
+        type: 'Network_ApprovedRequestList_Success',
+        payload: response.data,
+      });
+    } else {
+      yield put({
+        type: 'Network_ApprovedRequestList_Error',
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'Network_ApprovedRequestList_Error',
+    });
+    console.log('this is errro', console.log(error));
+  }
+}
+
+
+
+
+
 function* productTypeList(action) {
   try {
     const data = {
@@ -79,9 +114,9 @@ function* productTypeList(action) {
 }
 function* SearchRetailerRequest(action) {
   try {
-    console.log('called', action);
+    console.log('called ....', action);
     const data = {
-      userRole: action.role,
+      userRole: action.userRole,
       userId: action.userId,
       stateId: action.state,
       cityId: action.city,
@@ -90,16 +125,16 @@ function* SearchRetailerRequest(action) {
       length: action.length,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-    console.log('this is response', JSON.stringify(response));
+    console.log('this is search response', response);
     if (response.status) {
-      console.log('this is search response');
+      console.log('this is search response', response.data);
       yield put({
         type: 'Search_Retailer_Success',
         payload: response.data,
         data2: {
           city: action.city,
           state: action.state,
-          role: action.role,
+          userRole: action.userRole,
           RRname: action.Rname,
           userId: action.userId,
           start: action.start,
@@ -123,7 +158,7 @@ function* SearchRetailerRequest(action) {
 function* SearchMynetworkRequest(action) {
   try {
     const data = {
-      userRole: action.role,
+      userRole: action.userRole,
       userId: action.userId,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
@@ -147,7 +182,7 @@ function* SearchMynetworkRequest(action) {
 function* retailerRequestList(action) {
   try {
     const data = {
-      userRole: action.role,
+      userRole: action.userRole,
       userId: action.userId,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
@@ -171,7 +206,7 @@ function* retailerRequestList(action) {
 function* InviteRetailerList(action) {
   try {
     const data = {
-      userRole: action.role,
+      userRole: action.userRole,
       userId: action.userId,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
@@ -291,12 +326,12 @@ function* RemovePatner(action) {
 }
 
 function*getPartnerDetail(action){
-  console.log('partneer deatail action.....',action);
-
+  // Alert.alert('called',JSON.stringify(action))
   try {
 
     const data = {
             partnerId: action.partnerId,
+            supplierId:action.supplierId
           };
 
           const response = yield call(Api.fetchDataByGET1, action.url, data);  
@@ -320,7 +355,32 @@ if(response.status==true){
 }
 
 
+ function* getNotification(action){
+  try {
+    const data={
+      supplierId:action.supplierId,
+    }
+    const response = yield call(Api.fetchDataByGET1, action.url, data);  
+   if(response.status==true){
+    yield put({
+      type: 'Get_pushNotificationLis_Success',
+      payload: response.data,
+    });
+   }else {
+    
+    yield put({
+      type: 'Get_pushNotificationLis_Error',
+      payload: response.data,
+    });
+   Toast.show(response.msg)
+  }
+  } catch (error) {
+    yield put({
+      type: 'Get_pushNotificationLis_Error',
 
+    })
+  }
+ }
 
 
 
@@ -363,6 +423,7 @@ if(response.status==true){
 export default function* homeSaga() {
   yield takeEvery('Banner_List_Request', bannerList);
   yield takeEvery('Network_List_Request', networkList);
+  yield takeEvery('Network_ApprovedRequestList_Request',networkList1)
   yield takeEvery('Search_Retailer_Request', SearchRetailerRequest);
   yield takeEvery('Search_MyNetwork_Request', SearchMynetworkRequest);
   yield takeEvery('Retailer_RequestList', retailerRequestList);
@@ -373,6 +434,7 @@ export default function* homeSaga() {
   yield takeEvery('Addnetwork_toPatner_Request', AddnetworkToPatner);
   yield takeEvery('RemovePatner_Request', RemovePatner);
 yield takeEvery('get_networkretailerdetail_request',getPartnerDetail);
+yield takeEvery('Get_pushNotificationLis_Request',getNotification);
 
   // yield takeEvery('get_network_retailer_detail_request', getPartner);
 }

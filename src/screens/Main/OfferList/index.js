@@ -10,6 +10,7 @@ import {
   FlatList,
   Dimensions,
   Modal,
+  Alert,
 } from 'react-native';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
@@ -46,9 +47,10 @@ const OfferList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [prevModal, setPrevModal] = useState(false);
-  useEffect(() => {
-    isClicked ? setIsModalOpen(true) : null;
-  }, [modaleOpen]);
+  console.log('this is is modal open',modaleOpen);
+  // useEffect(() => {
+  //   isClicked ? setIsModalOpen(true) : null;
+  // }, [modaleOpen]);
 
   const [temp, setTemp] = useState();
 
@@ -186,8 +188,11 @@ const OfferList = () => {
         // console.log(error);
       });
   };
+
   const getOfferDetails = async (item, op) => {
+
     const userId = await AsyncStorage.getItem('user_id');
+    console.log(modaleOpen);
     dispatch({
       type: 'offer_details_request',
       url: 'getOfferDetails',
@@ -195,7 +200,7 @@ const OfferList = () => {
       offerId: item?.Id,
       op: op,
       navigation,
-      some: !modaleOpen,
+      some:!modaleOpen,
     });
     setIsClicked(true);
   };
@@ -218,12 +223,13 @@ const OfferList = () => {
     modal ? setPrevModal(true) : setPrevModal(false);
   }, [modal]);
   const offerProductList = async item => {
+   console.log('itemvvvvvvv',item);
     setOfferId(item?.Id);
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
-      type: 'get_OfferProductList_request',
-      userId: user_id,
+      type: 'Get_OfferProductList_Request',
       url: 'getOfferProductList',
+      userId: user_id,
       start: 0,
       limit: 10,
       modal: true,
@@ -302,7 +308,7 @@ const OfferList = () => {
                 backgroundColor: 'white',
                 alignSelf: 'center',
                 elevation: 2,
-                borderRadius: 9,
+                borderRadius: 9
               }}>
               <TouchableOpacity
                 onPress={() => {
@@ -313,11 +319,12 @@ const OfferList = () => {
                   position: 'absolute',
                   height: hp(5),
                   width: hp(5),
-                  borderRadius: hp(10),
+                  borderRadius: hp(5/2),
                   backgroundColor: '#032e63',
                   alignItems: 'center',
-                  right: wp(6),
+                left: wp(80),
                   top: wp(3),
+                  zIndex:1,
                   justifyContent: 'center',
                 }}>
                 <Text
@@ -878,7 +885,9 @@ const OfferList = () => {
                         alignSelf: 'center',
                       }}>
                       <TouchableOpacity
-                        onPress={() => getOfferDetails(item, 'view')}
+                        onPress={() =>{ getOfferDetails(item, 'view')
+                         setIsModalOpen(true)
+                      }}
                         style={styles.cardbtn}>
                         <Text
                           style={{
@@ -891,7 +900,7 @@ const OfferList = () => {
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => {
-                          offerProductList(item);
+                           offerProductList(item);
                         }}
                         style={[styles.cardbtn, {backgroundColor: '#032e63'}]}>
                         <Text

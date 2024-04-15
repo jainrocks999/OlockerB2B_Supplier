@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "506447164869",
-    "project_id": "olocker-ddef0",
-    "storage_bucket": "olocker-ddef0.appspot.com"
+    "project_number": "25621057005",
+    "project_id": "olockersupplier-d4162",
+    "storage_bucket": "olockersupplier-d4162.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:506447164869:android:38a39cca8505adc30d47ac",
+        "mobilesdk_app_id": "1:25621057005:android:005cdd7da9c1e3f9432be4",
         "android_client_info": {
-          "package_name": "com.olockerappb2b"
+          "package_name": "com.olockersupplier"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBlcvgf8nyCZ0THQiZ9DjaEeziHp_kBoAs"
+          "current_key": "AIzaSyBfcCfqZ6eo0BN3IKAiF6xJpyyDVZ3eFko"
         }
       ],
       "services": {

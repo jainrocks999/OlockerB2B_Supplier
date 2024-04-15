@@ -71,6 +71,34 @@ const ListOfproducts = () => {
       navigation,
     });
   };
+
+  const [search, setSearch] = useState('');
+  const [filteredDataSource, setFilteredDataSource] = useState(selector);
+  const [masterDataSource, setMasterDataSource] = useState(selector);
+  const searchFilterFunction = text => {
+    if (text) {
+      const newData = masterDataSource.filter(function (item) {
+        const itemData = `${item?.productTypeName} ${item?.grossWt?.substring(0, 29)} `
+          ? `${item?.productTypeName} ${item?.grossWt?.substring(0, 29)}`.toUpperCase()
+          : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      setFilteredDataSource(masterDataSource);
+      setSearch(text);
+    }
+  };
+
+  const handleSearch = () => {
+    setSearch('');
+    setFilteredDataSource(masterDataSource);
+  };
+
+
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       {isFetching || isFetching2 ? <Loading /> : null}
@@ -121,6 +149,8 @@ const ListOfproducts = () => {
             placeholder="Search"
             placeholderTextColor={'grey'}
             style={{fontSize: 18, color: 'black'}}
+            value={search}
+            onChangeText={val => searchFilterFunction(val)}
           />
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
             <Feather name="search" size={30} color={'grey'} />
@@ -156,7 +186,7 @@ const ListOfproducts = () => {
             marginTop: 20,
           }}>
           <FlatList
-            data={selector}
+                   data={filteredDataSource ? filteredDataSource : selector}
             style={{width: '96%'}}
             numColumns={2}
             // contentContainerStyle={{justifyContent:'center',}}

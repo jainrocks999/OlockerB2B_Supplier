@@ -32,6 +32,12 @@ const FavouriteList = () => {
   const win = Dimensions.get('window');
   const isFocuse = useIsFocused();
   const selector = useSelector(state => state.Home.getWishList);
+
+const Filter =()=>{
+
+ return selector?.wishlistitems.filter((item)=>item!=false
+  )
+}
   console.log('this is selector', selector);
   useEffect(() => {
     RetailerRequest();
@@ -97,7 +103,7 @@ const FavouriteList = () => {
         source={require('../../../assets/L.png')}
         source2={require('../../../assets/Fo.png')}
         //  source2={require('../../../assets/Image/dil.png')}
-        title={'Favourite List'}
+        title={'Wishlist'}
         onPress={() => navigation.goBack()}
         onPress2={() => navigation.navigate('Message')}
       />
@@ -109,9 +115,9 @@ const FavouriteList = () => {
           </View>
         </View>
         <View style={styles.card}>
-          {selector?.wishlistitems[0] != false ? (
+          {Filter()?.length>0 ? (
             <FlatList
-              data={selector?.wishlistitems}
+              data={Filter()}
               numColumns={2}
               renderItem={({item, index}) => {
                 return item != false ? (
@@ -181,7 +187,8 @@ const FavouriteList = () => {
                       <View
                         style={{
                           width: '100%',
-                          marginLeft: 5,
+                          // marginLeft: 5,
+                          paddingHorizontal:5,
                           flexDirection: 'row',
                           justifyContent: 'space-between',
                         }}>
@@ -189,7 +196,7 @@ const FavouriteList = () => {
                         <Text
                           style={{
                             fontWeight: '500',
-                            width: '50%',
+                             width: '50%',
                             color: 'grey',
                           }}>
                           {item?.ProductSku?.substring(0, 10)}
@@ -203,16 +210,16 @@ const FavouriteList = () => {
                           justifyContent: 'space-between',
                         }}>
                         <Text style={styles.cardbottomtext}>
-                          Product Name:-
+                         Name:-
                         </Text>
                         <Text
                           style={{
-                            fontWeight: '500',
+                            fontWeight: '400',
                             width: '50%',
                             color: 'grey',
                           }}>
-                          {' '}
-                          {item.ItemName}
+                          
+                          {item.ItemName?.substring(0, 10)}
                         </Text>
                       </View>
                       <View
@@ -223,7 +230,7 @@ const FavouriteList = () => {
                           justifyContent: 'space-between',
                         }}>
                         <Text style={styles.cardbottomtext}>
-                          Product Price:-
+                           Price:-
                         </Text>
                         <Text
                           style={{
@@ -235,13 +242,35 @@ const FavouriteList = () => {
                           {item.ProductsPrice?.substring(0, 8)}
                         </Text>
                       </View>
+
+                      <View
+                        style={{
+                          width: '100%',
+                          marginLeft: 5,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        <Text style={styles.cardbottomtext}>
+                         GrossWt:-
+                        </Text>
+                        <Text
+                          style={{
+                            fontWeight: '500',
+                            width: '50%',
+                            color: 'grey',
+                          }}>
+                          {' '}
+                          {`${item.GrossWt?.substring(0, 4)} GM`}
+                        </Text>
+                      </View>
+
                     </View>
-                    <View
+                    {/* <View
                       style={{
                         borderTopRightRadius: 10,
                         borderBottomLeftRadius: 10,
                         backgroundColor: '#24a31e',
-                        marginTop: 45,
+                        marginTop:45,
                         marginRight: 8,
                         marginVertical: 10,
                         alignSelf: 'flex-end',
@@ -253,7 +282,7 @@ const FavouriteList = () => {
                         style={
                           styles.cardview2text
                         }>{`${item.GrossWt?.substring(0, 4)} GM`}</Text>
-                    </View>
+                    </View> */}
                   </View>
                 ) : null;
               }}
@@ -265,7 +294,7 @@ const FavouriteList = () => {
                 alignSelf: 'center',
                 fontFamily: 'Roboto-Medium',
                 fontWeight: '400',
-                marginTop: wp(45),
+                marginTop: wp(45),color:'grey'
               }}>
               No Data Found{' '}
             </Text>

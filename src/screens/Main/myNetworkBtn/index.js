@@ -93,7 +93,7 @@ export default function MyNetworkBtn({route}) {
   };
 
   return (
-    <ScrollView>
+   
       <View style={{flex: 1}}>
         <View style={styles.container}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -130,6 +130,7 @@ export default function MyNetworkBtn({route}) {
             </TouchableOpacity> */}
           </View>
         </View>
+        <ScrollView>
         <View
           style={{
             height: hp(20),
@@ -237,12 +238,13 @@ export default function MyNetworkBtn({route}) {
             </TouchableOpacity>
           </View>
         </View>
-
+       
         {listofRetailer && <ListOfRetailer />}
         {myNetwork && <MyNetworkList />}
         {retailerRequestList && <RetailerRequestList />}
         {inviteRetailer && <InviteRetailerList />}
+        </ScrollView>
       </View>
-    </ScrollView>
+    
   );
 }
