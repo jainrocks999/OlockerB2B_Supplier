@@ -43,7 +43,7 @@ const HomeScreen = () => {
   const selector1 = useSelector(state => state.Home.NetworkList1);
   const bannerList = useSelector(state => state.Home.BannerList);
   const BannerData = [];
-console.log('network list data ,,',selector1);
+  console.log('network list data ,,', selector1);
 
   bannerList?.map((item) => {
     if (item.ImageSection == "supplierHome" && item.isActive == 1) {
@@ -54,7 +54,7 @@ console.log('network list data ,,',selector1);
       });
     }
   })
- 
+
   // const isFetching4 = useSelector(state => state.State.BannerList);
   const fetching = useSelector(state => state.Home.isFetching);
   const win = Dimensions.get('window');
@@ -88,12 +88,12 @@ console.log('network list data ,,',selector1);
     });
 
 
-   dispatch({
-    type:'Get_pushNotificationLis_Request',
-    url:'/pushNotificationList',
-    supplierId:user_id
-   })
-  
+    dispatch({
+      type: 'Get_pushNotificationLis_Request',
+      url: '/pushNotificationList',
+      supplierId: user_id
+    })
+
 
     dispatch({
       type: 'Network_ApprovedRequestList_Request',
@@ -125,7 +125,7 @@ console.log('network list data ,,',selector1);
     dispatch({
       type: 'get_networkretailerdetail_request',
       partnerId: id,
-      supplierId:user_id,
+      supplierId: user_id,
       url: 'getNetworkRetailerDeatils',
       navigation,
     });
@@ -178,7 +178,7 @@ console.log('network list data ,,',selector1);
 
     navigation.navigate('Login');
     // const Token = await AsyncStorage.getItem('loginToken');
-   
+
   };
 
 
@@ -290,7 +290,13 @@ console.log('network list data ,,',selector1);
           /> */}
 
 
-      <SliderBanner data={BannerData} bottom={-10}height={6}width={6} borderRadius={3}/>
+          <SliderBanner
+            data={BannerData}
+            bottom={-10}
+            height={6}
+            width={6}
+            borderRadius={3}
+          />
         </View>
         <View style={styles.itemview}>
           <View style={styles.itemview1}>
@@ -314,10 +320,10 @@ console.log('network list data ,,',selector1);
             style={{ marginTop: 7 }}
             renderItem={({ item }) => (
               <View style={{ width: win.width * 0.37, alignItems: 'center' }}>
-               
+
                 <TouchableOpacity
                   onPress={() =>
-                    
+
                     supplierprofile(item?.PartnerSrNo)
                   }
                   style={[styles.cardview]}>

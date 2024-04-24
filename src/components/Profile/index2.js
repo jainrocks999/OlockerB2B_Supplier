@@ -218,7 +218,7 @@ const Profile = () => {
             :null}
 
 {partner?.BillingContactEmail!=""?
-            <View style={{flexDirection: 'row', marginTop: 20}}>
+            <View style={{flexDirection: 'row', marginTop: 20,alignItems:'center'}}>
               <Image
                 style={{height: 28, width: 28}}
                 source={require('../../assets/PartnerImage/msg.png')}
@@ -236,12 +236,12 @@ const Profile = () => {
               </View>
             </View>:null}
 
-            <View style={{flexDirection: 'row', marginTop: 20}}>
+            {/* <View style={{flexDirection: 'row', marginTop: 20}}>
               <Image
                 style={{height: 28, width: 28}}
                 source={require('../../assets/PartnerImage/facebook.png')}
               />
-              {/* <View>
+              <View>
                 <Text
                   style={{
                     marginLeft: 20,
@@ -251,8 +251,8 @@ const Profile = () => {
                   }}>
                   {'fb.com/rcbafna '}
                 </Text>
-              </View> */}
-            </View>
+              </View>
+            </View> */}
 
             <View style={{height: 100}} />
           </View>

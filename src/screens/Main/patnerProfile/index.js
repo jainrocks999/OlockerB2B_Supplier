@@ -25,6 +25,7 @@ import ImagePath from '../../../components/ImagePath';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector, useDispatch } from 'react-redux';
+import Toast from "react-native-simple-toast";
 
 let productImage = [];
 let showroomImage = [];
@@ -56,6 +57,7 @@ const PatnerProfile = ({ route }) => {
   const [catalogue, setCatalogue] = useState(false);
   const [setting, setSetting] = useState(false);
   const [rating1, setRatting1] = useState(0);
+  const [loader,setLoader]=useState(false)
   const BannerWidth = (Dimensions.get('window').width * 15) / 16;
   const BannerHeight = 140;
   const share = async () => {
@@ -300,7 +302,39 @@ const PatnerProfile = ({ route }) => {
   }, []);
 
 
+  const handleRating=async(value)=>{
+    const data = selector3?.partnerdetails
+    const userId = await AsyncStorage.getItem('user_id');
+    const Token = await AsyncStorage.getItem('loginToken')
+    console.log('this is rating count',value);
+    setRatting1(value)
+    setLoader(true)
+    const axios = require('axios');
+    let config = {
+      method: 'GET',
+      maxBodyLength: Infinity,
+      url: `https://olocker.co/api/supplier//partnerRating?partnerId=${data.SrNo}&supplierId=${userId}&rating=${value}`,
+      headers: {
+        'Olocker': `Bearer ${Token}`,
+      },
+    };
 
+    axios.request(config)
+      .then((response) => {
+        console.log('this is response',response.data);
+        if (response.data.status == true) {
+          setLoader(false)
+          Toast.show(response.data.msg)
+        }
+        else{
+          setLoader(false)
+        }
+      })
+      .catch((error) => {
+        setLoader(false)
+        console.log(error);
+      });
+  }
 
 
   return (
@@ -316,7 +350,7 @@ const PatnerProfile = ({ route }) => {
       />
 
       <ScrollView>
-        {isFetching || isFetching1 || visiable1 || visiable2 ? <Loader /> : null}
+        {isFetching || isFetching1 || visiable1 || visiable2 ||loader ? <Loader /> : null}
         <View
           style={{
             backgroundColor: '#032e63',
@@ -356,18 +390,21 @@ const PatnerProfile = ({ route }) => {
                   alignItems: 'center',
                   width: '100%',
                 }}>
+                    {console.log("userffffffffffff",selector3?.partnerdetails?.rating)}
+                    {console.log("rating1 userffffffffffff",rating1)}
                 {selector3?.partnerdetails?.isAdd == 1 ?
-
+                    
                   <Stars
                     half={true}
-                    default={0}
-                    // display={3}
+                    // default={parseFloat('4.5')}
+                    default={selector3?.partnerdetails?.rating?parseFloat(selector3?.partnerdetails?.rating):rating1}
                     spacing={5}
-                    update={val => setRatting1(val)}
+                    update={val => handleRating(val)}
                     count={5}
                     starSize={16}
                     fullStar={require('../../../assets/Image/star.png')}
                     emptyStar={require('../../../assets/Image/star1.png')}
+                    halfStar={require('../../../assets/Image/star2.png')}
                   />
                   : null}
 

@@ -260,7 +260,7 @@ const Profile = () => {
             </Text>
           </TouchableOpacity>
           <View style={{paddingHorizontal: 20, marginTop: 20}}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row',alignItems:'center'}}>
               <Image
                 style={{height: 28, width: 28}}
                 source={require('../../assets/PartnerImage/16.png')}
@@ -277,7 +277,7 @@ const Profile = () => {
                      <Text style={{marginLeft:30,fontSize:14,fontFamily:'Acephimere',color:'#424242'}}>{'Ph:9876567898 '}</Text> */}
               </View>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 20}}>
+            <View style={{flexDirection: 'row', marginTop: 20,alignItems:'center'}}>
               <Image
                 style={{height: 28, width: 28}}
                 source={require('../../assets/PartnerImage/msg.png')}
@@ -295,7 +295,7 @@ const Profile = () => {
               </View>
             </View>
 
-            <View style={{flexDirection: 'row', marginTop: 20}}>
+            {/* <View style={{flexDirection: 'row', marginTop: 20}}>
               <Image
                 style={{height: 28, width: 28}}
                 source={require('../../assets/PartnerImage/facebook.png')}
@@ -311,7 +311,7 @@ const Profile = () => {
                   {'fb.com/rcbafna '}
                 </Text>
               </View>
-            </View>
+            </View> */}
 
             <View style={{height: 100}} />
           </View>
