@@ -20,7 +20,7 @@ const Profile = () => {
         <TouchableOpacity
           style={{
             backgroundColor: '#032e63',
-            paddingHorizontal: 20,
+            // paddingHorizontal: 20,
             paddingVertical: 8,
             borderRadius: 20,
             width: 100,
@@ -45,7 +45,7 @@ const Profile = () => {
         <TouchableOpacity
           style={{
             backgroundColor: '#032e63',
-            paddingHorizontal: 19,
+            // paddingHorizontal: 19,
             paddingVertical: 8,
             borderRadius: 20,
             width: 100,
@@ -99,7 +99,7 @@ const Profile = () => {
           <TouchableOpacity
             style={{
               backgroundColor: '#032e63',
-              paddingHorizontal: 12,
+              // paddingHorizontal: 12,
               paddingVertical: 8,
               borderRadius: 20,
               width: 110,
@@ -112,7 +112,7 @@ const Profile = () => {
                 color: '#fff',
                 fontSize: 14,
                 fontFamily: 'Acephimere',
-                width: '90%',
+                // width: '90%',
               }}>
               Showrooms
             </Text>
@@ -159,7 +159,7 @@ const Profile = () => {
           <TouchableOpacity
             style={{
               backgroundColor: '#032e63',
-              paddingHorizontal: 12,
+              // paddingHorizontal: 12,
               paddingVertical: 8,
               borderRadius: 20,
               width: 110,
@@ -172,7 +172,7 @@ const Profile = () => {
                 color: '#fff',
                 fontSize: 14,
                 fontFamily: 'Acephimere',
-                width: '90%',
+                // width: '90%',
               }}>
               Products
             </Text>
@@ -246,7 +246,7 @@ const Profile = () => {
           <TouchableOpacity
             style={{
               backgroundColor: '#032e63',
-              paddingHorizontal: 20,
+              // paddingHorizontal: 20,
               paddingVertical: 8,
               borderRadius: 20,
               width: 100,

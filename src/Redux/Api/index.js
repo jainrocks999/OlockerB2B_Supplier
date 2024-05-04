@@ -39,12 +39,9 @@ export default class Api {
     }
   };
   static fetchDataByGET1 = async (url, data) => {
-
+    console.log('this is data',url,data);
     const Token = await AsyncStorage.getItem('loginToken');
-console.log('data ddbsd,,,,,,,',url,data);
-   
     try {
-      console.log('api call on get method api call dearch', Constants.MainUrl + url);
       const response = await axios({
         method: 'GET',
         url: Constants.MainUrl + url,

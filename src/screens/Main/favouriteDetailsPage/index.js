@@ -32,6 +32,7 @@ const FavouriteList = () => {
   const win = Dimensions.get('window');
   const isFocuse = useIsFocused();
   const selector = useSelector(state => state.Home.getWishList);
+  const isFetching1=useSelector(state=>state.Catalogue.isFetching)
 
 const Filter =()=>{
 
@@ -96,9 +97,21 @@ const Filter =()=>{
   };
   console.log('this is wishlist item', JSON.stringify(selector?.wishlistitems));
 
+  const productDetail = async item => {
+    console.log('this is product',item);
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'product_detail_request',
+      url: 'productDetails',
+      productId: item.SrNo,
+      supplierSrNo: user_id,
+      navigation,
+    });
+  };
+
   return (
     <View style={styles.container}>
-      {isFetching ? <Loader /> : null}
+      {isFetching ||isFetching1 ? <Loader /> : null}
       <Header
         source={require('../../../assets/L.png')}
         source2={require('../../../assets/Fo.png')}
@@ -121,7 +134,7 @@ const Filter =()=>{
               numColumns={2}
               renderItem={({item, index}) => {
                 return item != false ? (
-                  <View style={styles.cardview}>
+                  <TouchableOpacity onPress={()=>productDetail(item)} style={styles.cardview}>
                     <View
                       style={{
                         height: '100%',
@@ -164,7 +177,8 @@ const Filter =()=>{
                     </TouchableOpacity> */}
                       </View>
 
-                      <TouchableOpacity
+                      <View
+                      
                         // onPress={() => manageCategory1(item.Product)}
                         style={{
                           height: hp('25%'),
@@ -183,7 +197,7 @@ const Filter =()=>{
                           }}
                           source={{uri: `${imagePath}/${item.ImageName}`}}
                         />
-                      </TouchableOpacity>
+                      </View>
                       <View
                         style={{
                           width: '100%',
@@ -283,7 +297,7 @@ const Filter =()=>{
                           styles.cardview2text
                         }>{`${item.GrossWt?.substring(0, 4)} GM`}</Text>
                     </View> */}
-                  </View>
+                  </TouchableOpacity>
                 ) : null;
               }}
             />

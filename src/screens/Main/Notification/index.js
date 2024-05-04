@@ -21,7 +21,7 @@ const HomeScreen = () => {
  const selector =useSelector(state=>state.Home.Notification1);
  const isFetching= useSelector(state=>state.Home.isFetching);
  const [visiable1,setVisible]=useState(false);
- console.log('notifiyyyyyyy...........',selector);
+
 
 
 useEffect(()=>{

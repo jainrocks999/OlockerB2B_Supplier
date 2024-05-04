@@ -35,6 +35,9 @@ import style from '../../../components/StoreButtomTab/style';
 import styles from './styles';
 import Preview from '../../../components/Preview';
 import SliderBanner from '../HomeScreen/Banner';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+
 const MyCatalogue = () => {
   const navigation = useNavigation();
   const scrollViewRef = useRef();
@@ -293,16 +296,11 @@ const MyCatalogue = () => {
   const getSupplier = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
-
-    // if (city != '' || state != '' || search != '') {
     setVisible1(true);
     const axios = require('axios');
-    let data = new FormData();
-    console.log('search input data,,,,', city, state, supplier, user_id);
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
-
       url: `https://olocker.co/api/supplier/searchRetailer?userRole=6&userId=${user_id}&stateId=${state}&cityId=${city}&retailerName=${supplier}`,
       headers: {
         'Olocker': `Bearer ${Token}`,
@@ -310,7 +308,6 @@ const MyCatalogue = () => {
       },
     
     };
-console.log('api url ,,,',config.url);
     axios.request(config)
       .then((response) => {
         if (response.data.status == true) {
@@ -319,34 +316,11 @@ console.log('api url ,,,',config.url);
           setVisible1(false);
           setShow(true);
         }
-
       })
       .catch((error) => {
         setVisible1(false);
         console.log('error.....', error);
       });
-
-
-
-
-
-
-
-
-
-    // dispatch({
-    //   type: 'Search_Retailer_Request',
-    //   url: '/searchRetailer',
-    //   userId: user_id,
-    //   userRole: '6',
-    //   city: city,
-    //   state: state,
-    //   Rname: search,
-    //   // navigation: navigation,
-    //   start: 1,
-    //   length: 10,
-    // });
-    // }
   };
 
 const lenght= BannerData.length
@@ -365,7 +339,6 @@ const lenght= BannerData.length
       />
       {isFetching || isFetching1 || visible || visiable1 ? <Loader /> : null}
       <ScrollView ref={scrollViewRef}>
-
         <View
           style={styles.container1}>
           {/* {lenght > 0 ? */}
@@ -451,6 +424,7 @@ const lenght= BannerData.length
                       marginTop: 0,
 
                     }}
+                   
                     // renderInputSearch={renderInputSearch}
                     placeholderStyle={{
                       color: '#032e63',
@@ -482,7 +456,7 @@ const lenght= BannerData.length
                     itemTextStyle={{ color: '#474747' }}
                     itemContainerStyle={{ marginBottom: -15, }}
                     searchPlaceholder="search.."
-
+                    keyboardAvoiding={false}
                     maxHeight={200}
                     search
                     labelField="label"
@@ -821,7 +795,9 @@ const lenght= BannerData.length
                 }}
               />
               <TouchableOpacity
-                onPress={() => navigation.navigate('PendingRequest')}
+                onPress={() => navigation.navigate('PendingRequest',{
+                  partnerSrNo:''
+                 })}
                 style={{
                   padding: 10,
                   alignItems: 'center',
@@ -829,7 +805,7 @@ const lenght= BannerData.length
                   width: '33%',
                 }}>
 
-
+              { selector4?<View>
                 { selector4?.length == 0 ?
                   <View>
                     <Text style={{ color: '#565656', fontFamily: 'Acephimere' }}>{''}</Text>
@@ -839,6 +815,7 @@ const lenght= BannerData.length
                     <Text style={{ color: '#fff', textAlign: 'center' }}>{`${selector4?.length}`}</Text>
                   </View>
                 }
+                </View>:null}
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                   <Image
                     style={{ height: 42, width: 50 }}
@@ -872,7 +849,7 @@ const lenght= BannerData.length
                   justifyContent: 'center',
                   width: '33%',
                 }}>
-
+               
                 {selector1?.length == 0 ?
                   <View>
                     <Text style={{ color: '#565656', fontFamily: 'Acephimere' }}>{''}</Text>
@@ -940,9 +917,13 @@ const lenght= BannerData.length
                           {item.city_name}
                         </Text>
                       </View>
+                      {console.log('this is notification  ',item)}
                       <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity
-                          onPress={() => AcceptMEthod(item, index)}
+                         onPress={()=> navigation.navigate('PendingRequest',{
+                          partnerSrNo:item.PartnerSrNo
+                         })}
+                          // onPress={() => AcceptMEthod(item, index)}
                           style={{ height: 40, width: 40 }}>
                           <Image
                             style={{ height: '100%', width: '100%' }}
@@ -950,7 +931,10 @@ const lenght= BannerData.length
                           />
                         </TouchableOpacity>
                         <TouchableOpacity
-                          onPress={() => RejectMEthod(item, index)}
+                        onPress={()=> navigation.navigate('PendingRequest',{
+                          partnerSrNo:item.PartnerSrNo
+                         })}
+                          // onPress={() => RejectMEthod(item, index)}
                           style={{ height: 40, width: 40, marginLeft: 10 }}>
                           <Image
                             style={{ height: '100%', width: '100%' }}

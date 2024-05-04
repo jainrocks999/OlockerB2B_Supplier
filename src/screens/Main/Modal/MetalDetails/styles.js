@@ -12,7 +12,7 @@ export default StyleSheet.create({
 
   modalView: {
     height: hp(85),
-    width: wp(85),
+    width: wp(92),
     backgroundColor: 'white',
     alignSelf: 'center',
     elevation: 5,

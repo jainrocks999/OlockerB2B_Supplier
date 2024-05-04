@@ -46,7 +46,7 @@ export default StyleSheet.create({
   main: {
     alignItems: 'center',
     height: 200,
-    marginTop: -100,
+    marginTop: -120,
   },
   itemview: {
     marginTop: 10,

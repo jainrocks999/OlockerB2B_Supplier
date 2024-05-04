@@ -21,14 +21,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CheckBox from '@react-native-community/checkbox';
 import { RadioButton } from 'react-native-paper';
 
-const HomeScreen = () => {
+const HomeScreen = ({route}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const focus = useIsFocused()
+  const [active,setActive]=useState(true)
   const [visiable1, setVisible1] = useState(false);
   const [visiable2, setVisible2] = useState(false);
   const selector = useSelector(state => state?.Home?.RetailerRequestList);
-  console.log('dkfmskgmjsg', selector);
+  console.log('dkfmskgmjsg', route.params.partnerSrNo);
   const data2 = useSelector(state => state?.Home?.deletData1)
   const isFetching = useSelector(state => state?.Home?.isFetching)
   const [viewProd, setViewProd] = useState(false)
@@ -177,6 +178,11 @@ const HomeScreen = () => {
     // }) 
 
   }
+  setTimeout(() => {
+    if(route.params.partnerSrNo){
+      setActive(false)
+    }
+  }, 2000);
   return (
     <View style={{ flex: 1, backgroundColor: '#f0eeef' }}>
       <Header
@@ -224,6 +230,8 @@ const HomeScreen = () => {
                   shadowOpacity: 0.3,
                   shadowRadius: 8,
                   borderRadius: 8,
+                  marginBottom:4,
+                  backgroundColor:item.PartnerSrNo==route.params.partnerSrNo && active==true?'#a8c6e3':'#fff'
                 }}>
                   <View
                     style={{

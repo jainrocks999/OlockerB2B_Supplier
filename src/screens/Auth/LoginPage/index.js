@@ -7,6 +7,7 @@ import {
   TextInput,
   ScrollView,
   Platform,
+  BackHandler
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import styles from './styles';
@@ -55,6 +56,21 @@ const Login = () => {
       navigation,
     });
   };
+
+  useEffect(() => {
+    const backAction = () => {
+      BackHandler.exitApp();
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+    
+    return () => backHandler.remove();
+    
+  }, []);
+
   return (
     <Formik
       initialValues={{email: '', password: ''}}
@@ -149,6 +165,20 @@ const Login = () => {
                     {errors.password && touched.password && (
                       <Text style={styles.warn}>{errors.password}</Text>
                     )}
+                  </View>
+                  <View style={{marginTop:5,alignItems:'flex-end', width: wp('60%'),marginLeft:20}}>
+                    <TouchableOpacity 
+                    onPress={()=>navigation.navigate('ForgotPassword')} 
+                    style={{borderBottomWidth:1}}>
+                      <Text style={{
+                        fontSize: 15,
+                        color: '#474747',
+                        // textDecorationLine: 'underline',
+                        textDecorationStyle: 'solid',
+                        textDecorationColor: '#000',
+                        textShadowOffset: {height: 1, width: 0},
+                        }}>Forgot Password?</Text>
+                    </TouchableOpacity>
                   </View>
                   <View style={{paddingHorizontal: 20}}>
                     <TouchableOpacity

@@ -50,6 +50,7 @@ const ListOfProduct = () => {
   };
   const proctDetail = async item => {
     const user_id = await AsyncStorage.getItem('user_id');
+    console.log('this is product it,',item);
     dispatch({
       type: 'product_detail_request',
       url: 'productDetails',
@@ -111,12 +112,7 @@ const ListOfProduct = () => {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       {isFetching || isFetching2 ? <Loading /> : null}
-      <ScrollView contentContainerStyle={{}}>
-        <CategoryViewModal
-          visi={ViewModal}
-          close={() => setViewModal(false)}
-          data={modalData}
-        />
+     
         <View style={styles.container}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
@@ -146,15 +142,14 @@ const ListOfProduct = () => {
                 source={require('../../../assets/Image/dil.png')}
               />
             </TouchableOpacity>
-            {/* <TouchableOpacity onPress={() => Logout()}>
-              <Image
-                style={styles.img3}
-                source={require('../../../assets/Image/menu-icon.png')}
-              />
-            </TouchableOpacity> */}
           </View>
         </View>
-
+        <ScrollView contentContainerStyle={{}}>
+        <CategoryViewModal
+          visi={ViewModal}
+          close={() => setViewModal(false)}
+          data={modalData}
+        />
         <View style={[styles.searchbar, {marginTop: 20}]}>
           <TextInput
             value={input}
@@ -227,7 +222,8 @@ const ListOfProduct = () => {
             numColumns={2}
             // contentContainerStyle={{justifyContent:'center',}}
             renderItem={({item, index}) => (
-              <View
+              <TouchableOpacity
+              onPress={() => proctDetail(item)}
                 style={{
                   width: '46%',
                   margin: 7,
@@ -259,7 +255,7 @@ const ListOfProduct = () => {
                   }}>
                   <Text style={{color: '#fff'}}>Gross wt {item.grossWt}</Text>
                 </View>
-                <TouchableOpacity onPress={() => proctDetail(item)}>
+                <View >
                   <Image
                     style={{height: 144, width: '100%', borderRadius: 10}}
                     source={{uri: item.images}}
@@ -291,8 +287,8 @@ const ListOfProduct = () => {
                       Price : {item.productPrice}
                     </Text>
                   </View>
-                </TouchableOpacity>
-              </View>
+                </View>
+              </TouchableOpacity>
             )}
           />
         </View>

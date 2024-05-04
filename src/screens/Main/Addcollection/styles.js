@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 export default StyleSheet.create({
   container: {
     width: '100%',
@@ -162,4 +163,36 @@ export default StyleSheet.create({
     height: 13,
     marginTop: Platform.OS == 'android' ? 4 : 4,
   },
+  modalView: {
+    height: hp(93),
+    width: wp(93),
+    backgroundColor: 'white',
+    alignSelf: 'center',
+    elevation: 5,
+    marginTop: wp(0),
+    borderRadius: wp(2),
+    paddingHorizontal: wp(2),
+
+},
+xbtn: {
+  color: 'white',
+  fontSize: wp(5),
+  fontWeight: 'bold',
+},
+modalText: {
+  borderWidth:0.4,
+  // width: wp(100),
+  marginTop: hp(3)
+},
+crossbtn: {
+  height: hp(5),
+  width: hp(5),
+  backgroundColor: '#032e63',
+  borderRadius: wp(4.5),
+  position: 'absolute',
+  right: wp(2),
+  top: wp(2),
+  alignItems: 'center',
+  justifyContent: 'center',
+},
 });

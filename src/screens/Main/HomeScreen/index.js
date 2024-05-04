@@ -12,8 +12,8 @@ import {
   Alert,
   BackHandler,
 } from 'react-native';
-
-import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import { useNavigation,useIsFocused } from '@react-navigation/native';
 import styles from './styles';
 import Toast from 'react-native-simple-toast';
 import Loader from '../../../components/Loader';
@@ -42,9 +42,9 @@ const HomeScreen = () => {
   const isFetching3 = useSelector(state => state.Home.isFetching);
   const selector1 = useSelector(state => state.Home.NetworkList1);
   const bannerList = useSelector(state => state.Home.BannerList);
+  const [loader,setLoader]=useState(false)
   const BannerData = [];
-  console.log('network list data ,,', selector1);
-
+  const focus=useIsFocused()
   bannerList?.map((item) => {
     if (item.ImageSection == "supplierHome" && item.isActive == 1) {
       const url = `https://olocker.co/${item.ImageUrl}${item.ImageName
@@ -65,12 +65,13 @@ const HomeScreen = () => {
 
   useEffect(() => {
     ApiCallWithUseEffect();
-  }, []);
+  }, [focus]);
 
   const ApiCallWithUseEffect = async () => {
     const Token = await AsyncStorage.getItem('loginToken');
     const Id = await AsyncStorage.getItem('Partnersrno');
     const user_id = await AsyncStorage.getItem('user_id');
+    console.log('this is home screen user id',user_id);
     dispatch({
       type: 'Banner_List_Request',
       url: '/getBannerList',
@@ -174,10 +175,36 @@ const HomeScreen = () => {
   };
 
   const LogoutApp = async () => {
-    await AsyncStorage.setItem('loginToken', '');
-
-    navigation.navigate('Login');
-    // const Token = await AsyncStorage.getItem('loginToken');
+    const user_id = await AsyncStorage.getItem('user_id');
+    const Token = await AsyncStorage.getItem('loginToken');
+    const token =await AsyncStorage.getItem('Tokenfcm');
+    const axios = require('axios');
+    setLoader(true)
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `https://olocker.co/api/supplier//logout?supplierId=${user_id}&fcm_token=${token}`,
+      headers: {
+        'Olocker': `Bearer ${Token}`,
+      },
+    };
+    axios.request(config)
+    
+      .then((response) => {
+        console.log('this is response data',response.data);
+        if (response.data.status == true) {
+          AsyncStorage.setItem('loginToken', '');
+          AsyncStorage.setItem('user_id', '');
+          Toast.show(response.data.msg)
+          navigation.navigate('Login');
+          setLoader(false)
+        }
+      })
+      .catch((error) => {
+       setLoader(false)
+        console.log('error.....', error);
+      });
+   
 
   };
 
@@ -230,7 +257,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.scroll}>
-        {isFetching || isFetching1 || fetching || isFetching3 ? (
+        {isFetching || isFetching1 || fetching || isFetching3||loader ? (
           <Loader />
         ) : null}
         <ImageBackground
@@ -268,28 +295,6 @@ const HomeScreen = () => {
           </View>
         </ImageBackground>
         <View style={styles.main}>
-          {/* <FlatListSlider
-            data={BannerData}
-            height={hp(25)}
-            timer={3000}
-            contentContainerStyle={{
-              marginVertical: 0,
-              alignSelf:'center',
-              borderWidth:5
-            }}
-            indicatorContainerStyle={{position: 'absolute', bottom: -15}}
-            indicatorActiveColor={'#032e63'}
-            indicatorInActiveColor={'#ffffff'}
-            indicatorActiveWidth={5}
-            animation
-            component={<Text style={{color:'white',alignSelf:'center'}}>raju</Text>}
-            separatorWidth={wp(2.5)}
-            width={wp(95)}
-            autoscroll={true}
-            loop={false}
-          /> */}
-
-
           <SliderBanner
             data={BannerData}
             bottom={-10}
@@ -299,7 +304,7 @@ const HomeScreen = () => {
           />
         </View>
         <View style={styles.itemview}>
-          <View style={styles.itemview1}>
+          {selector1?.partnerApprovedRequest.length>0?<View style={styles.itemview1}>
             <Image
               style={{
                 width: 102,
@@ -312,7 +317,7 @@ const HomeScreen = () => {
             <TouchableOpacity>
               <Text style={styles.text4}>Network</Text>
             </TouchableOpacity>
-          </View>
+          </View>:null}
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal={true}
@@ -385,7 +390,7 @@ const HomeScreen = () => {
 
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('MyNetwork');
+              navigation.navigate('MyNetworkTab');
             }}
             style={{ alignItems: 'center', width: 120 }}>
             <Image

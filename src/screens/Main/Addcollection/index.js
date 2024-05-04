@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Modal,
   FlatList,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation,useIsFocused} from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
 import styles from './styles';
 import DocumentPicker from 'react-native-document-picker';
@@ -23,6 +23,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import TempletModel from './TempletModel';
 
 const Addcollection = () => {
   const loading = useSelector(state => state.Auth.isFetching);
@@ -37,18 +38,41 @@ const Addcollection = () => {
   const [inactive, setInActive] = useState('unchecked');
   const [photo, setPhoto] = useState('');
   const [photoName, setPhotoName] = useState('');
+  const [photo1, setPhoto1] = useState('');
+  const [Photo2, setPhoto2] = useState('');
+  const [getapi,setGetapi]= useState(false);
+  const [camera1,setCamera]=useState(false);
   const [photoType, setPhotoType] = useState('');
   const [fetching, setFetching] = useState(false);
-
   const onlyCharacters = /^[a-zA-Z\s]*$/;
+  const [templetmodel, setTempletModal] = useState(false);
+  const isFocused=useIsFocused()
 
-  // if (onlyCharacters.test(textInputValue)) {
-  //   // If only characters are present, display success message
-  //   Alert.alert('Success', 'Only characters are present');
-  // } else {
-  //   // If characters and numbers are present, display error message
-  //   Alert.alert('Error', 'Numbers are also present');
-  // }
+
+
+  useEffect(() => {
+    if (isFocused) {
+      Apicall();
+    }
+  }, [isFocused])
+  const Apicall = async () => {
+    const Token = await AsyncStorage.getItem('loginToken');
+    dispatch({
+      type: 'Get_creativeImgList_Request',
+      url: '/creativeImgList',
+      Token:Token
+    });
+  }
+
+  const getDataFromChild=(data,data1)=>{
+    console.log('this is data from chiled',data,data1);
+      let  image2=data.Logo.split('.').pop();
+      setPhoto(`${data1}${data.Logo}`);
+      setPhoto1(data.Logo);
+      setPhoto2(`image/${image2}`);
+      setGetapi(true);
+      setCamera(false)  
+  }
 
 
 
@@ -80,8 +104,11 @@ const Addcollection = () => {
         data.append('Description', description);
         data.append('ImageName', {
           uri: photo,
-          name: photoName,
-          type: photoType,
+          name: photo1.substring(photo1.lastIndexOf('/') + 1),
+          type: Photo2,
+          // uri: photo,
+          // name: photoName,
+          // type: photoType,
         });
 
         data.append('hidden_image', '');
@@ -120,11 +147,14 @@ const Addcollection = () => {
   const uploadPhoto = async () => {
     try {
       const res = await DocumentPicker.pickSingle({
-        type: [DocumentPicker.types.images],
+        type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
       });
+      console.log(res);
       setPhoto(res.uri);
-      setPhotoName(res.name);
-      setPhotoType(res.type);
+      setPhoto1(res.name);
+      setPhoto2(res.type);
+      setCamera(true);
+      setGetapi(false);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
       } else {
@@ -203,13 +233,18 @@ const Addcollection = () => {
               source={require('../../../assets/Image/dil.png')}
             />
           </TouchableOpacity>
-          {/* <Image
-            style={{height: 24, width: 28, tintColor: '#fff', marginLeft: 15}}
-            source={require('../../../assets/supplierImage/more.png')}
-          /> */}
+         
         </View>
       </View>
-      <ScrollView>
+     
+      <ScrollView style={{ flex: 1}}>
+        <TempletModel
+          visi={templetmodel}
+          close={() => setTempletModal(false)}
+         sendDatatoParent={getDataFromChild}
+
+        />
+     
         <View style={{paddingHorizontal: 15, marginTop: 15}}>
           <TextInput
             placeholder="Name"
@@ -331,7 +366,8 @@ const Addcollection = () => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                getLibraryProduct();
+                // getLibraryProduct();
+                setTempletModal(true)
               }}
               style={{
                 borderWidth: 1,

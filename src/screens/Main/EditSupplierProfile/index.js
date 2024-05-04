@@ -25,6 +25,10 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import {FlatList} from 'react-native';
 import { color } from 'react-native-elements/dist/helpers';
 let goldSpecilization = [];
@@ -974,6 +978,10 @@ const EditSupplierProfile = ({route}) => {
                     setCustomPurityDia(false);
                   }
                 }}
+               
+                styleItemsContainer={{
+                  height: hp(20),
+                }}
                 selectedItems={inputs.diamond_purity}
                 searchIcon={false}
                 tagBorderColor={'#032e63'}
@@ -1061,6 +1069,9 @@ const EditSupplierProfile = ({route}) => {
                 submitButtonColor={'#032e63'}
                 submitButtonText="Submit"
                 textInputProps={{editable: false, autoFocus: false}}
+                styleItemsContainer={{
+                  height: hp(20),
+                }}
                 styleDropdownMenu={{
                   // width:'100%',
                   borderBottomWidth: 1.5,
@@ -1117,6 +1128,9 @@ const EditSupplierProfile = ({route}) => {
                 submitButtonColor={'#032e63'}
                 submitButtonText="Submit"
                 textInputProps={{editable: false, autoFocus: false}}
+                styleItemsContainer={{
+                  height: hp(20),
+                }}
                 styleDropdownMenu={{
                   // width:'100%',
                   borderBottomWidth: 1.5,
@@ -1186,6 +1200,9 @@ const EditSupplierProfile = ({route}) => {
                 submitButtonColor={'#032e63'}
                 submitButtonText="Submit"
                 textInputProps={{editable: false, autoFocus: false}}
+                styleItemsContainer={{
+                  height: hp(20),
+                }}
                 styleDropdownMenu={{
                   // width:'100%',
                   borderBottomWidth: 1.5,
@@ -1244,6 +1261,9 @@ const EditSupplierProfile = ({route}) => {
                 submitButtonColor={'#032e63'}
                 submitButtonText="Submit"
                 textInputProps={{editable: false, autoFocus: false}}
+                styleItemsContainer={{
+                  height: hp(20),
+                }}
                 styleDropdownMenu={{
                   // width:'100%',
                   borderBottomWidth: 1.5,
@@ -1314,6 +1334,9 @@ const EditSupplierProfile = ({route}) => {
                 submitButtonColor={'#032e63'}
                 submitButtonText="Submit"
                 textInputProps={{editable: false, autoFocus: false}}
+                styleItemsContainer={{
+                  height: hp(20),
+                }}
                 styleDropdownMenu={{
                   borderBottomWidth: 1.5,
                   borderColor: '#032e63',
@@ -1369,6 +1392,9 @@ const EditSupplierProfile = ({route}) => {
                 submitButtonColor={'#032e63'}
                 submitButtonText="Submit"
                 textInputProps={{editable: false, autoFocus: false}}
+                styleItemsContainer={{
+                  height: hp(20),
+                }}
                 styleDropdownMenu={{
                   // width:'100%',
                   borderBottomWidth: 1.5,
@@ -1437,6 +1463,9 @@ const EditSupplierProfile = ({route}) => {
                 submitButtonColor={'#032e63'}
                 submitButtonText="Submit"
                 textInputProps={{editable: false, autoFocus: false}}
+                styleItemsContainer={{
+                  height: hp(20),
+                }}
                 styleDropdownMenu={{
                   // width:'100%',
                   borderBottomWidth: 1.5,

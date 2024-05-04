@@ -503,7 +503,7 @@ const Addproduct = ({route}) => {
             <Text
               style={{
                 color: '#23233C',
-                fontSize: 15,
+                fontSize: 14,
                 fontFamily: 'Roboto-Medium',
               }}>
               Price
@@ -557,7 +557,7 @@ const Addproduct = ({route}) => {
             <Text
               style={{
                 color: '#23233C',
-                fontSize: 15,
+                fontSize: 14,
                 fontFamily: 'Roboto-Medium',
               }}>
               Weight

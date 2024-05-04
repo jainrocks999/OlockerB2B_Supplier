@@ -32,7 +32,7 @@ export default StyleSheet.create({
     borderRadius: 10,
     elevation: 3,
     width: '46.5%',
-    borderWidth: 1,
+    // borderWidth: 1,
   },
   cardview1: {
     flexDirection: 'row',

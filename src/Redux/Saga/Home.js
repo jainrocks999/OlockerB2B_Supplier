@@ -60,8 +60,8 @@ function* networkList1(action) {
   console.log('ssjiogigs',action);
   try {
     const data = {
-      userRole: 6,
-      userId: 13,
+      userRole: action.userRole,
+      userId:action.userId,
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
     // console.log('responsed  network mmmmmmmm',response);

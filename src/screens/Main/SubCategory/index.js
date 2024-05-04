@@ -9,6 +9,7 @@ import {
   Share,
   TextInput,
   FlatList,
+  Dimensions,
 } from 'react-native';
 import Header from '../../../components/CustomHeader';
 import TabView from '../../../components/StoreButtomTab';
@@ -20,6 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './styles';
 import {useSelector, useDispatch} from 'react-redux';
 import Loader from '../../../components/Loader';
+import { SliderBox } from "react-native-image-slider-box";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -181,8 +183,17 @@ const SubCategory = ({route}) => {
 
     return res;
   };
+const  images= [
+  "https://source.unsplash.com/1024x768/?nature",
+  "https://source.unsplash.com/1024x768/?water",
+  "https://source.unsplash.com/1024x768/?girl",
+  "https://source.unsplash.com/1024x768/?tree", // Network image
+          // Local image
+]
+const BannerWidth = (Dimensions.get('window').width * 15) / 18;
   return (
     <View style={styles.container}>
+       {isFetching || isFetching4 ? <Loader /> : null}
       <Header
         source={require('../../../assets/L.png')}
         source1={require('../../../assets/Fo.png')}
@@ -193,7 +204,7 @@ const SubCategory = ({route}) => {
         onPress2={() => navigation.navigate('FavDetails')}
       />
       <ScrollView>
-        {isFetching || isFetching4 ? <Loader /> : null}
+       
         <View style={styles.main}>
           <TouchableOpacity onPress={() => click(click1)}>
             <TouchableOpacity
@@ -221,76 +232,46 @@ const SubCategory = ({route}) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{marginTop: 10}}>
-          {/* <FlatListSlider
-            data={productImage()}
-            height={200}
-            // timer={5000}
-            contentContainerStyle={{paddingHorizontal: 30}}
-            indicatorContainerStyle={{position: 'absolute', bottom: -20}}
-            indicatorActiveColor={'#ffffff'}
-            indicatorInActiveColor={'grey'}
-            indicatorActiveWidth={5}
-            component={<Preview />}
-            separatorWidth={15}
-            width={310}
-            autoscroll={false}
-            loop={false}
-          /> */}
-          {/* })} */}
-          <View
+        <View style={{marginTop: 20}}>
+         {productData?.productdetails?.productimages? <View
             style={{
               alignItems: 'center',
               justifyContent: 'center',
               height: hp(25),
             }}>
-            {/* <FlatList
+              <FlatListSlider
               data={productData?.productdetails?.productimages}
-              horizontal
-              pagingEnabled
-              renderItem={({item}) => (
-                <View
-                  style={{
-                    height: hp(25),
-                    width: wp(90),
-                    overflow: 'hidden',
-                    borderRadius: wp(8),
-                    marginHorizontal: wp(3.5),
-                    elevation: 5,
-                  }}>
-                  {console.log('this is item', productImage())}
-                  <Image
-                    source={{
-                      uri: `https://olocker.co/uploads/product/${item?.ImageName}`,
-                    }}
-                    style={{height: '100%', width: '100%'}}
-                  />
-                </View>
-              )}
-            /> */}
-            <FlatListSlider
-              data={productData?.productdetails?.productimages}
-              height={170}
+              height={hp(25)}
+              // height:hp(25),width:wp(87)
               timer={3000}
-              contentContainerStyle={{
-                marginVertical: 0,
-                paddingHorizontal: 30,
-              }}
-              indicatorContainerStyle={{position: 'absolute', bottom: -8}}
+              contentContainerStyle={{paddingHorizontal:25}}
+              indicatorContainerStyle={{position: 'absolute', bottom: -18}}
               indicatorActiveColor={'#fff'}
               indicatorInActiveColor={'#000'}
               indicatorActiveWidth={5}
               animation
               component={<Banner />}
               separatorWidth={15}
-              width={300}
-              autoscroll={false}
+              width={Dimensions.get('window').width-68}
+              autoscroll={true}
               loop={false}
             />
+          </View>:
+          <View  style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: hp(25),
+          }}>
+          <Image style={{
+            height: hp(25),
+            width: BannerWidth,
+            borderRadius:190,
+          }} source={require('../../../assets/logo.png')}/>
           </View>
+          }
         </View>
 
-        <View style={styles.view}>
+        {productData?.products?.ProductsPrice? <View style={styles.view}>
           <Image
             style={styles.img1}
             source={require('../../../assets/Image/rupay.png')}
@@ -299,7 +280,7 @@ const SubCategory = ({route}) => {
             {parseFloat(productData?.products?.ProductsPrice)?.toFixed(2)}
           </Text>
           <Text style={styles.text1}>( Approximate Price )</Text>
-        </View>
+        </View>:null}
         <View style={{padding: 20}}>
           <View style={styles.main1}>
             <View style={styles.main1view}>

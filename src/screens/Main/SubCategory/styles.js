@@ -8,6 +8,7 @@ export default StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems:'center',
         paddingHorizontal: 15,
         marginTop: 5,
         flex: 1
@@ -15,7 +16,7 @@ export default StyleSheet.create({
     img: {
         width: 26,
         height: 18,
-        marginTop: 10,
+        // marginTop: 10,
         tintColor: 'white'
     },
     view: {

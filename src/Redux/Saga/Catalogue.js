@@ -513,7 +513,6 @@ function* editProduct(action) {
         productEdit: true,
       });
       action.navigation.navigate('ChooseSupplierProduct');
-      Toast.show('edit data get success');
     } else {
       yield put({
         type: 'edit_product_error',

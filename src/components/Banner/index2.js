@@ -9,6 +9,10 @@ import {
   Platform,
   Dimensions,
 } from 'react-native';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
 const Preview = ({style, item, imageKey, onPress, index, active, local}) => {
   const BannerWidth = (Dimensions.get('window').width * 15) / 18;
@@ -26,9 +30,9 @@ const Preview = ({style, item, imageKey, onPress, index, active, local}) => {
         <View style={[styles.imageContainer]}>
           <FastImage
             style={{
-              height: 170,
+              height: hp(25),
               width: BannerWidth,
-              borderRadius: 15,
+              borderRadius:190,
             }}
             source={{
               uri: `https://olocker.co/uploads/product/${item?.ImageName}`,

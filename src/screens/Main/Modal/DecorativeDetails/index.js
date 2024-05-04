@@ -20,6 +20,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {FlatList} from 'react-native';
 import Loading from '../../../../components/Loader';
+import Toast from "react-native-simple-toast";
 
 const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const dispatch = useDispatch();
@@ -67,6 +68,19 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
       });
     } else {
       const user_id = await AsyncStorage.getItem('user_id');
+      if (inputs.DecoWt==0) {
+        Toast.show('Please enter the decorative item weight');
+        
+        return; 
+      }else if (inputs.DecoWtUnit==''){
+        Toast.show('Please select decorative unit weight');
+        
+        return; 
+      } else if(inputs.DecoItemName==''){
+        Toast.show('Please select decorative details');
+        
+        return; 
+      }
       dispatch({
         type: 'add_decItem_request',
         url: 'addDecorative',
@@ -91,13 +105,31 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     });
   };
 
+  const handleClose=()=>{
+    setInputs({
+      DecoWt: '',
+      DecoWtUnit: '',
+      ChargAmt: '',
+      DecoItemName: '',
+      hDecorationSrNo: 0,
+      hProductSrNo: 0,
+    });
+    close()
+  }
+
   return (
     <View style={styles.container}>
       <Modal animationType="fade" transparent visible={visi}>
+      <View
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(69, 71, 71,0.9)',
+            justifyContent: 'center',
+          }}>
         <View style={styles.modalView}>
           <ScrollView>
             {isFetching ? <Loading /> : null}
-            <TouchableOpacity onPress={() => close()} style={styles.crossbtn}>
+            <TouchableOpacity onPress={() => handleClose()} style={styles.crossbtn}>
               <Text style={styles.xbtn}>X</Text>
             </TouchableOpacity>
             <View style={styles.modalText}>
@@ -220,6 +252,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   placeholder="Stone Wt "
                   style={{color: 'black', fontSize: wp(4)}}
                   placeholderTextColor={'grey'}
+                  keyboardType='numeric'
                 />
               </View>
             </View>
@@ -286,6 +319,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                     style={{color: 'black', fontSize: wp(4)}}
                     placeholderTextColor={'grey'}
                     placeholder="Amount in Rs."
+                    keyboardType='numeric'
                   />
                 </View>
               </>
@@ -350,6 +384,7 @@ const DecorativeViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
               </Text>
             </TouchableOpacity>
           </ScrollView>
+        </View>
         </View>
       </Modal>
     </View>

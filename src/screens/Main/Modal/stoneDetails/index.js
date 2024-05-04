@@ -20,6 +20,7 @@ import {
 } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loading from '../../../../components/Loader';
+import Toast from "react-native-simple-toast";
 
 const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const dispatch = useDispatch();
@@ -70,6 +71,18 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         hStonesSrNo: item.SrNo,
       });
     } else {
+      if(inputs.StoneWt==0){
+        Toast.show('Please enter the stone weight');
+        return;
+      }
+      else if(inputs.StoneWtUnit==''){
+        Toast.show('Please select stone unit weight');
+        return;
+      }
+      else if(inputs.StoneName==''){
+        Toast.show('Please select stone Name');
+        return;
+      }
       dispatch({
         type: 'add_stone_request',
         url: 'addStone',
@@ -94,13 +107,33 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     });
   };
 
+  const handleClose=()=>{
+    setInputs({
+      StoneWt: '',
+      StoneWtUnit: '',
+      ChargAmt: '',
+      StoneName: '',
+      isAdd: 1,
+      hProductSrNo: 0,
+      hStonesSrNo: 0,
+      current_session_id: session,
+    });
+    close()
+  }
+
   return (
     <View style={styles.container}>
       <Modal animationType="fade" transparent visible={visi}>
+      <View
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(69, 71, 71,0.9)',
+            justifyContent: 'center',
+          }}>
         <View style={styles.modalView}>
           <ScrollView>
             {isFetching ? <Loading /> : null}
-            <TouchableOpacity onPress={() => close()} style={styles.crossbtn}>
+            <TouchableOpacity onPress={() => handleClose()} style={styles.crossbtn}>
               <Text style={styles.xbtn}>X</Text>
             </TouchableOpacity>
             <View style={styles.modalText}>
@@ -220,6 +253,7 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   placeholder="Stone Wt "
                   style={{color: 'black', fontSize: wp(4)}}
                   placeholderTextColor={'grey'}
+                  keyboardType='numeric'
                 />
               </View>
             </View>
@@ -286,6 +320,7 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                       handleInputs('ChargAmt', input);
                     }}
                     placeholder="Amount in Rs."
+                    keyboardType='numeric'
                   />
                 </View>
               </>
@@ -353,6 +388,7 @@ const StoneViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
               </Text>
             </TouchableOpacity>
           </ScrollView>
+        </View>
         </View>
       </Modal>
     </View>

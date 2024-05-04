@@ -1,18 +1,69 @@
-import React, {useEffect,Fragment} from 'react';
-import {LogBox, Platform, SafeAreaView} from 'react-native';
-import {Provider} from 'react-redux';
+import React, { useEffect, Fragment } from 'react';
+import { Alert, LogBox, Platform, SafeAreaView } from 'react-native';
+import { Provider } from 'react-redux';
 import Store from './src/Redux/Store';
 import RootApp from './src/navigation';
 import StatusBar from './src/components/StatusBar';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
 import PushNotification from "react-native-push-notification";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {GetMessageCommon} from './src/screens/Main/ChatScreen/common';
+import { GetMessageCommon } from './src/screens/Main/ChatScreen/common';
+import * as RootNavigation from "./src/navigation/RootNavigation";
+
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 
+
+PushNotification.createChannel(
+  {
+    channelId: "default-channel-id",
+    channelName: "My channel",
+    vibrate: true,
+  },
+  (created) => console.log(`createChannel returned '${created}'`)
+);
+
 const App = () => {
+
+  const manageLogin = async (data1) => {
+    const user_id = await AsyncStorage.getItem('loginToken')
+    if (user_id == null) {
+      console.log('this is working null');
+      RootNavigation.push('Login')
+    } else if (user_id) {
+      console.log('this is working');
+      RootNavigation.push('ChatScreen',{
+        item:data1
+      })
+    }
+  }
+
+  const invitationRequest = async () => {
+    const user_id = await AsyncStorage.getItem('loginToken')
+    console.log('this is working');
+    if (user_id == null) {
+      console.log('this is working null');
+      RootNavigation.push('Login')
+    } else if (user_id) {
+      console.log('this is working');
+      RootNavigation.push('PendingRequest',{
+        partnerSrNo:''
+       })
+    }
+  }
+
+  const requestAccept = async () => {
+    const user_id = await AsyncStorage.getItem('loginToken')
+    if (user_id == null) {
+      console.log('this is working null');
+      RootNavigation.push('Login')
+    } else if (user_id) {
+      console.log('this is working');
+      RootNavigation.push('MyNetworks1')
+    }
+  }
+
   const initializeNotifications = () => {
     PushNotification.deleteChannel('default-channel-id');
     PushNotification.createChannel(
@@ -28,30 +79,50 @@ const App = () => {
     );
     PushNotification.configure({
       onRegister: function (token) {
-             console.log("TOKEN: virendra", token);
-             AsyncStorage.setItem('Tokenfcm',token.token)
-           },
+        console.log("TOKEN: virendra", token);
+        AsyncStorage.setItem('Tokenfcm', token.token)
+      },
 
       onNotification: function (notification) {
-        if (notification.userInteraction) {
-          if (notification.data.toScreen) {
-          }
-        } else {
-          PushNotification.localNotification({
-            allowWhileIdle: true,
-            ignoreInForeground: false,
-            title: notification.title,
-            // message: notification.title,
-            soundName: 'notification.mp3',
-            visibility: 'public',
-            channelId: 'default',
-            playSound: true,
-          });
-           GetMessageCommon(notification?.data?.id, 'partner');
-          console.log('notification ,android',notification,notification.data.title);
+        PushNotification.localNotification({
+          allowWhileIdle: true,
+          ignoreInForeground: false,
+          title: notification.title,
+          // message: notification.title,
+          soundName: 'notification.mp3',
+          visibility: 'public',
+          channelId: 'default',
+          playSound: true,
+        });
+        GetMessageCommon(notification?.data?.id, 'partner');
+        let obj=notification?.data
+        if (notification.userInteraction === true && notification.foreground == false && notification.message == 'New Message From Partner') {
+          manageLogin(obj)
         }
+        else if (notification.userInteraction == true && notification.foreground == true && notification.message == 'New Message From Partner') {
+          manageLogin(obj)
+        }
+        else if (notification.userInteraction == true && notification.foreground == false && notification.message == 'New Invitation Request') {
+          invitationRequest()
+        }
+        else if (notification.userInteraction == true && notification.foreground == true && notification.message == 'New Invitation Request') {
+          invitationRequest()
+        }
+        // else if (notification.userInteraction == false && notification.foreground == true && notification.message == 'New Invitation Request') {
+        //   invitationRequest()
+        // }
+        else if (notification.userInteraction == true && notification.foreground == false && notification.message == 'Request Accepted') {
+          requestAccept()
+        }
+        else if (notification.userInteraction == true && notification.foreground == true && notification.message == 'Request Accepted') {
+          requestAccept()
+        }
+        // else if (notification.userInteraction == false && notification.foreground == true && notification.message == 'Request Accepted') {
+        //   requestAccept()
+        // }
       },
     });
+
 
     if (Platform.OS === 'ios') {
       messaging().onMessage(async remoteMessage => {
@@ -69,13 +140,13 @@ const App = () => {
   useEffect(() => {
 
     initializeNotifications();
-  
+
   }, [])
 
 
   return (
     <Fragment>
-      <GestureHandlerRootView style={{flex: 1}}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaView
           style={{
             flex: 1,

@@ -21,6 +21,7 @@ function* doLogin(action) {
         type: 'User_Login_Success',
         payload: response,
       });
+      console.log('response.userDetail.SrNo',response.userDetail.SrNo);
       AsyncStorage.setItem('loginToken', response.token);
       AsyncStorage.setItem('user_id', response.userDetail.SrNo);
       action.navigation.replace('Home');

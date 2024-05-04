@@ -238,6 +238,7 @@ import ImagePath from '../../../components/ImagePath';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux';
+import Toast from "react-native-simple-toast";
 
 let productImage = [];
 let showroomImage = [];
@@ -255,6 +256,7 @@ const HomeScreen = () => {
   const isFetching = useSelector(state => state.Supplier.isFetching);
   const isFetching1 = useSelector(state => state.City.isFetching);
   const [profile, setProfile] = useState(true);
+  const [loader,setLoader]=useState(false)
   const [message, setMessage] = useState(false);
   const [catalogue, setCatalogue] = useState(false);
   const [setting, setSetting] = useState(false);
@@ -294,10 +296,6 @@ const HomeScreen = () => {
   };
 
   const manageUpdate = () => {
-
-    console.log('dsfsdsd');
-console.log('sdfhnsjklgshn',selector);
-
     dispatch({
       type: 'City_List_Request',
       url: '/getCities',
@@ -330,8 +328,39 @@ console.log('sdfhnsjklgshn',selector);
   };
 
   const LogoutApp = async () => {
-    await AsyncStorage.setItem('loginToken', '');
-    navigation.navigate('Login');
+    const user_id = await AsyncStorage.getItem('user_id');
+    const Token = await AsyncStorage.getItem('loginToken');
+    const token =await AsyncStorage.getItem('Tokenfcm');
+    const axios = require('axios');
+    setLoader(true)
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `https://olocker.co/api/supplier//logout?supplierId=${user_id}&fcm_token=${token}`,
+      headers: {
+        'Olocker': `Bearer ${Token}`,
+      },
+    };
+    axios.request(config)
+    
+      .then((response) => {
+        console.log('this is response data',response.data);
+        if (response.data.status == true) {
+          AsyncStorage.setItem('loginToken', '');
+          AsyncStorage.setItem('user_id', '');
+          Toast.show(response.data.msg)
+          navigation.navigate('Login');
+          setLoader(false)
+        }
+      })
+      .catch((error) => {
+       setLoader(false)
+        console.log('error.....', error);
+      });
+   
+
+    // await AsyncStorage.setItem('loginToken', '');
+    // navigation.navigate('Login');
   };
   const handleWishList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
@@ -388,6 +417,7 @@ console.log('sdfhnsjklgshn',selector);
 
   return (
     <View style={{flex: 1, backgroundColor: '#f0eeef'}}>
+      {loader?<Loader/>:null}
       <View style={styles.container}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <TouchableOpacity

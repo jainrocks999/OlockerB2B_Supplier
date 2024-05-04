@@ -20,6 +20,7 @@ import {
 } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loading from '../../../../components/Loader';
+import Toast from "react-native-simple-toast";
 
 const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
   const dispatch = useDispatch();
@@ -43,16 +44,6 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     isAdd: 1,
     current_session_id: productEdit ? 0 : session,
   });
-  //   Raju Virendra check it param
-  // current_session_id:1697872810743
-  // GrossWt:20
-  // MetalPurity:995
-  // MetalTypes:Gold
-  // MetalWt:20
-  // MetalWtUnit:Gms.
-  // hProductSrNo:0
-  // isAdd:1
-  // hMetalWt:0
   useEffect(() => {
     setInputs({
       GrossWt: '',
@@ -81,6 +72,23 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
         hMetalWt: item.SrNo,
       });
     } else {
+      if(inputs.GrossWt==0){
+        Toast.show('Please enter gross wt');
+        return;
+      }else if(inputs.MetalTypes==''){
+        Toast.show('Please select metal type');
+        return;
+      }else if(inputs.MetalPurity==''){
+        Toast.show('Please select metal purity');
+        return;
+      }
+      else if(inputs.MetalWt==0){
+        Toast.show('Please enter metal wt');
+        return;
+      }else if(inputs.MetalWtUnit==''){
+        Toast.show('Please select metal unit wt');
+        return;
+      }
       dispatch({
         type: 'add_metal_list_request',
         url: 'addmetal',
@@ -110,15 +118,36 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
     console.log(item);
   };
 
+const handleClose=()=>{
+  setInputs({
+    GrossWt: '',
+    MetalPurity: '',
+    MetalTypes: '',
+    MetalWt: '',
+    MetalWtUnit: '',
+    current_session_id: productEdit ? 0 : session,
+    hProductSrNo: 0,
+    hMetalWt: 0,
+  });
+  close()
+}
+
   return (
     <View style={styles.container}>
       <Modal animationType="fade" transparent visible={visi}>
+      <View
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(69, 71, 71,0.9)',
+            justifyContent: 'center',
+          }}>
         <View style={styles.modalView}>
           <ScrollView
+          
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: wp(4)}}>
             {isFetching ? <Loading /> : null}
-            <TouchableOpacity onPress={() => close()} style={styles.crossbtn}>
+            <TouchableOpacity onPress={() => handleClose()} style={styles.crossbtn}>
               <Text style={styles.xbtn}>X</Text>
             </TouchableOpacity>
             <View style={styles.modalText}>
@@ -224,6 +253,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
               </View>
             ) : null}
             <View style={{marginLeft: wp(2)}}>
+              
               <Text style={styles.buttonClose}>
                 Gross wt. GMS <Text style={{color: 'red'}}>*</Text>
               </Text>
@@ -236,6 +266,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                   placeholderTextColor={'grey'}
                   placeholder="Gross Wt gms"
                   style={{color: 'black'}}
+                  keyboardType='numeric'
                 />
               </View>
               <Text style={[styles.buttonClose, {marginLeft: wp(1)}]}>
@@ -353,6 +384,7 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 placeholder="Net Wt gms"
                 style={{color: 'black'}}
                 placeholderTextColor={'grey'}
+                keyboardType='numeric'
               />
             </View>
             <Text style={[styles.buttonClose, {marginLeft: wp(3)}]}>
@@ -415,7 +447,9 @@ const MetalViewModal = ({visi, close = () => {}, isBrekup, ...props}) => {
                 Add Details
               </Text>
             </TouchableOpacity>
+            <View style={{height:160}}/>
           </ScrollView>
+        </View>
         </View>
       </Modal>
     </View>

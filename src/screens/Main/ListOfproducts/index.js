@@ -54,6 +54,7 @@ const ListOfproducts = () => {
   };
   const proctDetail = async item => {
     const user_id = await AsyncStorage.getItem('user_id');
+    console.log('this is prodfghjj',item);
     dispatch({
       type: 'product_detail_request',
       url: 'productDetails',

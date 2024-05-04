@@ -621,6 +621,38 @@ function* SupplierDetail(action) {
   }
 }
 
+function* collectionimg(action) {
+  try {
+    const response = yield call(
+      Api.fetchDataByGET2,
+      action.url,
+      action.Token,
+    
+    );
+    if (response.status == true) {
+      yield put({
+        type: 'Get_creativeImgList_Success',
+        payload: response,
+      });
+    
+
+    } else {
+      yield put({
+        type: 'Get_creativeImgList_Error',
+
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    yield put({
+      type: 'Get_creativeImgList_Error',
+
+    });
+        Toast.show(error);
+  }
+}
+
+
 // WishList Request
 
 export default function* authSaga() {
@@ -640,4 +672,6 @@ export default function* authSaga() {
   yield takeEvery('Get_updateSupplierRequest_Request', AcecptRequest);
   yield takeEvery('Get_updateSupplierRequest1_Request', RejectRequest);
   yield takeEvery('User_supplierDetail_Request', SupplierDetail);
+  yield takeEvery('Get_creativeImgList_Request',collectionimg);
+
 }

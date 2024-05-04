@@ -18,8 +18,8 @@ export default StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-
     elevation: 3,
+    marginHorizontal:3
   },
   icon: {
     marginRight: 5,
@@ -35,11 +35,11 @@ export default StyleSheet.create({
     fontSize: 16,
   },
   placeholderStyle: {
-    fontSize: wp(4.5),
+    fontSize: 14,
     color: 'black',
   },
   selectedTextStyle: {
-    fontSize: wp(4.5),
+    fontSize: 14,
     color: 'black',
   },
   iconStyle: {
@@ -155,22 +155,21 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontWeight: '700',
   },
-  mrt: {marginHorizontal: wp(3), marginTop: wp(3.5)},
+  mrt: {marginHorizontal: 14, marginTop: wp(3.5)},
   text: {
-    fontSize: wp(4),
+    fontSize: 16,
     marginLeft: wp(1),
     fontWeight: '700',
     color: '#000',
   },
   btn: {
-    borderWidth: wp(0.5),
-    borderColor: '#032e63',
+    borderWidth: 1, borderColor: '#979998',
 
     width: '49%',
     height: hp(5.5),
-    borderRadius: wp(4),
+    borderRadius: wp(2),
     alignItems: 'center',
     justifyContent: 'center',
   },
-  txt2: {fontSize: wp(4), fontWeight: '600', color: '#032e63'},
+  txt2: {fontSize: 15, fontWeight: '600', color: '#032e63'},
 });

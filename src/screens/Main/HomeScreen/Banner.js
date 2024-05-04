@@ -42,7 +42,9 @@ const SliderBanner = ({ data ,bottom,height,width,borderRadius}) => {
                 renderItem={({ item }) => (
                     <View style={{ alignItems: 'center', justifyContent: 'center',}}>
                         <TouchableOpacity>
-                            <View style={{height:hp(25),width:wp(95),marginHorizontal:wp(2.5),borderRadius:wp(6),overflow:'hidden'}}>
+                            <View 
+                            style={{height:hp(25),width:wp(87),marginHorizontal:wp(2.5),borderRadius:wp(6),overflow:'hidden'}}
+                            >
                                 <Image
                                     resizeMode="stretch"
                                     style={{ height: '100%', width: '100%', }}

@@ -360,7 +360,6 @@ const AddOffer = ({route}) => {
       console.log(valid);
       if (valid) {
         createOffer(data);
-        console.log('this is data', JSON.stringify(data));
       }
     }
   };

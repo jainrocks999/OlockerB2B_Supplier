@@ -217,7 +217,7 @@ const AddProducts = () => {
     });
   };
 
-  navigation = useNavigation();
+ const navigation = useNavigation();
 
   const renderItem = item => {
     return (
@@ -745,9 +745,9 @@ const AddProducts = () => {
       </View>
       <ScrollView contentContainerStyle={{}}>
         <View style={{marginTop: wp(4), marginHorizontal: wp(3)}}>
-          <Text style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
+          <Text style={{fontSize: 16, fontWeight: '700', color: '#000'}}>
             {' '}
-            CHOOSE SUPPLIER ADD PRODUCT
+            Choose Supplier Add Product
           </Text>
         </View>
         <View>
@@ -769,7 +769,7 @@ const AddProducts = () => {
               }
               onPress={() => handleInputs('radioInventoryPreInsured', 0)}
             />
-            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+            <Text style={{fontSize: 14, fontWeight: '600', color: 'grey'}}>
               Digital Inventory
             </Text>
         
@@ -784,14 +784,14 @@ const AddProducts = () => {
               }
               onPress={() => handleInputs('radioInventoryPreInsured', 1)}
             />
-            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+            <Text style={{fontSize: 14, fontWeight: '600', color: 'grey'}}>
             Pre-Insured Jewellery
             </Text>
           </View>
        
 
           <View style={styles.mrt}>
-            <Text style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
+            <Text style={{fontSize: 16, fontWeight: '700', color: '#000'}}>
               {' '}
               Choose Price Calculation Method
             </Text>
@@ -818,7 +818,7 @@ const AddProducts = () => {
               }
               onPress={() => handleInputs('radioPriceCalculator', 0)}
             />
-            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+            <Text style={{fontSize: 14, fontWeight: '600', color: 'grey'}}>
               Break Up Pricing
             </Text>
             <View style={{marginLeft: wp(5)}}>
@@ -833,7 +833,7 @@ const AddProducts = () => {
               />
             </View>
 
-            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+            <Text style={{fontSize: 14, fontWeight: '600', color: 'grey'}}>
               MRP Pricing
             </Text>
           </View>
@@ -974,7 +974,7 @@ const AddProducts = () => {
           //Hallmarked
         }
         <View style={[styles.mrt, {marginTop: wp(4)}]}>
-          <Text style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
+          <Text style={{fontSize: 16, fontWeight: '700', color: '#000'}}>
             {' '}
             Hallmarked
           </Text>
@@ -984,7 +984,7 @@ const AddProducts = () => {
               //justifyContent: 'space-between',
 
               flexDirection: 'row',
-              marginHorizontal: wp(3),
+              // marginHorizontal: wp(3),
               // borderWidth: 1
             }}>
             <RadioButton
@@ -996,7 +996,7 @@ const AddProducts = () => {
                 handleInputs('Hallmarked', 1);
               }}
             />
-            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+            <Text style={{fontSize: 14, fontWeight: '600', color: 'grey'}}>
               Yes
             </Text>
             <View style={{marginLeft: wp(5)}}>
@@ -1011,13 +1011,13 @@ const AddProducts = () => {
               />
             </View>
 
-            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+            <Text style={{fontSize: 14, fontWeight: '600', color: 'grey'}}>
               No
             </Text>
           </View>
         </View>
         <View style={styles.mrt}>
-          <Text style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
+          <Text style={{fontSize: 16, fontWeight: '800', color: '#000'}}>
             {' '}
             Gender
           </Text>
@@ -1025,7 +1025,7 @@ const AddProducts = () => {
             style={{
               alignItems: 'center',
               flexDirection: 'row',
-              marginHorizontal: wp(3),
+              // marginHorizontal: wp(3),
             }}>
             <RadioButton
               value={inputs.radioGender}
@@ -1034,7 +1034,7 @@ const AddProducts = () => {
               status={inputs.radioGender == 'Male' ? 'checked' : 'unchecked'}
               onPress={() => handleInputs('radioGender', 'Male')}
             />
-            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+            <Text style={{fontSize: 14, fontWeight: '600', color: 'grey'}}>
               Male
             </Text>
             <View style={{marginLeft: wp(5)}}>
@@ -1049,7 +1049,7 @@ const AddProducts = () => {
               />
             </View>
 
-            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+            <Text style={{fontSize: 14, fontWeight: '600', color: 'grey'}}>
               Female
             </Text>
             <View style={{marginLeft: wp(5)}}>
@@ -1062,7 +1062,7 @@ const AddProducts = () => {
               />
             </View>
 
-            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+            <Text style={{fontSize: 14, fontWeight: '600', color: 'grey'}}>
               Kids
             </Text>
           </View>
@@ -1071,10 +1071,10 @@ const AddProducts = () => {
         <View style={[styles.mrt, {marginTop: wp(4)}]}>
           <Text
             style={{
-              fontSize: wp(4.5),
+              fontSize: 16,
               fontWeight: '800',
               color: '#000',
-              color: 'grey',
+              
             }}>
             {' '}
             Assign Category
@@ -1083,7 +1083,7 @@ const AddProducts = () => {
             style={{
               alignItems: 'center',
               flexDirection: 'row',
-              marginHorizontal: wp(3),
+              // marginHorizontal: wp(3),
             }}>
             <RadioButton
               value={'fnff'}
@@ -1096,7 +1096,7 @@ const AddProducts = () => {
                 handleInputs('rbCategory', 'Category B');
               }}
             />
-            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+            <Text style={{fontSize:14, fontWeight: '600', color: 'grey'}}>
               Common
             </Text>
             <View style={{marginLeft: wp(5)}}>
@@ -1113,7 +1113,7 @@ const AddProducts = () => {
               />
             </View>
 
-            <Text style={{fontSize: wp(3.8), fontWeight: '600', color: 'grey'}}>
+            <Text style={{fontSize:14, fontWeight: '600', color: 'grey'}}>
               Exclusive
             </Text>
           </View>
@@ -1137,18 +1137,20 @@ const AddProducts = () => {
             </View>
             <View style={{}}>
               <Text
-                style={{fontSize: wp(4.5), color: '#000', fontWeight: '600'}}>
+                style={{fontSize: 16, color: '#000', fontWeight: '700'}}>
                 Is Best Seller
               </Text>
             </View>
           </View>
         </View>
         {itemField?.lblDimension == 1 ? (
-          <View style={{marginHorizontal: wp(3), marginTop: wp(5)}}>
+          <View style={{
+            marginHorizontal: 15,
+             marginTop: wp(5)}}>
             <Text
               style={{
-                fontSize: wp(4.5),
-                fontWeight: '800',
+                fontSize: 16,
+                fontWeight: '700',
                 color: '#000',
               }}>
               Dimensions
@@ -1159,10 +1161,11 @@ const AddProducts = () => {
                 justifyContent: 'space-between',
                 marginTop: wp(1),
               }}>
-              <View style={{width: '45%'}}>
+              <View style={{width: '48.5%'}}>
                 <View
                   style={{
                     borderWidth: 1,
+                    borderColor: '#979998',
                     borderRadius: wp(2),
                     height: hp(5.5),
                     alignItems: 'center',
@@ -1175,7 +1178,7 @@ const AddProducts = () => {
                     placeholder="Width"
                     editable={itemField?.divWidth == 1 ? true : false}
                     style={{
-                      fontSize: wp(4.5),
+                      fontSize:15,
                       fontWeight: '700',
                       flex: 1,
                       color: 'black',
@@ -1194,17 +1197,19 @@ const AddProducts = () => {
                       backgroundColor: 'lightgrey',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      borderColor: '#979998',
                     }}>
-                    <Text style={{color: 'black', fontWeight: '700'}}>
+                    <Text style={{color: 'black', fontWeight: '600'}}>
                       {inputs.lblwidthUnit}
                     </Text>
                   </View>
                 </View>
               </View>
-              <View style={{width: '45%'}}>
+              <View style={{width: '48.5%'}}>
                 <View
                   style={{
                     borderWidth: 1,
+                    borderColor: '#979998',
                     borderRadius: wp(2),
                     height: hp(5.5),
                     alignItems: 'center',
@@ -1216,7 +1221,7 @@ const AddProducts = () => {
                   <TextInput
                     placeholder="Height"
                     editable={itemField?.divHeight == 1 ? true : false}
-                    style={{fontSize: wp(4.5), fontWeight: '700', flex: 1}}
+                    style={{fontSize: 15, fontWeight: '700', flex: 1}}
                     value={inputs.txtProductHeight}
                     placeholderTextColor={'grey'}
                     onChangeText={input =>
@@ -1231,8 +1236,9 @@ const AddProducts = () => {
                       backgroundColor: 'lightgrey',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      borderColor: '#979998',
                     }}>
-                    <Text style={{color: 'black', fontWeight: '700'}}>
+                    <Text style={{color: 'black', fontWeight: '600'}}>
                       {inputs.lblheightUnit}
                     </Text>
                   </View>
@@ -1245,10 +1251,11 @@ const AddProducts = () => {
                 justifyContent: 'space-between',
                 marginTop: wp(3),
               }}>
-              <View style={{width: '45%'}}>
+              <View style={{width: '48.5%'}}>
                 <View
                   style={{
                     borderWidth: 1,
+                    borderColor: '#979998',
                     borderRadius: wp(2),
                     height: hp(5.5),
                     alignItems: 'center',
@@ -1259,10 +1266,10 @@ const AddProducts = () => {
                   }}>
                   <TextInput
                     placeholder="Thikness"
-                    editable={itemField?.divBreadth == 1 ? true : false}
+                    // editable={itemField?.divBreadth == 1 ? true : false}
                     style={{
-                      fontSize: wp(4.5),
-                      fontWeight: '700',
+                      fontSize: 14,
+                      fontWeight: '600',
                       flex: 1,
                       color: 'black',
                     }}
@@ -1280,17 +1287,19 @@ const AddProducts = () => {
                       backgroundColor: 'lightgrey',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      borderColor: '#979998',
                     }}>
-                    <Text style={{color: 'black', fontWeight: '700'}}>
+                    <Text style={{color: 'black', fontWeight: '600'}}>
                       {inputs.lblBreadthUnit}
                     </Text>
                   </View>
                 </View>
               </View>
-              <View style={{width: '45%'}}>
+              <View style={{width: '48.5%'}}>
                 <View
                   style={{
                     borderWidth: 1,
+                    borderColor: '#979998',
                     borderRadius: wp(2),
                     height: hp(5.5),
                     alignItems: 'center',
@@ -1300,13 +1309,13 @@ const AddProducts = () => {
                     paddingLeft: wp(4),
                   }}>
                   <TextInput
-                    editable={itemField?.divSize == 1 ? true : false}
+                    // editable={itemField?.divSize == 1 ? true : false}
                     value={inputs.txtSize}
                     placeholder="Size"
                     onChangeText={input => handleInputs('txtSize', input)}
                     style={{
-                      fontSize: wp(4.5),
-                      fontWeight: '700',
+                      fontSize: 14,
+                      fontWeight: '600',
                       flex: 1,
                       color: 'black',
                     }}
@@ -1315,13 +1324,14 @@ const AddProducts = () => {
                   <View
                     style={{
                       borderLeftWidth: 1,
+                      borderColor: '#979998',
                       width: '30%',
                       height: '100%',
                       backgroundColor: 'lightgrey',
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}>
-                    <Text style={{color: 'black', fontWeight: '700'}}>
+                    <Text style={{color: 'black', fontWeight: '600'}}>
                       {inputs.lblSizeUnit}
                     </Text>
                   </View>
@@ -1333,7 +1343,7 @@ const AddProducts = () => {
         <View
           style={{
             flexDirection: 'row',
-            marginHorizontal: 10,
+            marginHorizontal: 16,
             marginTop: 15,
             justifyContent: 'space-between',
           }}>
@@ -1356,7 +1366,7 @@ const AddProducts = () => {
         <View
           style={{
             flexDirection: 'row',
-            marginHorizontal: wp(2),
+            marginHorizontal: 16,
             marginTop: wp(2),
             justifyContent: 'space-between',
           }}>
@@ -1381,11 +1391,11 @@ const AddProducts = () => {
         <View style={{marginHorizontal: 20, marginTop: 15}}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{width: '48%'}}>
-              <View style={{marginHorizontal: 10, marginVertical: 10}}>
+              <View style={{marginHorizontal: 0, marginVertical: 10}}>
                 <Text
                   style={{
-                    fontSize: wp(5),
-                    fontWeight: '500',
+                    fontSize: 16,
+                    fontWeight: '700',
                     color: '#032e63',
                   }}>
                   Decorative Wt.
@@ -1393,7 +1403,7 @@ const AddProducts = () => {
               </View>
               <View
                 style={{
-                  borderWidth: 1,
+                  borderWidth: 1, borderColor: '#979998',
                   borderRadius: wp(2),
                   height: hp(5.5),
                   alignItems: 'center',
@@ -1407,8 +1417,8 @@ const AddProducts = () => {
                       : 'Decorative Wt.'
                   }
                   style={{
-                    fontSize: wp(4),
-                    fontWeight: '500',
+                    fontSize: 14,
+                    fontWeight: '600',
                     flex: 1,
                     color: 'black',
                   }}
@@ -1417,11 +1427,11 @@ const AddProducts = () => {
               </View>
             </View>
             <View style={{width: '48%'}}>
-              <View style={{marginHorizontal: 10, marginVertical: 10}}>
+              <View style={{marginHorizontal: 0, marginVertical: 10}}>
                 <Text
                   style={{
-                    fontSize: wp(5),
-                    fontWeight: '500',
+                    fontSize: 16,
+                    fontWeight: '700',
                     color: '#032e63',
                   }}>
                   Gross Wt
@@ -1429,7 +1439,7 @@ const AddProducts = () => {
               </View>
               <View
                 style={{
-                  borderWidth: 1,
+                  borderWidth: 1, borderColor: '#979998',
                   borderRadius: wp(2),
                   height: hp(5.5),
                   alignItems: 'center',
@@ -1445,8 +1455,8 @@ const AddProducts = () => {
                       : 'Gross Wt.'
                   }
                   sstyle={{
-                    fontSize: wp(4),
-                    fontWeight: '500',
+                    fontSize: 14,
+                    fontWeight: '600',
                     flex: 1,
                     color: 'black',
                   }}
@@ -1457,11 +1467,11 @@ const AddProducts = () => {
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{width: '48%'}}>
-              <View style={{marginHorizontal: 10, marginVertical: 10}}>
+              <View style={{marginHorizontal: 0, marginVertical: 10}}>
                 <Text
                   style={{
-                    fontSize: wp(5),
-                    fontWeight: '500',
+                    fontSize: 16,
+                    fontWeight: '700',
                     color: '#032e63',
                   }}>
                   Metal Wt.
@@ -1469,7 +1479,7 @@ const AddProducts = () => {
               </View>
               <View
                 style={{
-                  borderWidth: 1,
+                  borderWidth: 1, borderColor: '#979998',
                   borderRadius: wp(2),
                   height: hp(5.5),
                   alignItems: 'center',
@@ -1483,8 +1493,8 @@ const AddProducts = () => {
                   }
                   editable={false}
                   style={{
-                    fontSize: wp(4),
-                    fontWeight: '500',
+                    fontSize: 14,
+                    fontWeight: '600',
                     flex: 1,
                     color: 'black',
                   }}
@@ -1493,11 +1503,11 @@ const AddProducts = () => {
               </View>
             </View>
             <View style={{width: '48%'}}>
-              <View style={{marginHorizontal: 10, marginVertical: 10}}>
+              <View style={{marginHorizontal: 0, marginVertical: 10}}>
                 <Text
                   style={{
-                    fontSize: wp(5),
-                    fontWeight: '500',
+                    fontSize: 16,
+                    fontWeight: '700',
                     color: '#032e63',
                   }}>
                   Diamond Wt.
@@ -1505,7 +1515,7 @@ const AddProducts = () => {
               </View>
               <View
                 style={{
-                  borderWidth: 1,
+                  borderWidth: 1, borderColor: '#979998',
                   borderRadius: wp(2),
                   height: hp(5.5),
                   alignItems: 'center',
@@ -1519,8 +1529,8 @@ const AddProducts = () => {
                       : 'Diamond Wt.'
                   }
                   style={{
-                    fontSize: wp(4),
-                    fontWeight: '500',
+                    fontSize: 14,
+                    fontWeight: '600',
                     flex: 1,
                     color: 'black',
                   }}
@@ -1531,11 +1541,11 @@ const AddProducts = () => {
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{width: '48%'}}>
-              <View style={{marginHorizontal: 10, marginVertical: 10}}>
+              <View style={{marginHorizontal: 0, marginVertical: 10}}>
                 <Text
                   style={{
-                    fontSize: wp(5),
-                    fontWeight: '500',
+                    fontSize: 16,
+                    fontWeight: '700',
                     color: '#032e63',
                   }}>
                   Stone Wt.
@@ -1543,7 +1553,7 @@ const AddProducts = () => {
               </View>
               <View
                 style={{
-                  borderWidth: 1,
+                  borderWidth: 1, borderColor: '#979998',
                   borderRadius: wp(2),
                   height: hp(5.5),
                   alignItems: 'center',
@@ -1557,8 +1567,8 @@ const AddProducts = () => {
                       : 'Stone Wt.'
                   }
                   style={{
-                    fontSize: wp(4),
-                    fontWeight: '500',
+                    fontSize: 14,
+                    fontWeight: '600',
                     flex: 1,
                     color: 'black',
                   }}
@@ -1567,11 +1577,11 @@ const AddProducts = () => {
               </View>
             </View>
             <View style={{width: '48%'}}>
-              <View style={{marginHorizontal: 10, marginVertical: 10}}>
+              <View style={{marginHorizontal: 0, marginVertical: 10}}>
                 <Text
                   style={{
-                    fontSize: wp(5),
-                    fontWeight: '500',
+                    fontSize: 16,
+                    fontWeight: '700',
                     color: '#032e63',
                   }}>
                   Verify Wt.
@@ -1580,14 +1590,14 @@ const AddProducts = () => {
               <TouchableOpacity
                 onPress={() => verifyProduct()}
                 style={{
-                  borderWidth: 1,
+                  borderWidth: 1, borderColor: '#979998',
                   borderRadius: wp(2),
                   height: hp(5.5),
                   alignItems: 'center',
                   justifyContent: 'center',
                   backgroundColor: 'green', //#032e63',
                 }}>
-                <Text style={{fontSize: wp(4), color: 'white'}}>
+                <Text style={{fontSize: 14,fontWeight:'600', color: 'white'}}>
                   Verify Wt.
                 </Text>
               </TouchableOpacity>
@@ -1610,7 +1620,7 @@ const AddProducts = () => {
             <>
               <View style={styles.mrt}>
                 <Text
-                  style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
+                  style={{fontSize: 16, fontWeight: '700', color: '#000',marginLeft:2}}>
                   {' '}
                   Chargeable amount for Labour
                 </Text>
@@ -1619,7 +1629,7 @@ const AddProducts = () => {
                 style={{
                   alignItems: 'center',
                   flexDirection: 'row',
-                  marginHorizontal: wp(1),
+                  marginHorizontal: wp(4),
                 }}>
                 <RadioButton
                   value={inputs.radioIsWastage}
@@ -1630,7 +1640,7 @@ const AddProducts = () => {
                 />
                 <Text
                   style={{
-                    fontSize: wp(3.8),
+                    fontSize: 14,
                     fontWeight: '600',
                     color: 'grey',
                     width: wp(30),
@@ -1651,7 +1661,7 @@ const AddProducts = () => {
 
                 <Text
                   style={{
-                    fontSize: wp(3.8),
+                    fontSize:14,
                     fontWeight: '600',
                     color: 'grey',
                     width: wp(30),
@@ -1667,7 +1677,7 @@ const AddProducts = () => {
           {inputs.radioPriceCalculator == 0 ? (
             <>
               <Text
-                style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
+                style={{fontSize: 16, fontWeight: '700', color: '#000',marginLeft:2}}>
                 {' '}
                 {inputs.radioIsWastage == 1
                   ? 'Wastage % between 0-100'
@@ -1676,12 +1686,12 @@ const AddProducts = () => {
 
               <View
                 style={{
-                  borderWidth: 1,
+                  borderWidth: 1, borderColor: '#979998',
                   height: hp(5.5),
                   borderRadius: wp(2),
                   marginTop: wp(2),
                   paddingHorizontal: 5,
-                  marginHorizontal: wp(3),
+                  marginHorizontal: wp(2),
                 }}>
                 <TextInput
                   value={inputs.txtLabourCharges}
@@ -1694,8 +1704,8 @@ const AddProducts = () => {
                       : 'Amount in Rs.'
                   }
                   style={{
-                    fontSize: wp(4),
-                    fontWeight: '500',
+                    fontSize: 14,
+                    fontWeight: '600',
                     flex: 1,
                     color: 'black',
                   }}
@@ -1706,7 +1716,7 @@ const AddProducts = () => {
           ) : null}
 
           <View style={{marginTop: wp(3)}}>
-            <Text style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
+            <Text style={{fontSize: 16, fontWeight: '700', color: '#000',marginLeft:4}}>
               {' '}
               {inputs.radioPriceCalculator == 0
                 ? 'Chargeable amount for Product RS'
@@ -1714,12 +1724,12 @@ const AddProducts = () => {
             </Text>
             <View
               style={{
-                borderWidth: 1,
+                borderWidth: 1, borderColor: '#979998',
                 height: hp(5.5),
                 borderRadius: wp(2),
                 marginTop: wp(2),
                 paddingHorizontal: 5,
-                marginHorizontal: wp(3),
+                marginHorizontal: 8,
               }}>
               <TextInput
                 editable={inputs.radioPriceCalculator == 1 ? true : false}
@@ -1729,8 +1739,8 @@ const AddProducts = () => {
                     : inputs.txtMrp
                 }
                 style={{
-                  fontSize: wp(4),
-                  fontWeight: '500',
+                  fontSize: 14,
+                  fontWeight: '600',
                   flex: 1,
                   color: 'black',
                 }}
@@ -1744,28 +1754,29 @@ const AddProducts = () => {
                   )
                 }
                 placeholder={'0.00'}
+                keyboardType='numeric'
               />
             </View>
           </View>
 
           <View style={{marginTop: wp(6)}}>
-            <Text style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
+            <Text style={{fontSize: 16, fontWeight: '700', color: '#000',marginLeft:6}}>
               {' '}
               CERTIFICATION DETAILS
             </Text>
             <Text
               style={{
                 marginLeft: wp(3),
-                fontSize: wp(4.5),
+                fontSize: 16,
                 marginTop: wp(1),
-                fontWeight: 'bold',
+                fontWeight: '700',
                 color: 'black',
               }}>
               Certified
             </Text>
-            <View style={{marginHorizontal: wp(3)}}>
+            <View style={{marginHorizontal: 6}}>
               <Dropdown
-                style={[styles.dropdown, {borderWidth: 1}]}
+                style={[styles.dropdown, {borderWidth: 1, borderColor: '#979998'}]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
@@ -1786,24 +1797,24 @@ const AddProducts = () => {
                 <Text
                   style={{
                     marginLeft: wp(3),
-                    fontSize: wp(4.5),
+                    fontSize: 16,
                     marginTop: wp(2),
-                    fontWeight: 'bold',
+                    fontWeight: '700',
                     color: 'black',
                   }}>
                   Certification agency
                 </Text>
                 <View
                   style={{
-                    borderWidth: 1,
+                    borderWidth: 1, borderColor: '#979998',
                     height: hp(5.5),
                     borderRadius: wp(2),
                     marginTop: wp(2),
                     paddingHorizontal: 5,
                     marginHorizontal: wp(3),
                   }}>
-                  <TextInput style ={{ fontSize: wp(4),
-                  fontWeight: '500',
+                  <TextInput style ={{ fontSize: 14,
+                  fontWeight: '600',
                   flex: 1,
                   color: 'black',}}
                   placeholderTextColor={'grey'}
@@ -1834,11 +1845,11 @@ const AddProducts = () => {
             }}>
             <Entypo name="upload" size={20} color={'#032e63'} />
             <Text
-              style={{color: '#032e63', fontWeight: '700', fontSize: wp(4)}}>
+              style={{color: '#032e63', fontWeight: '700', fontSize: 15}}>
               Upload Images 6
             </Text>
           </TouchableOpacity>
-          <View
+        { inputs?.ImgUpload? <View
             style={{
               height: hp(17),
               marginTop: 4,
@@ -1915,15 +1926,15 @@ const AddProducts = () => {
                 </View>
               )}
             />
-          </View>
+          </View>:null}
         </View>
-        <View style={{marginHorizontal: wp(3), marginTop: hp(3)}}>
-          <Text style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
-            CHOOSE CATEGORIES TO PRODUCT
+        {/* <View style={{marginHorizontal: 19, marginTop:15}}>
+          <Text style={{fontSize: 16, fontWeight: '700', color: '#000'}}>
+            Choose Categories To Product
           </Text>
-          <Text style={{fontSize: wp(3), fontWeight: '800', color: 'grey'}}>
-            (DEFINE TABS:- TICKS MARK ALL THE TABS WHERE YOU WANT THIS JEWELLERY
-            TO APPEAR IN CLINT SEARCH)
+          <Text style={{fontSize: 14, fontWeight: '600', color: 'grey'}}>
+          (Define Tabs:- Ticks Mark All The Tabs Where You Want This Jewellery
+            To Appear In Clint Search)
           </Text>
         </View>
         <View style={{marginTop: wp(3.5)}}>
@@ -1938,13 +1949,15 @@ const AddProducts = () => {
                     marginTop: 5,
                     height: 40,
                     backgroundColor: '#032E63',
+                    justifyContent:'center'
                   }}>
                   <Text
                     style={{
-                      fontSize: 20,
+                      fontSize: 15,
                       fontWeight: '700',
                       marginLeft: 10,
                       color: '#fff',
+                      marginTop:5
                     }}>
                     {item.Name}
                   </Text>
@@ -1952,16 +1965,16 @@ const AddProducts = () => {
                 <View
                   style={{
                     marginHorizontal: 20,
-                    borderWidth: 2,
+                    borderWidth: 1, borderColor: '#979998',
                     borderBottomWidth: 0,
                   }}>
                   <Dropdown
-                    style={{borderBottomWidth: 2, height: 40}}
+                    style={{borderBottomWidth: 1, borderColor: '#979998', height: 40}}
                     placeholderStyle={[
                       styles.placeholderStyle,
                       {
-                        fontWeight: '800',
-                        fontSize: 18,
+                        fontWeight: '700',
+                        fontSize: 14,
                         marginLeft: 10,
                         color: '#000',
                       },
@@ -1969,7 +1982,7 @@ const AddProducts = () => {
                     selectedTextStyle={[
                       styles.selectedTextStyle,
                       {
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: '700',
                         color: '#000',
                         marginLeft: 10,
@@ -1994,30 +2007,34 @@ const AddProducts = () => {
               </TouchableOpacity>
             )}
           />
-        </View>
-        <View style={{marginHorizontal: 10, marginTop: 15}}>
-          <Text style={{fontSize: wp(4.5), fontWeight: '800', color: '#000'}}>
-            CHOOSE CATEGORIES TO PRODUCT
+        </View> */}
+        <View style={{marginHorizontal: 19, marginTop: 15}}>
+          <Text style={{fontSize: 16, fontWeight: '700', color: '#000'}}>
+          Choose Collection To Product
           </Text>
-          <Text style={{fontSize: wp(4), fontWeight: '800', color: 'grey'}}>
-            (DEFINE TABS:- TICKS MARK ALL THE TABS WHERE YOU WANT THIS JEWELLERY
-            TO APPEAR IN CLINT SEARCH)
+          <Text style={{fontSize: 12, fontWeight: '600', color: 'grey'}}>
+          (Define Tabs:- Ticks Mark All The Tabs Where You Want This Jewellery
+            To Appear In Clint Search)
           </Text>
         </View>
-        <View>
+        {/* <View> */}
+        {productType?.collection &&
+          <View style={{borderWidth: 1, borderColor: '#979998' ,marginHorizontal:19,height:hp(35),zIndex:2,marginTop:10}}>
+            <ScrollView nestedScrollEnabled>
           <FlatList
             data={productType?.collection}
             renderItem={({item}) => (
               <View
                 style={{
                   marginHorizontal: 20,
-                  borderWidth: 2,
-                  marginTop: 15,
+                  // borderWidth: 1, borderColor: '#979998',
+                  marginTop: 10,
                   borderBottomWidth: 0,
                 }}>
                 <View
                   style={{
-                    borderBottomWidth: 2,
+                    // borderBottomWidth: 1,
+                    borderColor: '#979998',
                     height: 40,
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -2038,7 +2055,7 @@ const AddProducts = () => {
                   />
                   <Text
                     style={{
-                      fontSize: 18,
+                      fontSize: 15,
                       marginLeft: 5,
                       fontWeight: '700',
                       color: '#000',
@@ -2049,7 +2066,8 @@ const AddProducts = () => {
               </View>
             )}
           />
-        </View>
+          </ScrollView>
+        </View>}
 
         <View style={{marginHorizontal: 20, marginTop: 15}}>
           <TouchableOpacity
@@ -2068,6 +2086,7 @@ const AddProducts = () => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
+          onPress={()=>navigation.goBack()}
             style={{
               height: 40,
               borderRadius: 30,
@@ -2075,6 +2094,7 @@ const AddProducts = () => {
               justifyContent: 'center',
               marginTop: 15,
               backgroundColor: '#666564',
+              marginBottom:20
             }}>
             <Text style={{fontSize: 18, color: 'white', fontWeight: '600'}}>
               Cancel

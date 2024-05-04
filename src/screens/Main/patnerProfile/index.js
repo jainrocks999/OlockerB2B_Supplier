@@ -26,6 +26,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector, useDispatch } from 'react-redux';
 import Toast from "react-native-simple-toast";
+import CheckBox from '@react-native-community/checkbox';
+import { RadioButton } from 'react-native-paper';
 
 let productImage = [];
 let showroomImage = [];
@@ -57,7 +59,14 @@ const PatnerProfile = ({ route }) => {
   const [catalogue, setCatalogue] = useState(false);
   const [setting, setSetting] = useState(false);
   const [rating1, setRatting1] = useState(0);
-  const [loader,setLoader]=useState(false)
+  const [loader, setLoader] = useState(false)
+  const [viewProd, setViewProd] = useState(false)
+  const [common, setCommon] = useState('checked');
+  const [exclusive, setExclusive] = useState('unchecked');
+
+
+
+
   const BannerWidth = (Dimensions.get('window').width * 15) / 16;
   const BannerHeight = 140;
   const share = async () => {
@@ -90,6 +99,16 @@ const PatnerProfile = ({ route }) => {
     setSetting(true);
   };
 
+  const manageCommon = () => {
+    setCommon('checked');
+    setExclusive('unchecked');
+  };
+
+  const manageExclusive = () => {
+    setCommon('unchecked');
+    setExclusive('checked');
+  };
+
   manageUpdate = () => {
     dispatch({
       type: 'City_List_Request',
@@ -108,24 +127,92 @@ const PatnerProfile = ({ route }) => {
     console.log('IsPartnerSend', data.IsPartnerSend);
     console.log('issuppliersend', data.IsSupplierSend)
     return (
-     <View style={{ flexDirection: 'row', width: '80%', justifyContent: data?.IsPartnerSend == 1 ? 'space-evenly' : 'center' }}>
-      <TouchableOpacity
-        style={[styles.addButton, { backgroundColor:data.network_status=='Reject'?'red': data?.IsSupplierSend == 1 ? '#FFF' : data?.IsPartnerSend == 1 ? 'green' : '#ea056c' }]}
-        disabled={data?.IsSupplierSend == 1 ||data.network_status=='Reject'}
-        onPress={addToNetwork}
-      >
-        <Text style={[styles.text1, { color: data?.IsSupplierSend == 1 ? '#032e63' : '#FFF', fontWeight: data?.IsSupplierSend === 1 ? '900' : '500' }]}>
-          {data.network_status=='Reject'?"Rejected":data?.IsSupplierSend == 1 ? "Requested" : data?.IsPartnerSend == 1 ? "Confirm" : "Add To Network"}
-        </Text>
-      </TouchableOpacity>
-      {data?.IsPartnerSend == 1 &&data.network_status!='Reject' ?
-        <TouchableOpacity style={[styles.addButton, { backgroundColor: 'red' }]} onPress={RejectMEthod}>
-          <Text style={styles.text1}>
-            {"Reject"}
-          </Text>
-        </TouchableOpacity>:null
-      }
-    </View>
+      <View style={{ width: '80%', }}>
+        <View style={{ flexDirection: 'row', justifyContent: data?.IsPartnerSend == 1 ? 'space-evenly' : 'center' }}>
+          <TouchableOpacity
+            style={[styles.addButton, { backgroundColor: data.network_status == 'Reject' ? 'red' : data?.IsSupplierSend == 1 ? '#FFF' : data?.IsPartnerSend == 1 ? 'green' : '#ea056c' }]}
+            disabled={data?.IsSupplierSend == 1 || data.network_status == 'Reject'}
+            onPress={addToNetwork}
+          >
+            <Text style={[styles.text1, { color: data?.IsSupplierSend == 1 ? '#032e63' : '#FFF', fontWeight: data?.IsSupplierSend === 1 ? '900' : '500' }]}>
+              {data.network_status == 'Reject' ? "Rejected" : data?.IsSupplierSend == 1 ? "Requested" : data?.IsPartnerSend == 1 ? "Confirm" : "Add To Network"}
+            </Text>
+          </TouchableOpacity>
+          {data?.IsPartnerSend == 1 && data.network_status != 'Reject' ?
+            <TouchableOpacity style={[styles.addButton, { backgroundColor: 'red' }]} onPress={RejectMEthod}>
+              <Text style={styles.text1}>
+                {"Reject"}
+              </Text>
+            </TouchableOpacity> : null
+          }
+        </View>
+      {data?.IsPartnerSend == 1?  <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <View style={{ flexDirection: 'row', marginLeft: -5 }}>
+            <CheckBox
+              disabled={false}
+              value={viewProd}
+              onValueChange={newValue => {
+                setViewProd(newValue)
+              }}
+              tintColors={{ true: '#fff', false: '#fff' }}
+              onTintColor="#000"
+              onCheckColor="#000"
+              boxType="square"
+              style={{ height: 16, width: 18 }}
+            />
+            <Text style={{
+              marginLeft: 16, color: '#fff',
+              fontSize: 12,
+              fontFamily: 'Acephimere', textAlign: 'center'
+            }}>Let my jewellery seen by your customers</Text>
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <Text style={{
+
+              color: '#fff',
+              fontSize: 14,
+              fontFamily: 'Roboto-Medium',
+
+            }}>Category Type</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: -7, marginTop: 3 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <RadioButton
+                  value="first"
+                  status={common}
+                  onPress={() => manageCommon()}
+                  uncheckedColor="#fff"
+                  color="#fff"
+                />
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: '#fff',
+                    fontFamily: 'Acephimere',
+                  }}>
+                  Common
+                </Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <RadioButton
+                  value="first"
+                  status={exclusive}
+                  onPress={() => manageExclusive()}
+                  uncheckedColor="#fff"
+                  color="#fff"
+                />
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: '#fff',
+                    fontFamily: 'Acephimere',
+                  }}>
+                  Exclusive
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>:null}
+      </View>
     )
   }
 
@@ -158,6 +245,8 @@ const PatnerProfile = ({ route }) => {
     data.append('ddlStatus', '2');
     data.append('partnerId', data1?.SrNo);
     data.append('supplierId', userId);
+    data.append('IsShowInRetailerApp', viewProd == true ? 1 : 0)
+    data.append("ddlCategory", common == 'checked' ? "Category B" : "Category A")
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
@@ -195,48 +284,50 @@ const PatnerProfile = ({ route }) => {
     const data = selector3?.partnerdetails
     console.log('callll ');
     const userId = await AsyncStorage.getItem('user_id');
-    if (data.IsPartnerSend==1) {
-       const Token = await AsyncStorage.getItem('loginToken');
-       setVisible1(true);
-           const axios = require('axios');
-           let data = new FormData();
-           data.append('ddlStatus', '1'); 
-           data.append('partnerId', data.SrNo,);
-           data.append('supplierId',userId);
-               let config = {
-                 method: 'post',
-                 maxBodyLength: Infinity,
-                 url: 'https://olocker.co/api/supplier/retailerStatusUpdate',
-             headers: {
-               'Olocker': `Bearer ${Token}`,
-               // ...data.getHeaders()
-             },
-             data: data
-           };
+    if (data.IsPartnerSend == 1) {
+      const Token = await AsyncStorage.getItem('loginToken');
+      setVisible1(true);
+      const axios = require('axios');
+      let data = new FormData();
+      data.append('ddlStatus', '1');
+      data.append('partnerId', data.SrNo,);
+      data.append('supplierId', userId);
+      data.append('IsShowInRetailerApp', viewProd == true ? 1 : 0)
+      data.append("ddlCategory", common == 'checked' ? "Category B" : "Category A")
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'https://olocker.co/api/supplier/retailerStatusUpdate',
+        headers: {
+          'Olocker': `Bearer ${Token}`,
+          // ...data.getHeaders()
+        },
+        data: data
+      };
 
-           axios.request(config)
-             .then((response) => {
-               console.log('response,,,,,,,,,,vvv',response.data,config);
-               if (response?.data?.status == "success") {
-                 setVisible1(false);
-                 supplierprofile(data?.SrNo);
-                 Toast.show(response?.data?.msg);
+      axios.request(config)
+        .then((response) => {
+          console.log('response,,,,,,,,,,vvv', response.data, config);
+          if (response?.data?.status == "success") {
+            setVisible1(false);
+            supplierprofile(data?.SrNo);
+            Toast.show(response?.data?.msg);
 
-               }
+          }
 
-             })
-             .catch((error) => {
-               setVisible1(false);
-               console.log(error);
-             });
-
-
+        })
+        .catch((error) => {
+          setVisible1(false);
+          console.log(error);
+        });
 
 
 
-     }
-     else if (data.IsPartnerSend == 0 && data.IsSupplierSend == 0) {
-    
+
+
+    }
+    else if (data.IsPartnerSend == 0 && data.IsSupplierSend == 0) {
+
       dispatch({
         type: 'add_partner_to_network_request',
         url: 'addtoNetwork',
@@ -302,11 +393,11 @@ const PatnerProfile = ({ route }) => {
   }, []);
 
 
-  const handleRating=async(value)=>{
+  const handleRating = async (value) => {
     const data = selector3?.partnerdetails
     const userId = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken')
-    console.log('this is rating count',value);
+    console.log('this is rating count', value);
     setRatting1(value)
     setLoader(true)
     const axios = require('axios');
@@ -321,12 +412,12 @@ const PatnerProfile = ({ route }) => {
 
     axios.request(config)
       .then((response) => {
-        console.log('this is response',response.data);
+        console.log('this is response', response.data);
         if (response.data.status == true) {
           setLoader(false)
           Toast.show(response.data.msg)
         }
-        else{
+        else {
           setLoader(false)
         }
       })
@@ -350,7 +441,7 @@ const PatnerProfile = ({ route }) => {
       />
 
       <ScrollView>
-        {isFetching || isFetching1 || visiable1 || visiable2 ||loader ? <Loader /> : null}
+        {isFetching || isFetching1 || visiable1 || visiable2 || loader ? <Loader /> : null}
         <View
           style={{
             backgroundColor: '#032e63',
@@ -390,14 +481,14 @@ const PatnerProfile = ({ route }) => {
                   alignItems: 'center',
                   width: '100%',
                 }}>
-                    {console.log("userffffffffffff",selector3?.partnerdetails?.rating)}
-                    {console.log("rating1 userffffffffffff",rating1)}
+                {console.log("userffffffffffff", selector3?.partnerdetails?.rating)}
+                {console.log("rating1 userffffffffffff", rating1)}
                 {selector3?.partnerdetails?.isAdd == 1 ?
-                    
+
                   <Stars
                     half={true}
                     // default={parseFloat('4.5')}
-                    default={selector3?.partnerdetails?.rating?parseFloat(selector3?.partnerdetails?.rating):rating1}
+                    default={selector3?.partnerdetails?.rating ? parseFloat(selector3?.partnerdetails?.rating) : rating1}
                     spacing={5}
                     update={val => handleRating(val)}
                     count={5}
@@ -442,15 +533,7 @@ const PatnerProfile = ({ route }) => {
             }}>
             {console.log('partnerDetail,,,,,,,ddddddD23334', selector3?.partnerdetails.isAdd, id1)}
             {selector3?.partnerdetails?.isAdd == 0 ?
-              // <TouchableOpacity 
-              // disabled={selector3?.partnerdetails?.SrNo==id1?true:false}
-              // onPressIn={addToNetwork}
-              //   style={[styles.addButton,{backgroundColor:selector3?.partnerdetails?.SrNo===id1?'#FFF':'#ea056c'}]}>
-              //   <Text style={[styles.text1,{fontSize:12,color:selector3?.partnerdetails?.SrNo===id1?'#032e63':'#FFF',fontWeight:selector3?.partnerdetails?.SrNo===id1?'900':''}]}>
 
-              //    { selector3?.partnerdetails?.SrNo===id1?'Requested':'Add To Network'}
-              //   </Text>
-              // </TouchableOpacity>
               getStatus()
               : <View style={styles.addButton}>
                 <Text style={[styles.text1, { fontSize: 12 }]}>
@@ -458,11 +541,6 @@ const PatnerProfile = ({ route }) => {
                 </Text>
               </View>
             }
-
-
-
-
-
           </View>
 
           <View style={{ alignItems: 'center', height: 0, marginTop: 15 }}></View>
