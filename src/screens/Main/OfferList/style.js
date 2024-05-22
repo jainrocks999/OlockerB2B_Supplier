@@ -49,8 +49,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   cardbtn: {
-    height: hp(4.5),
-    paddingHorizontal: wp(2),
+    height: 40,
+    paddingHorizontal: 16,
     //borderWidth: 1,
     marginTop: 15,
     backgroundColor: '#032e63',
@@ -61,6 +61,6 @@ export default StyleSheet.create({
     elevation: 4,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: wp(1),
+    borderRadius: 30,
   },
 });

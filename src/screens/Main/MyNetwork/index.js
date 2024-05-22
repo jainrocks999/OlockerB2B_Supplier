@@ -361,7 +361,10 @@ const lenght= BannerData.length
                 loop={false}
               /> */}
 {lenght>0?
-          <SliderBanner data={BannerData} bottom={-15} height={9} width={9} borderRadius={5} />
+          <SliderBanner data={BannerData} bottom={-15}  
+          height={6}
+          width={6}
+          borderRadius={3} />
 
           : null}
 
@@ -766,8 +769,8 @@ const lenght= BannerData.length
                   <View>
                     <Text style={{ color: '#565656', fontFamily: 'Acephimere' }}>{''}</Text>
                   </View> :
-                  <View style={{ height: 18, width: 30, bottom: -4, backgroundColor: '#e9056b', alignSelf: 'flex-end', borderRadius: 10 }}>
-                    <Text style={{ color: '#fff', textAlign: 'center', marginTop: -1 }}>{`${selector2?.length}`}</Text>
+                  <View style={{ height: 18, width: 18, bottom: -4, backgroundColor: '#e9056b', alignSelf: 'flex-end', borderRadius: 9,marginRight:20,alignItems:'center',justifyContent:'center' }}>
+                    <Text style={{ color: '#fff', textAlign: 'center', fontSize:11}}>{`${selector2?.length<=9?selector2?.length:'9+'}`}</Text>
                   </View>}
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -811,8 +814,8 @@ const lenght= BannerData.length
                     <Text style={{ color: '#565656', fontFamily: 'Acephimere' }}>{''}</Text>
                   </View> :
 
-                  <View style={{ height: 18, width: 30, bottom: -5, backgroundColor: '#da062f', alignSelf: 'flex-end', borderRadius: 10 }}>
-                    <Text style={{ color: '#fff', textAlign: 'center' }}>{`${selector4?.length}`}</Text>
+                  <View style={{  height: 18, width: 18, bottom: -4, backgroundColor: '#e9056b', alignSelf: 'flex-end', borderRadius: 9,marginLeft:47,alignItems:'center',justifyContent:'center' }}>
+                    <Text style={{ color: '#fff', textAlign: 'center',fontSize:11 }}>{`${selector4?.length <=9?selector4?.length:'9+'}`}</Text>
                   </View>
                 }
                 </View>:null}
@@ -854,8 +857,8 @@ const lenght= BannerData.length
                   <View>
                     <Text style={{ color: '#565656', fontFamily: 'Acephimere' }}>{''}</Text>
                   </View> :
-                  <View style={{ height: 18, width: 30, bottom: -4, backgroundColor: '#e9056b', alignSelf: 'flex-end', borderRadius: 10 }}>
-                    <Text style={{ color: '#fff', textAlign: 'center', marginTop: -1 }}>{`${selector1?.length}`}</Text>
+                  <View style={{  height: 18, width: 18, bottom: -4, backgroundColor: '#e9056b', alignSelf: 'flex-end', borderRadius: 9,marginRight:12,alignItems:'center',justifyContent:'center' }}>
+                    <Text style={{ color: '#fff', textAlign: 'center',fontSize:11 }}>{`${selector1?.length <=9?selector1?.length:'9+'}`}</Text>
                   </View>}
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                   <Image

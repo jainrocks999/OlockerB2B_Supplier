@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -6,38 +6,34 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  Alert
 } from 'react-native';
-import {Dropdown} from 'react-native-element-dropdown';
 import styles from './styles';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
-import CheckBox from '@react-native-community/checkbox';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 import Loader from '../../../components/Loader';
-import {TextInput} from 'react-native';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import { TextInput } from 'react-native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Toast from 'react-native-simple-toast'
+// import axios from "axios";
+
 const MessageBox2 = () => {
   const navigation = useNavigation();
- const[data1,setData1]=useState();
- const[visible,setVisible]=useState(false);
+  const [data1, setData1] = useState();
+  const [visible, setVisible] = useState(false);
   const isFoucse = useIsFocused();
-console.log('eertretrewt',data1);
+  const [loader,setLoader]=useState(false)
+  console.log('eertretrewt', data1);
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState();
   const [masterDataSource, setMasterDataSource] = useState();
-useEffect(()=>{
-  setFilteredDataSource(data1)
-  setMasterDataSource(data1)
-},[data1])
+  useEffect(() => {
+    setFilteredDataSource(data1)
+    setMasterDataSource(data1)
+  }, [data1])
 
- 
+
   const searchFilterFunction = text => {
     if (text) {
       const newData = masterDataSource.filter(function (item) {
@@ -47,7 +43,7 @@ useEffect(()=>{
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;
       });
-      console.log('new data>>>>>>>>>>>>>',newData);
+      console.log('new data>>>>>>>>>>>>>', newData);
       setFilteredDataSource(newData);
       setSearch(text);
     } else {
@@ -64,10 +60,10 @@ useEffect(()=>{
 
 
 
-  
+
   useEffect(() => {
-    if(isFoucse){
-    manageBusiness();
+    if (isFoucse) {
+      manageBusiness();
     }
   }, [isFoucse]);
 
@@ -75,40 +71,40 @@ useEffect(()=>{
   const manageBusiness = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
-    console.log('sdfsjgpogjp',user_id);
-     setVisible(true);
+    console.log('sdfsjgpogjp', user_id);
+    setVisible(true);
     const axios = require('axios');
 
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
       url: `https://olocker.co/api/supplier//partnerListForSupplier?user_id=${user_id}`,
-      headers: { 
+      headers: {
         'Olocker': `Bearer ${Token}`
       }
     };
-    
+
     axios.request(config)
-    .then((response) => {
-      if(response?.data?.status==true){
-        console.log('kejidfweiofdj',JSON.stringify(response.data));
-        setData1(response.data.data);
+      .then((response) => {
+        if (response?.data?.status == true) {
+          console.log('kejidfweiofdj', JSON.stringify(response.data));
+          setData1(response.data.data);
+          setVisible(false);
+        }
+        else {
+
+          setData1(response.data.data);
+
+          setVisible(false);
+          Toast.show(response?.data?.msg);
+        }
+
+      })
+      .catch((error) => {
         setVisible(false);
-      }
-      else{
-        
-        setData1(response.data.data);
-      
-        setVisible(false);
-        Toast.show(response?.data?.msg);
-      }
-      
-    })
-    .catch((error) => {
-      setVisible(false);
-      console.log('kw l;dsdmkw',error);
-    });
-    
+        console.log('kw l;dsdmkw', error);
+      });
+
 
 
   };
@@ -122,14 +118,66 @@ useEffect(()=>{
     });
   };
 
+  const Logout = () => {
+    Alert.alert(
+      'Are you sure you want to log out?',
+      '',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            cancelable: false;
+          },
+          style: 'cancel',
+        },
+        { text: 'ok', onPress: () => LogoutApp() },
+      ],
+      { cancelable: false },
+    );
+  };
+
+  const LogoutApp = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    const Token = await AsyncStorage.getItem('loginToken');
+    const token =await AsyncStorage.getItem('Tokenfcm');
+    const axios = require('axios');
+    setLoader(true)
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `https://olocker.co/api/supplier//logout?supplierId=${user_id}&fcm_token=${token}`,
+      headers: {
+        'Olocker': `Bearer ${Token}`,
+      },
+    };
+    axios.request(config)
+    
+      .then((response) => {
+        console.log('this is response data',response.data);
+        if (response.data.status == true) {
+          AsyncStorage.setItem('loginToken', '');
+          AsyncStorage.setItem('user_id', '');
+          Toast.show(response.data.msg)
+          navigation.navigate('Login');
+          setLoader(false)
+        }
+      })
+      .catch((error) => {
+       setLoader(false)
+        console.log('error.....', error);
+      });
+   
+
+  };
+
 
 
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
-      {visible ? <Loader /> : null}
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
+      {visible ||loader ? <Loader /> : null}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <TouchableOpacity
               delayPressIn={0}
               onPress={() => navigation.goBack()}>
@@ -138,24 +186,24 @@ useEffect(()=>{
                 source={require('../../../assets/L.png')}
               />
             </TouchableOpacity>
-            <Text style={[styles.text, {marginLeft: 15}]}>Message Box</Text>
+            <Text style={[styles.text, { marginLeft: 15 }]}>Message Box</Text>
           </View>
           <View style={styles.headertouch}>
             <TouchableOpacity
-              style={{marginLeft: 15}}
+            style={{marginLeft:15}}
+              // style={{ paddingVertical: 15, width: 35, alignItems: 'center', justifyContent: 'center', marginLeft: -10 }}
               onPress={() => handleWishList()}>
               <Image
-                style={[styles.img2, {marginRight: wp(3)}]}
+                style={[styles.img2, ]}
                 source={require('../../../assets/Image/dil.png')}
               />
             </TouchableOpacity>
-            {/* <TouchableOpacity onPress={() => Logout()}>
+            <TouchableOpacity onPress={() => Logout()}>
               <Image
-                style={styles.img3}
-                resizeMode="contain"
-                source={require('../../../assets/Image/menu-icon.png')}
+                style={[styles.img3, { tintColor: '#FFFF', height: 26, width: 26 }]}
+                source={require('../../../assets/Image/logout.png')}
               />
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -203,27 +251,27 @@ useEffect(()=>{
             />
           }
         </View> */}
-        <View style={[styles.searchbar, {marginTop: 20}]}>
+        <View style={[styles.searchbar, { marginTop: 20 }]}>
           <TextInput
             placeholder="Search"
-            style={{fontSize: 18, color: 'black'}}
+            style={{ fontSize: 18, color: 'black' }}
             placeholderTextColor={'grey'}
             value={search}
             onChangeText={val => searchFilterFunction(val)}
 
           />
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             <Feather name="search" size={30} color={'grey'} />
           </View>
         </View>
         <View>
           <FlatList
-         data={filteredDataSource}
+            data={filteredDataSource}
             showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('ChatScreen', {item: item});
+                  navigation.navigate('ChatScreen', { item: item });
                 }}
                 style={styles.Usercard}>
                 <View
@@ -237,7 +285,7 @@ useEffect(()=>{
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                  <Text style={{color: 'grey'}}> {item?.CompanyName[0]}</Text>
+                  <Text style={{ color: 'grey' }}> {item?.CompanyName[0]}</Text>
                 </View>
                 <View
                   style={{
@@ -246,11 +294,11 @@ useEffect(()=>{
                     marginLeft: 10,
                   }}>
                   <Text
-                    style={{fontSize: 18, fontWeight: '800', color: '#000'}}>
+                    style={{ fontSize: 18, fontWeight: '800', color: '#000' }}>
                     {item.CompanyName}
                   </Text>
-                  <Text style={{color: 'grey'}}>
-                 { item?.created_at?.substring(0, 19)}
+                  <Text style={{ color: 'grey' }}>
+                    {item?.created_at?.substring(0, 19)}
                   </Text>
                 </View>
                 {/* <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -271,7 +319,7 @@ useEffect(()=>{
           />
         </View>
 
-        <View style={{height: 30}} />
+        <View style={{ height: 30 }} />
       </ScrollView>
     </View>
   );

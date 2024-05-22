@@ -165,8 +165,9 @@ const OfferList = () => {
     tempdata();
   }, []);
 
-  const tempdata = () => {
+  const tempdata = async() => {
     const axios = require('axios');
+    const Token = await AsyncStorage.getItem('loginToken');
 
     let config = {
       method: 'get',
@@ -174,7 +175,7 @@ const OfferList = () => {
       url: 'https://olocker.co/api/supplier//getOfferList?start=0&length=9&search=&userid=10',
       headers: {
         Olocker:
-          'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdXBwbGllciBsb2dpbiBKV1QiLCJpYXQiOjE2ODM4MDYwMjMsImV4cCI6MTcxNTM0MjAyMywiZW1haWwiOiJzdXBwbGllclRlc3RAZ21haWwuY29tIiwiaWQiOiIxMyIsInJvbGUiOiJzdXBwbGllciJ9.iHG4lvv1Qb8EgXbECjwik1MittXx3RNEmaa7Q4ZFSjw',
+          `Bearer ${Token}`,
       },
     };
 
@@ -182,15 +183,14 @@ const OfferList = () => {
       .request(config)
       .then(response => {
         setTemp(response.data.data.offerList);
-        // console.log(JSON.stringify(response.data.data.offerList));
       })
       .catch(error => {
-        // console.log(error);
       });
   };
 
   const getOfferDetails = async (item, op) => {
-
+console.log('this is offir ',item);
+    setOfferId(item?.Id)
     const userId = await AsyncStorage.getItem('user_id');
     console.log(modaleOpen);
     dispatch({
@@ -222,6 +222,7 @@ const OfferList = () => {
   useEffect(() => {
     modal ? setPrevModal(true) : setPrevModal(false);
   }, [modal]);
+
   const offerProductList = async item => {
    console.log('itemvvvvvvv',item);
     setOfferId(item?.Id);
@@ -242,6 +243,43 @@ const OfferList = () => {
     }));
   };
 
+  const deleteProductItem=async(item)=>{
+    const axios = require('axios');
+    const Token = await AsyncStorage.getItem('loginToken');
+    const userId = await AsyncStorage.getItem('user_id');
+    setFetching(true)
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `https://olocker.co/api/supplier//removeProductOffer?productSrNo=${item.SrNo}&offerSrNo=${offerid}`,
+      headers: {
+        Olocker:
+          `Bearer ${Token}`,
+      },
+    };
+
+    axios
+      .request(config)
+      .then(response => {
+        console.log('this is response data',response);
+        Toast.show(response.data.msg)
+        dispatch({
+          type: 'offer_details_request',
+          url: 'getOfferDetails',
+          userId,
+          offerId: offerid,
+          // op: 'edit',
+          navigation,
+          some:!modaleOpen,
+        });
+        setFetching(false)
+        // setTemp(response.data.data.offerList);
+      })
+      .catch(error => {
+        setFetching(false)
+      });
+  }
+
   return (
     <View style={{flex: 1}}>
       <StatusBar />
@@ -254,20 +292,21 @@ const OfferList = () => {
       {fetching || isFetching || isFetching2 ? <Loader /> : null}
       <View
         style={{
-          backgroundColor: '#032e63',
-          height: 50,
           width: '100%',
+          backgroundColor: '#032e63',
           justifyContent: 'space-between',
-          paddingHorizontal: 10,
-          flexDirection: 'row',
           alignItems: 'center',
+          paddingHorizontal: 12,
+          flexDirection: 'row',
+          paddingVertical: 12,
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{paddingHorizontal: 5}}>
+            style={{ paddingVertical:15, width: 35,alignItems:'center',justifyContent:'center',marginLeft:-10}}>
+
             <Image
-              style={{height: 20, width: 14}}
+              style={{height: 18, width: 12}}
               source={require('../../../assets/L.png')}
             />
           </TouchableOpacity>
@@ -300,6 +339,7 @@ const OfferList = () => {
           /> */}
         </View>
         <Modal visible={isModalOpen} transparent>
+        {isFetching ? <Loader /> : null}
           <View style={{flex: 1}}>
             <View
               style={{
@@ -376,7 +416,7 @@ const OfferList = () => {
                         <View
                           style={{
                             marginTop: hp(2),
-                            marginLeft: wp(10),
+                            marginLeft: wp(5),
                           }}>
                           <View style={{flexDirection: 'row', width: '100%'}}>
                             <Text style={[styles.txt, {width: wp(32)}]}>
@@ -462,7 +502,7 @@ const OfferList = () => {
                             style={{
                               flexDirection: 'row',
                               width: '100%',
-                              marginLeft: wp(-10),
+                              marginLeft: wp(-4),
                             }}>
                             <TouchableOpacity style={styles.productbtn}>
                               <Text style={[styles.txt, {color: 'white'}]}>
@@ -470,6 +510,7 @@ const OfferList = () => {
                               </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
+                              onPress={()=>deleteProductItem(item)}
                               style={[
                                 styles.productbtn,
                                 {backgroundColor: '#fd3550'},
@@ -585,8 +626,9 @@ const OfferList = () => {
                 backgroundColor: '#032e63',
                 alignItems: 'center',
                 justifyContent: 'center',
-                paddingVertical: 7,
-                borderRadius: 15,
+                // paddingVertical: 7,
+              borderRadius: 30,
+              height:40,
                 flexDirection: 'row',
               }}>
               <Image
@@ -618,8 +660,9 @@ const OfferList = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexDirection: 'row',
-                paddingVertical: 7,
-                borderRadius: 15,
+               // paddingVertical: 7,
+               borderRadius: 30,
+               height:40
               }}>
               <Image
                 style={{height: 11, width: 11}}
@@ -879,10 +922,11 @@ const OfferList = () => {
                     <View
                       style={{
                         flexDirection: 'row',
-                        width: '90%',
+                        width: '95%',
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         alignSelf: 'center',
+                        marginRight:15
                       }}>
                       <TouchableOpacity
                         onPress={() =>{ getOfferDetails(item, 'view')
@@ -891,7 +935,7 @@ const OfferList = () => {
                         style={styles.cardbtn}>
                         <Text
                           style={{
-                            fontSize: wp(4.5),
+                            fontSize: 15,
                             fontWeight: '600',
                             color: 'white',
                           }}>
@@ -905,7 +949,7 @@ const OfferList = () => {
                         style={[styles.cardbtn, {backgroundColor: '#032e63'}]}>
                         <Text
                           style={{
-                            fontSize: wp(4.5),
+                            fontSize: 15,
                             fontWeight: '600',
                             color: 'white',
                           }}>

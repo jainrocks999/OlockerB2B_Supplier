@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import Path from '../../../components/ImagePath';
 import Loader from '../../../components/Loader';
 import axios from 'axios';
@@ -67,46 +67,7 @@ const MyCatalogue = () => {
   };
 
   const addProduct = item => {
-    // dispatch({
-    //   type: 'Olocker_Product_Request',
-    //   url: '/getSelfProductList',
-    //   search_key: '',
-    //   fromPrice:'',
-    //   toPrice:'',
-    //   minWeight:'',
-    //   maxWeight:'',
-    //   SupplierId:'',
-    //   userCollectionType:'btnPartner',
-    //   start:'0',
-    //   limit:'10',
-    //   navigation
-    //  })
-
-    // search_key:
-    // fromPrice:
-    // toPrice:
-    // minWeight:
-    // maxWeight:
-    // SupplierId:
-    // userCollectionType:btnOlocker
-    // start:0
-    // limit:10
-
-    // dispatch({
-    //   type: 'Self_Product_Request',
-    //   url: '/getSelfProductList',
-    //   search_key: '',
-    //   fromPrice: '',
-    //   toPrice: '',
-    //   minWeight: '',
-    //   maxWeight: '',
-    //   SupplierId: '',
-    //   userCollectionType: 'btnPartner',
-    //   start: '0',
-    //   limit: '10',
-    //   navigation,
-    // });
-    navigation.navigate('Addproduct', {no: item.SrNo});
+    navigation.navigate('Addproduct', { no: item.SrNo });
   };
   const handleWishList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
@@ -118,24 +79,25 @@ const MyCatalogue = () => {
     });
   };
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
       {fetching || isFetching ? <Loader /> : null}
       <View
         style={{
-          backgroundColor: '#032e63',
-          height: 50,
           width: '100%',
+          backgroundColor: '#032e63',
           justifyContent: 'space-between',
-          paddingHorizontal: 10,
-          flexDirection: 'row',
           alignItems: 'center',
+          paddingHorizontal: 12,
+          flexDirection: 'row',
+          paddingVertical: 12,
         }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{paddingHorizontal: 5}}>
+            style={{ paddingVertical: 15, width: 35, alignItems: 'center', justifyContent: 'center', marginLeft: -10 }}>
+
             <Image
-              style={{height: 20, width: 14}}
+              style={{ height: 18, width: 12 }}
               source={require('../../../assets/L.png')}
             />
           </TouchableOpacity>
@@ -149,18 +111,18 @@ const MyCatalogue = () => {
             My Collection
           </Text>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity onPress={() => navigation.navigate('Message')}>
             <Image
-              style={{height: 20, width: 25}}
+              style={{ height: 20, width: 25 }}
               source={require('../../../assets/Fo.png')}
             />
           </TouchableOpacity>
           <TouchableOpacity
-            style={{marginLeft: 15}}
+            style={{ marginLeft: 15 }}
             onPress={() => handleWishList()}>
             <Image
-              style={{height: 22, width: 26, tintColor: '#fff'}}
+              style={{ height: 22, width: 26, tintColor: '#fff' }}
               source={require('../../../assets/Image/dil.png')}
             />
           </TouchableOpacity>
@@ -170,9 +132,9 @@ const MyCatalogue = () => {
           /> */}
         </View>
       </View>
-      <View style={{paddingHorizontal: 10, paddingVertical: 10}}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <View style={{justifyContent: 'center'}}>
+      <View style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{ justifyContent: 'center' }}>
             <Text
               style={{
                 color: '#000',
@@ -200,18 +162,18 @@ const MyCatalogue = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{marginTop: 10, marginBottom: 110}}>
+        <View style={{ marginTop: 10, marginBottom: 110 }}>
           <FlatList
             data={selector}
             numColumns={2}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <View
                 style={{
                   width: '45%',
                   // height:200,
                   margin: 10,
                   shadowColor: '#000',
-                  shadowOffset: {width: 0, height: 2},
+                  shadowOffset: { width: 0, height: 2 },
                   shadowOpacity: 0.2,
                   shadowRadius: 5,
                   elevation: 5,
@@ -219,11 +181,11 @@ const MyCatalogue = () => {
                   borderRadius: 10,
                   padding: 10,
                 }}>
-                <View style={{width: '100%'}}>
+                <View style={{ width: '100%' }}>
                   <Image
                     resizeMode="contain"
-                    style={{height: 140, width: '100%', borderRadius: 10}}
-                    source={{uri: `https://olocker.co${item.ImageUrl}`}}
+                    style={{ height: 140, width: '100%', borderRadius: 10 }}
+                    source={{ uri: `https://olocker.co${item.ImageUrl}` }}
                   />
                   <View
                     style={{
@@ -252,13 +214,13 @@ const MyCatalogue = () => {
                           })
                         }>
                         <Image
-                          style={{width: 16, height: 16}}
+                          style={{ width: 16, height: 16 }}
                           source={require('../../../assets/supplierImage/pencil.png')}
                         />
                       </TouchableOpacity>
                       <TouchableOpacity onPress={() => validateUser(item)}>
                         <Image
-                          style={{width: 16, height: 16, marginLeft: 10}}
+                          style={{ width: 16, height: 16, marginLeft: 10 }}
                           source={require('../../../assets/supplierImage/trash.png')}
                         />
                       </TouchableOpacity>
@@ -327,8 +289,8 @@ const MyCatalogue = () => {
 export default MyCatalogue;
 
 const data = [
-  {name: 'narr'},
-  {name: 'dgsadf'},
-  {name: 'narr'},
-  {name: 'dgsadf'},
+  { name: 'narr' },
+  { name: 'dgsadf' },
+  { name: 'narr' },
+  { name: 'dgsadf' },
 ];

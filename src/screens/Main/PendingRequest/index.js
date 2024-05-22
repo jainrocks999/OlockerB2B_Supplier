@@ -194,13 +194,10 @@ const HomeScreen = ({route}) => {
         onPress1={() => navigation.navigate('MessageBox')}
         onPress2={() => navigation.navigate('FavDetails')}
       />
-
-
-
       {isFetching || visiable1 || visiable2 ? <Loader /> : null}
       {selector?.length === 0 ?
         <View style={{ alignItems: 'center', justifyContent: 'center', alignSelf: 'center', height: '90%', }}>
-          <Text style={{ color: 'grey', fontFamily: 'Acephimere', fontSize: 19, fontWeight: '700' }}> {'No Request'} </Text>
+          <Text style={{ color: 'grey', fontFamily: 'Acephimere', fontSize: 19, fontWeight: '700' }}> {'No Pending Request'} </Text>
 
         </View>
         :

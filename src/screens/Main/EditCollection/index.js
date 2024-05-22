@@ -22,6 +22,7 @@ import PickerModel from '../../../components/PickerModel';
 import axios from 'axios';
 import {useDispatch} from 'react-redux';
 import {RadioButton} from 'react-native-paper';
+import TempletModel from "./TempletModel";
 
 const EditCollection = ({route}) => {
   // console.log('this i route data',route.params)
@@ -31,6 +32,7 @@ const EditCollection = ({route}) => {
   const [name, setName] = useState(data.Name);
   const [tag, setTag] = useState(data.Title);
   const [description, setDescription] = useState(data.Description);
+  const [templetmodel, setTempletModal] = useState(false);
   const [active, setActive] = useState(
     data.IsActive
       ? data.IsActive == 1
@@ -50,6 +52,11 @@ const EditCollection = ({route}) => {
   const [photoName, setPhotoName] = useState(data.ImageName);
   const [photoType, setPhotoType] = useState('image/jpeg');
   const [fetching, setFetching] = useState(false);
+
+  const [photo1, setPhoto1] = useState(data?.ImageName);
+  const [Photo2, setPhoto2] = useState('image/jpeg');
+  const [getapi, setGetapi] = useState(false);
+  const [camera1, setCamera] = useState(false);
 
   const validateUser = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
@@ -76,15 +83,11 @@ const EditCollection = ({route}) => {
         data.append('SrNo', route.params.item.SrNo);
         data.append('ImageName', {
           uri: photo,
-          name: photoName.substring(photoName.lastIndexOf('/') + 1),
-          type: photoType,
+          name: photo1.substring(photo1.lastIndexOf('/') + 1),
+          type: Photo2,
         });
 
-        data.append('hidden_image', {
-          uri: photo,
-          name: photoName.substring(photoName.lastIndexOf('/') + 1),
-          type: photoType,
-        });
+        data.append('hidden_image','');
         const response = await axios({
           method: 'POST',
           data,
@@ -114,14 +117,29 @@ const EditCollection = ({route}) => {
     }
   };
 
+  const getDataFromChild = (data, data1) => {
+    console.log('this is data from chiled', data, data1);
+    let image2 = data.Logo.split('.').pop();
+    setPhoto(`${data1}${data.Logo}`);
+    setPhoto1(data.Logo);
+    setPhoto2(`image/${image2}`);
+    setGetapi(true);
+    setCamera(false)
+  }
+
   const uploadPhoto = async () => {
     try {
       const res = await DocumentPicker.pickSingle({
         type: [DocumentPicker.types.images],
       });
+      // setPhoto(res.uri);
+      // setPhotoName(res.name);
+      // setPhotoType(res.type);
       setPhoto(res.uri);
-      setPhotoName(res.name);
-      setPhotoType(res.type);
+      setPhoto1(res.name);
+      setPhoto2(res.type);
+      setCamera(true);
+      setGetapi(false);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
       } else {
@@ -158,20 +176,20 @@ const EditCollection = ({route}) => {
       {fetching ? <Loader /> : null}
       <View
         style={{
-          backgroundColor: '#032e63',
-          height: 50,
           width: '100%',
+          backgroundColor: '#032e63',
           justifyContent: 'space-between',
-          paddingHorizontal: 10,
-          flexDirection: 'row',
           alignItems: 'center',
+          paddingHorizontal: 12,
+          flexDirection: 'row',
+          paddingVertical: 12,
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{paddingHorizontal: 5}}>
+            style={{ paddingVertical:15, width: 35,alignItems:'center',justifyContent:'center',marginLeft:-10}}>
             <Image
-              style={{height: 20, width: 14}}
+              style={{height: 18, width: 12}}
               source={require('../../../assets/L.png')}
             />
           </TouchableOpacity>
@@ -203,23 +221,15 @@ const EditCollection = ({route}) => {
               source={require('../../../assets/Image/dil.png')}
             />
           </TouchableOpacity>
-
-
-          {/* <Image
-            style={{height: 24, width: 28}}
-            source={require('../../../assets/Fo.png')}
-          />
-          <Image
-            style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
-            source={require('../../../assets/Image/dil.png')}
-          />
-          <Image
-            style={{height: 24, width: 28, tintColor: '#fff', marginLeft: 15}}
-            source={require('../../../assets/supplierImage/more.png')}
-          /> */}
         </View>
       </View>
       <ScrollView>
+      <TempletModel
+          visi={templetmodel}
+          close={() => setTempletModal(false)}
+          sendDatatoParent={getDataFromChild}
+
+        />
         <View style={{paddingHorizontal: 15, marginTop: 15}}>
           <TextInput
             placeholder="Name"
@@ -340,6 +350,10 @@ const EditCollection = ({route}) => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
+             onPress={() => {
+              // getLibraryProduct();
+              setTempletModal(true)
+            }}
               style={{
                 borderWidth: 1,
                 width: '48%',
@@ -374,9 +388,10 @@ const EditCollection = ({route}) => {
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: '#032e63',
-              paddingVertical: 7,
-              borderRadius: 15,
+              // paddingVertical: 7,
+              borderRadius: 30,
               marginTop: 40,
+              height:40
             }}>
             <Text
               style={{

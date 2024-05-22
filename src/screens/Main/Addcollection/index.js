@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Modal,
   FlatList,
 } from 'react-native';
-import {useNavigation,useIsFocused} from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
 import styles from './styles';
 import DocumentPicker from 'react-native-document-picker';
@@ -17,8 +17,8 @@ import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../components/Loader';
 import axios from 'axios';
-import {useDispatch, useSelector} from 'react-redux';
-import {RadioButton} from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { RadioButton } from 'react-native-paper';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -40,13 +40,13 @@ const Addcollection = () => {
   const [photoName, setPhotoName] = useState('');
   const [photo1, setPhoto1] = useState('');
   const [Photo2, setPhoto2] = useState('');
-  const [getapi,setGetapi]= useState(false);
-  const [camera1,setCamera]=useState(false);
+  const [getapi, setGetapi] = useState(false);
+  const [camera1, setCamera] = useState(false);
   const [photoType, setPhotoType] = useState('');
   const [fetching, setFetching] = useState(false);
   const onlyCharacters = /^[a-zA-Z\s]*$/;
   const [templetmodel, setTempletModal] = useState(false);
-  const isFocused=useIsFocused()
+  const isFocused = useIsFocused()
 
 
 
@@ -60,18 +60,18 @@ const Addcollection = () => {
     dispatch({
       type: 'Get_creativeImgList_Request',
       url: '/creativeImgList',
-      Token:Token
+      Token: Token
     });
   }
 
-  const getDataFromChild=(data,data1)=>{
-    console.log('this is data from chiled',data,data1);
-      let  image2=data.Logo.split('.').pop();
-      setPhoto(`${data1}${data.Logo}`);
-      setPhoto1(data.Logo);
-      setPhoto2(`image/${image2}`);
-      setGetapi(true);
-      setCamera(false)  
+  const getDataFromChild = (data, data1) => {
+    console.log('this is data from chiled', data, data1);
+    let image2 = data.Logo.split('.').pop();
+    setPhoto(`${data1}${data.Logo}`);
+    setPhoto1(data.Logo);
+    setPhoto2(`image/${image2}`);
+    setGetapi(true);
+    setCamera(false)
   }
 
 
@@ -82,7 +82,7 @@ const Addcollection = () => {
   const validateUser = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
-    if(onlyCharacters.test(name) == '') {
+    if (onlyCharacters.test(name) == '') {
       Toast.show('Please enter collection name only charecter');
     }
     if (onlyCharacters.test(tag) == '') {
@@ -121,9 +121,9 @@ const Addcollection = () => {
           },
           url: 'https://olocker.co/api/supplier//postCreateCollection',
         });
-        console.log('data add colloction .....',JSON.stringify(response.data));
-       
-        if (response.data.status ==true) {
+        console.log('data add colloction .....', JSON.stringify(response.data));
+
+        if (response.data.status == true) {
           setFetching(false);
           dispatch({
             type: 'Get_Catalogue_Request',
@@ -195,20 +195,20 @@ const Addcollection = () => {
       {fetching || loading ? <Loader /> : null}
       <View
         style={{
-          backgroundColor: '#032e63',
-          height: 50,
           width: '100%',
+          backgroundColor: '#032e63',
           justifyContent: 'space-between',
-          paddingHorizontal: 10,
-          flexDirection: 'row',
           alignItems: 'center',
+          paddingHorizontal: 12,
+          flexDirection: 'row',
+          paddingVertical: 12,
         }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{paddingHorizontal: 5}}>
+            style={{ paddingVertical: 15, width: 35, alignItems: 'center', justifyContent: 'center', marginLeft: -10 }}>
             <Image
-              style={{height: 20, width: 14}}
+              style={{ height: 20, width: 14 }}
               source={require('../../../assets/L.png')}
             />
           </TouchableOpacity>
@@ -222,30 +222,30 @@ const Addcollection = () => {
             Add Collection
           </Text>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image
-            style={{height: 24, width: 28}}
+            style={{ height: 24, width: 28 }}
             source={require('../../../assets/Fo.png')}
           />
           <TouchableOpacity onPress={() => handleWishList()}>
             <Image
-              style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
+              style={{ height: 22, width: 26, tintColor: '#fff', marginLeft: 15 }}
               source={require('../../../assets/Image/dil.png')}
             />
           </TouchableOpacity>
-         
+
         </View>
       </View>
-     
-      <ScrollView style={{ flex: 1}}>
+
+      <ScrollView style={{ flex: 1 }}>
         <TempletModel
           visi={templetmodel}
           close={() => setTempletModal(false)}
-         sendDatatoParent={getDataFromChild}
+          sendDatatoParent={getDataFromChild}
 
         />
-     
-        <View style={{paddingHorizontal: 15, marginTop: 15}}>
+
+        <View style={{ paddingHorizontal: 15, marginTop: 15 }}>
           <TextInput
             placeholder="Name"
             style={{
@@ -299,7 +299,7 @@ const Addcollection = () => {
           <View
             style={{
               shadowColor: '#000',
-              shadowOffset: {width: 2, height: 4},
+              shadowOffset: { width: 2, height: 4 },
               shadowOpacity: 0.2,
               shadowRadius: 5,
               elevation: 5,
@@ -307,7 +307,7 @@ const Addcollection = () => {
               marginTop: 20,
               borderRadius: 6,
             }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <RadioButton
                 value="first"
                 status={active}
@@ -324,7 +324,7 @@ const Addcollection = () => {
                 Active
               </Text>
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <RadioButton
                 value="first"
                 status={inactive}
@@ -357,10 +357,12 @@ const Addcollection = () => {
                 borderColor: '#032e63',
                 alignItems: 'center',
                 justifyContent: 'center',
-                paddingVertical: 7,
-                borderRadius: 15,
+                // paddingVertical: 7,
+                borderRadius: 30,
+                // marginTop: 40,
+                height: 40
               }}>
-              <Text style={{color: '#032e63', fontFamily: 'Roboto-Medium'}}>
+              <Text style={{ color: '#032e63', fontFamily: 'Roboto-Medium' }}>
                 Choose file
               </Text>
             </TouchableOpacity>
@@ -376,24 +378,26 @@ const Addcollection = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#032e63',
-                paddingVertical: 7,
-                borderRadius: 15,
+                // paddingVertical: 7,
+                borderRadius: 30,
+                // marginTop: 40,
+                height: 40
               }}>
-              <Text style={{color: '#fff', fontFamily: 'Roboto-Medium'}}>
+              <Text style={{ color: '#fff', fontFamily: 'Roboto-Medium' }}>
                 Select from library
               </Text>
             </TouchableOpacity>
           </View>
           {photo ? (
-            <View style={{marginTop: 20}}>
+            <View style={{ marginTop: 20 }}>
               <Image
-                style={{height: 200, width: '48%', borderRadius: 10}}
-                source={{uri: photo}}
+                style={{ height: 200, width: '48%', borderRadius: 10 }}
+                source={{ uri: photo }}
               />
             </View>
           ) : null}
         </View>
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <TouchableOpacity
             onPress={() => validateUser()}
             style={{
@@ -403,9 +407,10 @@ const Addcollection = () => {
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: '#032e63',
-              paddingVertical: 7,
-              borderRadius: 15,
+              // paddingVertical: 7,
+              borderRadius: 30,
               marginTop: 40,
+              height: 40
             }}>
             <Text
               style={{
@@ -417,10 +422,10 @@ const Addcollection = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{height: 50}} />
+        <View style={{ height: 50 }} />
       </ScrollView>
       <Modal visible={false} transparent={true}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <View
             style={{
               height: '80%',
@@ -432,10 +437,10 @@ const Addcollection = () => {
               elevation: 5,
               marginTop: '15%',
             }}>
-            <View style={{marginTop: '5%'}}>
+            <View style={{ marginTop: '5%' }}>
               <FlatList
                 data={libraryImages}
-                renderItem={({item, index}) => (
+                renderItem={({ item, index }) => (
                   <View
                     style={{
                       height: hp(25),
@@ -465,6 +470,6 @@ const Addcollection = () => {
 export default Addcollection;
 
 const Status = [
-  {label: 'Active', value: 'true'},
-  {label: 'In Active', value: 'false'},
+  { label: 'Active', value: 'true' },
+  { label: 'In Active', value: 'false' },
 ];

@@ -8,7 +8,7 @@ export default StyleSheet.create({
   input: {
     borderWidth: 1,
     backgroundColor: '#f0f0f0',
-    marginTop: 15,
+    marginTop: 8,
     height: 45,
     paddingHorizontal:10,
     borderRadius: 5,

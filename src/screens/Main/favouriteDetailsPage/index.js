@@ -49,9 +49,11 @@ const Filter =()=>{
 
   const imagePath = selector?.imagepath;
 
-  const share = async () => {
+  const share = async (item) => {
+    // console.log('this is itm',item);
+
     await Share.share({
-      message: `Product Name : ${name} \nProduct Price : ${pr} \n Product Description : ${Description}`,
+      message: `Product Name : ${item.ItemName} \nProduct Price : ${item.ProductsPrice} \nProduct Description : ${item.ItemDesc}`,
     });
   };
 
@@ -123,9 +125,9 @@ const Filter =()=>{
 
       <ScrollView>
         <View style={styles.main}>
-          <View>
-            {/* <Text style={styles.text}>{WishList.length == 1 ? `${WishList.length} Item` : `${WishList.length} Items`}</Text> */}
-          </View>
+         {Filter()?.length > 0? <View>
+            <Text style={styles.text}>{Filter()?.length == 1 ? `${Filter()?.length} Item` : `${Filter()?.length} Items`}</Text>
+          </View>:null}
         </View>
         <View style={styles.card}>
           {Filter()?.length>0 ? (
@@ -137,18 +139,19 @@ const Filter =()=>{
                   <TouchableOpacity onPress={()=>productDetail(item)} style={styles.cardview}>
                     <View
                       style={{
-                        height: '100%',
+                        height: hp('100%'),
                         width: wp('45%'),
                         maxHeight: hp('25%'),
                         borderWidth: 0,
-                        borderColor: 'red',
                       }}>
+                        <View style={{ height: hp('7%'), width: '100%', borderWidth: 0 }}>
                       <View
                         style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          marginVertical: 5,
-                          marginHorizontal: 5,
+                          padding: 0,
+                          height: hp('5%'),
+                          width: '18%',
+                          borderWidth: 0,
+                          marginTop: 0,
                         }}>
                         <TouchableOpacity
                           onPress={() => {
@@ -156,32 +159,50 @@ const Filter =()=>{
                           }}>
                           <Image
                             style={{
-                              height: hp('2.4%'),
-                              width: wp('5.8%'),
+                              height: hp('2.3%'),
+                              width: wp('5.5%'),
                               marginLeft: 5,
-                              marginVertical: 5,
-                              marginTop: 2,
+                              marginTop: 5,
                               tintColor: 'red',
-                              alignSelf: 'flex-end',
                             }}
                             source={require('../../../assets/Image/dil.png')}
                           />
                         </TouchableOpacity>
-
-                        {/* <TouchableOpacity
-                      onPress={() => {
-                        RemoveWhishList(item?.SrNo);
-                      }}
-                      style={{marginLeft: 2}}>
-                      <MaterialCommunityIcons name="delete" size={30} />
-                    </TouchableOpacity> */}
+                        <TouchableOpacity onPress={() => share(item)}>
+                          <Image
+                            style={{
+                              height: hp('2%'),
+                              width: wp('5.7%'),
+                              marginTop: 10,
+                              marginLeft: 8,
+                            }}
+                            source={require('../../../assets/Image/share1.png')}
+                          />
+                        </TouchableOpacity> 
                       </View>
 
+                      <View
+                        style={{
+                          borderTopRightRadius: 10,
+                          borderBottomLeftRadius: 10,
+                          backgroundColor: '#24a31e',
+                          marginTop: Platform.OS == 'android' ? hp('-5%') : -44,
+                          alignSelf: 'flex-end',
+                          height: hp('2.4%'),
+                          width: '45%',
+                          marginRight:-1
+                        }}>
+                        <Text style={styles.cardview2text}>
+                         { parseFloat(item?.GrossWt)?.toFixed(2)}
+                          <Text style={styles.cardview2text}> GM</Text>
+                          </Text>
+                      </View>
+                      </View>
                       <View
                       
                         // onPress={() => manageCategory1(item.Product)}
                         style={{
-                          height: hp('25%'),
+                          height: hp('13%'),
                           width: wp('33%'),
                           marginLeft: 19,
                           maxHeight: hp('14%'),
@@ -195,16 +216,29 @@ const Filter =()=>{
                             alignSelf: 'center',
                             // borderWidth: 5,
                           }}
-                          source={{uri: `${imagePath}/${item.ImageName}`}}
+                          source={item.ImageName ?{uri: `${imagePath}/${item.ImageName}`}:require('../../../assets/logo.png')}
+                         
                         />
                       </View>
                       <View
+                      style={{  width: '100%', marginLeft: 20,marginTop:5 }}>
+                      <Text style={styles.cardbottomtext}>{`ID# ${item.ProductSku}`}</Text>
+                      <View style={styles.cardbottom1}>
+                        <Image
+                          style={{ width: 16, height: 18 }}
+                          source={require('../../../assets/Image/rupay.png')}
+                        />
+                        <Text style={styles.cardbottom1text}>{parseFloat(item.ProductsPrice==null?0:item.ProductsPrice)?.toFixed(2)}</Text>
+                      </View>
+                    </View>
+                      {/* <View
                         style={{
                           width: '100%',
                           // marginLeft: 5,
                           paddingHorizontal:5,
                           flexDirection: 'row',
                           justifyContent: 'space-between',
+                          marginTop:5
                         }}>
                         <Text style={styles.cardbottomtext}>ProductID:-</Text>
                         <Text
@@ -276,7 +310,7 @@ const Filter =()=>{
                           {' '}
                           {`${item.GrossWt?.substring(0, 4)} GM`}
                         </Text>
-                      </View>
+                      </View> */}
 
                     </View>
                     {/* <View

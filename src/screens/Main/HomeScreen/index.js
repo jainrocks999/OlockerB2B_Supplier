@@ -40,6 +40,7 @@ const HomeScreen = () => {
   const isFetching = useSelector(state => state?.isFetching);
   const isFetching1 = useSelector(state => state.Catalogue.isFetching);
   const isFetching3 = useSelector(state => state.Home.isFetching);
+  const isFetching4 = useSelector(state => state?.Auth.isFetching);
   const selector1 = useSelector(state => state.Home.NetworkList1);
   const bannerList = useSelector(state => state.Home.BannerList);
   const [loader,setLoader]=useState(false)
@@ -115,10 +116,10 @@ const HomeScreen = () => {
       url: '/getStateList',
     });
 
-    dispatch({
-      type: 'User_SupplierCategories_Request',
-      url: '/categories',
-    });
+    // dispatch({
+    //   type: 'User_SupplierCategories_Request',
+    //   url: '/categories',
+    // });
   };
 
   const supplierprofile = async (id) => {
@@ -130,6 +131,22 @@ const HomeScreen = () => {
       url: 'getNetworkRetailerDeatils',
       navigation,
     });
+
+    dispatch({
+      type: 'User_SupplierCategories_Request',
+      url: '/productTypeList',
+      userId: id,
+      userType: 'partner',
+    });
+    AsyncStorage.setItem('partnerId',id)
+    // dispatch({
+    //   type: 'product_Type_Request',
+    //   url: '/productTypeList',
+    //   userId: user_id,
+    //   userType: 'partner',
+    // });
+
+
   };
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -221,17 +238,18 @@ const HomeScreen = () => {
   };
 
   const handleMyCatalogue = async btn => {
-    const user_id = await AsyncStorage.getItem('user_id');
-    dispatch({
-      type: 'My_Product_Request',
-      url: '/getProductList',
-      user_id: user_id,
-      start: 0,
-      length: 10,
-      search: '',
-      navigation,
-      btn,
-    });
+    navigation.navigate('MyCatalogueCopy')
+    // const user_id = await AsyncStorage.getItem('user_id');
+    // dispatch({
+    //   type: 'My_Product_Request',
+    //   url: '/getProductList',
+    //   user_id: user_id,
+    //   start: 0,
+    //   length: 10,
+    //   search: '',
+    //   navigation,
+    //   btn,
+    // });
   };
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef();
@@ -257,7 +275,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.scroll}>
-        {isFetching || isFetching1 || fetching || isFetching3||loader ? (
+        {isFetching || isFetching1 || fetching || isFetching3||loader ||isFetching4 ? (
           <Loader />
         ) : null}
         <ImageBackground

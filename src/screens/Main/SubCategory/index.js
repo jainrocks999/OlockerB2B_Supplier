@@ -37,7 +37,6 @@ const SubCategory = ({route}) => {
   const isFetching4 = useSelector(state => state.Catalogue?.isFetching);
   const ima = productData?.productdetails?.productimages;
   const Detail = 'route.params.Details';
-
   const productImage = () => {
     const img = ima
       ? ima?.map(item => {
@@ -61,18 +60,11 @@ const SubCategory = ({route}) => {
       ? selector?.ItemDesc?.substring(0, 35)
       : selector1?.ItemDesc?.substring(0, 35),
   );
-  const [price, setPrice] = useState('');
-  const [mg, setMg] = useState('');
-  const [metalPurity, setMetalPurity] = useState('');
-  const [description, setDescription] = useState('');
   const [editable, setEditable] = useState(false);
   const [editable1, setEditable1] = useState(false);
   const [editable2, setEditable2] = useState(false);
-  const [click1, setClick1] = useState(false);
-  const [url, setUrl] = useState('');
-  const [keyboardStatus, setKeyboardStatus] = useState(undefined);
   const [fetching, setIsFetching] = useState(false);
-  const [wishlist, setWishList] = useState(false);
+
 
   const share = async () => {
     await Share.share({
@@ -114,7 +106,7 @@ const SubCategory = ({route}) => {
     });
   };
 
-  const RemoveWhishList = async (id, liked) => {
+  const RemoveWhishList = async (item) => {
     setIsFetching(true);
     const user_id = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
@@ -128,15 +120,28 @@ const SubCategory = ({route}) => {
     };
 
     let response = fetch(
-      `https://olocker.co/api/supplier/removeProductWishlist?productId=${id}&SupplierSrNo=${user_id}&userType=supplier`,
+      `https://olocker.co/api/supplier/removeProductWishlist?productId=${item}&SupplierSrNo=${user_id}&userType=supplier`,
       requestOptions,
     )
       .then(response => response.text())
+      
       .then(result => {
-        setIsFetching(false);
-
-        setWishList(false);
-        return JSON.parse(result);
+        console.log('this is response',result.status);
+        if(result){
+         
+          dispatch({
+            type: 'product_detail_request',
+            url: 'productDetails',
+            productId: item,
+            supplierSrNo: user_id,
+            // navigation,
+          });
+          setIsFetching(false);
+          console.log('this is response data',result)
+        }
+        else{
+          setIsFetching(false);
+        }
       })
       .catch(error => {
         console.log('error', error);
@@ -145,8 +150,8 @@ const SubCategory = ({route}) => {
 
     return response;
   };
-  console.log('tjos os soso', JSON.stringify(productData));
   const addProductWishList = async item => {
+    console.log('this is item',item);
     setIsFetching(true);
     const Token = await AsyncStorage.getItem('loginToken');
     const user_id = await AsyncStorage.getItem('user_id');
@@ -154,7 +159,7 @@ const SubCategory = ({route}) => {
     myHeaders.append('Olocker', `Bearer ${Token}`);
 
     var formdata = new FormData();
-    formdata.append('checkProduct', item.productId);
+    formdata.append('checkProduct', item);
     formdata.append('SupplierSrNo', user_id);
     formdata.append('userType', 'supplier');
 
@@ -171,10 +176,19 @@ const SubCategory = ({route}) => {
     )
       .then(response => response.text())
       .then(result => {
-        setIsFetching(false);
-
-        setWishList(true);
-        return JSON.parse(result);
+        if(result){
+          setIsFetching(false);
+          dispatch({
+            type: 'product_detail_request',
+            url: 'productDetails',
+            productId: item,
+            supplierSrNo: user_id,
+            // navigation,
+          });
+        }
+        else{
+          setIsFetching(false);
+        }
       })
       .catch(error => {
         console.log('error', error);
@@ -183,17 +197,12 @@ const SubCategory = ({route}) => {
 
     return res;
   };
-const  images= [
-  "https://source.unsplash.com/1024x768/?nature",
-  "https://source.unsplash.com/1024x768/?water",
-  "https://source.unsplash.com/1024x768/?girl",
-  "https://source.unsplash.com/1024x768/?tree", // Network image
-          // Local image
-]
+
 const BannerWidth = (Dimensions.get('window').width * 15) / 18;
+
   return (
     <View style={styles.container}>
-       {isFetching || isFetching4 ? <Loader /> : null}
+        {fetching || isFetching || isFetching4 ? <Loader /> : null}
       <Header
         source={require('../../../assets/L.png')}
         source1={require('../../../assets/Fo.png')}
@@ -204,22 +213,26 @@ const BannerWidth = (Dimensions.get('window').width * 15) / 18;
         onPress2={() => navigation.navigate('FavDetails')}
       />
       <ScrollView>
-       
+    
         <View style={styles.main}>
-          <TouchableOpacity onPress={() => click(click1)}>
+          <View
+          //  onPress={() => click(click1)}
+           >
             <TouchableOpacity
               onPress={() => {
-                !wishlist
-                  ? addProductWishList(productData?.products?.SrNo)
-                  : RemoveWhishList(productData?.products?.SrNo);
-              }}>
+                productData?.products?.is_exist
+                  ? RemoveWhishList(productData?.products?.SrNo)
+                  
+                  : addProductWishList(productData?.products?.SrNo)
+              }}
+              >
               <Image
                 style={{width: 21, height: 18}}
-                tintColor={wishlist ? 'red' : '#fff'}
+                tintColor={productData?.products?.is_exist ? 'red' : 'grey'}
                 source={require('../../../assets/Image/dil.png')}
               />
             </TouchableOpacity>
-          </TouchableOpacity>
+          </View>
           <View>
             <TouchableOpacity
               onPress={() => share()}
@@ -246,8 +259,8 @@ const BannerWidth = (Dimensions.get('window').width * 15) / 18;
               timer={3000}
               contentContainerStyle={{paddingHorizontal:25}}
               indicatorContainerStyle={{position: 'absolute', bottom: -18}}
-              indicatorActiveColor={'#fff'}
-              indicatorInActiveColor={'#000'}
+              indicatorActiveColor={'red'}
+              indicatorInActiveColor={'grey'}
               indicatorActiveWidth={5}
               animation
               component={<Banner />}
@@ -294,7 +307,7 @@ const BannerWidth = (Dimensions.get('window').width * 15) / 18;
                   }
                 </Text>
               </View>
-              {Detail ? (
+              {route.params.data=='supplier' ? (
                 <View
                   //  onPress={()=>manageEdit()}
                   style={{alignItems: 'flex-end', flexDirection: 'row'}}>
@@ -318,9 +331,12 @@ const BannerWidth = (Dimensions.get('window').width * 15) / 18;
             </View>
             <View style={{marginLeft: 20, marginTop: 8}}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{flexDirection:'row',alignItems:'center'}}>
                 <Text style={styles.cardtext}>
-                  {'Name       :      ' + productData?.products?.ItemName}
+                  {'Name       :      '}
                 </Text>
+                <Text style={{ color: '#052a47',fontWeight:'500'}}>{ productData?.products?.ItemName}</Text>
+                </View>
                 <TextInput
                   style={{height: 40, color: '#052a47'}}
                   value={stockNo}
@@ -334,9 +350,12 @@ const BannerWidth = (Dimensions.get('window').width * 15) / 18;
                   alignItems: 'center',
                   marginTop: -15,
                 }}>
+                  <View style={{flexDirection:'row',alignItems:'center'}}>
                 <Text style={styles.cardtext}>
-                  {'Stock No :      ' + productData?.products?.SrNo}
+                  {'Stock No :      '}
                 </Text>
+                <Text style={{ color: '#052a47',fontWeight:'500'}}>{ productData?.products?.SrNo}</Text>
+                </View>
                 <TextInput
                   style={{height: 40, color: '#052a47'}}
                   value={collection}
@@ -352,10 +371,12 @@ const BannerWidth = (Dimensions.get('window').width * 15) / 18;
                   marginTop: -15,
                 }}>
 
-                 
+                 <View style={{flexDirection:'row',alignItems:'center'}}>
                 <Text style={styles.cardtext}>
-                  {'Metal        :     ' + `${parseFloat(productData?.products?.GrossWt)?.toFixed(2)}  Gm`}
+                  {'Metal        :     ' }
                 </Text>
+                <Text style={{ color: '#052a47',fontWeight:'500'}}>{`${parseFloat(productData?.products?.GrossWt)?.toFixed(2)}  Gm`}</Text>
+                </View>
 
                 <TextInput
                   style={{height: 40, color: '#052a47'}}

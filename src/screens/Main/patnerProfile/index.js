@@ -41,11 +41,11 @@ const PatnerProfile = ({ route }) => {
 
   const sentnetworkr = useSelector(state => state.Home.NetworkList?.networkretailer);
   const selector3 = useSelector(state => state.Home?.partnerData)
+  const isFetchin = useSelector(state => state.Auth.isFetching1)
   const [id1, setId] = useState('');
   const [pending, setPending] = useState('');
 
   const pendingrequst = useSelector(state => state?.Home?.RetailerRequestList);
-  console.log('network k   sent data ,,,, get ', sentnetworkr, pendingrequst);
 
   const selector1 = useSelector(state => state.Supplier.SupplierDetail);
   const selector = selector1?.data;
@@ -65,15 +65,17 @@ const PatnerProfile = ({ route }) => {
   const [exclusive, setExclusive] = useState('unchecked');
 
 
-
+  console.log('this is partner data',selector3);
 
   const BannerWidth = (Dimensions.get('window').width * 15) / 16;
   const BannerHeight = 140;
+
   const share = async () => {
     await Share.share({
-      message: `Supplier Name :   Email Address : virendramishra252@gmail.com `,
+      message: `Name : ${selector3?.partnerBranchdetails?.BillingContactName}   \nEmail Address : ${selector3?.partnerBranchdetails?.BillingContactEmail} `,
     });
   };
+  
   const manageTab = () => {
     setProfile(true);
     setMessage(false);
@@ -124,8 +126,6 @@ const PatnerProfile = ({ route }) => {
   };
   const getStatus = () => {
     const data = selector3?.partnerdetails
-    console.log('IsPartnerSend', data.IsPartnerSend);
-    console.log('issuppliersend', data.IsSupplierSend)
     return (
       <View style={{ width: '80%', }}>
         <View style={{ flexDirection: 'row', justifyContent: data?.IsPartnerSend == 1 ? 'space-evenly' : 'center' }}>
@@ -260,7 +260,6 @@ const PatnerProfile = ({ route }) => {
 
     axios.request(config)
       .then((response) => {
-        console.log('response,,,,,,,,,,', response.data, config);
         if (response.data.status == "success") {
           setVisible2(false);
           supplierprofile(data1?.SrNo)
@@ -282,7 +281,6 @@ const PatnerProfile = ({ route }) => {
   const addToNetwork = async () => {
 
     const data = selector3?.partnerdetails
-    console.log('callll ');
     const userId = await AsyncStorage.getItem('user_id');
     if (data.IsPartnerSend == 1) {
       const Token = await AsyncStorage.getItem('loginToken');
@@ -307,7 +305,6 @@ const PatnerProfile = ({ route }) => {
 
       axios.request(config)
         .then((response) => {
-          console.log('response,,,,,,,,,,vvv', response.data, config);
           if (response?.data?.status == "success") {
             setVisible1(false);
             supplierprofile(data?.SrNo);
@@ -397,7 +394,6 @@ const PatnerProfile = ({ route }) => {
     const data = selector3?.partnerdetails
     const userId = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken')
-    console.log('this is rating count', value);
     setRatting1(value)
     setLoader(true)
     const axios = require('axios');
@@ -412,7 +408,6 @@ const PatnerProfile = ({ route }) => {
 
     axios.request(config)
       .then((response) => {
-        console.log('this is response', response.data);
         if (response.data.status == true) {
           setLoader(false)
           Toast.show(response.data.msg)
@@ -441,7 +436,7 @@ const PatnerProfile = ({ route }) => {
       />
 
       <ScrollView>
-        {isFetching || isFetching1 || visiable1 || visiable2 || loader ? <Loader /> : null}
+        {isFetching || isFetching1 || visiable1 || visiable2 || loader || isFetchin ? <Loader /> : null}
         <View
           style={{
             backgroundColor: '#032e63',
@@ -467,12 +462,13 @@ const PatnerProfile = ({ route }) => {
             <View style={{ marginLeft: 10, width: '60%', marginTop: -4 }}>
               <Text
                 style={{ color: '#fff', fontSize: 19, fontFamily: 'Acephimere' }}>
-                {selector3?.partnerdetails?.CompanyName}
+                {selector3?.partnerBranchdetails?.DisplayName}
               </Text>
               <Text
-                style={{ color: '#fff', fontSize: 12, fontFamily: 'Acephimere' }}>
-                {selector3?.partnerdetails?.Location}
+                style={{ color: '#fff', fontSize: 12, fontFamily: 'Acephimere',marginTop:4,marginLeft:4 }}>
+                {selector3?.partnerBranchdetails?.Location}
               </Text>
+             
               <View
                 style={{
                   flexDirection: 'row',
@@ -481,10 +477,7 @@ const PatnerProfile = ({ route }) => {
                   alignItems: 'center',
                   width: '100%',
                 }}>
-                {console.log("userffffffffffff", selector3?.partnerdetails?.rating)}
-                {console.log("rating1 userffffffffffff", rating1)}
                 {selector3?.partnerdetails?.isAdd == 1 ?
-
                   <Stars
                     half={true}
                     // default={parseFloat('4.5')}
@@ -501,7 +494,7 @@ const PatnerProfile = ({ route }) => {
 
                 <View style={{ flexDirection: 'row' }}>
                   <TouchableOpacity
-                    onPress={() => Linking.openURL(`tel:${selector3?.partnerdetails?.Mobile}`)}
+                    onPress={() => Linking.openURL(`tel:${selector3?.partnerBranchdetails?.Mobile}`)}
                     style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <Image
                       style={{ width: 30, height: 30 }}
@@ -573,7 +566,8 @@ const PatnerProfile = ({ route }) => {
               </View>
               <View style={{ alignItems: 'center' }}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('Message')}
+                 onPress={() => navigation.navigate('ChatScreen', { item: selector3?.partnerdetails })}
+                  // onPress={() => navigation.navigate('Message')}
                   style={styles.tabStyle}>
                   {message ? (
                     <Image

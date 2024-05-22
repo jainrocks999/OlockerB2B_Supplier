@@ -71,12 +71,20 @@ const HomeScreen = () => {
 
   const supplierprofile = async (id) => {
     const user_id = await AsyncStorage.getItem('user_id');
+    AsyncStorage.setItem('partnerId',id.PartnerSrNo)
+    console.log('this is user id',id);
     dispatch({
       type: 'get_networkretailerdetail_request',
       partnerId: id.PartnerSrNo,
       supplierId:user_id,
       url: 'getNetworkRetailerDeatils',
       navigation,
+    });
+    dispatch({
+      type: 'User_SupplierCategories_Request',
+      url: '/productTypeList',
+      userId: id.PartnerSrNo,
+      userType: 'partner',
     });
   };
 

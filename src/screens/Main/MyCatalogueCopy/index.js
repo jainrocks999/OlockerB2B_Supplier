@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, Dimensions } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Loader from '../../../components/Loader';
@@ -13,15 +13,20 @@ import Banner from '../../../components/Banner';
 import { FlatListSlider } from 'react-native-flatlist-slider';
 import { ScrollView } from 'react-native-gesture-handler';
 import SliderBanner from '../HomeScreen/Banner';
+import axios from "axios";
+
 const MyCatalogueCopy = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const selector1 = useSelector(state => state.Catalogue.Catalogue);
-
+  const fetching = useSelector(state => state.Catalogue.fetching);
   const isFetching1 = useSelector(state => state.Catalogue.isFetching);
   const selector = useSelector(state => state.Catalogue.Products);
+  const selectorProductTypeList = useSelector(state => state.Catalogue.productTypeList);
   const bannerList = useSelector(state => state.Home.BannerList);
   const BannerData = [];
+  const win = Dimensions.get('window');
+  const [productTypeList, setProductTypeList] = useState([])
 
   bannerList?.map((item) => {
     if (item.ImageSection == "supplierCatalog" && item.isActive == 1) {
@@ -42,6 +47,7 @@ const MyCatalogueCopy = () => {
   const [isFetching, setIsFetching] = useState();
   const isFocuse = useIsFocused();
 
+
   useEffect(() => {
     if (isFocuse) {
       handleMyCatalogue1();
@@ -50,12 +56,57 @@ const MyCatalogueCopy = () => {
 
   const handleMyCatalogue1 = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
+    const Token = await AsyncStorage.getItem('loginToken');
     dispatch({
       type: 'Get_Catalogue_Request',
       url: '/listCollection',
       user_id: user_id,
-      // navigation,
     });
+    dispatch({
+      type: 'product_Type_Request',
+      url: '/productTypeList',
+      userId: user_id,
+      userType: 'supplier',
+    });
+    // setIsFetching(true)
+    // let config = {
+    //   method: 'get',
+    //   maxBodyLength: Infinity,
+    //   url: `https://olocker.co/api/supplier//productTypeList?userId=${user_id}&userType=supplier`,
+    //   headers: { 
+    //     'Olocker': `Bearer ${Token}`, 
+    //   },
+    // };
+
+    // axios.request(config)
+    // .then((response) => {
+    //   if(response.data.status){
+    //       setProductTypeList(response.data.data)
+    //       setIsFetching(false)
+    //       console.log(response.data);
+    //   }
+    //   else{
+    //     setIsFetching(false)
+    //     console.log(response);
+    //   }
+    // })
+    // .catch((error) => {
+    //   setIsFetching(false)
+    //   console.log(error);
+    // });
+
+
+
+    // dispatch({
+    //   type: 'My_Product_Request',
+    //   url: '/getProductList',
+    //   user_id: user_id,
+    //   start: 0,
+    //   length: 10,
+    //   search: '',
+    //   //navigation,
+    //   btn: '',
+    // });
   };
 
   const handleMyCatalogue = async () => {
@@ -176,21 +227,7 @@ const MyCatalogueCopy = () => {
 
     return res;
   };
-
-
   const scrollViewRef = useRef();
-
-  const handleScroll = (event) => {
-
-
-    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
-    const paddingToBottom = 20;
-    if (layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom) {
-
-      getdata();
-
-    }
-  };
   const getdata = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
@@ -205,20 +242,41 @@ const MyCatalogueCopy = () => {
     });
   }
 
-  const proctDetail = async item => {
+  const productTypeListDetails = async (Id, Value) => {
+    const Token = await AsyncStorage.getItem('loginToken');
     const user_id = await AsyncStorage.getItem('user_id');
-    dispatch({
-      type: 'product_detail_request',
-      url: 'productDetails',
-      productId: item.productId,
-      supplierSrNo: user_id,
-      navigation,
-    });
+
+    // dispatch({
+    //   type: 'User_ProductList_Request',
+    //   url: '/productTypeProducts',
+    //   userId: user_id,
+    //   userType: 'supplier',
+    //   typeId: Id,
+    //   Token: Token,
+    //   name:Value,
+    //   login_user_id: user_id,
+    //   login_user_type: 'supplier',
+
+    //   navigation,
+    // });
+    navigation.navigate('ProductTypeListDetails', {
+      id: Id,
+      name: Value,
+      userType:'supplier',
+      productRequestId:user_id
+    })
+    // dispatch({
+    //   type: 'product_detail_request',
+    //   url: 'productDetails',
+    //   productId: item.productId,
+    //   supplierSrNo: user_id,
+    //   navigation,
+    // });
   };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
-      {isFetching1 || isFetching ? <Loader /> : null}
+      {fetching || isFetching1 ? <Loader /> : null}
       <View
         style={{
           backgroundColor: '#032e63',
@@ -230,22 +288,22 @@ const MyCatalogueCopy = () => {
           alignItems: 'center',
         }}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={{ paddingHorizontal: 5 }}>
             <Image
               style={{ height: 20, width: 14 }}
               source={require('../../../assets/L.png')}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <Text
             style={{
               color: '#fff',
-              fontSize: 16,
+              fontSize: 18,
               fontFamily: 'Roboto-Medium',
-              marginLeft: 14,
+              marginLeft: 10,
             }}>
-            MyCatalogue
+            My Catalogue
           </Text>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -269,8 +327,6 @@ const MyCatalogueCopy = () => {
       </View>
       <ScrollView style={{ flex: 1 }}
         ref={scrollViewRef}
-        onScroll={handleScroll}
-        scrollEventThrottle={400}
       >
         <View
           style={{
@@ -281,34 +337,44 @@ const MyCatalogueCopy = () => {
 
             // alignItems:'center'
           }}>
-          <View style={{marginLeft:16}}>
-            <SliderBanner data={BannerData} bottom={-17} height={9} width={9} borderRadius={5} />
+          <View style={{ marginLeft: 16 }}>
+            <SliderBanner data={BannerData} bottom={-17} 
+            height={6}
+            width={6}
+            borderRadius={3} />
           </View>
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-between',
               marginTop: 10,
-              paddingHorizontal: 40,
+              alignItems: 'center',
+              justifyContent: 'center',
             }}>
             <View style={{ alignItems: 'center' }}>
 
-              <View style={{ bottom: -30, height: 30, width: 30, borderRadius: 15, backgroundColor: '#da062f', zIndex: 5, alignSelf: 'flex-end', }}>
-                <Text style={{ fontSize: 20, color: '#fff', textAlign: 'center' }}>{selector?.length>0?selector?.length:'0'}</Text>
+              <View 
+              style={{ bottom: -30, height: 32, width: 32, borderRadius: 16, backgroundColor: '#da062f', zIndex: 5, alignSelf: 'flex-end',alignItems:'center',justifyContent:'center' }}
+              // style={{ bottom: -20, borderRadius: 100, backgroundColor: '#da062f', zIndex: 5, alignSelf: 'flex-end', paddingHorizontal: 10, paddingVertical: 5 }}
+              >
+                {/* <Text style={{ fontSize: 20, color: '#fff', textAlign: 'center' }}>{selector?.length>0?selector?.length:'0'}</Text> */}
+                <Text style={{ fontSize: 16, color: '#fff', textAlign: 'center' }}>{selectorProductTypeList?.length > 0 ? selectorProductTypeList?.length <=99?selectorProductTypeList?.length:'99+' : '0'}</Text>
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('ListOfProduct');
+                  scrollViewRef.current.scrollTo({ y: 310, animated: true });
                 }}
+                // onPress={() => {
+                //   navigation.navigate('ListOfProduct');
+                // }}
                 style={{
-                  height: 120,
-                  width: 120,
-                  borderRadius: 60,
+                  height: 100,
+                  width: 100,
+                  borderRadius: 50,
                   backgroundColor: '#fff',
                 }}>
 
                 <Image
-                  style={{ height: 120, width: 120 }}
+                  style={{ height: 100, width: 100 }}
                   source={require('../../../assets/Image/my.png')}
                 />
               </TouchableOpacity>
@@ -316,15 +382,17 @@ const MyCatalogueCopy = () => {
                 style={{
                   color: '#fff',
                   marginTop: 10,
-                  fontFamily: 'Roboto-Medium',
-                  fontSize: 15,
+                  fontFamily: 'Acephimere',
                 }}>
-                My Product
+                MY PRODUCTS
               </Text>
             </View>
-            <View style={{ alignItems: 'center' }}>
-              <View style={{ bottom: -30, height: 30, width: 30, borderRadius: 15, backgroundColor: '#da062f', zIndex: 5, alignSelf: 'flex-end', }}>
-                <Text style={{ fontSize: 20, color: '#fff', textAlign: 'center' }}>{selector1?.length>0?selector1?.length:'0'}</Text>
+            <View style={{ alignItems: 'center', marginLeft: 40, }}>
+              <View
+                // style={{ bottom: -20, borderRadius: 100, backgroundColor: '#da062f', zIndex: 5, alignSelf: 'flex-end', paddingHorizontal: 10, paddingVertical: 5 }}
+              style={{ bottom: -30, height: 32, width: 32, borderRadius: 16, backgroundColor: '#da062f', zIndex: 5, alignSelf: 'flex-end',alignItems:'center',justifyContent:'center' }}
+              >
+                <Text style={{ fontSize: 16, color: '#fff', textAlign: 'center' }}>{selector1?.length > 0 ? selector1?.length <= 99?selector1?.length:'99+' : '0'}</Text>
               </View>
               <TouchableOpacity
                 onPress={() =>
@@ -332,13 +400,15 @@ const MyCatalogueCopy = () => {
                   handleMyCatalogue()
                 }
                 style={{
-                  height: 120,
-                  width: 120,
-                  borderRadius: 60,
+                  height: 100,
+                  width: 100,
+                  borderRadius: 50,
                   backgroundColor: '#fff',
+                  marginTop: 5,
+
                 }}>
                 <Image
-                  style={{ height: 120, width: 120 }}
+                  style={{ height: 100, width: 100 }}
                   source={require('../../../assets/Image/neck.png')}
                 />
               </TouchableOpacity>
@@ -346,18 +416,24 @@ const MyCatalogueCopy = () => {
                 style={{
                   color: '#fff',
                   marginTop: 10,
-                  fontFamily: 'Roboto-Medium',
-                  fontSize: 15,
+                  fontFamily: 'Acephimere',
                 }}>
-                My Collection
+                MY COLLECTIONS
               </Text>
             </View>
           </View>
           <View
-            style={{ alignItems: 'center', paddingVertical: 20, marginTop: 20 }}>
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 20, paddingBottom: 20
+            }}>
 
             <TouchableOpacity
-              onPress={() => navigation.navigate('ChooseSupplierProduct')}>
+              onPress={() =>
+                // navigation.navigate('ChooseSupplierProduct',{ productEdit1: false })
+                navigation.navigate('SelectOption')
+              }>
               <LinearGradient
                 style={{
                   paddingHorizontal: 15,
@@ -367,61 +443,26 @@ const MyCatalogueCopy = () => {
                 colors={['#da062f', '#a90022']}>
                 <View style={{
                   flexDirection: 'row',
-                  alignItems: 'center',
+                  alignItems: 'center', alignSelf: 'center',
                   justifyContent: 'center',
                 }}>
                   <Image
-                    style={{ height: 22, width: 30 }}
+                    style={{ height: 18, width: 27, marginLeft: 5, marginBottom: 4 }}
                     source={require('../../../assets/plus.png')}
                   />
                   <Text style={{
                     color: '#fff',
-                    marginLeft: 8,
+                    marginLeft: 2,
                     fontFamily: 'Roboto-Medium',
-                    fontWeight: '700',
+                    fontWeight: '700', marginBottom: 2,
                     fontSize: 16,
                   }}>{'ADD'}</Text>
-                  <View style={{ width: 30 }} />
+                  <View style={{ width: 15 }} />
                 </View>
               </LinearGradient>
             </TouchableOpacity>
 
-            {/* <TouchableOpacity
-              onPress={() => {
-                dispatch({
-                  type: 'edit_product_success',
-                  payload: '',
-                  productEdit: false,
-                });
-                navigation.navigate('ChooseSupplierProduct');
-              }}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: '#fff',
-                paddingHorizontal: 20,
-                paddingVertical: 5,
-                borderRadius: 20,
-              }}>
-              <Text
-                style={{
-                  color: '#032e63',
-                  fontSize: 20,
-                  fontFamily: 'Roboto-Medium',
-                }}>
-                +
-              </Text>
-              <Text
-                style={{
-                  color: '#032e63',
-                  fontSize: 16,
-                  fontFamily: 'Roboto-Medium',
-                  marginLeft: 10,
-                }}>
-                Add More
-              </Text>
-            </TouchableOpacity> */}
+          
           </View>
         </View>
         <View style={{ paddingHorizontal: 12, marginTop: 40 }}>
@@ -446,7 +487,8 @@ const MyCatalogueCopy = () => {
               <Text
                 style={{
                   color: myproduct == true ? '#fff' : '#032e63',
-                  fontFamily: 'Roboto-Medium',
+                  fontFamily: 'Philosopher-Regular',
+                  fontSize: 15
                 }}>
                 My Products
               </Text>
@@ -477,92 +519,80 @@ const MyCatalogueCopy = () => {
           style={{
             alignItems: 'center',
             justifyContent: 'center',
-            marginTop: 20,
+            marginTop: 10,
           }}>
           <FlatList
-            data={mycollection == true ? [] : selector}
-            style={{ width: '96%' }}
-            numColumns={2}
-
-            // onEndReached={() => {
-
-            //   console.log('gjkgjfdigfdijggdfog');
-            //   // handleOnEndReached()
-            // }}
-            // onEndReachedThreshold={0.1}
-            // ListFooterComponent={<View style={{ height: 50 }} />} 
-
-            // contentContainerStyle={{justifyContent:'center',}}
+            // data={mycollection == true ? [] : selector}
+            data={selectorProductTypeList}
+            // style={{marginBottom:200}}
+            numColumns={3}
             renderItem={({ item, index }) => {
               return (
                 <TouchableOpacity
-                onPress={() => {
-                  proctDetail(item);
-                }}
+                  onPress={() => {
+                    productTypeListDetails(item.Id, item.Value);
+                  }}
                   style={{
-                    width: '46%',
-                    margin: 7,
-                    shadowColor: '#000',
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.2,
-                    shadowRadius: 5,
-                    elevation: 5,
+                    width: '33.3%',
+                    alignItems: 'center',
+                    height: 175,
                     backgroundColor: '#fff',
-                    borderRadius: 10,
-                    padding: 10,
+                    borderWidth: 0.5,
+                    borderColor: '#807f82'
+                    // width: '46%',
+                    // margin: 7,
+                    // shadowColor: '#000',
+                    // shadowOffset: { width: 0, height: 2 },
+                    // shadowOpacity: 0.2,
+                    // shadowRadius: 5,
+                    // elevation: 5,
+                    // backgroundColor: '#fff',
+                    // borderRadius: 10,
+                    // padding: 10,
                     // borderWidth:1
                   }}>
-                  <View
-                    style={{
-                      padding: 0,
-                      height: hp('5%'),
-                      width: '18%',
-                      borderWidth: 0,
-                      marginTop: 0,
-                    }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        manageWishList(item, item.is_exist);
+
+                  <View>
+                    {item?.ImageName ? <Image
+                      style={{
+                        width: win.width * 0.33,
+                        height: '74%',
+                        resizeMode: 'contain',
+                        alignSelf: 'center',
                       }}
-                    // onPress={() => click(click1)}
-                    >
-                      <Image
-                        style={{
-                          height: hp('2.4%'),
-                          width: wp('5.8%'),
-                          marginLeft: 5,
-                          marginVertical: 5,
-                          marginTop: 2,
-                          tintColor: item?.is_exist ? 'red' : 'grey',
-                        }}
-                        source={require('../../../assets/Image/dil.png')}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <View
-                    // onPress={() => {
-                    //   proctDetail(item);
-                    // }}
-                    >
-                    <Image
-                      style={{ height: 144, width: '100%', borderRadius: 10 }}
-                      source={{ uri: item.images }}
-                    />
-                    <View style={{ marginTop: 10 }}>
+                      resizeMode='stretch'
+                      source={{ uri: `https://olocker.co/uploads/product_type/${item.ImageName}` }}
+                    /> : <Image
+                      style={{
+                        width: win.width * 0.33,
+                        height: '74%',
+                        resizeMode: 'contain',
+                        alignSelf: 'center',
+                      }}
+                      resizeMode={'stretch'}
+                      source={require('../../../assets/logo.png')}
+                    />}
+                    <View style={{
+                      marginTop: 5,
+                      alignItems: 'center',
+                    }}>
                       <Text
                         style={{
-                          fontFamily: 'Roboto-Medium',
+                          color: '#032e63', fontWeight: '700', fontFamily: 'Acephimere',
                           fontSize: 14,
-                          color: '#030303',
                         }}>
-                        {item.productTypeName}
+                        {/* {item.productTypeName} */}
+                        {item.Value}
                       </Text>
                       <Text
                         style={{
-                          fontFamily: 'Roboto-Medium',
+                          color: '#0d0d0d', fontWeight: '700', fontFamily: 'Acephimere',
                           fontSize: 14,
-                          color: '#666666',
-                        }}></Text>
+                        }}>
+                        {item.pTotal <= 0
+                          ? `${item.pTotal} Item`
+                          : `${item.pTotal} Items`}
+                      </Text>
                     </View>
                   </View>
                 </TouchableOpacity>

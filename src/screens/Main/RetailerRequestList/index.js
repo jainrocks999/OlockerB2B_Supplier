@@ -69,8 +69,9 @@ const RetailerRequestList = () => {
     const userId = await AsyncStorage.getItem('user_id');
     dispatch({
       type: 'remove_retailerfromnetwork_Request',
-      url: 'removepartner',
-      // SupplierSrNo: userId,
+      url:'removeNetworkPartner',
+      // url: 'removepartner',
+      SupplierSrNo: userId,
       partner_id: item?.PartnerSrNo,
       // data2,
       userId: userId,

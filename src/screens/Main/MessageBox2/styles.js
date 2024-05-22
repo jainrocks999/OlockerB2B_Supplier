@@ -56,8 +56,8 @@ export default StyleSheet.create({
   },
   headertouch: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   Usercard: {
     marginHorizontal: 10,

@@ -512,7 +512,7 @@ function* editProduct(action) {
         payload: res.data,
         productEdit: true,
       });
-      action.navigation.navigate('ChooseSupplierProduct');
+      action.navigation.navigate('ChooseSupplierProduct',{  productEdit1: true });
     } else {
       yield put({
         type: 'edit_product_error',
@@ -539,7 +539,9 @@ function* productData(action) {
         type: 'product_detail_success',
         payload: res.data,
       });
-      action.navigation.navigate('SubCategory');
+      action.navigation.navigate('SubCategory',
+        {data:action.userType}
+      );
       // Toast.show('datails data get success');
     } else {
       yield put({
@@ -628,6 +630,84 @@ function* getImages(action) {
     console.log('thisisis i', error);
   }
 }
+
+// My Product Categories
+function* productTypeList(action) {
+  try {
+    const data = {
+      userId: action.userId,
+      userType: 'supplier',
+    };
+    const response = yield call(
+      Api.fetchDataByGET1,
+      action.url,
+      data,
+    );
+    console.log('this is res',response);
+    if (response.status == true) {
+     
+      yield put({
+        type: 'product_Type_Success',
+        payload: response.data,
+      });
+    } else {
+      yield put({
+        type: 'product_Type_Error',
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'product_Type_Error',
+    });
+        Toast.show(error);
+  }
+}
+
+function* ProductList(action) {
+  try {
+    console.log('this is actiom',action);
+    const data = {
+      userId: action.userId,
+      userType: action.userType,
+      typeId: action.typeId,
+      login_user_id: action.login_user_id,
+      login_user_type: action.login_user_type,
+      start:action.start,
+      limit:action.limit
+    };
+    const response = yield call(
+      Api.fetchDataByGET1,
+      action.url,
+      data,
+    );
+    console.log(response);
+    if (response.status == true) {
+      yield put({
+        type: 'User_ProductLists_Success',
+        payload: response,
+      });
+      //  action.navigation.navigate('ProductTypeListDetails')
+      if (action.navigation) {
+        action.navigation.navigate('ProductTypeListDetails', {
+          name: action.name,
+          id: action.typeId
+        });
+      }
+
+    } else {
+      yield put({
+        type: 'User_ProductLists_Error',
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'User_ProductLists_Error',
+    });
+        Toast.show(error);
+  }
+}
+
+
 export default function* citySaga() {
   yield takeEvery('Get_Catalogue_Request', getCatalogue);
   yield takeEvery('My_Product_Request', getProducts);
@@ -650,4 +730,7 @@ export default function* citySaga() {
   yield takeEvery('product_delete_request', deleteProduct);
   yield takeEvery('get_product_price_request', getProductsPrice);
   yield takeEvery('library_images_request', getImages);
+  yield takeEvery('product_Type_Request',productTypeList)
+  yield takeEvery('User_ProductLists_Request',ProductList)
+
 }

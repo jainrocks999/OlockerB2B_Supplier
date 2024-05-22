@@ -27,7 +27,7 @@ import Loyalty from '../screens/Main/Loyalty';
 import MyNetwork from '../screens/Main/MyNetwork';
 import PendingRequest from '../screens/Main/PendingRequest';
 import SentRequest from '../screens/Main/SentRequest';
-import PartnerProfile from '../screens/Main/PartnerProfile';
+// import PartnerProfile from '../screens/Main/PartnerProfile';
 import editProduct from '../screens/Main/EditProductDetails';
 import CategoryDetails from '../screens/Main/CategoryDetails';
 import MyProducts from '../screens/Main/MyProducts';
@@ -60,6 +60,7 @@ import PatnerProfile from '../screens/Main/patnerProfile';
 import User from 'react-native-vector-icons/FontAwesome5';
 import MyNetworks from '../screens/Main/MyNetworks'
 import { navigationRef } from "./RootNavigation";
+import ProductTypeListDetails from "../screens/Main/ProductTypeListDetails";
 
 const Stack1 = createNativeStackNavigator();
 function HomeScreen1() {
@@ -75,6 +76,7 @@ function HomeScreen1() {
       <Stack1.Screen name="EditCollection" component={EditCollection} />
       <Stack1.Screen name="MyCatalogue" component={MyCatalogue} />
       <Stack1.Screen name="MyCatalogueCopy" component={MyCatalogueCopy} />
+      <Stack1.Screen name="ProductTypeListDetails" component={ProductTypeListDetails}/>
       <Stack1.Screen name="MyCatalogueDetaill" component={MyCatalogueDetaill} />
       <Stack1.Screen name="MyProductDetails" component={MyProductDetails} />
       <Stack1.Screen name="SubCategory" component={SubCategory} />
@@ -156,7 +158,7 @@ function MyNetworkTab() {
       <Stack2.Screen name="MyNetworks1" component={MyNetworks} />
       <Stack2.Screen name="MyNetworks" component={MyNetworkList} />
       <Stack1.Screen name="PatnerProfile" component={PatnerProfile} />
-      <Stack2.Screen name="PartnerProfile2" component={PartnerProfile} />
+      {/* <Stack2.Screen name="PartnerProfile2" component={PartnerProfile} /> */}
       <Stack2.Screen name="PendingRequest" component={PendingRequest} />
       <Stack2.Screen name="SentRequest" component={SentRequest} />
     </Stack2.Navigator>

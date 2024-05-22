@@ -370,20 +370,20 @@ const Addproduct = ({route}) => {
       {isFetching || fetching ? <Loader /> : null}
       <View
         style={{
-          backgroundColor: '#032e63',
-          height: 50,
           width: '100%',
+          backgroundColor: '#032e63',
           justifyContent: 'space-between',
-          paddingHorizontal: 10,
-          flexDirection: 'row',
           alignItems: 'center',
+          paddingHorizontal: 12,
+          flexDirection: 'row',
+          paddingVertical: 12,
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{paddingHorizontal: 5}}>
+            style={{ paddingVertical:15, width: 35,alignItems:'center',justifyContent:'center',marginLeft:-10}}>
             <Image
-              style={{height: 20, width: 14}}
+              style={{height: 18, width: 12}}
               source={require('../../../assets/L.png')}
             />
           </TouchableOpacity>
@@ -398,18 +398,23 @@ const Addproduct = ({route}) => {
           </Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <TouchableOpacity onPress={() => navigation.navigate('Message')}>
           <Image
             style={{height: 24, width: 28}}
             source={require('../../../assets/Fo.png')}
           />
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={{marginLeft: 15}} onPress={()=>navigation.navigate('FavDetails')}>
           <Image
-            style={{height: 22, width: 26, tintColor: '#fff', marginLeft: 15}}
+            style={{height: 22, width: 26, tintColor: '#fff', }}
             source={require('../../../assets/Image/dil.png')}
           />
-          <Image
+          </TouchableOpacity>
+          {/* <Image
             style={{height: 24, width: 28, tintColor: '#fff', marginLeft: 15}}
             source={require('../../../assets/supplierImage/more.png')}
-          />
+          /> */}
         </View>
       </View>
       <ScrollView>

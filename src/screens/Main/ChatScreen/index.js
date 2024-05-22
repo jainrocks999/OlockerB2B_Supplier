@@ -7,6 +7,7 @@ import ChatScreen2 from './chatUi';
 export default function ChatScreen() {
   const route = useRoute();
   const item = route.params?.item;
+  console.log('item',item);
   return (
     <View style={{flex: 1}}>
       <ChatHeader name={item.CompanyName} />

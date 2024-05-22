@@ -91,7 +91,7 @@ export default StyleSheet.create({
     marginLeft: 2,
     width: 16,
     height: 13,
-    marginTop: Platform.OS == 'android' ? 4 : 4,
+    marginTop: Platform.OS == 'android' ? 1 : 4,
     //tintColor:'grey'
   },
   button: {
@@ -107,5 +107,19 @@ export default StyleSheet.create({
     color: 'white',
     fontSize: 20,
     fontWeight: '500',
+  },
+  card:{
+    color: '#032e63',
+    width: '100%',
+
+    marginBottom: -1,
+    height: 40,
+    // marginTop: 5
+  },
+  placeholder: {
+    color: '#474747',
+    width: '100%',
+    alignSelf: 'center',
+    fontFamily: 'Acephimere'
   },
 });

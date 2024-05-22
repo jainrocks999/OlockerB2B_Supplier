@@ -1,19 +1,21 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, Image, FlatList} from 'react-native';
+import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import ImagePath from '../ImagePath';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import Loader from '../Loader';
+
 const Profile = () => {
   const isFetching = useSelector(state => state.Supplier.isFetching);
   const ownerImagePath = 'https://olocker.co/uploads/supplier/';
   const parnerData = useSelector(state => state.Home.partnerData);
   const partner = parnerData?.partnerdetails;
+  console.log('parnerData?.partnerdetails', parnerData?.partnerimagedetails?.OwnerImage);
   return (
-    <View style={{flex: 1, backgroundColor: '#fff', paddingVertical: 20}}>
+    <View style={{ flex: 1, backgroundColor: '#fff', paddingVertical: 20 }}>
       {/* {isFetching ? <Loader /> : null} */}
 
-      <View style={{paddingHorizontal: 20, alignItems: 'flex-start'}}>
-        <TouchableOpacity
+      <View style={{ paddingHorizontal: 20, alignItems: 'flex-start' }}>
+      {partner?.PartnerIntroduction?  <View
           style={{
             backgroundColor: '#032e63',
             paddingHorizontal: 20,
@@ -23,10 +25,10 @@ const Profile = () => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <Text style={{color: '#fff', fontSize: 14, fontFamily: 'Acephimere'}}>
+          <Text style={{ color: '#fff', fontSize: 14, fontFamily: 'Acephimere' }}>
             About us
           </Text>
-        </TouchableOpacity>
+        </View>:null}
         <Text
           style={{
             fontSize: 16,
@@ -39,7 +41,7 @@ const Profile = () => {
           {partner?.PartnerIntroduction}
         </Text>
 
-        <TouchableOpacity
+        {parnerData?.partnerimagedetails?.OwnerImage.length>0?<View
           style={{
             backgroundColor: '#032e63',
             paddingHorizontal: 19,
@@ -50,12 +52,12 @@ const Profile = () => {
             justifyContent: 'center',
             marginTop: 15,
           }}>
-          <Text style={{color: '#fff', fontSize: 14, fontFamily: 'Acephimere'}}>
+          <Text style={{ color: '#fff', fontSize: 14, fontFamily: 'Acephimere' }}>
             Founders
           </Text>
-        </TouchableOpacity>
+        </View>:null}
 
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           {parnerData?.partnerimagedetails?.OwnerImage?.map(item => (
             <View
               style={{
@@ -65,19 +67,20 @@ const Profile = () => {
                 width: '35%',
                 paddingVertical: 15,
               }}>
-              <View style={{width: '80%', alignItems: 'center'}}>
+              <View style={{ width: '80%', alignItems: 'center' }}>
 
-                { item.name!=""?
-                <View style={{height: 90, width: '100%', borderWidth: 1}}>
-                  <Image
-                    style={{height: '100%', width: '100%'}}
-                    resizeMode={'stretch'}
-                    source={
-                         {uri: `${ownerImagePath}${item.name}`}
-                    }
-                  />
-                </View>:null}
-                <Text
+                {item.name != "" ?
+                  <View style={{ height: 90, width: '100%', borderWidth: 1 }}>
+                    <Image
+                      style={{ height: '100%', width: '100%' }}
+                      resizeMode={'stretch'}
+                      source={
+                        { uri: `https://olocker.co/uploads/partner/${item.name}` }
+                      }
+                    />
+                  </View> : null}
+                {console.log('this ias item', item)}
+                {item.OwnerName ? <Text
                   style={{
                     marginTop: 5,
                     color: '#032e63',
@@ -85,13 +88,13 @@ const Profile = () => {
                     fontSize: 13,
                   }}>
                   {item.OwnerName}
-                </Text>
+                </Text> : null}
               </View>
             </View>
           ))}
         </View>
 
-        <TouchableOpacity
+        {parnerData?.partnerimagedetails?.ShowRoomImage.length>0?<View
           style={{
             backgroundColor: '#032e63',
             paddingHorizontal: 12,
@@ -111,8 +114,8 @@ const Profile = () => {
             }}>
             Showrooms
           </Text>
-        </TouchableOpacity>
-        <View style={{flexDirection: 'row'}}>
+        </View>:null}
+        <View style={{ flexDirection: 'row' }}>
           {parnerData?.partnerimagedetails?.ShowRoomImage?.map(item => (
             <View
               style={{
@@ -122,22 +125,21 @@ const Profile = () => {
                 width: '35%',
                 paddingVertical: 15,
               }}>
-              <View style={{width: '80%', alignItems: 'center'}}>
+              <View style={{ width: '80%', alignItems: 'center' }}>
+                {item.name?
+                  <View style={{ height: 90, width: '100%', borderWidth: 1 }}>
+                    <Image
+                      style={{ height: '100%', width: '100%' }}
+                      resizeMode={'stretch'}
+                      source={
+                        {
+                          uri: `https://olocker.co/uploads/partner/${item.name}`,
+                        }
 
-                {item.name!==""?
-                <View style={{height: 90, width: '100%', borderWidth: 1}}>
-                  <Image
-                    style={{height: '100%', width: '100%'}}
-                    resizeMode={'stretch'}
-                    source={
-                       {
-                            uri: `https://olocker.co/uploads/partner/${item.name}`,
-                          }
-                       
-                    }
-                  />
-                </View>:null}
-                <Text
+                      }
+                    />
+                  </View> : null}
+                {item.OwnerName ? <Text
                   style={{
                     marginTop: 5,
                     color: '#032e63',
@@ -145,38 +147,13 @@ const Profile = () => {
                     fontSize: 13,
                   }}>
                   {item.OwnerName}
-                </Text>
+                </Text> : null}
               </View>
             </View>
           ))}
         </View>
         <View>
-          <View style={{paddingHorizontal: 20, marginTop: 20}}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Image
-                style={{height: 30, width: 22}}
-                source={require('../../assets/Image/loc.png')}
-              />
-              <Text
-                style={{
-                  marginLeft: 20,
-                  fontSize: 14,
-                  fontFamily: 'Acephimere',
-                  color: '#424242',
-                }}>
-                {partner?.HOaddress}
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        <View>
-          <TouchableOpacity
+          {partner?.HOaddress?<View
             style={{
               backgroundColor: '#032e63',
               paddingHorizontal: 20,
@@ -188,53 +165,92 @@ const Profile = () => {
               marginTop: 15,
             }}>
             <Text
-              style={{color: '#fff', fontSize: 14, fontFamily: 'Acephimere'}}>
+              style={{ color: '#fff', fontSize: 14, fontFamily: 'Acephimere' }}>
+              Address
+            </Text>
+          </View>:null}
+          <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Image
+                style={{ height: 30, width: 22 }}
+                source={require('../../assets/Image/loc.png')}
+              />
+              <Text
+                style={{
+                  marginLeft: 20,
+                  fontSize: 14,
+                  fontFamily: 'Acephimere',
+                  color: '#424242',
+                }}>
+                {`${partner?.HOaddress}, ${parnerData?.partnerdetails?.state_name}, ${parnerData?.partnerdetails?.city_name}, ${parnerData?.partnerBranchdetails.PinCode}`}
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        <View>
+          <View
+            style={{
+              backgroundColor: '#032e63',
+              paddingHorizontal: 20,
+              paddingVertical: 8,
+              borderRadius: 20,
+              width: 100,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 15,
+            }}>
+            <Text
+              style={{ color: '#fff', fontSize: 14, fontFamily: 'Acephimere' }}>
               Contact
             </Text>
-          </TouchableOpacity>
-          <View style={{paddingHorizontal: 20, marginTop: 20}}>
-          {
-                  partner?.Mobile!=""?
-            <View style={{flexDirection: 'row'}}>
-              <Image
-                style={{height: 28, width: 28}}
-                source={require('../../assets/PartnerImage/16.png')}
-              />
-              <View>
-               
-               
-                <Text
-                  style={{
-                    marginLeft: 20,
-                    fontSize: 14,
-                    fontFamily: 'Acephimere',
-                    color: '#424242',
-                  }}>{`+91${partner?.Mobile}`}</Text>
-                 
-                {/* <Text style={{marginLeft:30,fontSize:14,fontFamily:'Acephimere',color:'#424242'}}>{'Ph:9876567898 '}</Text>
-                     <Text style={{marginLeft:30,fontSize:14,fontFamily:'Acephimere',color:'#424242'}}>{'Ph:9876567898 '}</Text> */}
-              </View>
-            </View>
-            :null}
+          </View>
+          <View style={{ paddingHorizontal: 20, }}>
+            {
+              parnerData?.partnerBranchdetails?.Mobile  ?
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
+                  <Image
+                    style={{ height: 28, width: 28 }}
+                    source={require('../../assets/PartnerImage/16.png')}
+                  />
+                  <View>
+                    <Text
+                      style={{
+                        marginLeft: 20,
+                        fontSize: 14,
+                        fontFamily: 'Acephimere',
+                        color: '#424242',
+                      }}>{`+91${parnerData?.partnerBranchdetails?.Mobile}`}</Text>
 
-{partner?.BillingContactEmail!=""?
-            <View style={{flexDirection: 'row', marginTop: 20,alignItems:'center'}}>
-              <Image
-                style={{height: 28, width: 28}}
-                source={require('../../assets/PartnerImage/msg.png')}
-              />
-              <View>
-                <Text
-                  style={{
-                    marginLeft: 20,
-                    fontSize: 14,
-                    fontFamily: 'Acephimere',
-                    color: '#424242',
-                  }}>
-                  {partner?.BillingContactEmail}
-                </Text>
-              </View>
-            </View>:null}
+                    {/* <Text style={{marginLeft:30,fontSize:14,fontFamily:'Acephimere',color:'#424242'}}>{'Ph:9876567898 '}</Text>
+                     <Text style={{marginLeft:30,fontSize:14,fontFamily:'Acephimere',color:'#424242'}}>{'Ph:9876567898 '}</Text> */}
+                  </View>
+                </View>
+                : null}
+
+            {parnerData?.partnerBranchdetails?.BillingContactEmail  ?
+              <View style={{ flexDirection: 'row', marginTop: 20, alignItems: 'center' }}>
+                <Image
+                  style={{ height: 28, width: 28 }}
+                  source={require('../../assets/PartnerImage/msg.png')}
+                />
+                <View>
+                  <Text
+                    style={{
+                      marginLeft: 20,
+                      fontSize: 14,
+                      fontFamily: 'Acephimere',
+                      color: '#424242',
+                    }}>
+                    {parnerData?.partnerBranchdetails?.BillingContactEmail}
+                  </Text>
+                </View>
+              </View> : null}
 
             {/* <View style={{flexDirection: 'row', marginTop: 20}}>
               <Image
@@ -254,7 +270,7 @@ const Profile = () => {
               </View>
             </View> */}
 
-            <View style={{height: 100}} />
+            <View style={{ height: 100 }} />
           </View>
         </View>
       </View>

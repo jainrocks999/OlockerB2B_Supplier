@@ -211,7 +211,7 @@
 //   },
 // ];
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -225,7 +225,7 @@ import {
   Alert,
 } from 'react-native';
 import Header from '../../../components/CustomHeader';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation ,useIsFocused} from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
 import BottomTab from '../../../components/StoreButtomTab';
 import Stars from 'react-native-stars';
@@ -237,7 +237,7 @@ import Loader from '../../../components/Loader';
 import ImagePath from '../../../components/ImagePath';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Toast from "react-native-simple-toast";
 
 let productImage = [];
@@ -249,26 +249,53 @@ const HomeScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const selector1 = useSelector(state => state.Supplier.SupplierDetail);
- 
+
   const selector = selector1?.data;
   const ownerImagePath = 'https://olocker.co/uploads/supplier/';
   // console.log('this is selector');
   const isFetching = useSelector(state => state.Supplier.isFetching);
   const isFetching1 = useSelector(state => state.City.isFetching);
   const [profile, setProfile] = useState(true);
-  const [loader,setLoader]=useState(false)
+  const [loader, setLoader] = useState(false)
   const [message, setMessage] = useState(false);
   const [catalogue, setCatalogue] = useState(false);
   const [setting, setSetting] = useState(false);
   const [rating1, setRatting1] = useState(0);
-  const  [supplierLogo,setSupplierLogo] =useState('')
+  const [supplierLogo, setSupplierLogo] = useState('')
   const BannerWidth = (Dimensions.get('window').width * 15) / 16;
   const BannerHeight = 140;
+  const isFocus =useIsFocused();
+
+
   const share = async () => {
     await Share.share({
-      message: `Supplier Name :   Email Address : virendramishra252@gmail.com `,
+      message: `Supplier Name :${selector?.supplierdetails[0]?.ContactPersonName}   \nEmail Address : ${selector?.supplierdetails[0]?.EmailId} `,
     });
   };
+
+
+  useEffect(() => {
+    if (isFocus) {
+      supplierDetail();
+    }
+  }, [isFocus])
+
+
+
+
+  const supplierDetail = async () => {
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch({
+      type: 'Supplier_Profile_Request',
+      url: '/editProfile',
+      userId: user_id,
+      userType: 'supplier',
+      userRole: 6,
+    });
+
+  }
+
+  
 
   const manageTab = () => {
     setProfile(true);
@@ -311,7 +338,7 @@ const HomeScreen = () => {
 
   const Logout = () => {
     Alert.alert(
-      'Are you want to logout ?',
+      'Are you sure you want to log out?',
       '',
       [
         {
@@ -321,16 +348,16 @@ const HomeScreen = () => {
           },
           style: 'cancel',
         },
-        {text: 'ok', onPress: () => LogoutApp()},
+        { text: 'ok', onPress: () => LogoutApp() },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
 
   const LogoutApp = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
-    const token =await AsyncStorage.getItem('Tokenfcm');
+    const token = await AsyncStorage.getItem('Tokenfcm');
     const axios = require('axios');
     setLoader(true)
     let config = {
@@ -342,9 +369,9 @@ const HomeScreen = () => {
       },
     };
     axios.request(config)
-    
+
       .then((response) => {
-        console.log('this is response data',response.data);
+        console.log('this is response data', response.data);
         if (response.data.status == true) {
           AsyncStorage.setItem('loginToken', '');
           AsyncStorage.setItem('user_id', '');
@@ -354,10 +381,10 @@ const HomeScreen = () => {
         }
       })
       .catch((error) => {
-       setLoader(false)
+        setLoader(false)
         console.log('error.....', error);
       });
-   
+
 
     // await AsyncStorage.setItem('loginToken', '');
     // navigation.navigate('Login');
@@ -409,17 +436,17 @@ const HomeScreen = () => {
     });
     selector?.supplierimagedetails.map(item => {
       if (item.Type == 'Logo') {
-      
+
         setSupplierLogo(item.ImageName);
       }
     });
   }, [selector?.supplierimagedetails]);
 
   return (
-    <View style={{flex: 1, backgroundColor: '#f0eeef'}}>
-      {loader?<Loader/>:null}
+    <View style={{ flex: 1, backgroundColor: '#f0eeef' }}>
+      {loader ? <Loader /> : null}
       <View style={styles.container}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity
             delayPressIn={0}
             onPress={() => navigation.goBack()}>
@@ -428,7 +455,7 @@ const HomeScreen = () => {
               source={require('../../../assets/L.png')}
             />
           </TouchableOpacity>
-          <Text style={[styles.text, {marginLeft: 15}]}> Profile</Text>
+          <Text style={[styles.text, { marginLeft: 15 }]}> Profile</Text>
         </View>
         <View style={styles.headertouch}>
           <TouchableOpacity onPress={() => navigation.navigate('Message')}>
@@ -438,7 +465,7 @@ const HomeScreen = () => {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            style={{marginLeft: 15}}
+            style={{ marginLeft: 15 }}
             onPress={() => handleWishList()}>
             <Image
               style={styles.img2}
@@ -454,7 +481,7 @@ const HomeScreen = () => {
           style={{
             backgroundColor: '#032e63',
           }}>
-          <View style={{flexDirection: 'row', padding: 15, width: '100%'}}>
+          <View style={{ flexDirection: 'row', padding: 15, width: '100%' }}>
             <View
               style={{
                 backgroundColor: '#fff',
@@ -463,47 +490,48 @@ const HomeScreen = () => {
                 borderRadius: 10,
               }}>
               <Image
-                style={{width: '100%', height: '100%', borderRadius: 10}}
+                style={{ width: '100%', height: '100%', borderRadius: 10 }}
                 source={
                   supplierLogo
-                    ? {uri: `${ownerImagePath}${supplierLogo}`}
+                    ? { uri: `${ownerImagePath}${supplierLogo}` }
                     : require('../../../assets/Image/Not.jpeg')
                 }
               />
             </View>
-            <View style={{marginLeft: 10, width: '60%', marginTop: -4}}>
+            <View style={{ marginLeft: 10, width: '60%', marginTop: -4 }}>
               <Text
-                style={{color: '#fff', fontSize: 19, fontFamily: 'Acephimere'}}>
+                style={{ color: '#fff', fontSize: 19, fontFamily: 'Acephimere' }}>
                 {selector?.supplierdetails[0]?.SupplierName}
               </Text>
               <Text
-                style={{color: '#fff', fontSize: 12, fontFamily: 'Acephimere'}}>
+                style={{ color: '#fff', fontSize: 12, fontFamily: 'Acephimere',marginLeft:3,marginTop:2 }}>
                 {selector?.supplierdetails[0]?.ContactPersonName}
               </Text>
+             
               <View
                 style={{
                   // flexDirection: 'row',
                   // justifyContent: 'space-between',
                   marginTop: 20,
                   alignItems: 'center',
-                  alignSelf:'flex-end',
+                  alignSelf: 'flex-end',
                   // width: '100%',
                 }}>
-                
-                  
-                  <TouchableOpacity
-                    onPress={() => share()}
-                    style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginLeft: 10,
-                    }}>
-                    <Image
-                      style={{width: 40, height: 40,resizeMode:'center'}}
-                      source={require('../../../assets/PartnerImage/15.png')}
-                    />
-                  </TouchableOpacity>
-              
+
+
+                <TouchableOpacity
+                  onPress={() => share()}
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginLeft: 10,
+                  }}>
+                  <Image
+                    style={{ width: 40, height: 40, resizeMode: 'center' }}
+                    source={require('../../../assets/PartnerImage/15.png')}
+                  />
+                </TouchableOpacity>
+
               </View>
             </View>
           </View>
@@ -525,7 +553,7 @@ const HomeScreen = () => {
                 borderRadius: 20,
               }}>
               <Text
-                style={{color: '#fff', fontSize: 12, fontFamily: 'Acephimere'}}>
+                style={{ color: '#fff', fontSize: 12, fontFamily: 'Acephimere' }}>
                 {'Edit Profile'}
               </Text>
             </TouchableOpacity>
@@ -538,7 +566,7 @@ const HomeScreen = () => {
                 borderRadius: 20,
               }}>
               <Text
-                style={{color: '#fff', fontSize: 12, fontFamily: 'Acephimere'}}>
+                style={{ color: '#fff', fontSize: 12, fontFamily: 'Acephimere' }}>
                 {'Change Password'}
                 {/* Added To Network */}
               </Text>
@@ -555,15 +583,15 @@ const HomeScreen = () => {
                 borderRadius: 20,
               }}>
               <Text
-                style={{color: '#fff', fontSize: 12, fontFamily: 'Acephimere'}}>
+                style={{ color: '#fff', fontSize: 12, fontFamily: 'Acephimere' }}>
                 {'Logout'}
               </Text>
             </TouchableOpacity>
           </View>
 
-          <View style={{alignItems: 'center', height: 0, marginTop: 15}}></View>
+          <View style={{ alignItems: 'center', height: 0, marginTop: 15 }}></View>
 
-          <View style={{height: 20}} />
+          <View style={{ height: 20 }} />
         </View>
         {/* <View style={styles.tabContainer}>
           <View style={{alignItems: 'center'}}>
@@ -651,7 +679,7 @@ const HomeScreen = () => {
             </Text>
           </View>
         </View> */}
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
           {profile == true ? <Profile /> : null}
           {catalogue == true ? <Catalogue /> : null}
           {setting == true ? <Setting /> : null}

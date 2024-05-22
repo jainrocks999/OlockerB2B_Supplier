@@ -2,60 +2,16 @@ import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
-  Dimensions,
-  Image,
-  FlatList,
-  ScrollView,
-  TouchableOpacity,
   Platform,
-  Button,
 } from 'react-native';
 import Header from '../../../components/CustomHeader';
 import {useNavigation} from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
-import BottomTab from '../../../components/StoreButtomTab';
 import styles from './styles';
-import RNPickerSelect from 'react-native-picker-select';
 import {useIsFocused} from '@react-navigation/native';
 import PickerModel from '../../../components/PickerModel';
-import {Log} from 'victory';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { Dropdown } from 'react-native-element-dropdown';
 
-// const MyDateTimePicker = () => {
-//   const [date, setDate] = useState(new Date());
-//   const [show, setShow] = useState(false);
-
-//   const onChange = (event, selectedDate) => {
-//     const currentDate = selectedDate || date;
-//     setShow(Platform.OS === 'ios');
-//     setDate(currentDate);
-//   };
-
-//   const showPicker = () => {
-//     setShow(true);
-//   };
-
-//   return (
-//     <View>
-//       <Button onPress={showPicker} title="Select date" />
-//       {show && (
-//         <DateTimePicker
-//           testID="dateTimePicker"
-//           value={date}
-//           mode="date"
-//           is24Hour={true}
-//           display="default"
-//           onChange={onChange}
-//           style={{backgroundColor: 'white'}} // set container styles
-//           textColor="blue" // set text color
-//           textStyle={{fontWeight: 'bold'}} // set text styles
-//         />
-//       )}
-//     </View>
-//   );
-// };
-
-// export default MyDateTimePicker;
 
 const SelectOption = () => {
   const navigation = useNavigation();
@@ -67,7 +23,6 @@ const SelectOption = () => {
     val => {
       if (isFocused) {
         manageOption;
-        // setVisible(false);
         setType('');
       }
     },
@@ -80,7 +35,7 @@ const SelectOption = () => {
     if (val == 'Product') {
       {
         setVisible(false);
-        navigation.navigate('Addproduct'), {type: val};
+        navigation.navigate('ChooseSupplierProduct',{ productEdit1: false })
       }
     } else if (val == 'Collections') {
       {
@@ -90,31 +45,7 @@ const SelectOption = () => {
     }
   };
 
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setShow(false);
-    setDate(currentDate);
-  };
-
-  const showMode = currentMode => {
-    if (Platform.OS === 'android') {
-      setShow(false);
-      // for iOS, add a button that closes the picker
-    }
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
-  const showTimepicker = () => {
-    showMode('time');
-  };
 
   return (
     <View style={styles.container1}>
@@ -145,82 +76,36 @@ const SelectOption = () => {
         <View style={[styles.main, {alignItems: 'center'}]}>
           <Text style={styles.Text1}>Select Type</Text>
           <View style={styles.main1}>
-            <TouchableOpacity
-              onPress={() => setVisible(true)}
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text
-                style={{
-                  color: '#474747',
-                  width: '100%',
-                  fontSize: 14,
-                  marginBottom: -1,
-                  fontFamily: 'Acephimere',
-                }}>
-                Select Type
-              </Text>
-              <Image
-                style={[styles.rnimg, {marginLeft: -15}]}
-                source={require('../../../assets/F.png')}
-              />
-            </TouchableOpacity>
+          <Dropdown
+                  style={styles.card}
+                  placeholderStyle={styles.placeholder}
+                  selectedTextStyle={styles.rnimg}
+                  // iconStyle={{ tintColor: '#ffff' }}
+                  data={Data?Data:visiable}
+                  itemTextStyle={{ color: '#474747',}}
+
+                  inputSearchStyle={{
+                    borderRadius: 10,
+                    backgroundColor: '#f0f0f0',
+                  }}
+                   itemContainerStyle={{ marginBottom: -5,borderRadius:10 }}
+                    maxHeight={250}
+                  labelField="label"
+                  valueField="value"
+                  placeholder="Select Type"
+                  value={type}
+                  onChange={item => {
+                   manageOption(item.value)
+                  }}
+                />
           </View>
         </View>
-        {/* <RNPickerSelect
-              onValueChange={val => manageOption(val)}
-              items={Data}
-              style={{
-                inputAndroid: {
-                  color: '#474747',
-                  width: '100%',
-                  fontSize: 14,
-                  marginBottom: -1,
-                  fontFamily: 'Acephimere',
-                },
-                inputIOS: {
-                  color: '#474747',
-                  width: '100%',
-                  fontSize: 14,
-                  marginBottom: -1,
-                  fontFamily: 'Acephimere',
-                },
-                placeholder: {
-                  color: '#474747',
-                  width: '100%',
-                  alignSelf: 'center',
-                  fontFamily: 'Acephimere',
-                },
-              }}
-              value={type}
-              useNativeAndroidPickerStyle={false}
-              placeholder={{label: 'Select Type', value: ''}}
-              Icon={() => (
-
-              )}
-            /> */}
       </View>
       <View style={styles.outcard}>
         <Text style={styles.outcardtext}>
           SELECT OPTION TO ADD FROM DROPDOWN
         </Text>
       </View>
-      {/* <View style={{bottom:0,position:'absolute',left:0,right:0}}>
-      <BottomTab/>
-      </View> */}
-
-      {/* <View>
-        <Button onPress={showDatepicker} title="Show date picker!" />
-        <Button onPress={showTimepicker} title="Show time picker!" />
-        <Text>selected: {date.toLocaleString()}</Text>
-        {show && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode={mode}
-            is24Hour={true}
-            onChange={onChange}
-          />
-        )}
-      </View> */}
       <StatusBar />
     </View>
   );
@@ -228,7 +113,6 @@ const SelectOption = () => {
 export default SelectOption;
 
 const Data = [
-  {label: 'Product', value: 'Product'},
-  // { label: 'Category', value: 'Category' },
-  {label: 'Collections', value: 'Collections'},
+  { label: 'Product', value: 'Product' },
+  { label: 'Collections', value: 'Collections' },
 ];

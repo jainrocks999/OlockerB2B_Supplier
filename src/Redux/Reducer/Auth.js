@@ -1,5 +1,6 @@
 initialstate = {
   isFetching: false,
+  isFetching1:false,
   // Login1: '',
   WishList: [],
   //  SupplierDetail:'',
@@ -99,11 +100,11 @@ export default (state = initialstate, action) => {
       return { ...state, isFetching: false };
 
     case 'User_SupplierCategories_Request':
-      return { ...state, isFetching: true };
+      return { ...state, isFetching1: true };
     case 'User_SupplierCategories_Success':
-      return { ...state, isFetching: false, SupplierCategories: action.payload };
+      return { ...state, isFetching1: false, SupplierCategories: action.payload };
     case 'User_SupplierCategories_Error':
-      return { ...state, isFetching: false };
+      return { ...state, isFetching1: false };
 
     case 'User_SupplierProductList_Request':
       return { ...state, isFetching: true };

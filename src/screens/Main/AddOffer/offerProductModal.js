@@ -90,8 +90,9 @@ const handleOnEndReached=async()=>{
        limit: lastitem,
        modal: true,
      });
-  
 }
+
+
 
   return (
     <Modal visible={productModal} transparent={true}>
@@ -362,8 +363,8 @@ const handleOnEndReached=async()=>{
                 <View
                   style={{
                     height: hp(8),
-                    width: '50%',
-                    marginBottom: wp(3),
+                    width: '90%',
+                    marginBottom: wp(5),
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -374,7 +375,20 @@ const handleOnEndReached=async()=>{
                     onPress={() => {
                       AddProduct();
                     }}
-                    style={[styles.cardbtn]}>
+                    style={{ 
+                      height: 43,
+                      width: '48%',
+                      //borderWidth: 1,
+                      marginTop: 15,
+                      backgroundColor: '#032e63',
+                      shadowColor: 'black',
+                      shadowOpacity: 10,
+                      shadowRadius: 10,
+                      shadowOffset: {height: 6, width: 6},
+                      elevation: 4,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 15,}}>
                     <Text
                       style={{
                         fontSize: wp(4.5),
@@ -393,7 +407,19 @@ const handleOnEndReached=async()=>{
                       });
                       setProductModal(false);
                     }}
-                    style={[styles.cardbtn, {backgroundColor: '#032e63'}]}>
+                    style={{ height: 43,
+                      width: '48%',
+                      //borderWidth: 1,
+                      marginTop: 15,
+                      backgroundColor: '#032e63',
+                      shadowColor: 'black',
+                      shadowOpacity: 10,
+                      shadowRadius: 10,
+                      shadowOffset: {height: 6, width: 6},
+                      elevation: 4,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 15,}}>
                     <Text
                       style={{
                         fontSize: wp(4.5),

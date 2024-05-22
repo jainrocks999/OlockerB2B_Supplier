@@ -71,7 +71,7 @@ const SliderBanner = ({ data ,bottom,height,width,borderRadius}) => {
                     data={data}
                     renderItem={({ item, index }) => {
                         return (
-                            <View style={{ elevation:5,height:height, width: width, borderWidth: 1, marginHorizontal: 2, borderRadius:borderRadius,backgroundColor: currentIndex == index ? 'red' : 'black', borderColor: currentIndex == index ? 'red' : 'black' }} ></View>
+                            <View style={{ elevation:5,height:height, width: width, borderWidth: 1, marginHorizontal: 2, borderRadius:borderRadius,backgroundColor: currentIndex == index ? 'red' : 'grey', borderColor: currentIndex == index ? 'red' : 'grey' }} ></View>
                         )
                     }}
                     // onScrollToIndexFailed={info => {

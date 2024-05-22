@@ -95,20 +95,21 @@ const Addproduct = ({route}) => {
       {fetching || isFetching ? <Loader /> : null}
       <View
         style={{
-          backgroundColor: '#032e63',
-          height: 50,
           width: '100%',
+          backgroundColor: '#032e63',
           justifyContent: 'space-between',
-          paddingHorizontal: 10,
-          flexDirection: 'row',
           alignItems: 'center',
+          paddingHorizontal: 12,
+          flexDirection: 'row',
+          paddingVertical: 12,
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{paddingHorizontal: 5}}>
+            style={{ paddingVertical:15, width: 35,alignItems:'center',justifyContent:'center',marginLeft:-10}}>
+
             <Image
-              style={{height: 20, width: 14}}
+              style={{height: 18, width: 12}}
               source={require('../../../assets/L.png')}
             />
           </TouchableOpacity>
@@ -224,9 +225,10 @@ const Addproduct = ({route}) => {
                 backgroundColor: '#032e63',
                 alignItems: 'center',
                 justifyContent: 'center',
-                paddingVertical: 7,
-                borderRadius: 15,
+                // paddingVertical: 7,
+                borderRadius: 30,
                 flexDirection: 'row',
+                height:40
               }}>
               {/* <Image
                 style={{height: 11, width: 11}}

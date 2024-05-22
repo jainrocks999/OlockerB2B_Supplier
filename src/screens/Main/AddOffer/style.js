@@ -7,7 +7,7 @@ import {
 export default StyleSheet.create({
   dropdown: {
     marginVertical: 10,
-    height: hp(6),
+    height: 43,
     backgroundColor: 'white',
     borderRadius: 5,
     padding: 12,
@@ -36,11 +36,11 @@ export default StyleSheet.create({
     color: 'grey',
   },
   placeholderStyle: {
-    fontSize: wp(4.5),
+    fontSize: 15,
     color: 'grey',
   },
   selectedTextStyle: {
-    fontSize: wp(4.5),
+    fontSize: 15,
     color: 'black',
   },
   iconStyle: {

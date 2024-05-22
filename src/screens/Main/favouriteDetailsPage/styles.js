@@ -16,14 +16,15 @@ export default StyleSheet.create({
   text: {
     fontFamily: 'Acephimere',
     fontSize: 14,
+    color: '#050505',
   },
   card: {
     marginTop: 10,
     paddingHorizontal: 5,
   },
   cardview: {
-    height: hp(34),
-    paddingVertical: 5,
+    height: hp('27%'),
+    // paddingVertical: 5,
     // height:Platform.OS=="android"?210:210,
     backgroundColor: '#fff',
     // flex:1,
@@ -76,13 +77,13 @@ export default StyleSheet.create({
     fontFamily: 'Acephimere',
     fontSize: 13,
     fontWeight: '700',
-    width:'50%'
+    width:'85%',
+ 
   },
   cardbottom1: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: -5,
-    marginTop: 0,
   },
   cardbottom1text: {
     color: '#050505',

@@ -12,7 +12,7 @@ export default StyleSheet.create({
   },
   container1: {
     flex: 1,
-    // backgroundColor: '#f0eeee',
+    backgroundColor: '#ffffff',
   },
   scroll: {
     flex: 1,

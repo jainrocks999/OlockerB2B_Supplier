@@ -401,7 +401,7 @@ const AddOffer = ({route}) => {
           <Text
             style={{
               color: '#fff',
-              fontSize: wp(4.5),
+              fontSize: 18,
               fontFamily: 'Roboto-Medium',
               marginLeft: 14,
             }}>
@@ -429,7 +429,7 @@ const AddOffer = ({route}) => {
         <Text
           style={{
             color: '#030303',
-            fontSize: wp(4.5),
+            fontSize:16,
             fontFamily: 'Roboto-Medium',
             borderBottomWidth: 1,
             alignSelf: 'flex-start',
@@ -466,7 +466,7 @@ const AddOffer = ({route}) => {
             justifyContent: 'space-between',
           }}>
           <View style={{width: '48%'}}>
-            <Text style={{color: '#23233C', fontSize: wp(4.5)}}>
+            <Text style={{color: '#23233C', fontSize: 15, fontFamily: 'Roboto-Medium',}}>
               Start Date
             </Text>
             <TouchableOpacity
@@ -479,7 +479,7 @@ const AddOffer = ({route}) => {
               style={{
                 width: '100%',
                 borderWidth: 1,
-                height: hp(6),
+                height: 43,
                 alignItems: 'center',
                 borderRadius: 8,
                 paddingHorizontal: 6,
@@ -530,7 +530,7 @@ const AddOffer = ({route}) => {
             </TouchableOpacity>
           </View>
           <View style={{width: '48%'}}>
-            <Text style={{color: '#23233C', fontSize: 15}}>End Date</Text>
+            <Text style={{color: '#23233C', fontSize: 15, fontFamily: 'Roboto-Medium',}}>End Date</Text>
             <TouchableOpacity
               onPress={() => {
                 setShow({
@@ -541,7 +541,7 @@ const AddOffer = ({route}) => {
               style={{
                 width: '100%',
                 borderWidth: 1,
-                height: hp(6),
+                height: 43,
                 alignItems: 'center',
                 borderRadius: 8,
                 paddingHorizontal: 6,
@@ -576,7 +576,7 @@ const AddOffer = ({route}) => {
                 <Text
                   style={{
                     alignSelf: 'center',
-                    fontSize: wp(4),
+                    fontSize: 15,
                     color: iseSelected.two ? 'black' : 'grey',
                     fontWeight: '600',
                   }}>
@@ -593,7 +593,7 @@ const AddOffer = ({route}) => {
             marginTop: hp(1.5),
             color: '#030303',
             fontFamily: 'Roboto-Medium',
-            fontSize: wp(4),
+            fontSize: 15,
           }}>
           Deal Type
         </Text>
@@ -623,7 +623,7 @@ const AddOffer = ({route}) => {
             marginTop: 10,
             color: '#030303',
             fontFamily: 'Roboto-Medium',
-            fontSize: wp(4),
+            fontSize: 15,
           }}>
           {visible.one
             ? 'Discount Percentage'
@@ -637,7 +637,7 @@ const AddOffer = ({route}) => {
           style={{
             width: '100%',
             borderWidth: 1,
-            height: hp(6),
+            height: 43,
             borderRadius: 8,
             paddingHorizontal: 6,
             flexDirection: 'row',
@@ -646,7 +646,7 @@ const AddOffer = ({route}) => {
             marginTop: 4,
           }}>
           <TextInput
-            style={{fontSize: wp(4), color: 'black'}}
+            style={{fontSize: 15, color: 'black'}}
             placeholderTextColor={'grey'}
             value={
               visible.one
@@ -676,7 +676,7 @@ const AddOffer = ({route}) => {
             style={{
               marginTop: 10,
               flexDirection: 'row',
-              marginHorizontal: 10,
+              // marginHorizontal: 10,
               justifyContent: 'space-between',
             }}>
             <TouchableOpacity
@@ -687,17 +687,17 @@ const AddOffer = ({route}) => {
                 backgroundColor: '#032e63',
                 borderRadius: wp(4.5),
                 alignItems: 'center',
-                height: hp(6),
+                height: 43,
                 paddingHorizontal: 5,
                 justifyContent: 'center',
                 marginTop: 15,
-                width: '47%',
+                width: '48%',
               }}>
               <Text
                 style={{
                   color: '#fff',
                   fontFamily: 'Roboto-Medium',
-                  fontSize: wp(4),
+                  fontSize:15,
                   textAlign: 'center',
                 }}>
                 Add Products to Offer
@@ -708,17 +708,17 @@ const AddOffer = ({route}) => {
                 backgroundColor: '#032e63',
                 borderRadius: wp(4.5),
                 alignItems: 'center',
-                height: hp(6),
+                height: 43,
                 paddingHorizontal: 5,
                 justifyContent: 'center',
                 marginTop: 15,
-                width: '47%',
+                width: '48%',
               }}>
               <Text
                 style={{
                   color: '#fff',
                   fontFamily: 'Roboto-Medium',
-                  fontSize: wp(4),
+                  fontSize: 15,
                   textAlign: 'center',
                 }}>
                 Add Customer to Offers
@@ -734,7 +734,7 @@ const AddOffer = ({route}) => {
               borderColor: '#032e63',
               borderRadius: wp(5),
               alignItems: 'center',
-              height: hp(6),
+              height: 43,
               justifyContent: 'center',
               marginTop: 15,
               borderWidth: 1,
@@ -743,7 +743,7 @@ const AddOffer = ({route}) => {
               style={{
                 color: '#032e63',
                 fontFamily: 'Roboto-Medium',
-                fontSize: wp(4),
+                fontSize: 15,
               }}>
               Choose file
             </Text>
@@ -773,7 +773,7 @@ const AddOffer = ({route}) => {
               backgroundColor: '#032e63',
               borderRadius: wp(5),
               alignItems: 'center',
-              height: hp(6),
+              height: 43,
               justifyContent: 'center',
               marginTop: 15,
               width: '48%',
@@ -795,7 +795,7 @@ const AddOffer = ({route}) => {
               backgroundColor: '#032e63',
               borderRadius: wp(5),
               alignItems: 'center',
-              height: hp(6),
+              height:43,
               justifyContent: 'center',
               marginTop: 15,
               width: '48%',

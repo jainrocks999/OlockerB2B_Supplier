@@ -31,6 +31,10 @@ function* doLogin(action) {
         type: 'User_Login_Error',
       });
       Toast.show(response.message);
+      // console.log('response.userDetail.SrNo',response);
+      // AsyncStorage.setItem('loginToken','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdXBwbGllciBsb2dpbiBKV1QiLCJpYXQiOjE3MTYyMDkxMzYsImV4cCI6MTc0Nzc0NTEzNiwiZW1haWwiOiJ0ZXN0ZWRAZ21haWwuY29tIiwiaWQiOiIxMyIsInJvbGUiOiJzdXBwbGllciJ9.3SEFH9IFv4K4hdS_Fg-n34KHfjYCBABumwIgVXXGmGs');
+      // AsyncStorage.setItem('user_id','13');
+      // action.navigation.replace('Home');
     }
   } catch (error) {
     console.log('error223', error);

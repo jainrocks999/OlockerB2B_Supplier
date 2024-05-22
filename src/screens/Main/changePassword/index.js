@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loading from '../../../components/Loader';
+import Toast from "react-native-simple-toast";
 
 export default function ChangePassword() {
   const [inputs, setInputs] = useState({
@@ -19,13 +20,26 @@ export default function ChangePassword() {
   const dispatch = useDispatch();
 const navigation =useNavigation()
 const isFetching =useSelector(state=>state.Supplier?.isFetching)
-console.log('loader',isFetching);
   const handleInputs = (key, value) => {
     setInputs(prev => ({ ...prev, [key]: value }));
   };
 
   const ChangePass = async () => {
     console.log('data ,,,,,', inputs);
+    if(inputs.oldPassword==''){
+       Toast.show('Please enter old password')
+    }
+    else if(inputs.newPassword==''){
+      Toast.show('Please enter new password')
+    }
+    else if(inputs.confirmPassword==''){
+      Toast.show('Please enter confirm password')
+    }
+    else if(inputs.newPassword != inputs.confirmPassword){
+    
+      Toast.show('New password and confirm password need to be same')
+    }
+    else{
     const user_id = await AsyncStorage.getItem('user_id');
     dispatch({
       type: 'Get_changePassword_Request',
@@ -36,7 +50,7 @@ console.log('loader',isFetching);
       cnPass: inputs.confirmPassword,
       navigation,
     });
-  
+    }
 }
 return (
   <View style={{ flex: 1 }}>
@@ -75,27 +89,26 @@ return (
         <View style={{ marginHorizontal: 20 }}>
           <Text
             style={{
-              fontSize: 26,
-              fontWeight: '800',
-
+              fontSize: 18,
+              fontWeight: '700',
               color: '#000',
-              marginTop: 40,
+              marginTop: 20,
             }}>
             Create new Password
           </Text>
           <Text
             style={{
-              fontSize: 18,
+              fontSize: 14,
               fontWeight: '500',
               width: '90%',
-              marginTop: 15, color: 'grey'
+              marginTop: 8, color: 'grey'
             }}>
             Your new password must be different from previous used passwords.
           </Text>
         </View>
 
         <View style={{ marginHorizontal: 20, marginTop: 30 }}>
-          <Text style={{ fontSize: 18, fontWeight: '600', color: '#000' }}>
+          <Text style={{ fontSize: 15, fontWeight: '600', color: '#000' }}>
             Old Password
           </Text>
           <View
@@ -112,8 +125,9 @@ return (
               placeholderTextColor={'grey'}
               value={inputs.oldPassword}
               onChangeText={(val => handleInputs('oldPassword', val))}
-              style={{ width: '90%', color: 'grey' }}
+              style={{ width: '90%', color: '#000' }}
               secureTextEntry={inputs.visible}
+
             />
 
             {inputs.visible ?
@@ -127,8 +141,8 @@ return (
             }
           </View>
         </View>
-        <View style={{ marginHorizontal: 20, marginTop: 30 }}>
-          <Text style={{ fontSize: 18, fontWeight: '600', color: '#000' }}>
+        <View style={{ marginHorizontal: 20, marginTop: 15 }}>
+          <Text style={{ fontSize: 15, fontWeight: '600', color: '#000'}}>
             New Password
           </Text>
           <View
@@ -146,7 +160,7 @@ return (
               onChangeText={(val => handleInputs('newPassword', val))}
               secureTextEntry={inputs.visible1}
               placeholderTextColor={'grey'}
-              style={{ width: '90%', color: 'grey' }}
+              style={{ width: '90%', color: '#000' }}
             />
 
             {inputs.visible1 ?
@@ -160,8 +174,8 @@ return (
             }
           </View>
         </View>
-        <View style={{ marginHorizontal: 20, marginTop: 30 }}>
-          <Text style={{ fontSize: 18, fontWeight: '600', color: '#000' }}>
+        <View style={{ marginHorizontal: 20, marginTop: 15 }}>
+          <Text style={{fontSize: 15, fontWeight: '600', color: '#000'}}>
             Confirm Password
           </Text>
           <View style={[
@@ -177,7 +191,7 @@ return (
               onChangeText={(val => handleInputs('confirmPassword', val))}
               secureTextEntry={inputs.visible2}
               placeholderTextColor={'grey'}
-              style={{ width: '90%', color: 'grey' }}
+              style={{ width: '90%', color: '#000' }}
             />
             {inputs.visible2 ?
               <TouchableOpacity

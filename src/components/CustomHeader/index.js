@@ -17,12 +17,12 @@ const Header = ({
       <View style={styles.container}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {source?<TouchableOpacity
-            // style={{paddingVertical:15, width: 35,alignItems:'center',justifyContent:'center',marginLeft:-15}}
+           style={{paddingVertical:15, width: 35,alignItems:'center',justifyContent:'center',marginLeft:-15}}
             delayPressIn={0}
             onPress={() => navigation.goBack()}>
             <Image style={styles.img} source={source} />
           </TouchableOpacity>:null}
-          <Text style={[styles.text, {marginLeft: 15}]}>{title}</Text>
+          <Text style={[styles.text, {marginLeft: 5}]}>{title}</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center',justifyContent:'center'}}>
           <TouchableOpacity onPress={onPress1}>
@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0eeee',
   },
   img: {
-    height: 24, width: 15
+    height: 18,
+    width: 12,
   },
   img1: {
     height: 24, width: 28,
@@ -69,13 +70,20 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 12,
     // flexDirection: 'row',
     // paddingVertical: 1,
-    backgroundColor: '#032e63',
-    height: 50,
+    // backgroundColor: '#032e63',
+    // height: 50,
+    // width: '100%',
+    // justifyContent: 'space-between',
+    // paddingHorizontal: 10,
+    // flexDirection: 'row',
+    // alignItems: 'center'
     width: '100%',
+    backgroundColor: '#032e63',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
+    alignItems: 'center',
+    paddingHorizontal: 12,
     flexDirection: 'row',
-    alignItems: 'center'
+    paddingVertical: 12,
   },
   text: {
     color: 'white',

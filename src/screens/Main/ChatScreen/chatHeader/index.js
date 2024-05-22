@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 export default function ChatHeader({...props}) {
-
+console.log('this is props',props);
   const navigation = useNavigation();
   return (
     <View style={{}}>

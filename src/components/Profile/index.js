@@ -12,12 +12,13 @@ const Profile = () => {
   const ownerImagePath = 'https://olocker.co/uploads/supplier/';
   const parnerData = useSelector(state => state.Home.partnerData);
   const partner = parnerData?.partnerdetails;
+  console.log('this is supplier',selector.supplierdetails);
   return (
     <View style={{flex: 1, backgroundColor: '#fff', paddingVertical: 20}}>
       {/* {isFetching ? <Loading /> : null} */}
 
       <View style={{paddingHorizontal: 20, alignItems: 'flex-start'}}>
-        <TouchableOpacity
+        <View
           style={{
             backgroundColor: '#032e63',
             // paddingHorizontal: 20,
@@ -30,7 +31,7 @@ const Profile = () => {
           <Text style={{color: '#fff', fontSize: 14, fontFamily: 'Acephimere'}}>
             About us
           </Text>
-        </TouchableOpacity>
+        </View>
         <Text
           style={{
             fontSize: 16,
@@ -40,9 +41,9 @@ const Profile = () => {
             marginTop: 15,
             marginLeft: '5%',
           }}>
-          {partner?.PartnerIntroduction}
+          {selector?.supplierdetails[0]?.SupplierIntroduction}
         </Text>
-        <TouchableOpacity
+        <View
           style={{
             backgroundColor: '#032e63',
             // paddingHorizontal: 19,
@@ -56,7 +57,7 @@ const Profile = () => {
           <Text style={{color: '#fff', fontSize: 14, fontFamily: 'Acephimere'}}>
             Founders
           </Text>
-        </TouchableOpacity>
+        </View>
 
         <View style={{flexDirection: 'row'}}>
           {selector?.supplierimagedetails?.map(item =>
@@ -96,7 +97,7 @@ const Profile = () => {
           )}
         </View>
         <View>
-          <TouchableOpacity
+          <View
             style={{
               backgroundColor: '#032e63',
               // paddingHorizontal: 12,
@@ -116,7 +117,7 @@ const Profile = () => {
               }}>
               Showrooms
             </Text>
-          </TouchableOpacity>
+          </View>
           <View style={{flexDirection: 'row'}}>
             {selector?.supplierimagedetails?.map(item =>
               item.Type == 'ShowRoom Image' ? (
@@ -156,7 +157,7 @@ const Profile = () => {
           </View>
         </View>
         <View>
-          <TouchableOpacity
+          <View
             style={{
               backgroundColor: '#032e63',
               // paddingHorizontal: 12,
@@ -176,7 +177,7 @@ const Profile = () => {
               }}>
               Products
             </Text>
-          </TouchableOpacity>
+          </View>
           <View style={{flexDirection: 'row'}}>
             {selector?.supplierimagedetails?.map(item =>
               item.Type == 'Product Image' ? (
@@ -218,6 +219,27 @@ const Profile = () => {
           </View>
         </View>
         <View>
+        <View
+            style={{
+              backgroundColor: '#032e63',
+              // paddingHorizontal: 12,
+              paddingVertical: 8,
+              borderRadius: 20,
+              width: 110,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 15,
+            }}>
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 14,
+                fontFamily: 'Acephimere',
+                // width: '90%',
+              }}>
+              Address
+            </Text>
+          </View>
           <View style={{paddingHorizontal: 20, marginTop: 20}}>
             <View
               style={{
@@ -243,7 +265,7 @@ const Profile = () => {
         </View>
 
         <View>
-          <TouchableOpacity
+          <View
             style={{
               backgroundColor: '#032e63',
               // paddingHorizontal: 20,
@@ -258,7 +280,7 @@ const Profile = () => {
               style={{color: '#fff', fontSize: 14, fontFamily: 'Acephimere'}}>
               Contact
             </Text>
-          </TouchableOpacity>
+          </View>
           <View style={{paddingHorizontal: 20, marginTop: 20}}>
             <View style={{flexDirection: 'row',alignItems:'center'}}>
               <Image
@@ -272,7 +294,7 @@ const Profile = () => {
                     fontSize: 14,
                     fontFamily: 'Acephimere',
                     color: '#424242',
-                  }}>{`+91${selector?.supplierdetails[0]?.MobileNo}`}</Text>
+                  }}>{`+91 ${selector?.supplierdetails[0]?.MobileNo}`}</Text>
                 {/* <Text style={{marginLeft:30,fontSize:14,fontFamily:'Acephimere',color:'#424242'}}>{'Ph:9876567898 '}</Text>
                      <Text style={{marginLeft:30,fontSize:14,fontFamily:'Acephimere',color:'#424242'}}>{'Ph:9876567898 '}</Text> */}
               </View>

@@ -40,7 +40,6 @@ function* doLogin(action) {
 // WishList Request
 
 function* WishListRequest(action) {
-  // // console.log('this is action detail', action.user_id);
   try {
     const data = {
       userId: action.user_id,
@@ -295,22 +294,22 @@ function* SupplierProductList(action) {
 //Supplier Categories
 
 function* SupplierCategories(action) {
-  // console.log('data ,,,actoin', action);
+  console.log('data ,,,actoin', action);
   try {
-    // const data = {
-    //   userId: action.userId,
-    //   userType: action.userType,
-    // };
+    const data = {
+      userId: action.userId,
+      userType: action.userType,
+    };
     const response = yield call(
       Api.fetchDataByGET1,
       action.url,
-      action.Token,
-      // data,
+      data,
     );
+    console.log('this us res',response);
     if (response.status == true) {
       yield put({
         type: 'User_SupplierCategories_Success',
-        payload: response.categories,
+        payload: response.data,
       });
 
       // AsyncStorage.setItem('ImagePath', response.imagepath);

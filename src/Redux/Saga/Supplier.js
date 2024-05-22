@@ -147,7 +147,7 @@ function* removeSuppliertest(action) {
   try {
     const data = {
       partner_id: action.partner_id,
-      
+      supplier_id:action.SupplierSrNo
     };
     const res = yield call(Api.fetchDataByGET1, action.url, data);
 console.log('response ..... dtata',res);
@@ -231,6 +231,8 @@ function* ChangePass(action){
         type: 'Get_changePassword_Success',
         payload:res,
       });
+      console.log(res);
+      Toast.show(res.msg)
       // yield put({
       
       //     type: 'Supplier_Profile_Request',

@@ -11,14 +11,14 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: wp(2),
     padding: 12,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 3,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 1,
+    // },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 1.41,
+    // elevation: 3,
     marginHorizontal:3
   },
   icon: {
@@ -171,5 +171,5 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  txt2: {fontSize: 15, fontWeight: '600', color: '#032e63'},
+  txt2: {fontSize: 14, fontWeight: '600', color: '#032e63'},
 });

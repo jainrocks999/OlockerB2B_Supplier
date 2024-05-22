@@ -1,9 +1,9 @@
 import React, { useEffect, Fragment } from 'react';
-import { Alert, LogBox, Platform, SafeAreaView } from 'react-native';
+import { Alert, LogBox, Platform, SafeAreaView,StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import Store from './src/Redux/Store';
 import RootApp from './src/navigation';
-import StatusBar from './src/components/StatusBar';
+// import StatusBar from './src/components/StatusBar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
 import PushNotification from "react-native-push-notification";
@@ -155,7 +155,10 @@ const App = () => {
           <Provider store={Store}>
             <RootApp />
           </Provider>
-          <StatusBar />
+          <StatusBar
+            backgroundColor={"#032e63"}
+            barStyle={"light-content"}
+          />
         </SafeAreaView>
       </GestureHandlerRootView>
     </Fragment>

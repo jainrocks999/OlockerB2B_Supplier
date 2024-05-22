@@ -36,7 +36,8 @@ import RNFS from 'react-native-fs';
 import RNFetchBlob from 'rn-fetch-blob';
 import Toast from 'react-native-simple-toast';
 import {Menu, MenuItem, MenuDivider} from 'react-native-material-menu';
-const AddProducts = () => {
+const AddProducts = ({route}) => {
+  
   const [ViewMetalModal, setViewMetalModal] = useState(false);
   const [ViewStoneModal, setViewStoneModal] = useState(false);
   const [ViewDiamondModal, setViewDiamondModal] = useState(false);
@@ -53,8 +54,10 @@ const AddProducts = () => {
   const diamondData = useSelector(state => state.Catalogue?.diamondData);
   const itemField = useSelector(state => state.Catalogue?.itemField);
   const msg = useSelector(state => state.Catalogue?.msg);
+  console.log('this is error meaddafkljasdkf',msg,totalWiegt);
   const editProduct = useSelector(state => state.Catalogue?.editProduct);
-  const productEdit = useSelector(state => state.Catalogue?.productEdit);
+  // const productEdit = useSelector(state => state.Catalogue?.productEdit);
+  const productEdit=route.params.productEdit1
   const products = editProduct?.products;
   const hProductSrNo = useSelector(state => state.Catalogue?.hProductSrNo);
   const datadelete = useSelector(state => state.Catalogue?.datadelete);
@@ -312,7 +315,6 @@ const AddProducts = () => {
       StoneWtUnit.push(item?.UnitStoneWt);
       StoneName.push(item?.StoneName);
       stoneSrNo.push(item?.SrNo);
-      console.log(item);
     });
     setInputs(prev => ({
       ...prev,
@@ -346,7 +348,6 @@ const AddProducts = () => {
           let dimondWieght =
             item?.UnitStoneWt == 'Cts.' ? item?.StoneWt / 5 : item?.StoneWt;
           dimondwt = parseFloat(dimondwt) + parseFloat(dimondWieght);
-          // console.log(item);
         })
       : null;
     decorativeData?.length > 0
@@ -366,20 +367,42 @@ const AddProducts = () => {
         })
       : null;
 
-    console.log('this is metalwr', dimondwt, stonewt, decorativewt, metalwt);
+    // console.log('this is metalwr', dimondwt, stonewt, decorativewt, metalwt);
+    // const data = {
+    //   GrossWt: totalWiegt,
+    //   MetalWtGrandTotal: metalwt,
+    //   DiamondGrandTotal: dimondwt,
+    //   StoneGrandTotal: stonewt,
+    //   DecorationGrandTotal: decorativewt,
+    // };
+    // const Token = await AsyncStorage.getItem('loginToken');
+    // try {
+    //   const response = await axios({
+    //     method: 'GET',
+    //     url: `${Constants.MainUrl}verifyWt`,
+    //     params: data,
+    //     headers: {
+    //       Olocker: `Bearer ${Token}`,
+    //     },
+    //   });
+    //   setotalWight(response.data)
+    //   console.log('this is response data',response.data);
+    // } catch (error) {
+    //   throw error;
+    // }
     dispatch({
       type: 'verify_product_wieght_request',
       url: 'verifyWt',
       GrossWt: totalWiegt,
       MetalWtGrandTotal: metalwt,
-
       DiamondGrandTotal: dimondwt,
-
       StoneGrandTotal: stonewt,
-
       DecorationGrandTotal: decorativewt,
     });
   };
+
+
+ 
 
   const getProductPrice = async () => {
     const data = {
@@ -398,7 +421,6 @@ const AddProducts = () => {
           Olocker: `Bearer ${Token}`,
         },
       });
-      console.log('this product chargoew', response.data);
 
       handleInputs('txtProductCharges', response.data.amount);
     } catch (error) {
@@ -480,8 +502,6 @@ const AddProducts = () => {
       txtVMetalWt: `${hMetalWt}Gms`,
       hdnGrossWt: totalWiegt,
     }));
-    //  console.log('thiss sis metal data', hMetalWt);
-
     getProductPrice();
     verifyProduct();
   };
@@ -570,7 +590,6 @@ const AddProducts = () => {
       }
     }
   };
-
   const handleOnSubmit = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
     let data = {
@@ -587,7 +606,38 @@ const AddProducts = () => {
       submit: productEdit ? 'update product' : 'create product',
       radioPriceCalculator: inputs.radioPriceCalculator.toString(),
     };
+    if(inputs.ItemName==''){
+      Toast.show('Please select the item name');
+      return;
+    }
+   else if(inputs.Status==''){
+      Toast.show('Please select the status');
+      return;
+    }
+   else if(totalWiegt==undefined){
+      Toast.show('Please complete metal detail section');
+    }
+   else if(msg.error&&totalWiegt!=undefined){
+      Toast.show(msg?.msg);
+      return;
+    }
 
+   else if(inputs.radioPriceCalculator==0){
+      if(inputs.txtLabourCharges==''){
+        Toast.show(inputs.radioIsWastage == 0?'Please enter charges per gram Rs':'Please enter wastage % between 0-100');
+        return;
+      }
+    }
+    else if(inputs.txtMrp==''){
+        Toast.show('Please enter the amount');
+        return;
+      }
+    
+   else if (inputs.ImgUpload.length <= 0) {
+      Toast.show('Please Select an image');
+      return; 
+    }
+  else{
     let data2 = new FormData();
     Object.keys(data).map(async (item, index) => {
       switch (item) {
@@ -616,10 +666,24 @@ const AddProducts = () => {
           data2.append(item, data[item]);
       }
     });
-    console.log(JSON.stringify(data2));
     fetchDataByPOST(data2);
+  }
+   
   };
+  const [inputs1, setInputs1] = useState({
+    GrossWt: '',
+    MetalPurity: '',
+    MetalTypes: '',
+    MetalWt: '',
+    MetalWtUnit: '',
+    session: '',
+    hProductSrNo: 0,
+    hMetalWt: 0,
+    isAdd: 1,
+    current_session_id: productEdit ? 0 : session,
+  });
   const [isFetching3, setIfetching] = useState(false);
+
   const fetchDataByPOST = async params => {
     setIfetching(true);
     const user_id = await AsyncStorage.getItem('user_id');
@@ -637,22 +701,32 @@ const AddProducts = () => {
         config,
       );
 
-      console.log('this is response data', JSON.stringify(response.data));
       setIfetching(false);
       if (response.data.status) {
-        dispatch({
-          type: 'My_Product_Request',
-          url: '/getProductList',
-          user_id: user_id,
-          start: 0,
-          length: 10,
-          search: '',
-          navigation: navigation,
-          btn: '',
-          isDlete: true,
-          isEdit: editProduct,
-          count: editProduct ? 2 : 1,
-        });
+        navigation.navigate('MyCatalogueCopy')
+        // dispatch({
+        //   type: 'verify_product_wieght_request',
+        //   url: 'verifyWt',
+        //   GrossWt: 0,
+        //   MetalWtGrandTotal: 0,
+        //   DiamondGrandTotal: 0,
+        //   StoneGrandTotal: 0,
+        //   DecorationGrandTotal: 0,
+        // });
+
+        // dispatch({
+        //   type: 'My_Product_Request',
+        //   url: '/getProductList',
+        //   user_id: user_id,
+        //   start: 0,
+        //   length: 10,
+        //   search: '',
+        //   navigation: navigation,
+        //   btn: '',
+        //   isDlete: true,
+        //   isEdit: editProduct,
+        //   count: editProduct ? 2 : 1,
+        // });
       }
       Toast.show(response.data.msg);
     } catch (error) {
@@ -678,6 +752,11 @@ const AddProducts = () => {
     });
   };
 
+  const handleClose=(data)=>{
+    setViewMetalModal(false)
+    console.log('this is data params',data);
+  }
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       {isFetching || isFetching2 || isFetching3 ? <Loader /> : null}
@@ -689,7 +768,7 @@ const AddProducts = () => {
       />
       <MetalViewModal
         visi={ViewMetalModal}
-        close={() => setViewMetalModal(false)}
+        close={(data) => handleClose(data)}
         isBrekup={inputs.radioPriceCalculator}
       />
       <DecorativeViewModal
@@ -719,7 +798,7 @@ const AddProducts = () => {
             />
           </TouchableOpacity>
           <Text style={[styles.text, {color: 'white',marginLeft:20}]}>
-            {!productEdit ? 'ADD PRODUCT' : 'UPDATE PRODUCT'}
+            {!productEdit ? 'Add Product' : 'Update Product'}
           </Text>
         </View>
         <View style={styles.headertouch}>
@@ -1454,6 +1533,12 @@ const AddProducts = () => {
                       ? inputs.GrossWt
                       : 'Gross Wt.'
                   }
+                  // placeholder={
+                   
+                  //    inputs.GrossWt
+                  //     ? inputs.GrossWt
+                  //     : 'Gross Wt.'
+                  // }
                   sstyle={{
                     fontSize: 14,
                     fontWeight: '600',
@@ -1636,7 +1721,9 @@ const AddProducts = () => {
                   color="#032e63"
                   uncheckedColor="#474747"
                   status={inputs.radioIsWastage == 0 ? 'checked' : 'unchecked'}
-                  onPress={() => handleInputs('radioIsWastage', 0)}
+                  onPress={() => {handleInputs('radioIsWastage', 0)
+                  handleInputs('txtLabourCharges', '');
+                  }}
                 />
                 <Text
                   style={{
@@ -1655,7 +1742,10 @@ const AddProducts = () => {
                     status={
                       inputs.radioIsWastage == 1 ? 'checked' : 'unchecked'
                     }
-                    onPress={() => handleInputs('radioIsWastage', 1)}
+                    onPress={() => {
+                      handleInputs('radioIsWastage', 1)
+                      handleInputs('txtLabourCharges', '');
+                    }}
                   />
                 </View>
 
@@ -1696,7 +1786,15 @@ const AddProducts = () => {
                 <TextInput
                   value={inputs.txtLabourCharges}
                   onChangeText={input => {
-                    handleInputs('txtLabourCharges', input);
+                    const regex1 = /^.{0,10}$/;
+                    const regex = /^(100(\.0{0,6})?|\d{0,2}(\.\d{0,6})?)?$/;
+                    if (inputs.radioIsWastage) {
+                      if (regex.test(input) || input === '') {
+                        handleInputs('txtLabourCharges', input);
+                      }
+                    } else if (regex1.test(input) || input == '') {
+                      handleInputs('txtLabourCharges', input);
+                    }
                   }}
                   placeholder={
                     inputs.radioIsWastage
@@ -1710,6 +1808,7 @@ const AddProducts = () => {
                     color: 'black',
                   }}
                   placeholderTextColor={'grey'}
+                  keyboardType='numeric'
                 />
               </View>
             </>
@@ -1721,7 +1820,9 @@ const AddProducts = () => {
               {inputs.radioPriceCalculator == 0
                 ? 'Chargeable amount for Product RS'
                 : 'Specify MRP pricing '}
+                <Text style={{color:'red'}}>{inputs.radioPriceCalculator == 1?"*":null}</Text>
             </Text>
+            
             <View
               style={{
                 borderWidth: 1, borderColor: '#979998',
@@ -1828,31 +1929,18 @@ const AddProducts = () => {
               </>
             ) : null}
           </View>
-
-          <TouchableOpacity
-            onPress={() => uploadImage()}
-            style={{
-              alignSelf: 'center',
-              marginTop: 15,
-              borderWidth: 2,
-              alignItems: 'center',
-              justifyContent: 'space-evenly',
-              borderColor: '#032e63',
-              flexDirection: 'row',
-              height: hp(5.5),
-              borderRadius: wp(3.5),
-              width: '55%',
-            }}>
-            <Entypo name="upload" size={20} color={'#032e63'} />
-            <Text
-              style={{color: '#032e63', fontWeight: '700', fontSize: 15}}>
-              Upload Images 6
+          <View style={[{marginHorizontal: 10, marginTop: wp(3.5)},{marginBottom:10}]}>
+            <Text style={[{ color: '#000',
+    fontSize: 16,
+    fontWeight: '700',
+    marginLeft:4},{marginLeft:0}]}>
+             Upload Max. 6 Images
             </Text>
-          </TouchableOpacity>
-        { inputs?.ImgUpload? <View
+            </View>
+          { inputs?.ImgUpload? <View
             style={{
               height: hp(17),
-              marginTop: 4,
+              marginTop: 14,
               alignItems: 'center',
               justifyContent: 'center',
             }}>
@@ -1892,41 +1980,31 @@ const AddProducts = () => {
                       }}
                     />
                   </TouchableOpacity>
-                  {/* <Menu
-                    onRequestClose={() => handleOnVisible(-1)}
-                    visible={visible?.includes(index)}
-                    style={{backgroundColor: '#fff',borderRadius:10}}>
-                   
-                    <MenuItem
-                      style={{
-                        height: wp(10),
-                        // fontSize: 18,
-                        color:'black'
-                      }}
-                      textStyle={{color:'black'}}
-                      onPress={() => {
-                       
-                      }}>
-                      Edit
-                    </MenuItem>
-                    <MenuItem
-                      style={{
-                        // borderTopWidth: wp(0.1),
-                        // borderBottomWidth: wp(0.1),
-                        height: wp(10),
-                       
-                      }}
-                      textStyle={{color:'black'}}
-                      onPress={() => {
-                        alert('thississ s');
-                      }}>
-                      Delete
-                    </MenuItem>
-                  </Menu> */}
                 </View>
               )}
             />
           </View>:null}
+          <TouchableOpacity
+            onPress={() => uploadImage()}
+            style={{
+              alignSelf: 'center',
+              marginTop: 10,
+              borderWidth: 2,
+              alignItems: 'center',
+              justifyContent: 'space-evenly',
+              borderColor: '#032e63',
+              flexDirection: 'row',
+              height: hp(5.5),
+              borderRadius: wp(3.5),
+              width: '55%',
+            }}>
+            <Entypo name="upload" size={20} color={'#032e63'} />
+            <Text
+              style={{color: '#032e63', fontWeight: '700', fontSize: 15}}>
+              Upload Images
+            </Text>
+          </TouchableOpacity>
+       
         </View>
         {/* <View style={{marginHorizontal: 19, marginTop:15}}>
           <Text style={{fontSize: 16, fontWeight: '700', color: '#000'}}>
@@ -2069,7 +2147,7 @@ const AddProducts = () => {
           </ScrollView>
         </View>}
 
-        <View style={{marginHorizontal: 20, marginTop: 15}}>
+        <View style={{ marginHorizontal: 50, marginTop: 1 ,paddingVertical:15}}>
           <TouchableOpacity
             onPress={() => {
               handleOnSubmit();
