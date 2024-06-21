@@ -455,7 +455,7 @@ const PatnerProfile = ({ route }) => {
                 source={
                   selector3?.partnerdetails?.Logo
                     ? { uri: `${ownerImagePath}${selector3?.partnerdetails?.Logo}` }
-                    : require('../../../assets/Image/Not.jpeg')
+                    : require('../../../assets/logo.png')
                 }
               />
             </View>

@@ -136,7 +136,6 @@ const MyCatalogueCopy = () => {
     } else {
       res = await addProductWishList(item.productId);
     }
-    console.log('this is res', res);
     if (res.status) {
       dispatch({
         type: 'My_Product_Request',
@@ -191,7 +190,6 @@ const MyCatalogueCopy = () => {
     });
   };
   const addProductWishList = async item => {
-    console.log('this is celld');
     setIsFetching(true);
     const Token = await AsyncStorage.getItem('loginToken');
     const user_id = await AsyncStorage.getItem('user_id');
@@ -535,10 +533,11 @@ const MyCatalogueCopy = () => {
                   style={{
                     width: '33.3%',
                     alignItems: 'center',
-                    height: 175,
+                    // height: 175,
                     backgroundColor: '#fff',
                     borderWidth: 0.5,
-                    borderColor: '#807f82'
+                    borderColor: '#807f82',
+                    paddingBottom:20
                     // width: '46%',
                     // margin: 7,
                     // shadowColor: '#000',
@@ -556,7 +555,8 @@ const MyCatalogueCopy = () => {
                     {item?.ImageName ? <Image
                       style={{
                         width: win.width * 0.33,
-                        height: '74%',
+                        // height: '74%',
+                        height:126,
                         resizeMode: 'contain',
                         alignSelf: 'center',
                       }}
@@ -565,7 +565,7 @@ const MyCatalogueCopy = () => {
                     /> : <Image
                       style={{
                         width: win.width * 0.33,
-                        height: '74%',
+                        height:126,
                         resizeMode: 'contain',
                         alignSelf: 'center',
                       }}

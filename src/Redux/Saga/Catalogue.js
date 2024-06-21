@@ -176,8 +176,6 @@ function* addmetal(action) {
     data.append('current_session_id', action.data.current_session_id);
     data.append('isAdd', action.data.isAdd);
     const res = yield call(Api.fetchDataByPOST, action.url, data);
-    console.log('this is res', JSON.stringify(res));
-
     if (res.status) {
       yield put({
         type: 'add_metal_list_success',
@@ -708,6 +706,16 @@ function* ProductList(action) {
 }
 
 
+function* addProductNew(action) {
+      yield put({
+        type: 'add_product_success_new',
+        payload: null,
+      });
+}
+
+
+
+
 export default function* citySaga() {
   yield takeEvery('Get_Catalogue_Request', getCatalogue);
   yield takeEvery('My_Product_Request', getProducts);
@@ -732,5 +740,6 @@ export default function* citySaga() {
   yield takeEvery('library_images_request', getImages);
   yield takeEvery('product_Type_Request',productTypeList)
   yield takeEvery('User_ProductLists_Request',ProductList)
+  yield takeEvery('add_product_request_new',addProductNew)
 
 }

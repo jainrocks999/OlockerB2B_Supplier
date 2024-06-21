@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useMemo, useEffect} from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,17 +10,17 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
 import styles from './style';
-import {Dropdown} from 'react-native-element-dropdown';
+import { Dropdown } from 'react-native-element-dropdown';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../components/Loader';
 import axios from 'axios';
-import {Modal, RadioButton} from 'react-native-paper';
+import { Modal, RadioButton } from 'react-native-paper';
 import CheckBox from '@react-native-community/checkbox';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import DocumentPicker from 'react-native-document-picker';
 import {
   heightPercentageToDP as hp,
@@ -31,7 +31,7 @@ import RNDateTimePicker from '@react-native-community/datetimepicker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import OfferProductModal from './offerProductModal';
 
-const AddOffer = ({route}) => {
+const AddOffer = ({ route }) => {
   const navigation = useNavigation();
   const [show, setShow] = useState({
     show1: false,
@@ -83,10 +83,10 @@ const AddOffer = ({route}) => {
     let newarr = [];
     previtem?.offerProduct
       ? previtem.offerProduct?.map(item => {
-          newarr.push(item.SrNo);
-        })
+        newarr.push(item.SrNo);
+      })
       : null;
-    setInputs(prev => ({...prev, hdnselectedvalue: newarr}));
+    setInputs(prev => ({ ...prev, hdnselectedvalue: newarr }));
   };
 
   const [inputs, setInputs] = useState(prev => ({
@@ -272,7 +272,7 @@ const AddOffer = ({route}) => {
 
       setInputs(prev => ({
         ...prev,
-        ImageName: {uri: res.uri, name: res.name, type: res.type},
+        ImageName: { uri: res.uri, name: res.name, type: res.type },
       }));
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
@@ -283,7 +283,7 @@ const AddOffer = ({route}) => {
   };
   const getOffertypeList = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
-    const data = {userid: user_id};
+    const data = { userid: user_id };
     dispatch({
       type: 'get_offer_type_list_request',
       url: 'getOfferTypeList',
@@ -324,7 +324,7 @@ const AddOffer = ({route}) => {
   const [endpage, setEndpage] = useState(10);
   const handleOnSubmit = async () => {
     const user_id = await AsyncStorage.getItem('user_id');
-    const new_data = {...inputs, supplierId: user_id, offerid: prevdata?.Id};
+    const new_data = { ...inputs, supplierId: user_id, offerid: prevdata?.Id };
     let data = new FormData();
     let valid = true;
     if (inputs.ImageName == '') {
@@ -365,6 +365,7 @@ const AddOffer = ({route}) => {
   };
   const [prevModal, setPrevModal] = useState(false);
   const datafromChild = data => {
+    console.log('this is selected data', data)
     setInputs(prev => ({
       ...prev,
       hdnselectedvalue: data,
@@ -372,11 +373,12 @@ const AddOffer = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <StatusBar />
       <OfferProductModal
         prevModal={prevModal}
         snedDataToparent={datafromChild}
+        isformList={true}
       />
       {fetching || isFetching || isFetching2 ? <Loader /> : null}
       <View
@@ -389,12 +391,12 @@ const AddOffer = ({route}) => {
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{paddingHorizontal: 5}}>
+            style={{ paddingHorizontal: 5 }}>
             <Image
-              style={{height: 20, width: 14}}
+              style={{ height: 20, width: 14 }}
               source={require('../../../assets/L.png')}
             />
           </TouchableOpacity>
@@ -408,7 +410,7 @@ const AddOffer = ({route}) => {
             {!isEdit ? 'Add Offer' : 'Update Offer'}
           </Text>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity onPress={() => navigation.navigate('Message')}>
             <Image
               style={styles.img1}
@@ -416,7 +418,7 @@ const AddOffer = ({route}) => {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            style={{marginLeft: 15}}
+            style={{ marginLeft: 15 }}
             onPress={() => handleWishList()}>
             <Image
               style={styles.img2}
@@ -425,11 +427,11 @@ const AddOffer = ({route}) => {
           </TouchableOpacity>
         </View>
       </View>
-      <ScrollView contentContainerStyle={{padding: 12}}>
+      <ScrollView contentContainerStyle={{ padding: 12 }}>
         <Text
           style={{
             color: '#030303',
-            fontSize:16,
+            fontSize: 16,
             fontFamily: 'Roboto-Medium',
             borderBottomWidth: 1,
             alignSelf: 'flex-start',
@@ -446,14 +448,14 @@ const AddOffer = ({route}) => {
               selectedTextStyle={styles.selectedTextStyle}
               iconStyle={styles.iconStyle}
               data={offerTypeList?.offertype}
-              itemTextStyle={{color: 'grey'}}
+              itemTextStyle={{ color: 'grey' }}
               maxHeight={250}
               labelField="Value"
               valueField="Id"
               placeholder="Select Offer type"
               value={inputs.ddloffertemplate}
               onChange={item => {
-                setInputs(prev => ({...prev, ddloffertemplate: item.Id}));
+                setInputs(prev => ({ ...prev, ddloffertemplate: item.Id }));
               }}
               renderItem={renderItem}
             />
@@ -465,8 +467,8 @@ const AddOffer = ({route}) => {
             marginTop: hp(1),
             justifyContent: 'space-between',
           }}>
-          <View style={{width: '48%'}}>
-            <Text style={{color: '#23233C', fontSize: 15, fontFamily: 'Roboto-Medium',}}>
+          <View style={{ width: '48%' }}>
+            <Text style={{ color: '#23233C', fontSize: 15, fontFamily: 'Roboto-Medium', }}>
               Start Date
             </Text>
             <TouchableOpacity
@@ -505,14 +507,14 @@ const AddOffer = ({route}) => {
                         '-' +
                         selecdate?.getDate().toString().padStart(2, '0'),
                     }));
-                    setIsselect(prev => ({...prev, one: true}));
+                    setIsselect(prev => ({ ...prev, one: true }));
                     setStart(selecdate);
                   }}
                   //mode="datetime"
                   dateFormat="day month year"
                   minimumDate={new Date()}
                   maximumDate={new Date(2300, 12, 31)}
-                  style={{borderWidth: 1, height: 20, width: 40}}
+                  style={{ borderWidth: 1, height: 20, width: 40 }}
                 />
               ) : (
                 <Text
@@ -529,8 +531,8 @@ const AddOffer = ({route}) => {
               )}
             </TouchableOpacity>
           </View>
-          <View style={{width: '48%'}}>
-            <Text style={{color: '#23233C', fontSize: 15, fontFamily: 'Roboto-Medium',}}>End Date</Text>
+          <View style={{ width: '48%' }}>
+            <Text style={{ color: '#23233C', fontSize: 15, fontFamily: 'Roboto-Medium', }}>End Date</Text>
             <TouchableOpacity
               onPress={() => {
                 setShow({
@@ -565,12 +567,12 @@ const AddOffer = ({route}) => {
                         '-' +
                         end?.getDate().toString().padStart(2, '0'),
                     }));
-                    setIsselect(prev => ({...prev, two: true}));
+                    setIsselect(prev => ({ ...prev, two: true }));
                     setEnd(end);
                   }}
                   mode="datetime"
                   minimumDate={new Date()}
-                  style={{borderWidth: 1, height: 20, width: 40}}
+                  style={{ borderWidth: 1, height: 20, width: 40 }}
                 />
               ) : (
                 <Text
@@ -603,16 +605,17 @@ const AddOffer = ({route}) => {
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             iconStyle={styles.iconStyle}
+
             data={DropData}
             maxHeight={250}
             labelField="label"
             valueField="value"
-            placeholder="Select Offer type"
+            placeholder="Select Deal type"
             value={inputs.dealtype}
-            itemTextStyle={{color: 'grey'}}
+            itemTextStyle={{ color: 'grey', }}
             onChange={item => {
               console.log(item);
-              setInputs(prev => ({...prev, dealtype: item.value}));
+              setInputs(prev => ({ ...prev, dealtype: item.value }));
               handleDealype(item.value);
             }}
             renderItem={renderItem2}
@@ -628,10 +631,10 @@ const AddOffer = ({route}) => {
           {visible.one
             ? 'Discount Percentage'
             : visible.two
-            ? 'Discount Amount'
-            : visible.three
-            ? 'Discount Quanity'
-            : 'Difine deal'}
+              ? 'Discount Amount'
+              : visible.three
+                ? 'Discount Quanity'
+                : 'Difine deal'}
         </Text>
         <View
           style={{
@@ -646,29 +649,30 @@ const AddOffer = ({route}) => {
             marginTop: 4,
           }}>
           <TextInput
-            style={{fontSize: 15, color: 'black'}}
+            style={{ fontSize: 15, color: 'black' }}
             placeholderTextColor={'grey'}
             value={
               visible.one
                 ? inputs.txtdiscountper
                 : visible.two
-                ? inputs.txtdiscountamount
-                : visible.three
-                ? inputs.txtquantity
-                : inputs.txtdealdescription
+                  ? inputs.txtdiscountamount
+                  : visible.three
+                    ? inputs.txtquantity
+                    : inputs.txtdealdescription
             }
             placeholder={
               visible.one
                 ? 'Discount Percentage'
                 : visible.two
-                ? 'Discount Amount'
-                : visible.three
-                ? 'Discount Quanity'
-                : 'Difine deal'
+                  ? 'Discount Amount'
+                  : visible.three
+                    ? 'Discount Quanity'
+                    : 'Difine deal'
             }
             onChangeText={inputs => {
               setInputs2(inputs);
             }}
+            keyboardType='numeric'
           />
         </View>
         {true ? (
@@ -679,31 +683,54 @@ const AddOffer = ({route}) => {
               // marginHorizontal: 10,
               justifyContent: 'space-between',
             }}>
-            <TouchableOpacity
-              onPress={() => {
-                offerProductList();
-              }}
-              style={{
-                backgroundColor: '#032e63',
-                borderRadius: wp(4.5),
-                alignItems: 'center',
-                height: 43,
-                paddingHorizontal: 5,
-                justifyContent: 'center',
-                marginTop: 15,
-                width: '48%',
-              }}>
-              <Text
+            <View style={{  }}>
+              <TouchableOpacity
+                onPress={() => {
+                  offerProductList();
+                }}
                 style={{
-                  color: '#fff',
-                  fontFamily: 'Roboto-Medium',
-                  fontSize:15,
-                  textAlign: 'center',
+                  backgroundColor: '#032e63',
+                  borderRadius: wp(4.5),
+                  alignItems: 'center',
+                  height: 43,
+                  paddingHorizontal: 10,
+                  justifyContent: 'center',
+                  marginTop: 15,
+                  // width: '100%',
+                  flexDirection:'row'
                 }}>
-                Add Products to Offer
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+                <Text
+                  style={{
+                    color: '#fff',
+                    fontFamily: 'Roboto-Medium',
+                    fontSize: 15,
+                    textAlign: 'center',
+                  }}>
+                  {`Add Products to Offer`}
+                </Text>
+               {inputs?.hdnselectedvalue?.length>0? <View 
+               style={{
+                borderWidth:1,
+                marginLeft:5,
+                borderColor:'#fff',
+                borderRadius:20,
+                paddingHorizontal:7,
+                paddingVertical:2
+                }}>
+                  <Text style={{ color: '#fff',
+                    fontFamily: 'Roboto-Medium',
+                    fontSize: 15,
+                    textAlign: 'center',}}>{inputs?.hdnselectedvalue?.length}</Text>
+                </View>:null}
+              </TouchableOpacity>
+              {/* {inputs?.hdnselectedvalue?.length>0?<View style={{alignItems:'center',marginTop:10}}>
+                <Text style={{color: '#000',
+                    fontFamily: 'Roboto-Medium',
+                    fontSize: 15,
+                    textAlign: 'center',}}>{`${inputs?.hdnselectedvalue?.length}  Products has been selected`}</Text>
+              </View>:null} */}
+            </View>
+            {/* <TouchableOpacity
               style={{
                 backgroundColor: '#032e63',
                 borderRadius: wp(4.5),
@@ -723,11 +750,11 @@ const AddOffer = ({route}) => {
                 }}>
                 Add Customer to Offers
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         ) : null}
 
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
           <TouchableOpacity
             onPress={() => uploadImage()}
             style={{
@@ -756,7 +783,7 @@ const AddOffer = ({route}) => {
                 alignSelf: 'center',
                 marginTop: wp(2),
               }}
-              source={{uri: inputs.ImageName?.uri}}
+              source={{ uri: inputs.ImageName?.uri }}
             />
           )}
         </View>
@@ -795,7 +822,7 @@ const AddOffer = ({route}) => {
               backgroundColor: '#032e63',
               borderRadius: wp(5),
               alignItems: 'center',
-              height:43,
+              height: 43,
               justifyContent: 'center',
               marginTop: 15,
               width: '48%',
@@ -811,7 +838,7 @@ const AddOffer = ({route}) => {
           </TouchableOpacity>
         </View>
 
-        <View style={{height: 50}} />
+        <View style={{ height: 50 }} />
       </ScrollView>
     </View>
   );
@@ -819,14 +846,14 @@ const AddOffer = ({route}) => {
 export default AddOffer;
 
 const DropData = [
-  {label: 'Discount on making', value: '1'},
-  {label: 'Discount on Gold price', value: '2'},
-  {label: 'Discount on diamond price', value: '3'},
-  {label: 'Get Silver free on Gold Jewellery', value: '4'},
-  {label: 'Get flat…...Rs. Off on every purchase', value: '5'},
-  {label: 'Get product on interest free EMIs', value: '6'},
-  {label: 'Products on ZERO Making', value: '7'},
-  {label: 'Create your deal', value: '8'},
+  { label: 'Discount on making', value: '1' },
+  { label: 'Discount on Gold price', value: '2' },
+  { label: 'Discount on diamond price', value: '3' },
+  { label: 'Get Silver free on Gold Jewellery', value: '4' },
+  { label: 'Get flat…...Rs. Off on every purchase', value: '5' },
+  { label: 'Get product on interest free EMIs', value: '6' },
+  { label: 'Products on ZERO Making', value: '7' },
+  { label: 'Create your deal', value: '8' },
 ];
 const Offer = [
   {

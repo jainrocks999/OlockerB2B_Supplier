@@ -360,7 +360,7 @@ const HomeScreen = () => {
                     source={
                       item.Logo
                         ? { uri: `${item.url}${item.Logo}` }
-                        : require('../../../assets/Image/Not.jpeg')
+                        : require('../../../assets/logo.png')
                     }
                   />
                 </TouchableOpacity>

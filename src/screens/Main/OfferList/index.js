@@ -915,8 +915,9 @@ console.log('this is offir ',item);
                           fontSize: wp(4),
                           color: 'grey',
                           fontWeight: '600',
+                          width:'60%',
                         }}>
-                        {item?.DealType ? item.DealType?.substring(0, 30) : ''}
+                        {item?.DealType ? item.DealType : ''}
                       </Text>
                     </View>
                     <View

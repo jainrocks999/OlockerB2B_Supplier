@@ -252,7 +252,6 @@ const HomeScreen = () => {
 
   const selector = selector1?.data;
   const ownerImagePath = 'https://olocker.co/uploads/supplier/';
-  // console.log('this is selector');
   const isFetching = useSelector(state => state.Supplier.isFetching);
   const isFetching1 = useSelector(state => state.City.isFetching);
   const [profile, setProfile] = useState(true);
@@ -371,7 +370,6 @@ const HomeScreen = () => {
     axios.request(config)
 
       .then((response) => {
-        console.log('this is response data', response.data);
         if (response.data.status == true) {
           AsyncStorage.setItem('loginToken', '');
           AsyncStorage.setItem('user_id', '');
@@ -494,7 +492,7 @@ const HomeScreen = () => {
                 source={
                   supplierLogo
                     ? { uri: `${ownerImagePath}${supplierLogo}` }
-                    : require('../../../assets/Image/Not.jpeg')
+                    : require('../../../assets/logo.png')
                 }
               />
             </View>

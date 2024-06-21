@@ -46,8 +46,8 @@ const EditSupplierProfile = ({ route }) => {
   const getImages = type => {
     const newArr = supplierProfile?.supplierimagedetails?.filter(
       item => item.Type == type,
-    );
 
+    );
     return newArr;
   };
   const productImage = getImages('Product Image');
@@ -55,13 +55,12 @@ const EditSupplierProfile = ({ route }) => {
   const showroomImage = getImages('ShowRoom Image');
   const supplierLogo = getImages('Logo');
   const ownerImage = getImages('Owner Image');
-
   const [customPurityDia, setCustomPurityDia] = useState(false);
   const [customPurityGo, setCustomPurityGo] = useState(false);
   const [customPurityPla, setCustomPurityPla] = useState(false);
   const [customPuritySil, setCustomPuritySil] = useState(false);
 
-  const [diamondSpecilization1,setdiamondSpecilization]=useState()
+  const [diamondSpecilization1, setdiamondSpecilization] = useState()
 
   const stateList1 = useSelector(state => state.State.StateList);
   const stateList = stateList1?.satates;
@@ -132,7 +131,7 @@ const EditSupplierProfile = ({ route }) => {
         }
       }
     });
-     setdiamondSpecilization(diamondSpecilization)
+    setdiamondSpecilization(diamondSpecilization)
   }, []);
   const getShowroom = () => {
     let arr = [];
@@ -150,34 +149,35 @@ const EditSupplierProfile = ({ route }) => {
 
 
   const getSelected = array => {
-  
+
     var result = array.reduce((unique, o) => {
-      if(!unique.some(obj => obj.name === o.name && obj.value === o.value)) {
+      if (!unique.some(obj => obj.name === o.name && obj.value === o.value)) {
         unique.push(o);
       }
       return unique;
-  },[]);
+    }, []);
     return result.map(item => item.value);
-  
+
   };
 
   const getSelected2 = array => {
 
     var result = array.reduce((unique, o) => {
-      if(!unique.some(obj =>parseInt(obj.name) === parseInt(o.name) && parseInt(obj.value) === parseInt(o.value))) {
+      if (!unique.some(obj => obj.name === o.name && obj.value === o.value)) {
         unique.push(o);
       }
       return unique;
-  },[]);
-  return result.map(item => {
-    if (isNaN(item.value)) {
-      return item.value;
-    } else {
-      return parseInt(item.value);
-    }
-  });
+    }, []);
+    return result.map(item => {
+      if (isNaN(item.value)) {
+        return item.value;
+
+      } else {
+        return parseInt(item.value);
+      }
+    });
     // return result.map(item => parseInt(item.value));
-   
+
     // return []
     // array.map(item => parseInt(item.value));
   };
@@ -231,7 +231,7 @@ const EditSupplierProfile = ({ route }) => {
     },
     aboutus: '',
     NoofEmployee: details?.NoofEmployee,
-    EmailId: 'tested@gmail.com',
+    EmailId: details.EmailId,
     showroom_image: getShowroom(),
   });
 
@@ -268,7 +268,7 @@ const EditSupplierProfile = ({ route }) => {
 
   useEffect(() => {
     if (inputs.silver_purity.includes('Custom purity')) {
-     
+
       handleInputs('silvercustom_purity', route?.params?.selector?.typeOfjewellery?.isSilverCpVal);
       setCustomPuritySil(true);
     } else {
@@ -276,7 +276,7 @@ const EditSupplierProfile = ({ route }) => {
       handleInputs('silvercustom_purity', '');
     }
   }, [inputs.silver_purity]);
-  
+
 
 
   const handleInputs = (key, value) => {
@@ -287,35 +287,35 @@ const EditSupplierProfile = ({ route }) => {
     // const Token = await AsyncStorage.getItem('loginToken');
     // // const newData = { ...inputs, SrNo: user_id };
 
-    if(inputs.SupplierName=='' || inputs.SupplierName==null){
-        Toast.show('Please enter supplier name')
+    if (inputs.SupplierName == '' || inputs.SupplierName == null) {
+      Toast.show('Please enter supplier name')
     }
-    else if(inputs.ContactPersonName=='' || inputs.ContactPersonName==null){
-        Toast.show('Please enter contact person name')
+    else if (inputs.ContactPersonName == '' || inputs.ContactPersonName == null) {
+      Toast.show('Please enter contact person name')
     }
-    else if(inputs.MobileNo=='' || inputs.ContactPersonName==null){
-        Toast.show('Please enter mobile number')
+    else if (inputs.MobileNo == '' || inputs.ContactPersonName == null) {
+      Toast.show('Please enter mobile number')
     }
-    else if(inputs.Address=='' || inputs.Address==null){
-        Toast.show('Please enter address')
+    else if (inputs.Address == '' || inputs.Address == null) {
+      Toast.show('Please enter address')
     }
-    else if(inputs.StateId=='' || inputs.StateId==null){
-        Toast.show('Please select state name')
+    else if (inputs.StateId == '' || inputs.StateId == null) {
+      Toast.show('Please select state name')
     }
-    else if(inputs.CityId=='' || inputs.CityId==null){
+    else if (inputs.CityId == '' || inputs.CityId == null) {
       Toast.show('Please select city name')
     }
-    else if(inputs.SupplierType=='' || inputs.SupplierType==null){
-       Toast.show('Please tell us what are you')
+    else if (inputs.SupplierType == '' || inputs.SupplierType == null) {
+      Toast.show('Please tell us what are you')
     }
-    
-    else if(inputs.JTyped && inputs.diamond_purity.length <= 0){
+
+    else if (inputs.JTyped && inputs.diamond_purity.length <= 0) {
       Toast.show('Please select diamond purity ');
     }
-    else if(inputs.JTyped && inputs.diamond_specialisation.length <= 0){
+    else if (inputs.JTyped && inputs.diamond_specialisation.length <= 0) {
       Toast.show('Please select diamond specialisation ');
     }
-    else if(inputs.JTyped && inputs.diamond_purity.includes('Custom purity') && inputs.diamondcustom_purity == ''){
+    else if (inputs.JTyped && inputs.diamond_purity.includes('Custom purity') && inputs.diamondcustom_purity == '') {
       Toast.show('Please enter diamond custom purity ');
     }
     // else if (inputs.JTyped) {
@@ -331,13 +331,13 @@ const EditSupplierProfile = ({ route }) => {
     //     }
     //   }
     // }
-    else if(inputs.JTypeg && inputs.gold_purity.length <= 0){
+    else if (inputs.JTypeg && inputs.gold_purity.length <= 0) {
       Toast.show('Please select gold purity ');
     }
-    else if(inputs.JTypeg && inputs.gold_specialisation.length <= 0){
+    else if (inputs.JTypeg && inputs.gold_specialisation.length <= 0) {
       Toast.show('Please select gold specialisation ');
     }
-    else if(inputs.JTypeg && inputs.gold_purity.includes('Custom purity') && inputs.goldcustom_purity == ''){
+    else if (inputs.JTypeg && inputs.gold_purity.includes('Custom purity') && inputs.goldcustom_purity == '') {
       Toast.show('Please enter gold custom purity ');
     }
     //  else if (inputs.JTypeg) {
@@ -353,13 +353,13 @@ const EditSupplierProfile = ({ route }) => {
     //     }
     //   }
     // } 
-    else if(inputs.JTypep && inputs.platinum_purity.length <= 0){
+    else if (inputs.JTypep && inputs.platinum_purity.length <= 0) {
       Toast.show('Please select platinum purity ');
     }
-    else if(inputs.JTypep && inputs.platinum_specialisation.length <= 0){
+    else if (inputs.JTypep && inputs.platinum_specialisation.length <= 0) {
       Toast.show('Please select platinum specialisation ');
     }
-    else if(inputs.JTypep && inputs.platinum_purity.includes('Custom purity') && inputs.platinumcustom_purity == ''){
+    else if (inputs.JTypep && inputs.platinum_purity.includes('Custom purity') && inputs.platinumcustom_purity == '') {
       Toast.show('Please enter platinum custom purity ');
     }
 
@@ -376,19 +376,19 @@ const EditSupplierProfile = ({ route }) => {
     //     }
     //   }
     // }
-    else if(inputs.JTypes && inputs.silver_purity.length <= 0){
+    else if (inputs.JTypes && inputs.silver_purity.length <= 0) {
       Toast.show('Please select silver purity ');
     }
-    else if(inputs.JTypes && inputs.silver_specialisation.length <= 0){
+    else if (inputs.JTypes && inputs.silver_specialisation.length <= 0) {
       Toast.show('Please select silver specialisation ');
     }
-    else if(inputs.JTypes && inputs.silver_purity.includes('Custom purity') && inputs.silvercustom_purity == ''){
+    else if (inputs.JTypes && inputs.silver_purity.includes('Custom purity') && inputs.silvercustom_purity == '') {
       Toast.show('Please enter silver custom purity ');
     }
-    else if(inputs.DiamondQuality && Number.isInteger(parseFloat(inputs.DiamondQuality))){
+    else if (inputs.DiamondQuality && Number.isInteger(parseFloat(inputs.DiamondQuality))) {
       Toast.show('Please enter a correct number, format 0.00')
     }
-   
+
     //  else if (inputs.JTypes) {
     //   if (inputs.silver_purity.length <= 0) {
     //     Toast.show('please select silver purity ');
@@ -402,257 +402,427 @@ const EditSupplierProfile = ({ route }) => {
     //     }
     //   }
     // }
-   else{
-    setFetching(true)
-    let data = new FormData();
-    data.append('SrNo',user_id)
-    data.append('logo', inputs.logo);
-    data.append('SupplierName', inputs.SupplierName);
-    data.append('ContactPersonName', inputs.ContactPersonName);
-    data.append('Address', inputs.Address);
-    data.append('MobileNo', inputs.MobileNo);
-    data.append('StateId', inputs.StateId);
-    data.append('CityId', inputs.CityId);
-    data.append('Pincode', inputs.Pincode);
-    data.append('Website', inputs.Website);
-    data.append('EmailId', inputs.EmailId);
-    data.append('SupplierType', inputs.SupplierType);
-    data.append('IsActive', 1);
-    data.append('IsDefaultSupplier', inputs.IsDefaultSupplier);
-    data.append('DiamondQuality',inputs.DiamondQuality)
-    inputs['diamond_purity'].map((items, index) => {
-      console.log(`diamond_purity[${index}]`, items);
-    });
-    inputs['diamond_purity'].map((items, index) => {
-      data.append(`diamond_purity[${index}]`, items);
-    });
-    inputs['diamond_specialisation'].map((items, index) => {
-      data.append(`diamond_specialisation[${index}]`, items);
-    });
+    else {
+      setFetching(true)
+      let data = new FormData();
+      data.append('SrNo', user_id)
+      data.append('logo', inputs.logo ? inputs.logo : '');
+      data.append('SupplierName', inputs.SupplierName);
+      data.append('ContactPersonName', inputs.ContactPersonName);
+      data.append('Address', inputs.Address);
+      data.append('MobileNo', inputs.MobileNo);
+      data.append('StateId', inputs.StateId);
+      data.append('CityId', inputs.CityId);
+      data.append('Pincode', inputs.Pincode);
+      data.append('Website', inputs.Website);
+      data.append('EmailId', inputs.EmailId);
+      data.append('SupplierType', inputs.SupplierType);
+      data.append('IsActive', 'on');
+      data.append('IsDefaultSupplier', inputs.IsDefaultSupplier);
+      data.append('DiamondQuality', inputs.DiamondQuality)
+      // inputs['diamond_purity'].map((items, index) => {
+      //   data.append(`diamond_purity[${index}]`, items);
+      // });
+      inputs['diamond_purity'].map((items, index) => {
+        data.append(`diamond_purity[${index}]`, items);
+      });
+      inputs['diamond_specialisation'].map((items, index) => {
+        data.append(`diamond_specialisation[${index}]`, items);
+      });
 
-    data.append(`diamondcustom_purity`, inputs.diamondcustom_purity);
-    data.append(`goldcustom_purity`, inputs.goldcustom_purity);
-    data.append(`platinumcustom_purity`, inputs.platinumcustom_purity);
-    data.append(`silvercustom_purity`, inputs.silvercustom_purity);
+      data.append(`diamondcustom_purity`, inputs.diamondcustom_purity);
+      data.append(`goldcustom_purity`, inputs.goldcustom_purity);
+      data.append(`platinumcustom_purity`, inputs.platinumcustom_purity);
+      data.append(`silvercustom_purity`, inputs.silvercustom_purity);
 
-    inputs['gold_purity'].map((items, index) => {
-      data.append(`gold_purity[${index}]`, items);
-    });
+      inputs['gold_purity'].map((items, index) => {
+        data.append(`gold_purity[${index}]`, items);
+      });
 
-    inputs['silver_purity'].map((items, index) => {
-      data.append(`silver_purity[${index}]`, items);
-    });
+      inputs['silver_purity'].map((items, index) => {
+        data.append(`silver_purity[${index}]`, items);
+      });
 
-    inputs['platinum_purity'].map((items, index) => {
-      data.append(`platinum_purity[${index}]`, items);
-    });
+      inputs['platinum_purity'].map((items, index) => {
+        data.append(`platinum_purity[${index}]`, items);
+      });
 
 
-    inputs['gold_specialisation'].map((items, index) => {
-      data.append(`gold_specialisation[${index}]`, items);
-    });
+      inputs['gold_specialisation'].map((items, index) => {
+        data.append(`gold_specialisation[${index}]`, items);
+      });
 
-    inputs['silver_specialisation'].map((items, index) => {
-      data.append(`silver_specialisation[${index}]`, items);
-    });
+      inputs['silver_specialisation'].map((items, index) => {
+        data.append(`silver_specialisation[${index}]`, items);
+      });
 
-    inputs['platinum_specialisation'].map((items, index) => {
-      data.append(`platinum_specialisation[${index}]`, items);
-    });
+      inputs['platinum_specialisation'].map((items, index) => {
+        data.append(`platinum_specialisation[${index}]`, items);
+      });
 
-    inputs['showroom_image'].map((items, index) => {
-      data.append(`showroom_image[${index}]`, items);
-    });
 
-    data.append('JTyped', inputs.JTyped ? 'Diamond' : '');
+      data.append('JTyped', inputs.JTyped ? 'Diamond' : '');
 
-    data.append('JTypep', inputs.JTypep ? 'Platinum' : '');
+      data.append('JTypep', inputs.JTypep ? 'Platinum' : '');
 
-    data.append('JTypeg', inputs.JTypeg ? 'Gold' : '');
+      data.append('JTypeg', inputs.JTypeg ? 'Gold' : '');
 
-    data.append('JTypes', inputs.JTypes ? 'Silver' : '');
+      data.append('JTypes', inputs.JTypes ? 'Silver' : '');
 
-    data.append('IsAnyBranch', inputs.IsAnyBranch ? 'on' : 'off');
+      data.append('IsAnyBranch', inputs.IsAnyBranch ? 'on' : 'off');
 
-    data.append('NoofEmployee', inputs.NoofEmployee)
+      data.append('NoofEmployee', inputs.NoofEmployee)
 
-    data.append('aboutus',inputs.aboutus)
+      data.append('aboutus', inputs.aboutus)
+      if (inputs['showroom_image'].length == 1) {
+        console.log('this is showroom1',);
+        data.append(`hiddenshowroom_image1`, inputs['showroom_image'][0].name ? inputs['showroom_image'][0] : '');
+        data.append(`hiddenshowroom_image2`, '');
+        data.append(`hiddenshowroom_image3`, '');
+        if (showroomImage.length == 1) {
+          data.append('hiddenshowroom_image_srno1', showroomImage[0].SrNo)
+          data.append('hiddenshowroom_image_srno2', '')
+          data.append('hiddenshowroom_image_srno3', '')
+          console.log('this is worling 1,1',showroomImage.length);
+        }
+        else if (showroomImage.length == 2) {
+          data.append('hiddenshowroom_image_srno1', showroomImage[0].SrNo)
+          data.append('hiddenshowroom_image_srno2', showroomImage[1].SrNo)
+          data.append('hiddenshowroom_image_srno3', '')
+          console.log('this is worling 1,2',showroomImage.length);
+        }
+        else if (showroomImage.length == 3) {
+          data.append('hiddenshowroom_image_srno1', showroomImage[0].SrNo)
+          data.append('hiddenshowroom_image_srno2', showroomImage[1].SrNo)
+          data.append('hiddenshowroom_image_srno3', showroomImage[2].SrNo)
+          console.log('this is worling 1,3',showroomImage.length);
+        }
 
-    productImages.map((item, index) => {
-      data.append(
-        `hiddenproduct_image${index + 1}`,
-        item[`hiddenproduct_image${index + 1}`],
-      );
-      data.append(
-        `hiddenproduct_id${index + 1}`,
-        item[`hiddenproduct_id${index + 1}`],
-      );
-      data.append(`product_name${index + 1}`, item[`product_name${index + 1}`]);
-    });
-    ownerImages.map((item, index) => {
-      data.append(
-        `hiddenowner_image${index + 1}`,
-        item[`hiddenowner_image${index + 1}`],
-      );
-      data.append(
-        `hiddenowner_id${index + 1}`,
-        item[`hiddenowner_id${index + 1}`],
-      );
-      data.append(`owner_name${index + 1}`, item[`owner_name${index + 1}`]);
-      data.append(
-        `owner_description${index + 1}`,
-        item[`owner_description${index + 1}`],
-      );
-    });
-    console.log('this is working',data);
-    validateUser(data);
-  }
+        // inputs['showroom_image'].map((items, index) => {
+        //   data.append(`showroom_image[${index+1}]`, items);
+        // });
+      }
+      else if (inputs['showroom_image'].length == 2) {
+        console.log('this is showroom2', inputs['showroom_image'].length);
+        data.append(`hiddenshowroom_image1`, inputs['showroom_image'][0].name ? inputs['showroom_image'][0] : '');
+        data.append(`hiddenshowroom_image2`, inputs['showroom_image'][1].name ? inputs['showroom_image'][1] : '');
+        data.append(`hiddenshowroom_image3`, '');
+        if (showroomImage.length == 1) {
+          data.append('hiddenshowroom_image_srno1', showroomImage[0].SrNo)
+          data.append('hiddenshowroom_image_srno2', '')
+          data.append('hiddenshowroom_image_srno3', '')
+          console.log('this is worling 2,1',showroomImage.length);
+        }
+        else if (showroomImage.length == 2) {
+          data.append('hiddenshowroom_image_srno1', showroomImage[0].SrNo)
+          data.append('hiddenshowroom_image_srno2', showroomImage[1].SrNo)
+          data.append('hiddenshowroom_image_srno3', '')
+          console.log('this is worling 2,2',showroomImage.length);
+        }
+        else if (showroomImage.length == 3) {
+          data.append('hiddenshowroom_image_srno1', showroomImage[0].SrNo)
+          data.append('hiddenshowroom_image_srno2', showroomImage[1].SrNo)
+          data.append('hiddenshowroom_image_srno3', showroomImage[2].SrNo)
+          console.log('this is worling 2,3',showroomImage.length);
+        }
 
-    // Object.keys(newData).map(item => {
-    //   setFetching(true);
-    //   switch (item) {
-    //     case 'logo':
-    //       data.append(item, newData[item]);
-    //       break;
-    //     case 'SupplierName': {
-    //       if (newData[item] == '') {
-    //         Toast.show('Please enter supplier name');
-    //         return;
-    //       }
-    //       data.append(item, newData[item]);
-    //       break;
-    //     }
-    //     case 'ContactPersonName': {
-    //       if (newData[item] == '') {
-    //         Toast.show('Please enter contact person name');
-    //         return;
-    //       }
-    //       data.append(item, newData[item]);
-    //       break;
-    //     }
-    //     case 'Address': {
-    //       if (newData[item] == '') {
-    //         Toast.show('Please enter full address');
-    //         return;
-    //       }
-    //       data.append(item, newData[item]);
-    //       break;
-    //     }
-    //     case 'MobileNo': {
-    //       if (newData[item] == '') {
-    //         Toast.show('Please enter mobile number');
-    //         return;
-    //       }
-    //       data.append(item, newData[item]);
-    //       break;
-    //     }
-    //     case 'StateId': {
-    //       if (newData[item] == '') {
-    //         Toast.show('Please select State name');
-    //         return;
-    //       }
-    //       data.append(item, newData[item]);
-    //       break;
-    //     }
-    //     case 'StateId': {
-    //       if (newData[item] == '') {
-    //         Toast.show('Please select State name');
-    //         return;
-    //       }
-    //       data.append(item, newData[item]);
-    //       break;
-    //     }
-    //     case 'CityId': {
-    //       if (newData[item] == '') {
-    //         Toast.show('Please select city name');
-    //         return;
-    //       }
-    //       data.append(item, newData[item]);
-    //       break;
-    //     }
-    //     case 'IsActive':
-    //       data.append(item, newData[item] ? 'on' : 'off');
-    //       break;
-    //     case 'IsDefaultSupplier':
-    //       data.append(item, newData[item] ? 'on' : 'off');
-    //       break;
-    //     case 'diamond_purity':
+      }
+      else if (inputs['showroom_image'].length == 3) {
+        console.log('this is showroom3', inputs['showroom_image'][0]);
+        data.append(`hiddenshowroom_image1`, inputs['showroom_image'][0].name ? inputs['showroom_image'][0] : '');
+        data.append(`hiddenshowroom_image2`, inputs['showroom_image'][1].name ? inputs['showroom_image'][1] : '');
+        data.append(`hiddenshowroom_image3`, inputs['showroom_image'][2].name ? inputs['showroom_image'][2] : '');
+        if (showroomImage.length == 1) {
+          data.append('hiddenshowroom_image_srno1', showroomImage[0].SrNo)
+          data.append('hiddenshowroom_image_srno2', '')
+          data.append('hiddenshowroom_image_srno3', '')
+          console.log('this is worling 3,1',showroomImage.length);
+        }
+        else if (showroomImage.length == 2) {
+          data.append('hiddenshowroom_image_srno1', showroomImage[0].SrNo)
+          data.append('hiddenshowroom_image_srno2', showroomImage[1].SrNo)
+          data.append('hiddenshowroom_image_srno3', '')
+          console.log('this is worling 3,2',showroomImage.length);
+        }
+        else if (showroomImage.length == 3) {
+          data.append('hiddenshowroom_image_srno1', showroomImage[0].SrNo)
+          data.append('hiddenshowroom_image_srno2', showroomImage[1].SrNo)
+          data.append('hiddenshowroom_image_srno3', showroomImage[2].SrNo)
+          console.log('this is worling 3,3',showroomImage.length);
+        }
+      }
+      else {
+        console.log('this is showroom else', inputs['showroom_image'].length);
+        data.append(`hiddenshowroom_image1`, '');
+        data.append(`hiddenshowroom_image2`, '');
+        data.append(`hiddenshowroom_image3`, '');
+        data.append('hiddenshowroom_image_srno1', '')
+        data.append('hiddenshowroom_image_srno2', '')
+        data.append('hiddenshowroom_image_srno3', '')
+      }
 
-    //       newData[item].map((items, index) => {
-    //         data.append(`diamond_purity[${index}]`, items);
-    //       });
-    //       break;
-    //     case 'diamond_specialisation':
-    //       newData[item].map((items, index) => {
 
-    //         data.append(`diamond_specialisation[${index}]`, items);
-    //       });
-    //       break;
-    //     case 'diamondcustom_purity':
-    //       data.append(`diamondcustom_purity`, newData[item]);
-    //       break;
-    //     case 'gold_purity':
-    //       newData[item].map((items, index) => {
-    //         data.append(`gold_purity[${index}]`, items);
-    //       });
-    //       break;
-    //     case 'silver_purity':
-    //       newData[item].map((items, index) => {
-    //         data.append(`silver_purity[${index}]`, items);
-    //       });
-    //       break;
-    //     case 'platinum_purity':
-    //       newData[item].map((items, index) => {
-    //         data.append(`platinum_purity[${index}]`, items);
-    //       });
 
-    //       break;
-    //     case 'gold_specialisation':
-    //       newData[item].map((items, index) => {
-    //         data.append(`gold_specialisation[${index}]`, items);
-    //       });
-    //       break;
-    //     case 'silver_specialisation':
-    //       newData[item].map((items, index) => {
-    //         data.append(`silver_specialisation[${index}]`, items);
-    //       });
-    //       break;
-    //     case 'platinum_specialisation':
-    //       newData[item].map((items, index) => {
-    //         data.append(`platinum_specialisation[${index}]`, items);
-    //       });
-    //       break;
-    //     case 'showroom_image':
-    //       newData[item].map((items, index) => {
-    //         data.append(`showroom_image[${index}]`, items);
-    //       });
-    //       break;
-    //     case 'JTyped':
-    //       data.append(item, newData[item] ? 'Diamond' : '');
-    //       break;
-    //     case 'JTypep':
-    //       data.append(item, newData[item] ? 'Platinum' : '');
-    //       break;
-    //     case 'JTypeg':
-    //       data.append(item, newData[item] ? 'Gold' : '');
-    //       break;
-    //     case 'JTypes':
-    //       data.append(item, newData[item] ? 'Silver' : '');
-    //       break;
-    //     case 'IsAnyBranch':
-    //       data.append(item, newData[item] ? 'on' : 'off');
-    //       break;
-    //     default:
-    //       data.append(item, newData[item]);
-    //   }
-    // });
-   
+      if (productImages.length == 1) {
+        console.log('this is productImages1', productImages.length);
+        // productImages.map((item, index) => {
+        //   data.append(
+        //     `hiddenproduct_image${index + 1}`,
+        //     item[`hiddenproduct_image${index + 1}`].name?item[`hiddenproduct_image${index + 1}`]:'',
+        //   );
+        //   data.append(
+        //     `hiddenproduct_image_srno${index + 1}`,
+        //     item[`hiddenproduct_id${index + 1}`],
+        //   );
+        //   data.append(`product_name${index + 1}`, item[`product_name${index + 1}`]);
+        // });
+
+        data.append(`hiddenproduct_image1`, productImages[0][`hiddenproduct_image1`].name ? productImages[0][`hiddenproduct_image1`] : '',);
+        data.append(`product_name1`, productImages[0][`product_name1`]);
+        data.append(`hiddenproduct_image2`, '');
+        data.append(`hiddenproduct_image3`, '');
+       
+        data.append(`product_name2`, '');
+        data.append(`product_name3`, '');
+
+        if(productImages.length==1){
+          data.append(`hiddenproduct_image_srno1`, productImages[0][`hiddenproduct_id1`],);
+          data.append(`hiddenproduct_image_srno2`, '');
+          data.append(`hiddenproduct_image_srno3`, '');
+        }
+        else if(productImages.length==2){
+          data.append(`hiddenproduct_image_srno1`, productImages[0][`hiddenproduct_id1`],);
+          data.append(`hiddenproduct_image_srno2`,  productImages[1][`hiddenproduct_id2`]);
+          data.append(`hiddenproduct_image_srno3`, '');
+        }
+        else if(productImages.length==3){
+          data.append(`hiddenproduct_image_srno1`, productImages[0][`hiddenproduct_id1`],);
+          data.append(`hiddenproduct_image_srno2`, productImages[1][`hiddenproduct_id2`]);
+          data.append(`hiddenproduct_image_srno3`, productImages[2][`hiddenproduct_id3`]);
+        }
+      }
+      else if (productImages.length == 2) {
+        console.log('this is productImages2', productImages.length);
+        // productImages.map((item, index) => {
+        //   data.append(
+        //     `hiddenproduct_image${index + 1}`,
+        //     item[`hiddenproduct_image${index + 1}`].name ? item[`hiddenproduct_image${index + 1}`] : '',
+        //   );
+        //   data.append(
+        //     `hiddenproduct_image_srno${index + 1}`,
+        //     item[`hiddenproduct_id${index + 1}`],
+        //   );
+        //   data.append(`product_name${index + 1}`, item[`product_name${index + 1}`]);
+        // });
+        data.append(`hiddenproduct_image1`, productImages[0][`hiddenproduct_image1`].name ? productImages[0][`hiddenproduct_image1`] : '',);
+        // data.append(`hiddenproduct_image_srno1`, productImages[0][`hiddenproduct_id1`],);
+        data.append(`product_name1`, productImages[0][`product_name1`]);
+        data.append(`hiddenproduct_image2`, productImages[1][`hiddenproduct_image2`].name ? productImages[1][`hiddenproduct_image2`] : '',);
+        // data.append(`hiddenproduct_image_srno2`, productImages[1][`hiddenproduct_id2`],);
+        data.append(`product_name2`, productImages[1][`product_name2`]);
+
+        data.append(`hiddenproduct_image3`, '');
+
+        // data.append(`hiddenproduct_image_srno3`, '');
+
+        data.append(`product_name3`, '');
+
+        if(productImages.length==1){
+          data.append(`hiddenproduct_image_srno1`, productImages[0][`hiddenproduct_id1`],);
+          data.append(`hiddenproduct_image_srno2`, '');
+          data.append(`hiddenproduct_image_srno3`, '');
+        }
+        else if(productImages.length==2){
+          data.append(`hiddenproduct_image_srno1`, productImages[0][`hiddenproduct_id1`],);
+          data.append(`hiddenproduct_image_srno2`,  productImages[1][`hiddenproduct_id2`]);
+          data.append(`hiddenproduct_image_srno3`, '');
+        }
+        else if(productImages.length==3){
+          data.append(`hiddenproduct_image_srno1`, productImages[0][`hiddenproduct_id1`],);
+          data.append(`hiddenproduct_image_srno2`, productImages[1][`hiddenproduct_id2`]);
+          data.append(`hiddenproduct_image_srno3`, productImages[2][`hiddenproduct_id3`]);
+        }
+
+      }
+      else if (productImages.length == 3) {
+        console.log('this is productImages3', productImages);
+        data.append(`hiddenproduct_image1`, productImages[0][`hiddenproduct_image1`].name ? productImages[0][`hiddenproduct_image1`] : '',);
+        // data.append(`hiddenproduct_image_srno1`, productImages[0][`hiddenproduct_id1`],);
+        data.append(`product_name1`, productImages[0][`product_name1`]);
+        data.append(`hiddenproduct_image2`, productImages[1][`hiddenproduct_image2`].name ? productImages[1][`hiddenproduct_image2`] : '',);
+        // data.append(`hiddenproduct_image_srno2`, productImages[1][`hiddenproduct_id2`],);
+        data.append(`product_name2`, productImages[1][`product_name2`]);
+        data.append(`hiddenproduct_image3`, productImages[2][`hiddenproduct_image3`].name ? productImages[2][`hiddenproduct_image3`] : '',);
+        // data.append(`hiddenproduct_image_srno3`, productImages[2][`hiddenproduct_id3`],);
+        data.append(`product_name3`, productImages[2][`product_name3`]);
+        if(productImages.length==1){
+          data.append(`hiddenproduct_image_srno1`, productImages[0][`hiddenproduct_id1`],);
+          data.append(`hiddenproduct_image_srno2`, '');
+          data.append(`hiddenproduct_image_srno3`, '');
+        }
+        else if(productImages.length==2){
+          data.append(`hiddenproduct_image_srno1`, productImages[0][`hiddenproduct_id1`],);
+          data.append(`hiddenproduct_image_srno2`,  productImages[1][`hiddenproduct_id2`]);
+          data.append(`hiddenproduct_image_srno3`, '');
+        }
+        else if(productImages.length==3){
+          console.log('this is product images',productImages);
+          data.append(`hiddenproduct_image_srno1`, productImages[0][`hiddenproduct_id1`],);
+          data.append(`hiddenproduct_image_srno2`, productImages[1][`hiddenproduct_id2`]);
+          data.append(`hiddenproduct_image_srno3`, productImages[2][`hiddenproduct_id3`]);
+        }
+        // productImages.map((item, index) => {
+        //   data.append(
+        //     `hiddenproduct_image${index + 1}`,
+        //     item[`hiddenproduct_image${index + 1}`].name ? item[`hiddenproduct_image${index + 1}`] : '',
+        //   );
+        //   data.append(
+        //     `hiddenproduct_image_srno${index + 1}`,
+        //     item[`hiddenproduct_id${index + 1}`],
+        //   );
+        //   data.append(`product_name${index + 1}`, item[`product_name${index + 1}`]);
+        // });
+      }
+      else {
+        console.log('this is productImages else', productImages.length);
+        data.append(`hiddenproduct_image1`, '');
+        data.append(`hiddenproduct_image2`, '');
+        data.append(`hiddenproduct_image3`, '');
+        data.append(`hiddenproduct_image_srno1`, '');
+        data.append(`hiddenproduct_image_srno2`, '');
+        data.append(`hiddenproduct_image_srno3`, '');
+        data.append(`product_name1`, '');
+        data.append(`product_name2`, '');
+        data.append(`product_name3`, '');
+      }
+
+      if (ownerImages.length == 1) {
+
+        // ownerImages.map((item, index) => {
+        //   data.append(
+        //     `hiddenowner_image${index + 1}`,
+        //     item[`hiddenowner_image${index + 1}`].name ? item[`hiddenowner_image${index + 1}`] : '',
+        //   );
+        //   data.append(
+        //     `hiddenowner_image_srno${index + 1}`,
+        //     item[`hiddenowner_id${index + 1}`],
+        //   );
+        //   data.append(`owner_name${index + 1}`, item[`owner_name${index + 1}`]);
+        //   data.append(
+        //     `owner_description${index + 1}`,
+        //     item[`owner_description${index + 1}`],
+        //   );
+        // });
+
+        data.append(`hiddenowner_image1`, ownerImages[0][`hiddenowner_image1`].name ? ownerImages[0][`hiddenowner_image1`] : '',);
+        data.append(`hiddenowner_image_srno1`, ownerImages[0][`hiddenowner_id1`],);
+        data.append(`owner_name1`, ownerImages[0][`owner_name1`]);
+        data.append(`owner_description1`, ownerImages[0][`owner_description1`],);
+
+        data.append(`hiddenowner_image2`, '');
+        data.append(`hiddenowner_image3`, '');
+        data.append(`hiddenowner_image_srno2`, '');
+        data.append(`hiddenowner_image_srn3`, '');
+        data.append(`owner_name2`, '');
+        data.append(`owner_name3`, '');
+        data.append(`owner_description2`, '');
+        data.append(`owner_description3`, '');
+        validateUser(data);
+      }
+      else if (ownerImages.length == 2) {
+        console.log('this is ownerImages2', ownerImages.length);
+        // ownerImages.map((item, index) => {
+        //   data.append(
+        //     `hiddenowner_image${index + 1}`,
+        //     item[`hiddenowner_image${index + 1}`].name ? item[`hiddenowner_image${index + 1}`] : '',
+        //   );
+        //   data.append(
+        //     `hiddenowner_image_srno${index + 1}`,
+        //     item[`hiddenowner_id${index + 1}`],
+        //   );
+        //   data.append(`owner_name${index + 1}`, item[`owner_name${index + 1}`]);
+        //   data.append(
+        //     `owner_description${index + 1}`,
+        //     item[`owner_description${index + 1}`],
+        //   );
+        // });
+        data.append(`hiddenowner_image1`, ownerImages[0][`hiddenowner_image1`].name ? ownerImages[0][`hiddenowner_image1`] : '',);
+        data.append(`hiddenowner_image_srno1`, ownerImages[0][`hiddenowner_id1`],);
+        data.append(`owner_name1`, ownerImages[0][`owner_name1`]);
+        data.append(`owner_description1`, ownerImages[0][`owner_description1`],);
+
+        data.append(`hiddenowner_image2`, ownerImages[1][`hiddenowner_image2`].name ? ownerImages[1][`hiddenowner_image2`] : '',);
+        data.append(`hiddenowner_image_srno2`, ownerImages[1][`hiddenowner_id2`],);
+        data.append(`owner_name2`, ownerImages[1][`owner_name2`]);
+        data.append(`owner_description2`, ownerImages[1][`owner_description2`],);
+
+        data.append(`hiddenowner_image3`, '');
+        data.append(`hiddenowner_image_srno3`, '');
+        data.append(`owner_name3`, '');
+        data.append(`owner_description3`, '');
+        validateUser(data);
+      }
+      else if (ownerImages.length == 3) {
+        console.log('this is ownerImages3', ownerImages.length);
+        // ownerImages.map((item, index) => {
+        //   data.append(
+        //     `hiddenowner_image${index + 1}`,
+        //     item[`hiddenowner_image${index + 1}`].name ? item[`hiddenowner_image${index + 1}`] : '',
+        //   );
+        //   data.append(
+        //     `hiddenowner_image_srno${index + 1}`,
+        //     item[`hiddenowner_id${index + 1}`],
+        //   );
+        //   data.append(`owner_name${index + 1}`, item[`owner_name${index + 1}`]);
+        //   data.append(
+        //     `owner_description${index + 1}`,
+        //     item[`owner_description${index + 1}`],
+        //   );
+        // });
+        data.append(`hiddenowner_image1`, ownerImages[0][`hiddenowner_image1`].name ? ownerImages[0][`hiddenowner_image1`] : '',);
+        data.append(`hiddenowner_image_srno1`, ownerImages[0][`hiddenowner_id1`],);
+        data.append(`owner_name1`, ownerImages[0][`owner_name1`]);
+        data.append(`owner_description1`, ownerImages[0][`owner_description1`],);
+
+        data.append(`hiddenowner_image2`, ownerImages[1][`hiddenowner_image2`].name ? ownerImages[1][`hiddenowner_image2`] : '',);
+        data.append(`hiddenowner_image_srno2`, ownerImages[1][`hiddenowner_id2`],);
+        data.append(`owner_name2`, ownerImages[1][`owner_name2`]);
+        data.append(`owner_description2`, ownerImages[1][`owner_description2`],);
+
+        data.append(`hiddenowner_image3`, ownerImages[2][`hiddenowner_image3`].name ? ownerImages[2][`hiddenowner_image3`] : '',);
+        data.append(`hiddenowner_image_srno3`, ownerImages[2][`hiddenowner_id3`],);
+        data.append(`owner_name3`, ownerImages[2][`owner_name3`]);
+        data.append(`owner_description3`, ownerImages[2][`owner_description3`],);
+        validateUser(data);
+        // setFetching(false)
+      }
+      else {
+        console.log('this is ownerImages else', ownerImages.length);
+        data.append(`hiddenowner_image1`, '');
+        data.append(`hiddenowner_image2`, '');
+        data.append(`hiddenowner_image3`, '');
+        data.append(`hiddenowner_image_srno1`, '');
+        data.append(`hiddenowner_image_srno2`, '');
+        data.append(`hiddenowner_image_srno3`, '');
+        data.append(`owner_name1`, '');
+        data.append(`owner_name2`, '');
+        data.append(`owner_name3`, '');
+        data.append(`owner_description1`, '');
+        data.append(`owner_description2`, '');
+        data.append(`owner_description3`, '');
+        validateUser(data);
+      }
+      console.log('this is working', JSON.stringify(data));
+      // validateUser(data);
+    }
+
   };
 
   const validateUser = async data => {
     const Token = await AsyncStorage.getItem('loginToken');
+    console.log('this is user token', Token);
     try {
-     
+
       const response = await axios({
         method: 'POST',
         data,
@@ -672,6 +842,7 @@ const EditSupplierProfile = ({ route }) => {
         Toast.show(response.data.msg);
       }
     } catch (error) {
+      console.log('this is user detala', error);
       Toast.show('Something went wrong');
       setFetching(false);
     }
@@ -793,7 +964,6 @@ const EditSupplierProfile = ({ route }) => {
 
   const [productImages, setProductImages] = useState(setPrevProduct('image'));
   const [ownerImages, setOwnerImages] = useState(setPrevOwner('image'));
-
   const handleProductImages = (index, types) => {
     let options = {
       mediaType: 'photo',
@@ -1242,7 +1412,7 @@ const EditSupplierProfile = ({ route }) => {
                 uniqueKey="value"
                 onSelectedItemsChange={val => {
                   handleInputs('diamond_purity', val);
-                 
+
                   // if (val.includes('Custom Purity')) {
                   //   setCustomPurityDia(true);
                   // } else {
@@ -1888,11 +2058,12 @@ const EditSupplierProfile = ({ route }) => {
                 }}
                 source={{ uri: inputs.logo?.uri }}
               />
+              {console.log('this is user uri', inputs.logo)}
             </View>
           ) : null}
         </View>
 
-        <View style={{ marginTop: 10 }}>
+      {productImages.length>0?  <View style={{ marginTop: 10 }}>
           <Text style={styles.text}>Upload image of your product:</Text>
           <FlatList
             data={productImages}
@@ -1959,7 +2130,7 @@ const EditSupplierProfile = ({ route }) => {
               </View>
             )}
           />
-        </View>
+        </View>:null}
 
         <View style={{ marginTop: 10 }}>
           <Text style={styles.text}>About you</Text>
@@ -2102,7 +2273,7 @@ const EditSupplierProfile = ({ route }) => {
           </View>
         </View>
 
-        <View style={{ marginTop: 10 }}>
+        {ownerImages.length > 0 ? <View style={{ marginTop: 10 }}>
           <Text style={styles.text}>Upload Owner images:</Text>
           <FlatList
             data={ownerImages}
@@ -2180,7 +2351,7 @@ const EditSupplierProfile = ({ route }) => {
               </View>
             )}
           />
-        </View>
+        </View> : null}
 
         <View>
           <TouchableOpacity

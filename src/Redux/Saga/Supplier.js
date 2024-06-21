@@ -15,7 +15,7 @@ function* SupportProfileRequest(action) {
      userRole:'6',
     };
     const response = yield call(Api.fetchDataByGET1, action.url, data);
-   
+   console.log('this is action respomse',JSON.stringify(response));
     if (response.status == true) {
       yield put({
         type: 'Supplier_Profile_Success',

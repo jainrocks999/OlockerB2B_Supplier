@@ -31,6 +31,21 @@ initialstate = {
 
 export default (state = initialstate, action) => {
   switch (action.type) {
+
+    case 'add_product_request_new':
+      return { ...state, isFetching: true };
+    case 'add_product_success_new':
+      return { 
+        ...state,
+        isFetching: false,
+        metalData: {},
+        diamondData: [],
+        stoneData: [],
+        decorativeData: [],
+        totalWiegt: '',
+        msg: {},
+         };
+
     case 'Get_Catalogue_Request':
       return { ...state, isFetching: true };
     case 'Get_Catalogue_Success':

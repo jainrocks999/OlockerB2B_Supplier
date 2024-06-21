@@ -144,6 +144,7 @@ function Customer1() {
   );
 }
 const Stack2 = createNativeStackNavigator();
+
 function MyNetworkTab() {
   return (
     <Stack2.Navigator
@@ -216,26 +217,7 @@ function Bottom() {
           },
         }}
       />
-      {/* <Tab.Screen
-        name="Message1"
-        component={ChatStack}
-        options={{
-          tabBarHideOnKeyboard: true,
-          tabBarIcon: ({focused}) => {
-            return (
-              <Image
-                style={{
-                  // tintColor: focused ? '#fff' : 'grey',
-                  height: 28,
-                  width: 28,
-                  resizeMode: 'center',
-                }}
-                source={require('../assets/supplierImage/bagIcon.png')}
-              />
-            );
-          },
-        }}
-      /> */}
+
       <Tab.Screen
         name="Notification"
         component={Notification}

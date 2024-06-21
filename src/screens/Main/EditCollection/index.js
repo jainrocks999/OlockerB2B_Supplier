@@ -8,7 +8,7 @@ import {
   TextInput,
   Platform,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation,useIsFocused} from '@react-navigation/native';
 import StatusBar from '../../../components/StatusBar';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
@@ -20,7 +20,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../components/Loader';
 import PickerModel from '../../../components/PickerModel';
 import axios from 'axios';
-import {useDispatch} from 'react-redux';
+import {useDispatch,useSelector} from 'react-redux';
 import {RadioButton} from 'react-native-paper';
 import TempletModel from "./TempletModel";
 
@@ -28,11 +28,13 @@ const EditCollection = ({route}) => {
   // console.log('this i route data',route.params)
   const data = route.params.item;
   const navigation = useNavigation();
+  const loading = useSelector(state => state.Auth.isFetching);
   const dispatch = useDispatch();
   const [name, setName] = useState(data.Name);
   const [tag, setTag] = useState(data.Title);
   const [description, setDescription] = useState(data.Description);
   const [templetmodel, setTempletModal] = useState(false);
+  const isFocused = useIsFocused()
   const [active, setActive] = useState(
     data.IsActive
       ? data.IsActive == 1
@@ -47,6 +49,20 @@ const EditCollection = ({route}) => {
         : 'unchecked'
       : 'Select Status',
   );
+
+  useEffect(() => {
+    if (isFocused) {
+      Apicall();
+    }
+  }, [isFocused])
+  const Apicall = async () => {
+    const Token = await AsyncStorage.getItem('loginToken');
+    dispatch({
+      type: 'Get_creativeImgList_Request',
+      url: '/creativeImgList',
+      Token: Token
+    });
+  }
 
   const [photo, setPhoto] = useState(`https://olocker.co${data.ImageUrl}`);
   const [photoName, setPhotoName] = useState(data.ImageName);
@@ -173,7 +189,7 @@ const EditCollection = ({route}) => {
   return (
     <View style={styles.container1}>
       <StatusBar />
-      {fetching ? <Loader /> : null}
+      {fetching ||loading ? <Loader /> : null}
       <View
         style={{
           width: '100%',

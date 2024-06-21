@@ -9,7 +9,7 @@ const Profile = () => {
   const ownerImagePath = 'https://olocker.co/uploads/supplier/';
   const parnerData = useSelector(state => state.Home.partnerData);
   const partner = parnerData?.partnerdetails;
-  console.log('parnerData?.partnerdetails', parnerData?.partnerimagedetails?.OwnerImage);
+  console.log('parnerData?.partnerdetails bew', parnerData);
   return (
     <View style={{ flex: 1, backgroundColor: '#fff', paddingVertical: 20 }}>
       {/* {isFetching ? <Loader /> : null} */}
@@ -21,7 +21,7 @@ const Profile = () => {
             paddingHorizontal: 20,
             paddingVertical: 8,
             borderRadius: 20,
-            width: 100,
+            width: 120,
             alignItems: 'center',
             justifyContent: 'center',
           }}>
@@ -29,7 +29,7 @@ const Profile = () => {
             About us
           </Text>
         </View>:null}
-        <Text
+       {partner?.PartnerIntroduction? <Text
           style={{
             fontSize: 16,
             textAlign: 'center',
@@ -39,7 +39,7 @@ const Profile = () => {
             marginLeft: '5%',
           }}>
           {partner?.PartnerIntroduction}
-        </Text>
+        </Text>:null}
 
         {parnerData?.partnerimagedetails?.OwnerImage.length>0?<View
           style={{
@@ -47,7 +47,7 @@ const Profile = () => {
             paddingHorizontal: 19,
             paddingVertical: 8,
             borderRadius: 20,
-            width: 100,
+            width: 120,
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 15,
@@ -93,14 +93,13 @@ const Profile = () => {
             </View>
           ))}
         </View>
-
         {parnerData?.partnerimagedetails?.ShowRoomImage.length>0?<View
           style={{
             backgroundColor: '#032e63',
             paddingHorizontal: 12,
             paddingVertical: 8,
             borderRadius: 20,
-            width: 110,
+            width: 120,
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 15,
@@ -110,7 +109,7 @@ const Profile = () => {
               color: '#fff',
               fontSize: 14,
               fontFamily: 'Acephimere',
-              width: '90%',
+              // width: '90%',
             }}>
             Showrooms
           </Text>
@@ -159,7 +158,7 @@ const Profile = () => {
               paddingHorizontal: 20,
               paddingVertical: 8,
               borderRadius: 20,
-              width: 100,
+              width: 120,
               alignItems: 'center',
               justifyContent: 'center',
               marginTop: 15,
@@ -187,20 +186,20 @@ const Profile = () => {
                   fontFamily: 'Acephimere',
                   color: '#424242',
                 }}>
-                {`${partner?.HOaddress}, ${parnerData?.partnerdetails?.state_name}, ${parnerData?.partnerdetails?.city_name}, ${parnerData?.partnerBranchdetails.PinCode}`}
+                {`${partner?.HOaddress? `${partner?.HOaddress}, `:''} ${partner?.state_name?`${partner?.state_name},`:''} ${partner?.city_name?`${partner?.city_name}, `:''} ${partner?.PinCode?`${partner?.PinCode}`:''}`}
               </Text>
             </View>
           </View>
         </View>
 
         <View>
-          <View
+         {partner?.Mobile ||partner?.BillingContactEmail? <View
             style={{
               backgroundColor: '#032e63',
               paddingHorizontal: 20,
               paddingVertical: 8,
               borderRadius: 20,
-              width: 100,
+              width: 120,
               alignItems: 'center',
               justifyContent: 'center',
               marginTop: 15,
@@ -209,10 +208,10 @@ const Profile = () => {
               style={{ color: '#fff', fontSize: 14, fontFamily: 'Acephimere' }}>
               Contact
             </Text>
-          </View>
+          </View>:null}
           <View style={{ paddingHorizontal: 20, }}>
             {
-              parnerData?.partnerBranchdetails?.Mobile  ?
+              partner?.Mobile  ?
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
                   <Image
                     style={{ height: 28, width: 28 }}
@@ -225,7 +224,7 @@ const Profile = () => {
                         fontSize: 14,
                         fontFamily: 'Acephimere',
                         color: '#424242',
-                      }}>{`+91${parnerData?.partnerBranchdetails?.Mobile}`}</Text>
+                      }}>{`+91${partner?.Mobile}`}</Text>
 
                     {/* <Text style={{marginLeft:30,fontSize:14,fontFamily:'Acephimere',color:'#424242'}}>{'Ph:9876567898 '}</Text>
                      <Text style={{marginLeft:30,fontSize:14,fontFamily:'Acephimere',color:'#424242'}}>{'Ph:9876567898 '}</Text> */}
@@ -233,7 +232,7 @@ const Profile = () => {
                 </View>
                 : null}
 
-            {parnerData?.partnerBranchdetails?.BillingContactEmail  ?
+            {partner?.BillingContactEmail  ?
               <View style={{ flexDirection: 'row', marginTop: 20, alignItems: 'center' }}>
                 <Image
                   style={{ height: 28, width: 28 }}
@@ -247,7 +246,7 @@ const Profile = () => {
                       fontFamily: 'Acephimere',
                       color: '#424242',
                     }}>
-                    {parnerData?.partnerBranchdetails?.BillingContactEmail}
+                    {partner?.BillingContactEmail}
                   </Text>
                 </View>
               </View> : null}

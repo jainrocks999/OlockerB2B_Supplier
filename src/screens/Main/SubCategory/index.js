@@ -27,6 +27,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import Mat from 'react-native-vector-icons/MaterialCommunityIcons';
+import Toast from "react-native-simple-toast";
 
 const SubCategory = ({route}) => {
   const dispatch = useDispatch();
@@ -106,7 +107,24 @@ const SubCategory = ({route}) => {
     });
   };
 
-  const RemoveWhishList = async (item) => {
+  const RemoveWhishList=async(item)=>{
+    const res = await RemoveWhishList1(item);
+    const user_id = await AsyncStorage.getItem('user_id');
+     console.log('this is respo',res)
+     if(res){
+       dispatch({
+         type: 'product_detail_request',
+         url: 'productDetails',
+         productId: item,
+         supplierSrNo: user_id,
+         // navigation,
+       });
+       Toast.show(res.msg)
+     }
+   }
+
+
+  const RemoveWhishList1 = async (item) => {
     setIsFetching(true);
     const user_id = await AsyncStorage.getItem('user_id');
     const Token = await AsyncStorage.getItem('loginToken');
@@ -129,15 +147,17 @@ const SubCategory = ({route}) => {
         console.log('this is response',result.status);
         if(result){
          
-          dispatch({
-            type: 'product_detail_request',
-            url: 'productDetails',
-            productId: item,
-            supplierSrNo: user_id,
-            // navigation,
-          });
+          // dispatch({
+          //   type: 'product_detail_request',
+          //   url: 'productDetails',
+          //   productId: item,
+          //   supplierSrNo: user_id,
+          //   // navigation,
+          // });
+       
           setIsFetching(false);
-          console.log('this is response data',result)
+          return JSON.parse(result);
+          // console.log('this is response data',result)
         }
         else{
           setIsFetching(false);
@@ -150,8 +170,25 @@ const SubCategory = ({route}) => {
 
     return response;
   };
-  const addProductWishList = async item => {
+  
+  const addProductWishList=async(item)=>{
     console.log('this is item',item);
+   const res = await addProductWishList1(item);
+   const user_id = await AsyncStorage.getItem('user_id');
+    console.log('this is respo',res)
+    if(res){
+      dispatch({
+        type: 'product_detail_request',
+        url: 'productDetails',
+        productId: item,
+        supplierSrNo: user_id,
+        // navigation,
+      });
+      Toast.show(res.msg)
+    }
+  }
+
+  const addProductWishList1 = async item => {
     setIsFetching(true);
     const Token = await AsyncStorage.getItem('loginToken');
     const user_id = await AsyncStorage.getItem('user_id');
@@ -178,13 +215,15 @@ const SubCategory = ({route}) => {
       .then(result => {
         if(result){
           setIsFetching(false);
-          dispatch({
-            type: 'product_detail_request',
-            url: 'productDetails',
-            productId: item,
-            supplierSrNo: user_id,
-            // navigation,
-          });
+          return JSON.parse(result);
+          // dispatch({
+          //   type: 'product_detail_request',
+          //   url: 'productDetails',
+          //   productId: item,
+          //   supplierSrNo: user_id,
+          //   // navigation,
+          // });
+          // console.log('this us fsgsfg',result.msg);
         }
         else{
           setIsFetching(false);
@@ -202,7 +241,7 @@ const BannerWidth = (Dimensions.get('window').width * 15) / 18;
 
   return (
     <View style={styles.container}>
-        {fetching || isFetching || isFetching4 ? <Loader /> : null}
+        {fetching || isFetching || isFetching4  ? <Loader /> : null}
       <Header
         source={require('../../../assets/L.png')}
         source1={require('../../../assets/Fo.png')}
@@ -332,6 +371,7 @@ const BannerWidth = (Dimensions.get('window').width * 15) / 18;
             <View style={{marginLeft: 20, marginTop: 8}}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View style={{flexDirection:'row',alignItems:'center'}}>
+                {console.log('this isproductData?.products',productData?.products)}
                 <Text style={styles.cardtext}>
                   {'Name       :      '}
                 </Text>
@@ -354,7 +394,7 @@ const BannerWidth = (Dimensions.get('window').width * 15) / 18;
                 <Text style={styles.cardtext}>
                   {'Stock No :      '}
                 </Text>
-                <Text style={{ color: '#052a47',fontWeight:'500'}}>{ productData?.products?.SrNo}</Text>
+                <Text style={{ color: '#052a47',fontWeight:'500'}}>{ productData?.products?.ProductSku}</Text>
                 </View>
                 <TextInput
                   style={{height: 40, color: '#052a47'}}

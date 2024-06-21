@@ -26,7 +26,7 @@ const ProductTypeListDetails = ({ route }) => {
     const [count,setCount]=useState()
     const handleRef=useRef(FlatList)
 
-
+console.log('this is data',data);
     const share1 = async (id) => {
         let pr = id.Price;
         let name = id.ItemName;
@@ -58,6 +58,7 @@ const ProductTypeListDetails = ({ route }) => {
             start: 0,
             limit: 20,
         };
+        console.log(data,"this is data1 data");
         // const data = {
         //     userId: 13,
         //     userType: 'partner',
@@ -80,7 +81,6 @@ const ProductTypeListDetails = ({ route }) => {
                     Olocker: `Bearer ${Token}`,
                 },
             });
-            console.log('this is res',response.data);
             if (response.status) {
                 setData(response?.data?.list)
                 setStart(20)
@@ -172,6 +172,7 @@ const ProductTypeListDetails = ({ route }) => {
             // start:0,
             limit: start,
         };
+        console.log(data1,"this is data1 data");
         try {
             setLoader(true)
             const response = await axios({
@@ -211,7 +212,7 @@ const ProductTypeListDetails = ({ route }) => {
         const user_id = await AsyncStorage.getItem('user_id');
         let res;
         res = await addProductWishList(item.SrNo);
-        console.log('this is res', res);
+         console.log('this is status',res.status)
         if (res.status) {
             let arr=[...data]
             console.log('this is att',arr);
@@ -219,6 +220,7 @@ const ProductTypeListDetails = ({ route }) => {
             console.log('this is obj index',objIndex);
             arr[objIndex].is_exist = true
             setData(arr)
+            Toast.show(res.msg)
             // handleWishListProduct()
             // dispatch({
             //     type: 'User_ProductLists_Request',
@@ -242,7 +244,7 @@ const ProductTypeListDetails = ({ route }) => {
         let res;
 
         res = await RemoveWhishList(item.SrNo);
-
+        console.log('this is status',res.status)
         if (res.status) {
             let arr=[...data]
             console.log('this is att',arr);
@@ -250,6 +252,7 @@ const ProductTypeListDetails = ({ route }) => {
             console.log('this is obj index',objIndex);
             arr[objIndex].is_exist = false
             setData(arr)
+             Toast.show(res.msg)
 
 
             // handleWishListProduct()
@@ -308,7 +311,6 @@ const ProductTypeListDetails = ({ route }) => {
         const user_id = await AsyncStorage.getItem('user_id');
         var myHeaders = new Headers();
         myHeaders.append('Olocker', `Bearer ${Token}`);
-
         var formdata = new FormData();
         formdata.append('checkProduct', item);
         formdata.append('SupplierSrNo', user_id);
@@ -320,7 +322,6 @@ const ProductTypeListDetails = ({ route }) => {
             body: formdata,
             redirect: 'follow',
         };
-
         let res = fetch(
             'https://olocker.co/api/supplier/addProductitemWishlist',
             requestOptions,
@@ -366,17 +367,6 @@ const ProductTypeListDetails = ({ route }) => {
             />
             {isFetching || isFetching1 || loader ? <Loader /> : null}
             <View>
-
-                {/* {selector?.list? <View style={styles.main}>
-                    <View>
-                        <Text style={styles.text}>
-                            {selector?.list?.length === 1
-                                ? `${selector?.list?.length} Item`
-                                : `${selector?.list?.length} Items`
-                            }
-                        </Text>
-                    </View>
-                </View>:null} */}
                 {data ? <View style={styles.main}>
                     <View>
                         <Text style={styles.text}>
@@ -396,21 +386,8 @@ const ProductTypeListDetails = ({ route }) => {
                         onEndReachedThreshold={0.5}
                         style={{marginBottom:125}}
                         onEndReached={() => handleApiOnReachEnd()}
-                //         ListHeaderComponent={()=>(
-                //             <View style={styles.main}>
-                //     <View>
-                //         <Text style={styles.text}>
-                //             {data?.length === 1
-                //                 ? `${data?.length} Item`
-                //                 : `${data?.length} Items`
-                //             }
-                //         </Text>
-                //     </View>
-                // </View> 
-                //         )}
                         renderItem={({ item, index }) => (
                             <View style={styles.cardview}>
-
                                 <View
                                     style={{
                                         height: hp('100%'),

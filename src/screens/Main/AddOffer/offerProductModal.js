@@ -35,7 +35,7 @@ const OfferProductModal = ({
     hdnselectedvalue: [],
   });
   const modal = useSelector(state => state.Offer.modal);
-
+ console.log('this is is from list',isformList);
   useEffect(() => {
     snedDataToparent(inputs.hdnselectedvalue);
   }, [inputs.hdnselectedvalue]);
@@ -119,18 +119,18 @@ const handleOnEndReached=async()=>{
               }}
               style={{
                 position: 'absolute',
-                height: hp(6),
-                width: hp(6),
+                height: hp(4),
+                width: hp(4),
                 backgroundColor: '#032e63',
-                right: wp(10),
-                top: 12,
+                right: wp(5),
+                top: wp(5),
                 zIndex: 1,
                 borderRadius: hp(6 / 2),
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
               <Text
-                style={{fontSize: wp(5.5), fontWeight: 'bold', color: 'white'}}>
+                style={{fontSize: wp(5.5), fontWeight: 'bold', color: 'white',marginTop:-4}}>
                 x
               </Text>
             </TouchableOpacity>

@@ -26,7 +26,7 @@ const TempletModel = ({
   ...props
 }) => {
   const selector = useSelector(state => state.Auth.Collectionimg);
-  //    console.log('virendra......',selector);
+    //  console.log('virendra selector image......',selector);
   const [inputs, setInputs] = useState({
     photo: '',
     chk_c: '',
